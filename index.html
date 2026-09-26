@@ -3,848 +3,847 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Science Club Student Portal</title>
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f6f7fb;
-      color: #1f2430;
-    }
-
-    button,
-    input,
-    textarea,
-    select {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    :root {
-      --dark: #171a27;
-      --card: #fff;
-      --line: #e7e9f0;
-      --muted: #717887;
-      --p: #665cf2;
-      --ps: #efeeff;
-      --g: #0ea878;
-      --gs: #e9faf4;
-      --r: #e5484d;
-      --rs: #fff0f0;
-    }
-
-    .shell {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 245px 1fr;
-    }
-
-    .side {
-      position: fixed;
-      inset: 0 auto 0 0;
-      width: 245px;
-      height: 100vh;
-      background: var(--dark);
-      padding: 24px 16px;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 30px;
-    }
-
-    .logo {
-      width: 43px;
-      height: 43px;
-      display: grid;
-      place-items: center;
-      border-radius: 13px;
-      background: linear-gradient(135deg, #665cf2, #9566f5);
-      font-size: 21px;
-    }
-
-    .brand small {
-      display: block;
-      color: #9299aa;
-      margin-top: 3px;
-    }
-
-    .nav {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .nav button,
-    .adminBtn {
-      border: 0;
-      border-radius: 10px;
-      padding: 11px 12px;
-      background: transparent;
-      color: #adb4c3;
-      text-align: left;
-      font-weight: 650;
-    }
-
-    .nav button:hover,
-    .nav button.active {
-      background: #ffffff14;
-      color: #fff;
-    }
-
-    .sideBottom {
-      margin-top: auto;
-      border-top: 1px solid #ffffff12;
-      padding-top: 15px;
-    }
-
-    .adminBtn {
-      width: 100%;
-      background: #ffffff14;
-      color: #fff;
-      text-align: center;
-    }
-
-    .tiny {
-      font-size: 10px;
-      line-height: 1.5;
-      color: #858c9f;
-      margin-top: 10px;
-    }
-
-    main {
-      grid-column: 2;
-      padding: 28px 32px;
-      max-width: 1450px;
-      width: 100%;
-      margin: auto;
-    }
-
-    .page {
-      display: none;
-    }
-
-    .page.active {
-      display: block;
-    }
-
-    .status {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 8px;
-      background: var(--gs);
-      color: #087655;
-      font-size: 10px;
-      font-weight: 800;
-      margin-bottom: 14px;
-    }
-
-    .status.bad {
-      background: var(--rs);
-      color: #b5282d;
-    }
-
-    .top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 15px;
-      margin-bottom: 22px;
-    }
-
-    .top h1 {
-      font-size: 27px;
-      margin: 0;
-    }
-
-    .top p {
-      font-size: 13px;
-      color: var(--muted);
-      margin: 6px 0 0;
-    }
-
-    .card {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 15px;
-      padding: 20px;
-      margin-bottom: 18px;
-      box-shadow: 0 7px 24px rgba(0, 0, 0, 0.04);
-    }
-
-    .card h2 {
-      font-size: 15px;
-      margin: 0 0 12px;
-    }
-
-    .muted {
-      font-size: 11px;
-      color: var(--muted);
-      line-height: 1.65;
-    }
-
-    .primary,
-    .secondary,
-    .danger {
-      border-radius: 9px;
-      padding: 9px 12px;
-      font-weight: 750;
-      font-size: 11px;
-    }
-
-    .primary {
-      border: 0;
-      background: var(--p);
-      color: #fff;
-    }
-
-    .secondary {
-      border: 1px solid var(--line);
-      background: #fff;
-      color: #1f2430;
-    }
-
-    .danger {
-      border: 0;
-      background: var(--rs);
-      color: var(--r);
-    }
-
-    .msg {
-      display: none;
-      padding: 10px 12px;
-      border-radius: 9px;
-      font-size: 11px;
-      margin-bottom: 12px;
-    }
-
-    .msg.show {
-      display: block;
-    }
-
-    .msg.ok {
-      background: var(--gs);
-      color: #087655;
-    }
-
-    .msg.err {
-      background: var(--rs);
-      color: #b5282d;
-    }
-
-    .form {
-      display: grid;
-      gap: 9px;
-    }
-
-    .form label {
-      font-size: 10px;
-      font-weight: 800;
-    }
-
-    .form input,
-    .form textarea,
-    .form select {
-      width: 100%;
-      border: 1px solid var(--line);
-      border-radius: 9px;
-      padding: 10px 11px;
-      background: #fff;
-    }
-
-    .form textarea {
-      min-height: 85px;
-      resize: vertical;
-    }
-
-    .authWrap {
-      min-height: 72vh;
-      display: grid;
-      place-items: center;
-    }
-
-    .authCard {
-      width: min(470px, 100%);
-      padding: 27px;
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-    }
-
-    .authTabs {
-      display: flex;
-      gap: 7px;
-      margin: 15px 0;
-    }
-
-    .authTabs button {
-      flex: 1;
-    }
-
-    .usernameRow {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 8px;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .stat {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 17px;
-    }
-
-    .stat small {
-      color: var(--muted);
-    }
-
-    .stat strong {
-      display: block;
-      font-size: 24px;
-      margin-top: 8px;
-    }
-
-    .grid2 {
-      display: grid;
-      grid-template-columns: 1.35fr 0.85fr;
-      gap: 18px;
-    }
-
-    .nickBanner {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      align-items: center;
-      padding: 20px;
-      margin-bottom: 18px;
-      border-radius: 16px;
-      background: linear-gradient(120deg, #665cf2, #895ff0);
-      color: #fff;
-    }
-
-    .nickBanner p {
-      font-size: 11px;
-      opacity: 0.88;
-      margin: 5px 0 0;
-    }
-
-    .resource,
-    .dateRow,
-    .attempt {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      padding: 11px 0;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .resource:last-child,
-    .dateRow:last-child,
-    .attempt:last-child {
-      border-bottom: 0;
-    }
-
-    .grow {
-      flex: 1;
-    }
-
-    .resource h3,
-    .dateRow h3,
-    .attempt h3 {
-      font-size: 12px;
-      margin: 0 0 4px;
-    }
-
-    .resource p,
-    .dateRow p,
-    .attempt p {
-      font-size: 10px;
-      color: var(--muted);
-      margin: 0;
-    }
-
-    .badge {
-      font-size: 9px;
-      font-weight: 800;
-      padding: 5px 7px;
-      border-radius: 7px;
-      background: var(--ps);
-      color: var(--p);
-    }
-
-    .calHead,
-    .cal {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 5px;
-    }
-
-    .calHead div {
-      text-align: center;
-      color: var(--muted);
-      font-size: 9px;
-      font-weight: 700;
-      padding: 5px;
-    }
-
-    .day {
-      min-height: 55px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 6px;
-      font-size: 10px;
-      position: relative;
-      background: #fff;
-    }
-
-    .day.blank {
-      background: #fafafa;
-    }
-
-    .day.today {
-      background: var(--ps);
-      border-color: var(--p);
-    }
-
-    .day.event:after {
-      content: "";
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--p);
-      position: absolute;
-      right: 5px;
-      bottom: 5px;
-    }
-
-    .calControls {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .calControls span {
-      min-width: 120px;
-      text-align: center;
-      font-size: 11px;
-      font-weight: 750;
-    }
-
-    .linkCards,
-    .quizGrid,
-    .tutorialGrid,
-    .moduleGrid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
-      gap: 13px;
-    }
-
-    .linkCard,
-    .quizCard,
-    .tutorialStep,
-    .moduleCard {
-      border: 1px solid var(--line);
-      border-radius: 13px;
-      padding: 16px;
-      background: #fff;
-    }
-
-    .linkCard h3,
-    .quizCard h3,
-    .tutorialStep h3,
-    .moduleCard h3 {
-      font-size: 13px;
-      margin: 0 0 7px;
-    }
-
-    .linkCard p,
-    .quizCard p,
-    .tutorialStep p,
-    .moduleCard p {
-      font-size: 10px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .pillRow {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 10px;
-    }
-
-    .pill {
-      background: #f3f4f8;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      padding: 5px 8px;
-      font-size: 9px;
-    }
-
-    .brainstorm {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .ideaOut {
-      margin-top: 12px;
-      padding: 14px;
-      border-radius: 12px;
-      background: var(--ps);
-      font-size: 11px;
-      line-height: 1.7;
-    }
-
-    .question {
-      border: 1px solid var(--line);
-      border-radius: 13px;
-      padding: 15px;
-      margin-bottom: 12px;
-    }
-
-    .question h3 {
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .option {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 8px 9px;
-      margin: 6px 0;
-      font-size: 11px;
-    }
-
-    .review {
-      padding: 10px;
-      border-bottom: 1px solid var(--line);
-      font-size: 11px;
-    }
-
-    .review.good {
-      background: #f4fff9;
-    }
-
-    .review.bad {
-      background: #fff6f6;
-    }
-
-    .num {
-      width: 30px;
-      height: 30px;
-      border-radius: 9px;
-      background: var(--ps);
-      color: var(--p);
-      display: grid;
-      place-items: center;
-      font-weight: 850;
-      margin-bottom: 10px;
-    }
-
-    .moduleProgress {
-      height: 8px;
-      background: #eceef4;
-      border-radius: 999px;
-      overflow: hidden;
-      margin: 10px 0;
-    }
-
-    .moduleProgress > div {
-      height: 100%;
-      background: var(--p);
-      width: 0;
-    }
-
-    .activityCard {
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 17px;
-      margin-bottom: 12px;
-      background: #fff;
-    }
-
-    .activityCard.complete {
-      border-color: #b9e8d8;
-      background: #f8fffc;
-    }
-
-    .activityHead {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 9px;
-    }
-
-    .activityHead h3 {
-      font-size: 13px;
-      margin: 0;
-    }
-
-    .activityType {
-      font-size: 9px;
-      font-weight: 800;
-      padding: 5px 7px;
-      border-radius: 7px;
-      background: var(--ps);
-      color: var(--p);
-      white-space: nowrap;
-    }
-
-    .activityBody {
-      font-size: 11px;
-      color: var(--muted);
-      line-height: 1.7;
-      white-space: pre-wrap;
-    }
-
-    .activityOptions {
-      display: grid;
-      gap: 7px;
-      margin: 12px 0;
-    }
-
-    .activityOption {
-      display: flex;
-      gap: 8px;
-      align-items: flex-start;
-      border: 1px solid var(--line);
-      border-radius: 9px;
-      padding: 9px;
-      font-size: 11px;
-    }
-
-    .activityFeedback {
-      margin-top: 10px;
-      padding: 10px;
-      border-radius: 9px;
-      font-size: 11px;
-      display: none;
-      white-space: pre-wrap;
-    }
-
-    .activityFeedback.show {
-      display: block;
-    }
-
-    .activityFeedback.good {
-      background: var(--gs);
-      color: #087655;
-    }
-
-    .activityFeedback.bad {
-      background: var(--rs);
-      color: #b5282d;
-    }
-
-    .activityFeedback.neutral {
-      background: var(--ps);
-      color: #4238b4;
-    }
-
-    .moduleAdminItem {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 13px;
-      margin-bottom: 10px;
-      background: #fff;
-    }
-
-    .moduleAdminItem h3 {
-      font-size: 12px;
-      margin: 0 0 5px;
-    }
-
-    .moduleAdminMeta {
-      font-size: 10px;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
-    .moduleActivityAdmin {
-      margin-top: 8px;
-      padding: 9px;
-      border-radius: 9px;
-      background: #f7f8fb;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .moduleActivityAdmin .grow {
-      min-width: 0;
-    }
-
-    .moduleActivityAdmin b {
-      font-size: 10px;
-    }
-
-    .moduleActivityAdmin span {
-      font-size: 9px;
-      color: var(--muted);
-    }
-
-    .fieldHint {
-      font-size: 9px;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    .overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: #11131dbb;
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .overlay.show {
-      display: flex;
-    }
-
-    .tour {
-      width: min(520px, 100%);
-      background: #fff;
-      border-radius: 18px;
-      padding: 25px;
-    }
-
-    .tourIcon {
-      font-size: 34px;
-    }
-
-    .tour h2 {
-      margin: 8px 0;
-    }
-
-    .tourActions {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      margin-top: 18px;
-    }
-
-    .tableWrap {
-      overflow: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th,
-    td {
-      text-align: left;
-      padding: 10px 8px;
-      border-bottom: 1px solid var(--line);
-      font-size: 10px;
-    }
-
-    th {
-      color: var(--muted);
-      font-size: 9px;
-      text-transform: uppercase;
-    }
-
-    .adminGrid {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 18px;
-    }
-
-    @media (max-width: 950px) {
-      .grid2,
-      .adminGrid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 740px) {
-      .shell {
-        display: block;
-      }
-
-      .side {
-        position: static;
-        width: 100%;
-        height: auto;
-        flex-direction: row;
-        align-items: center;
-        overflow: auto;
-        padding: 12px;
-      }
-
-      .brand {
-        min-width: 165px;
-        margin: 0 10px 0 0;
-      }
-
-      .nav {
-        flex-direction: row;
-      }
-
-      .nav button {
-        white-space: nowrap;
-      }
-
-      .sideBottom {
-        margin: 0 0 0 8px;
-        border: 0;
-        padding: 0;
-      }
-
-      .tiny {
-        display: none;
-      }
-
-      main {
-        padding: 18px 13px;
-      }
-
-      .top h1 {
-        font-size: 22px;
-      }
-
-      .nickBanner {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .brainstorm {
-        grid-template-columns: 1fr;
-      }
-    }
+*{box-sizing:border-box}
+:root{--nav:#17324a;--text:#1d2a33;--muted:#667482;--line:#dbe2e8;--primary:#1f627d;--primary-soft:#edf4f7;--good:#2f7768;--good-soft:#edf7f3;--danger:#a33a3a;--danger-soft:#fbefef;--bg:#f3f5f6;--white:#fff}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,"Helvetica Neue",sans-serif}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+
+.shell{min-height:100vh;display:grid;grid-template-columns:245px 1fr}
+
+.side{
+  position:fixed;
+  inset:0 auto 0 0;
+  width:245px;
+  height:100vh;
+  background:var(--nav);
+  padding:26px 18px;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  border-right:1px solid #102638
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding-bottom:20px;
+  margin-bottom:18px;
+  border-bottom:1px solid rgba(255,255,255,.12)
+}
+
+.logo{
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  border-radius:6px;
+  background:#fff;
+  color:var(--nav);
+  font-size:14px;
+  font-weight:800;
+  letter-spacing:.5px
+}
+
+.brand b{font-size:15px}
+
+.brand small{
+  display:block;
+  color:#b9c6cf;
+  font-size:10px;
+  margin-top:3px
+}
+
+.nav{
+  display:flex;
+  flex-direction:column;
+  gap:2px
+}
+
+.nav button,
+.adminBtn{
+  border-radius:5px;
+  padding:10px 11px;
+  font-size:12px;
+  font-weight:600;
+  color:#d7e0e6;
+  border:0;
+  background:transparent;
+  text-align:left
+}
+
+.nav button:hover{
+  background:rgba(255,255,255,.08)
+}
+
+.nav button.active{
+  background:#fff;
+  color:var(--nav)
+}
+
+.sideBottom{
+  margin-top:auto;
+  border-top:1px solid rgba(255,255,255,.12);
+  padding-top:15px
+}
+
+.adminBtn{
+  width:100%;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.25);
+  color:#fff
+}
+
+.tiny{
+  font-size:9px;
+  line-height:1.5;
+  color:#aebcc6;
+  margin-top:10px
+}
+
+main{
+  grid-column:2;
+  padding:34px 42px;
+  max-width:1380px;
+  width:100%;
+  margin:auto
+}
+
+.page{display:none}
+.page.active{display:block}
+
+.status{
+  display:inline-block;
+  padding:5px 8px;
+  border:1px solid #cfe5dc;
+  border-radius:4px;
+  background:#f6fbf9;
+  color:#315f52;
+  font-size:10px;
+  font-weight:600;
+  margin-bottom:15px
+}
+
+.status.bad{
+  border-color:#ebcccc;
+  background:#fff8f8;
+  color:#8d3030
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:15px;
+  margin-bottom:24px
+}
+
+.top h1{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:29px;
+  font-weight:600;
+  color:var(--nav);
+  letter-spacing:-.2px;
+  margin:0
+}
+
+.top p{
+  font-size:12px;
+  color:#687682;
+  margin:6px 0 0
+}
+
+.card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:7px;
+  padding:21px;
+  margin-bottom:18px
+}
+
+.card h2{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:17px;
+  font-weight:600;
+  color:#223d50;
+  margin:0 0 14px
+}
+
+.muted{
+  font-size:11px;
+  color:var(--muted);
+  line-height:1.65
+}
+
+.primary,
+.secondary,
+.danger{
+  border-radius:4px;
+  padding:9px 12px;
+  font-size:11px;
+  font-weight:700
+}
+
+.primary{
+  background:var(--primary);
+  border:1px solid var(--primary);
+  color:#fff
+}
+
+.primary:hover{
+  background:#194f65
+}
+
+.secondary{
+  border:1px solid #cbd5dc;
+  background:#fff;
+  color:#31434f
+}
+
+.secondary:hover{
+  background:#f5f7f8
+}
+
+.danger{
+  border:1px solid #e4c4c4;
+  background:#fff7f7;
+  color:#913434
+}
+
+.msg{
+  display:none;
+  padding:10px 12px;
+  border-radius:4px;
+  font-size:11px;
+  margin-bottom:12px
+}
+
+.msg.show{display:block}
+
+.msg.ok{
+  background:var(--good-soft);
+  color:#315f52
+}
+
+.msg.err{
+  background:var(--danger-soft);
+  color:#8d3030
+}
+
+.form{
+  display:grid;
+  gap:10px
+}
+
+.form label{
+  font-size:10px;
+  font-weight:700;
+  color:#43535f;
+  text-transform:uppercase;
+  letter-spacing:.35px
+}
+
+.form input,
+.form textarea,
+.form select{
+  width:100%;
+  border:1px solid #cbd5dc;
+  border-radius:4px;
+  padding:10px 11px;
+  background:#fff;
+  color:#24333e
+}
+
+.form textarea{
+  min-height:85px;
+  resize:vertical
+}
+
+.form input:focus,
+.form textarea:focus,
+.form select:focus{
+  outline:2px solid #d5e7ee;
+  border-color:var(--primary)
+}
+
+.authWrap{
+  min-height:72vh;
+  display:grid;
+  place-items:center
+}
+
+.authCard{
+  width:min(470px,100%);
+  padding:27px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:7px;
+  box-shadow:0 8px 30px rgba(23,50,74,.06)
+}
+
+.authCard h1,
+.authCard h2{
+  font-family:Georgia,"Times New Roman",serif;
+  color:var(--nav)
+}
+
+.authTabs{
+  display:flex;
+  gap:7px;
+  margin:15px 0
+}
+
+.authTabs button{flex:1}
+
+.usernameRow{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:8px
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:10px;
+  margin-bottom:18px
+}
+
+.stat{
+  background:#fff;
+  border:1px solid var(--line);
+  border-top:3px solid var(--primary);
+  border-radius:6px;
+  padding:16px
+}
+
+.stat small{
+  color:var(--muted);
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.35px
+}
+
+.stat strong{
+  display:block;
+  font-size:22px;
+  color:var(--nav);
+  margin-top:8px
+}
+
+.grid2{
+  display:grid;
+  grid-template-columns:1.35fr .85fr;
+  gap:18px
+}
+
+.nickBanner{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  align-items:center;
+  padding:17px;
+  margin-bottom:18px;
+  background:#fff;
+  color:#22313b;
+  border:1px solid var(--line);
+  border-left:4px solid var(--primary);
+  border-radius:6px
+}
+
+.nickBanner p{
+  font-size:11px;
+  color:#687682;
+  margin:5px 0 0
+}
+
+.nickBanner b{
+  color:var(--nav)
+}
+
+.resource,
+.dateRow,
+.attempt{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:13px 0;
+  border-bottom:1px solid var(--line)
+}
+
+.resource:last-child,
+.dateRow:last-child,
+.attempt:last-child{
+  border-bottom:0
+}
+
+.grow{flex:1}
+
+.resource h3,
+.dateRow h3,
+.attempt h3{
+  font-size:12px;
+  color:#263844;
+  margin:0 0 4px
+}
+
+.resource p,
+.dateRow p,
+.attempt p{
+  font-size:10px;
+  color:var(--muted);
+  margin:0
+}
+
+.badge,
+.activityType{
+  font-size:9px;
+  font-weight:800;
+  padding:5px 7px;
+  border-radius:3px;
+  background:var(--primary-soft);
+  color:#275f75;
+  border:1px solid #d9e6eb;
+  white-space:nowrap
+}
+
+.calHead,
+.cal{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:5px
+}
+
+.calHead div{
+  text-align:center;
+  color:var(--muted);
+  font-size:9px;
+  font-weight:700;
+  padding:5px
+}
+
+.day{
+  min-height:62px;
+  border:1px solid var(--line);
+  border-radius:3px;
+  padding:6px;
+  font-size:10px;
+  position:relative;
+  background:#fff
+}
+
+.day.blank{background:#fafafa}
+
+.day.today{
+  background:#f0f6f8;
+  border-color:#8fb5c3
+}
+
+.day.event:after{
+  content:"";
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--primary);
+  position:absolute;
+  right:5px;
+  bottom:5px
+}
+
+.calControls{
+  display:flex;
+  align-items:center;
+  gap:7px
+}
+
+.calControls span{
+  min-width:120px;
+  text-align:center;
+  font-size:11px;
+  font-weight:700
+}
+
+.linkCards,
+.quizGrid,
+.tutorialGrid,
+.moduleGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(225px,1fr));
+  gap:13px
+}
+
+.linkCard,
+.quizCard,
+.tutorialStep,
+.moduleCard{
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:17px;
+  background:#fff
+}
+
+.linkCard h3,
+.quizCard h3,
+.tutorialStep h3,
+.moduleCard h3{
+  font-family:Georgia,"Times New Roman",serif;
+  color:#263f51;
+  font-size:15px;
+  margin:0 0 7px
+}
+
+.linkCard p,
+.quizCard p,
+.tutorialStep p,
+.moduleCard p{
+  font-size:10px;
+  color:var(--muted);
+  line-height:1.6
+}
+
+.pillRow{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:10px
+}
+
+.pill{
+  background:#f7f8f9;
+  border:1px solid var(--line);
+  border-radius:3px;
+  padding:6px 8px;
+  font-size:9px
+}
+
+.brainstorm{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px
+}
+
+.ideaOut{
+  margin-top:12px;
+  padding:14px;
+  border-radius:5px;
+  background:#f4f8fa;
+  border-left:3px solid var(--primary);
+  font-size:11px;
+  line-height:1.7
+}
+
+.question,
+.activityCard,
+.moduleAdminItem{
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:15px;
+  margin-bottom:12px;
+  background:#fff
+}
+
+.question h3,
+.activityHead h3{
+  font-size:12px;
+  line-height:1.5;
+  margin:0
+}
+
+.option,
+.activityOption{
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+  border:1px solid var(--line);
+  border-radius:4px;
+  padding:9px;
+  margin:6px 0;
+  font-size:11px
+}
+
+.review{
+  padding:10px;
+  border-bottom:1px solid var(--line);
+  font-size:11px
+}
+
+.review.good{background:#f4fff9}
+.review.bad{background:#fff6f6}
+
+.num{
+  width:30px;
+  height:30px;
+  border-radius:3px;
+  background:var(--primary-soft);
+  color:#275f75;
+  display:grid;
+  place-items:center;
+  font-weight:800;
+  margin-bottom:10px
+}
+
+.moduleGrid{
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr))
+}
+
+.moduleProgress{
+  height:6px;
+  background:#eceef4;
+  border-radius:2px;
+  overflow:hidden;
+  margin:10px 0
+}
+
+.moduleProgress>div{
+  height:100%;
+  background:var(--good);
+  width:0
+}
+
+.activityCard.complete{
+  border-color:#bed8cf;
+  background:#fbfdfc
+}
+
+.activityHead{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+  margin-bottom:9px
+}
+
+.activityBody{
+  font-size:11px;
+  color:var(--muted);
+  line-height:1.7;
+  white-space:pre-wrap
+}
+
+.activityOptions{
+  display:grid;
+  gap:7px;
+  margin:12px 0
+}
+
+.activityFeedback{
+  margin-top:10px;
+  padding:10px;
+  border-radius:4px;
+  font-size:11px;
+  display:none;
+  white-space:pre-wrap
+}
+
+.activityFeedback.show{display:block}
+
+.activityFeedback.good{
+  background:var(--good-soft);
+  color:#315f52
+}
+
+.activityFeedback.bad{
+  background:var(--danger-soft);
+  color:#8d3030
+}
+
+.activityFeedback.neutral{
+  background:var(--primary-soft);
+  color:#275f75
+}
+
+.moduleAdminItem h3{
+  font-size:12px;
+  margin:0 0 5px
+}
+
+.moduleAdminMeta{
+  font-size:10px;
+  color:var(--muted);
+  margin-bottom:8px
+}
+
+.moduleActivityAdmin{
+  margin-top:8px;
+  padding:9px;
+  border-radius:4px;
+  background:#f5f7f8;
+  display:flex;
+  align-items:center;
+  gap:8px
+}
+
+.moduleActivityAdmin .grow{min-width:0}
+
+.moduleActivityAdmin b{font-size:10px}
+
+.moduleActivityAdmin span{
+  font-size:9px;
+  color:var(--muted)
+}
+
+.fieldHint{
+  font-size:9px;
+  color:var(--muted);
+  line-height:1.5
+}
+
+.videoWrapper{
+  width:100%;
+  aspect-ratio:16/9;
+  margin:14px 0;
+  border-radius:5px;
+  overflow:hidden;
+  background:#000;
+  border:1px solid #cfd8df
+}
+
+.videoWrapper iframe{
+  width:100%;
+  height:100%;
+  border:0;
+  display:block
+}
+
+.videoNotice{
+  margin-top:8px;
+  font-size:10px;
+  color:var(--muted)
+}
+
+.overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(17,19,29,.72);
+  z-index:1000;
+  align-items:center;
+  justify-content:center;
+  padding:20px
+}
+
+.overlay.show{display:flex}
+
+.tour{
+  width:min(520px,100%);
+  background:#fff;
+  border-radius:7px;
+  padding:25px
+}
+
+.tourIcon{
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:1px;
+  color:var(--primary)
+}
+
+.tour h2{margin:8px 0}
+
+.tourActions{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  margin-top:18px
+}
+
+.tableWrap{overflow:auto}
+
+table{
+  width:100%;
+  border-collapse:collapse
+}
+
+th,
+td{
+  text-align:left;
+  padding:11px 9px;
+  border-bottom:1px solid var(--line);
+  font-size:10px
+}
+
+th{
+  background:#f7f8f9;
+  color:#566875;
+  font-size:9px;
+  text-transform:uppercase
+}
+
+.adminGrid{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:18px
+}
+
+@media(max-width:950px){
+  .grid2,
+  .adminGrid{
+    grid-template-columns:1fr
+  }
+}
+
+@media(max-width:740px){
+  .shell{display:block}
+
+  .side{
+    position:static;
+    width:100%;
+    height:auto;
+    flex-direction:row;
+    align-items:center;
+    overflow:auto;
+    padding:10px
+  }
+
+  .brand{
+    min-width:165px;
+    margin:0 10px 0 0;
+    padding:0;
+    border:0
+  }
+
+  .logo{
+    width:34px;
+    height:34px
+  }
+
+  .nav{
+    flex-direction:row
+  }
+
+  .nav button{
+    white-space:nowrap
+  }
+
+  .sideBottom{
+    margin:0 0 0 8px;
+    border:0;
+    padding:0
+  }
+
+  .tiny{display:none}
+
+  main{
+    padding:22px 14px
+  }
+
+  .top h1{
+    font-size:25px
+  }
+
+  .nickBanner{
+    flex-direction:column;
+    align-items:stretch
+  }
+
+  .brainstorm{
+    grid-template-columns:1fr
+  }
+}
   </style>
 </head>
 
@@ -855,30 +854,37 @@
   <aside class="side">
 
     <div class="brand">
-      <div class="logo">⚗️</div>
+      <div class="logo">SC</div>
+
       <div>
         <b>Science Club</b>
         <small>Student Portal</small>
       </div>
     </div>
 
+
     <nav class="nav">
-      <button class="navBtn active" data-page="dashboard">▦ Dashboard</button>
-      <button class="navBtn" data-page="calendar">📅 Calendar</button>
-      <button class="navBtn" data-page="resources">📚 Resources</button>
-      <button class="navBtn" data-page="projects">💡 Project Lab</button>
-      <button class="navBtn" data-page="modules">🧪 CCC Modules</button>
-      <button class="navBtn" data-page="quizzes">🧠 CCC Quizzes</button>
-      <button class="navBtn" data-page="tutorial">✨ Tutorial</button>
-      <button class="navBtn" data-page="faq">? FAQs</button>
+      <button class="navBtn active" data-page="dashboard">Dashboard</button>
+      <button class="navBtn" data-page="calendar">Calendar</button>
+      <button class="navBtn" data-page="resources">Resources</button>
+      <button class="navBtn" data-page="projects">Project Lab</button>
+      <button class="navBtn" data-page="modules">CCC Modules</button>
+      <button class="navBtn" data-page="quizzes">CCC Quizzes</button>
+      <button class="navBtn" data-page="tutorial">How to Use</button>
+      <button class="navBtn" data-page="faq">FAQs</button>
     </nav>
 
+
     <div class="sideBottom">
-      <button id="adminButton" class="adminBtn">⚙ Admin</button>
+
+      <button id="adminButton" class="adminBtn">
+        Admin
+      </button>
 
       <div class="tiny">
         Use a random username. Do not use your full real name.
       </div>
+
     </div>
 
   </aside>
@@ -891,8 +897,6 @@
     </div>
 
 
-    <!-- STUDENT SIGN IN -->
-
     <section id="authPage" class="page active">
 
       <div class="authWrap">
@@ -900,7 +904,7 @@
         <div class="authCard">
 
           <h1 style="margin:0">
-            Science Club Portal 🔬
+            Science Club Portal
           </h1>
 
           <p class="muted">
@@ -910,30 +914,20 @@
 
           <div id="authMsg" class="msg"></div>
 
-
           <div class="authTabs">
 
-            <button
-              id="showLogin"
-              class="primary"
-            >
+            <button id="showLogin" class="primary">
               Sign In
             </button>
 
-            <button
-              id="showSignup"
-              class="secondary"
-            >
+            <button id="showSignup" class="secondary">
               Create Account
             </button>
 
           </div>
 
 
-          <form
-            id="studentAuthForm"
-            class="form"
-          >
+          <form id="studentAuthForm" class="form">
 
             <label>
               Random username
@@ -983,10 +977,7 @@
             </button>
 
 
-            <p
-              id="authModeHelp"
-              class="muted"
-            >
+            <p id="authModeHelp" class="muted">
               Use the same random username and password you created.
             </p>
 
@@ -999,12 +990,7 @@
     </section>
 
 
-    <!-- DASHBOARD -->
-
-    <section
-      id="dashboardPage"
-      class="page"
-    >
+    <section id="dashboardPage" class="page">
 
       <header class="top">
 
@@ -1015,12 +1001,11 @@
             <span id="welcomeName">
               Scientist
             </span>
-            👋
           </h1>
 
           <p>
             Science Club competitions, projects,
-            modules, quizzes and deadlines in one place.
+            quizzes and deadlines in one place.
           </p>
 
         </div>
@@ -1036,10 +1021,7 @@
       </header>
 
 
-      <div
-        id="studentMsg"
-        class="msg"
-      ></div>
+      <div id="studentMsg" class="msg"></div>
 
 
       <div class="nickBanner">
@@ -1051,8 +1033,7 @@
           </b>
 
           <p>
-            Your random username is used for activity,
-            module progress and quiz history.
+            Your random username is used for activity and quiz history.
             Do not use your real name.
           </p>
 
@@ -1114,7 +1095,7 @@
           <section class="card">
 
             <h2>
-              📣 Latest Announcement
+              Latest Announcement
             </h2>
 
             <div
@@ -1130,7 +1111,7 @@
           <section class="card">
 
             <h2>
-              📚 Resources & Assignments
+              Resources & Assignments
             </h2>
 
             <div id="dashboardResources"></div>
@@ -1145,7 +1126,7 @@
           <section class="card">
 
             <h2>
-              📌 Upcoming Dates
+              Upcoming Dates
             </h2>
 
             <div id="importantDates"></div>
@@ -1156,7 +1137,7 @@
           <section class="card">
 
             <h2>
-              💡 Need a project idea?
+              Need a project idea?
             </h2>
 
             <p class="muted">
@@ -1177,13 +1158,13 @@
           <section class="card">
 
             <h2>
-              🧪 CCC Learning Modules
+              CCC Learning Modules
             </h2>
 
             <p class="muted">
               Work through lesson notes, practice questions,
-              short responses, checklists and resources built
-              by your club leaders.
+              short responses, checklists and resources
+              built by your club leaders.
             </p>
 
             <button
@@ -1199,7 +1180,7 @@
           <section class="card">
 
             <h2>
-              🧠 CCC Practice
+              CCC Practice
             </h2>
 
             <p class="muted">
@@ -1222,23 +1203,20 @@
     </section>
 
 
-    <!-- CALENDAR -->
-
-    <section
-      id="calendarPage"
-      class="page"
-    >
+    <section id="calendarPage" class="page">
 
       <header class="top">
 
         <div>
+
           <h1>
-            Science Club Calendar 📅
+            Science Club Calendar
           </h1>
 
           <p>
             Meetings, competitions and deadlines.
           </p>
+
         </div>
 
       </header>
@@ -1254,7 +1232,6 @@
           <h2>
             Calendar
           </h2>
-
 
           <div class="calControls">
 
@@ -1311,19 +1288,14 @@
     </section>
 
 
-    <!-- RESOURCES -->
-
-    <section
-      id="resourcesPage"
-      class="page"
-    >
+    <section id="resourcesPage" class="page">
 
       <header class="top">
 
         <div>
 
           <h1>
-            Resources & Assignments 📚
+            Resources & Assignments
           </h1>
 
           <p>
@@ -1342,19 +1314,14 @@
     </section>
 
 
-    <!-- PROJECT LAB -->
-
-    <section
-      id="projectsPage"
-      class="page"
-    >
+    <section id="projectsPage" class="page">
 
       <header class="top">
 
         <div>
 
           <h1>
-            Project Lab 💡
+            Project Lab
           </h1>
 
           <p>
@@ -1385,37 +1352,14 @@
 
         <div class="pillRow">
 
-          <span class="pill">
-            Engineering
-          </span>
-
-          <span class="pill">
-            Software / Apps
-          </span>
-
-          <span class="pill">
-            Robotics
-          </span>
-
-          <span class="pill">
-            Life Science
-          </span>
-
-          <span class="pill">
-            Chemistry
-          </span>
-
-          <span class="pill">
-            Physics
-          </span>
-
-          <span class="pill">
-            Mathematics
-          </span>
-
-          <span class="pill">
-            Data Studies
-          </span>
+          <span class="pill">Engineering</span>
+          <span class="pill">Software / Apps</span>
+          <span class="pill">Robotics</span>
+          <span class="pill">Life Science</span>
+          <span class="pill">Chemistry</span>
+          <span class="pill">Physics</span>
+          <span class="pill">Mathematics</span>
+          <span class="pill">Data Studies</span>
 
         </div>
 
@@ -1602,37 +1546,14 @@
 
           <select id="ideaTool">
 
-            <option>
-              Python
-            </option>
-
-            <option>
-              JavaScript / Web
-            </option>
-
-            <option>
-              Scratch
-            </option>
-
-            <option>
-              Arduino
-            </option>
-
-            <option>
-              Raspberry Pi
-            </option>
-
-            <option>
-              Spreadsheet / Data Analysis
-            </option>
-
-            <option>
-              AI / Machine Learning
-            </option>
-
-            <option>
-              No specific program yet
-            </option>
+            <option>Python</option>
+            <option>JavaScript / Web</option>
+            <option>Scratch</option>
+            <option>Arduino</option>
+            <option>Raspberry Pi</option>
+            <option>Spreadsheet / Data Analysis</option>
+            <option>AI / Machine Learning</option>
+            <option>No specific program yet</option>
 
           </select>
 
@@ -1660,19 +1581,14 @@
     </section>
 
 
-    <!-- CCC MODULES -->
-
-    <section
-      id="modulesPage"
-      class="page"
-    >
+    <section id="modulesPage" class="page">
 
       <header class="top">
 
         <div>
 
           <h1>
-            CCC Learning Modules 🧪
+            CCC Learning Modules
           </h1>
 
           <p>
@@ -1780,19 +1696,14 @@
     </section>
 
 
-    <!-- QUIZZES -->
-
-    <section
-      id="quizzesPage"
-      class="page"
-    >
+    <section id="quizzesPage" class="page">
 
       <header class="top">
 
         <div>
 
           <h1>
-            CCC Quizzes 🧠
+            CCC Quizzes
           </h1>
 
           <p>
@@ -1921,19 +1832,14 @@
     </section>
 
 
-    <!-- TUTORIAL -->
-
-    <section
-      id="tutorialPage"
-      class="page"
-    >
+    <section id="tutorialPage" class="page">
 
       <header class="top">
 
         <div>
 
           <h1>
-            How to Use the Portal ✨
+            How to Use the Portal
           </h1>
 
           <p>
@@ -1956,69 +1862,117 @@
       <div class="tutorialGrid">
 
         <div class="tutorialStep">
+
           <div class="num">1</div>
-          <h3>Create a random username</h3>
+
+          <h3>
+            Create a random username
+          </h3>
+
           <p>
             Use something like AtomAce47, not your real name.
             Add a password so only you can use that account.
           </p>
+
         </div>
 
+
         <div class="tutorialStep">
+
           <div class="num">2</div>
-          <h3>Check the Dashboard</h3>
+
+          <h3>
+            Check the Dashboard
+          </h3>
+
           <p>
             See announcements, upcoming dates,
-            your resource activity, modules and quiz count.
+            your resource activity and quiz count.
           </p>
+
         </div>
 
+
         <div class="tutorialStep">
+
           <div class="num">3</div>
-          <h3>Open Resources</h3>
+
+          <h3>
+            Open Resources
+          </h3>
+
           <p>
             Use CCC, WWSEF and general club materials.
             Resource opens are associated with your random username.
           </p>
+
         </div>
 
+
         <div class="tutorialStep">
+
           <div class="num">4</div>
-          <h3>Use Project Lab</h3>
+
+          <h3>
+            Use Project Lab
+          </h3>
+
           <p>
             Check current WWSEF parameters,
             browse project idea websites and use the
             brainstorm helper before choosing a project.
           </p>
+
         </div>
 
+
         <div class="tutorialStep">
+
           <div class="num">5</div>
-          <h3>Complete CCC Modules</h3>
+
+          <h3>
+            Complete CCC Modules
+          </h3>
+
           <p>
             Open CCC Modules for lesson notes,
-            practice questions, short answers,
+            videos, practice questions, short answers,
             checklists and resource activities.
             Your progress is saved.
           </p>
+
         </div>
 
+
         <div class="tutorialStep">
+
           <div class="num">6</div>
-          <h3>Take CCC Quizzes</h3>
+
+          <h3>
+            Take CCC Quizzes
+          </h3>
+
           <p>
             Choose a quiz, answer every question and submit.
             Your result and explanations appear immediately.
           </p>
+
         </div>
 
+
         <div class="tutorialStep">
+
           <div class="num">7</div>
-          <h3>Check Calendar + FAQs</h3>
+
+          <h3>
+            Check Calendar + FAQs
+          </h3>
+
           <p>
-            Use the Calendar for dates and FAQs
-            for common questions.
+            Use the Calendar for dates and FAQs for common questions.
+            Admins can update portal content.
           </p>
+
         </div>
 
       </div>
@@ -2026,12 +1980,7 @@
     </section>
 
 
-    <!-- FAQ -->
-
-    <section
-      id="faqPage"
-      class="page"
-    >
+    <section id="faqPage" class="page">
 
       <header class="top">
 
@@ -2057,12 +2006,7 @@
     </section>
 
 
-    <!-- ADMIN LOGIN -->
-
-    <section
-      id="adminLoginPage"
-      class="page"
-    >
+    <section id="adminLoginPage" class="page">
 
       <div class="authWrap">
 
@@ -2087,9 +2031,7 @@
             class="form"
           >
 
-            <label>
-              Email
-            </label>
+            <label>Email</label>
 
             <input
               id="adminEmail"
@@ -2098,9 +2040,7 @@
             >
 
 
-            <label>
-              Password
-            </label>
+            <label>Password</label>
 
             <input
               id="adminPassword"
@@ -2112,6 +2052,7 @@
             <button class="primary">
               Sign In
             </button>
+
 
             <button
               type="button"
@@ -2130,12 +2071,7 @@
     </section>
 
 
-    <!-- ADMIN -->
-
-    <section
-      id="adminPage"
-      class="page"
-    >
+    <section id="adminPage" class="page">
 
       <header class="top">
 
@@ -2146,8 +2082,7 @@
           </h1>
 
           <p>
-            Manage content, CCC modules,
-            quizzes and student activity.
+            Manage content, modules, quizzes and student activity.
           </p>
 
         </div>
@@ -2260,8 +2195,7 @@
             </h2>
 
             <p class="muted">
-              Publish, unpublish, inspect
-              or delete modules and activities.
+              Publish, unpublish, inspect or delete modules and activities.
             </p>
 
             <div id="adminModuleList"></div>
@@ -2283,8 +2217,6 @@
 
 
         <div>
-
-          <!-- CREATE MODULE -->
 
           <section class="card">
 
@@ -2350,8 +2282,6 @@
           </section>
 
 
-          <!-- ADD MODULE ACTIVITY -->
-
           <section class="card">
 
             <h2>
@@ -2388,6 +2318,10 @@
 
                 <option value="lesson">
                   Lesson / Notes
+                </option>
+
+                <option value="video">
+                  Embedded Video
                 </option>
 
                 <option value="mcq">
@@ -2466,8 +2400,6 @@
           </section>
 
 
-          <!-- QUIZ CREATOR -->
-
           <section class="card">
 
             <h2>
@@ -2479,7 +2411,9 @@
               class="form"
             >
 
-              <label>Title</label>
+              <label>
+                Title
+              </label>
 
               <input
                 id="newQuizTitle"
@@ -2487,16 +2421,23 @@
                 placeholder="Stoichiometry Practice"
               >
 
-              <label>Description</label>
+
+              <label>
+                Description
+              </label>
 
               <textarea id="newQuizDesc"></textarea>
 
-              <label>Category</label>
+
+              <label>
+                Category
+              </label>
 
               <select id="newQuizCat">
                 <option>CCC</option>
                 <option>Science Club</option>
               </select>
+
 
               <button class="primary">
                 Create Draft Quiz
@@ -2518,7 +2459,9 @@
               class="form"
             >
 
-              <label>Quiz</label>
+              <label>
+                Quiz
+              </label>
 
               <select
                 id="questionQuiz"
@@ -2532,7 +2475,9 @@
               </select>
 
 
-              <label>Question</label>
+              <label>
+                Question
+              </label>
 
               <textarea
                 id="qText"
@@ -2752,21 +2697,14 @@
 </div>
 
 
-<!-- GUIDED TOUR -->
-
-<div
-  id="tourOverlay"
-  class="overlay"
->
+<div id="tourOverlay" class="overlay">
 
   <div class="tour">
 
     <div
       id="tourIcon"
       class="tourIcon"
-    >
-      👋
-    </div>
+    ></div>
 
     <h2 id="tourTitle"></h2>
 
@@ -2774,6 +2712,7 @@
       id="tourText"
       class="muted"
     ></p>
+
 
     <div class="tourActions">
 
@@ -2783,6 +2722,7 @@
       >
         Skip
       </button>
+
 
       <div>
 
@@ -2803,6 +2743,7 @@
       </div>
 
     </div>
+
 
     <p
       id="tourProgress"
@@ -2977,13 +2918,10 @@ function msg(
 
 
   setTimeout(
-    () => {
-
+    () =>
       element.classList.remove(
         "show"
-      );
-
-    },
+      ),
     4500
   );
 
@@ -3016,13 +2954,10 @@ function showPage(
   Object
     .values(pages)
     .forEach(
-      page => {
-
+      page =>
         page.classList.remove(
           "active"
-        );
-
-      }
+        )
     );
 
 
@@ -3038,15 +2973,12 @@ function showPage(
       ".navBtn"
     )
     .forEach(
-      button => {
-
+      button =>
         button.classList.toggle(
           "active",
           button.dataset.page ===
             name
-        );
-
-      }
+        )
     );
 
 
@@ -3142,9 +3074,9 @@ function randomName() {
 }
 
 
-/* ==========================================
+/* ================================
    STUDENT AUTH
-   ========================================== */
+   ================================ */
 
 function setAuthMode(
   mode
@@ -3600,10 +3532,6 @@ $("studentLogout").onclick =
   };
 
 
-/* ==========================================
-   NAVIGATION
-   ========================================== */
-
 document
   .querySelectorAll(
     ".navBtn"
@@ -3673,10 +3601,6 @@ document
   );
 
 
-/* ==========================================
-   ANNOUNCEMENTS
-   ========================================== */
-
 async function loadAnnouncements() {
 
   const {
@@ -3745,20 +3669,12 @@ async function loadAnnouncements() {
 }
 
 
-/* ==========================================
-   RESOURCES
-   ========================================== */
-
 function resourceHTML(
   resource
 ) {
 
   return `
     <div class="resource">
-
-      <div>
-        📘
-      </div>
 
       <div class="grow">
 
@@ -4021,10 +3937,6 @@ async function loadStudentActivity() {
 }
 
 
-/* ==========================================
-   DATES
-   ========================================== */
-
 function parseDate(
   value
 ) {
@@ -4067,10 +3979,6 @@ function dateHTML(
 
   return `
     <div class="dateRow">
-
-      <div>
-        📅
-      </div>
 
       <div class="grow">
 
@@ -4399,10 +4307,6 @@ $("nextMonth").onclick =
   };
 
 
-/* ==========================================
-   FAQ
-   ========================================== */
-
 async function loadFAQs() {
 
   const {
@@ -4464,19 +4368,15 @@ async function loadFAQs() {
                     cursor:pointer
                   "
                 >
-
                   ${esc(
                     faq.question
                   )}
-
                 </summary>
 
                 <p class="muted">
-
                   ${esc(
                     faq.answer
                   )}
-
                 </p>
 
               </details>
@@ -4488,10 +4388,6 @@ async function loadFAQs() {
 
 }
 
-
-/* ==========================================
-   PROJECT BRAINSTORM
-   ========================================== */
 
 $("brainstormBtn").onclick =
   () => {
@@ -4507,57 +4403,33 @@ $("brainstormBtn").onclick =
     const prompts = {
 
       software: [
-
         "What real problem at school or in the community could your program solve?",
-
         "What will the program measure, predict, organize or automate?",
-
         "What measurable result can you test: speed, accuracy, usability or error rate?"
-
       ],
-
 
       data: [
-
         "What pattern or relationship can you test using reliable data?",
-
         "What variables will you compare?",
-
         "How will you avoid biased or weak data?"
-
       ],
-
 
       engineering: [
-
         "What need are you solving?",
-
         "What design criteria must the prototype meet?",
-
         "How will you test and redesign it?"
-
       ],
-
 
       chemistry: [
-
         "What chemical relationship can you measure safely?",
-
         "What independent and dependent variables will you use?",
-
         "Can the experiment be repeated with controls?"
-
       ],
 
-
       physics: [
-
         "What measurable physical or mathematical relationship interests you?",
-
         "What model or prediction can you test?",
-
         "How will you collect enough data to support a conclusion?"
-
       ]
 
     };
@@ -4594,9 +4466,9 @@ $("brainstormBtn").onclick =
   };
 
 
-/* ==========================================
-   CCC LEARNING MODULES
-   ========================================== */
+/* ================================
+   CCC MODULES
+   ================================ */
 
 async function loadModules() {
 
@@ -4889,6 +4761,9 @@ function moduleActivityTypeLabel(
     lesson:
       "LESSON",
 
+    video:
+      "VIDEO",
+
     mcq:
       "PRACTICE",
 
@@ -4908,6 +4783,129 @@ function moduleActivityTypeLabel(
     labels[type] ||
     type.toUpperCase()
   );
+
+}
+
+
+function getYouTubeEmbedURL(
+  url
+) {
+
+  if (
+    !url
+  ) {
+    return "";
+  }
+
+
+  try {
+
+    const parsed =
+      new URL(
+        url
+      );
+
+
+    let videoId =
+      "";
+
+
+    const host =
+      parsed.hostname
+        .replace(
+          /^www\./,
+          ""
+        )
+        .toLowerCase();
+
+
+    if (
+      host ===
+      "youtu.be"
+    ) {
+
+      videoId =
+        parsed.pathname
+          .split("/")
+          .filter(Boolean)[0] ||
+        "";
+
+    } else if (
+      host === "youtube.com" ||
+      host === "m.youtube.com" ||
+      host === "music.youtube.com"
+    ) {
+
+      if (
+        parsed.pathname ===
+        "/watch"
+      ) {
+
+        videoId =
+          parsed.searchParams.get(
+            "v"
+          ) ||
+          "";
+
+      } else if (
+        parsed.pathname.startsWith(
+          "/shorts/"
+        )
+      ) {
+
+        videoId =
+          parsed.pathname
+            .split("/")[2] ||
+          "";
+
+      } else if (
+        parsed.pathname.startsWith(
+          "/embed/"
+        )
+      ) {
+
+        videoId =
+          parsed.pathname
+            .split("/")[2] ||
+          "";
+
+      }
+
+    }
+
+
+    videoId =
+      videoId
+        .split("?")[0]
+        .split("&")[0]
+        .trim();
+
+
+    if (
+      !/^[A-Za-z0-9_-]{6,20}$/.test(
+        videoId
+      )
+    ) {
+
+      return "";
+
+    }
+
+
+    return (
+      "https://www.youtube-nocookie.com/embed/" +
+      encodeURIComponent(
+        videoId
+      )
+    );
+
+  } catch (
+    error
+  ) {
+
+    return "";
+
+  }
 
 }
 
@@ -4974,7 +4972,7 @@ function renderModuleActivities() {
                 >
                   ${
                     complete
-                      ? "Completed ✓"
+                      ? "Completed"
                       : "Mark Complete"
                   }
                 </button>
@@ -5025,7 +5023,7 @@ function renderModuleActivities() {
                 >
                   ${
                     complete
-                      ? "Completed ✓"
+                      ? "Completed"
                       : "Save Completion"
                   }
                 </button>
@@ -5080,12 +5078,88 @@ function renderModuleActivities() {
                   >
                     ${
                       complete
-                        ? "Completed ✓"
+                        ? "Completed"
                         : "Mark Complete"
                     }
                   </button>
 
                 </div>
+              `;
+
+          }
+
+
+          if (
+            activity.activity_type ===
+            "video"
+          ) {
+
+            const embedURL =
+              getYouTubeEmbedURL(
+                activity.resource_url
+              );
+
+
+            body =
+              `
+                <div class="activityBody">
+                  ${esc(
+                    activity.instructions ||
+                    ""
+                  )}
+                </div>
+
+                ${
+                  embedURL
+
+                    ? `
+                        <div class="videoWrapper">
+
+                          <iframe
+                            src="${embedURL}"
+                            title="${esc(
+                              activity.title
+                            )}"
+                            loading="lazy"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allow="
+                              accelerometer;
+                              autoplay;
+                              clipboard-write;
+                              encrypted-media;
+                              gyroscope;
+                              picture-in-picture;
+                              web-share
+                            "
+                            allowfullscreen
+                          ></iframe>
+
+                        </div>
+                      `
+
+                    : `
+                        <p class="muted">
+                          This video link could not be loaded.
+                        </p>
+                      `
+                }
+
+                <div class="videoNotice">
+                  Watch the video, then mark it complete.
+                </div>
+
+                <button
+                  class="primary moduleCompleteBtn"
+                  data-id="${activity.id}"
+                  data-kind="video"
+                  style="margin-top:10px"
+                >
+                  ${
+                    complete
+                      ? "Video Completed"
+                      : "Mark Video Complete"
+                  }
+                </button>
               `;
 
           }
@@ -5211,7 +5285,7 @@ function renderModuleActivities() {
                     min-height:100px;
                     margin:12px 0;
                     border:1px solid var(--line);
-                    border-radius:9px;
+                    border-radius:4px;
                     padding:10px
                   "
                   placeholder="Write your response here..."
@@ -5626,7 +5700,7 @@ async function sendModuleActivity(
 
       text =
         result.correct
-          ? "Correct ✅"
+          ? "Correct"
           : `Not quite. Correct answer: ${result.correct_option || ""}`;
 
 
@@ -5648,7 +5722,7 @@ async function sendModuleActivity(
     } else {
 
       text =
-        "Response saved ✅";
+        "Response saved";
 
 
       if (
@@ -5713,14 +5787,44 @@ $("backModules").onclick =
   resetModuleView;
 
 
-/* ==========================================
+/* ================================
    ADMIN MODULE BUILDER
-   ========================================== */
+   ================================ */
 
 function renderActivityDynamicFields() {
 
   const type =
     $("activityType").value;
+
+
+  if (
+    type ===
+    "video"
+  ) {
+
+    $("activityDynamicFields").innerHTML =
+      `
+        <label>
+          YouTube Video URL
+        </label>
+
+        <input
+          id="moduleVideoUrl"
+          type="url"
+          placeholder="https://www.youtube.com/watch?v=..."
+          required
+        >
+
+        <p class="fieldHint">
+          Paste a normal YouTube, YouTube Shorts,
+          or youtu.be link. Students will watch it
+          directly inside the portal.
+        </p>
+      `;
+
+    return;
+
+  }
 
 
   if (
@@ -5841,8 +5945,8 @@ function renderActivityDynamicFields() {
         >
 
         <p class="fieldHint">
-          Students can open the link and then mark
-          the activity complete.
+          Students can open the link and then
+          mark the activity complete.
         </p>
       `;
 
@@ -5976,7 +6080,6 @@ async function loadAdminModules() {
     adminModules
       .map(
         module => `
-
           <option value="${module.id}">
             ${esc(
               module.title
@@ -6410,6 +6513,20 @@ $("addModuleActivityForm")
 
       if (
         type ===
+        "video"
+      ) {
+
+        payload.resource_url =
+          $("moduleVideoUrl")
+            .value
+            .trim() ||
+          null;
+
+      }
+
+
+      if (
+        type ===
         "resource"
       ) {
 
@@ -6661,9 +6778,9 @@ async function deleteModuleActivity(
 }
 
 
-/* ==========================================
+/* ================================
    QUIZZES
-   ========================================== */
+   ================================ */
 
 async function loadQuizzes() {
 
@@ -7051,14 +7168,12 @@ $("quizForm")
 
           <div
             class="card"
-            style="background:var(--ps)"
+            style="background:var(--primary-soft)"
           >
 
             <b style="font-size:20px">
-
               ${data.score}/${data.total}
               (${percent}%)
-
             </b>
 
           </div>
@@ -7092,8 +7207,8 @@ $("quizForm")
 
                 ${
                   result.correct
-                    ? "Correct ✅"
-                    : "Incorrect ❌"
+                    ? "Correct"
+                    : "Incorrect"
                 }
 
               </b>
@@ -7240,10 +7355,6 @@ async function loadQuizAttempts() {
 
             <div class="attempt">
 
-              <div>
-                🧠
-              </div>
-
               <div class="grow">
 
                 <h3>
@@ -7286,26 +7397,26 @@ async function loadQuizAttempts() {
 }
 
 
-/* ==========================================
+/* ================================
    TUTORIAL
-   ========================================== */
+   ================================ */
 
 const tourSteps = [
 
   {
     i:
-      "👋",
+      "01",
 
     t:
       "Welcome",
 
     x:
-      "This portal keeps Science Club announcements, dates, resources, project ideas, modules and quizzes together."
+      "This portal keeps Science Club announcements, dates, resources, project ideas and quizzes together."
   },
 
   {
     i:
-      "🔐",
+      "02",
 
     t:
       "Random username + password",
@@ -7316,7 +7427,7 @@ const tourSteps = [
 
   {
     i:
-      "💡",
+      "03",
 
     t:
       "Project Lab",
@@ -7327,18 +7438,18 @@ const tourSteps = [
 
   {
     i:
-      "🧪",
+      "04",
 
     t:
       "CCC Modules",
 
     x:
-      "Work through lesson notes, practice questions, short answers, checklists and resources. Your progress is saved."
+      "Work through lesson notes, embedded videos, practice questions, short answers, checklists and resources. Your progress is saved."
   },
 
   {
     i:
-      "🧠",
+      "05",
 
     t:
       "CCC Quizzes",
@@ -7349,7 +7460,7 @@ const tourSteps = [
 
   {
     i:
-      "📚",
+      "06",
 
     t:
       "Resources",
@@ -7360,7 +7471,7 @@ const tourSteps = [
 
   {
     i:
-      "✅",
+      "07",
 
     t:
       "Ready",
@@ -7495,9 +7606,9 @@ $("tourNext").onclick =
   };
 
 
-/* ==========================================
-   ADMIN AUTH
-   ========================================== */
+/* ================================
+   ADMIN
+   ================================ */
 
 $("adminButton").onclick =
   () =>
@@ -7827,11 +7938,9 @@ function renderAdminActivity() {
 
       : `
           <tr>
-
             <td colspan="4">
               No activity yet.
             </td>
-
           </tr>
         `;
 
@@ -7871,10 +7980,6 @@ function updateAdminStats() {
 
 }
 
-
-/* ==========================================
-   ADMIN QUIZZES
-   ========================================== */
 
 async function loadAdminQuizzes() {
 
@@ -7934,7 +8039,6 @@ async function loadAdminQuizzes() {
                   </h3>
 
                   <p>
-
                     ${esc(
                       quiz.category
                     )}
@@ -7946,7 +8050,6 @@ async function loadAdminQuizzes() {
                         ? "Published"
                         : "Draft"
                     }
-
                   </p>
 
                 </div>
@@ -7957,13 +8060,11 @@ async function loadAdminQuizzes() {
                   data-id="${quiz.id}"
                   data-pub="${quiz.is_published}"
                 >
-
                   ${
                     quiz.is_published
                       ? "Unpublish"
                       : "Publish"
                   }
-
                 </button>
 
 
@@ -7988,7 +8089,6 @@ async function loadAdminQuizzes() {
     adminQuizzes
       .map(
         quiz => `
-
           <option value="${quiz.id}">
             ${esc(
               quiz.title
@@ -8315,10 +8415,6 @@ async function deleteQuiz(
 
 }
 
-
-/* ==========================================
-   ADMIN CONTENT
-   ========================================== */
 
 $("announcementForm")
   .addEventListener(
@@ -8689,10 +8785,6 @@ $("adminLogout").onclick =
 
   };
 
-
-/* ==========================================
-   START
-   ========================================== */
 
 async function start() {
 
