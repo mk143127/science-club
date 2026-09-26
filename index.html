@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Science Club Student Portal</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <style>
 *{box-sizing:border-box}
 :root{--nav:#17324a;--text:#1d2a33;--muted:#667482;--line:#dbe2e8;--primary:#1f627d;--primary-soft:#edf4f7;--good:#2f7768;--good-soft:#edf7f3;--danger:#a33a3a;--danger-soft:#fbefef;--bg:#f3f5f6;--white:#fff}
@@ -13,7 +12,11 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,"Helvetic
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
 
-.shell{min-height:100vh;display:grid;grid-template-columns:245px 1fr}
+.shell{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:245px 1fr
+}
 
 .side{
   position:fixed;
@@ -436,7 +439,9 @@ main{
   background:#fff
 }
 
-.day.blank{background:#fafafa}
+.day.blank{
+  background:#fafafa
+}
 
 .day.today{
   background:#f0f6f8;
@@ -571,8 +576,13 @@ main{
   font-size:11px
 }
 
-.review.good{background:#f4fff9}
-.review.bad{background:#fff6f6}
+.review.good{
+  background:#f4fff9
+}
+
+.review.bad{
+  background:#fff6f6
+}
 
 .num{
   width:30px;
@@ -639,7 +649,9 @@ main{
   white-space:pre-wrap
 }
 
-.activityFeedback.show{display:block}
+.activityFeedback.show{
+  display:block
+}
 
 .activityFeedback.good{
   background:var(--good-soft);
@@ -677,9 +689,13 @@ main{
   gap:8px
 }
 
-.moduleActivityAdmin .grow{min-width:0}
+.moduleActivityAdmin .grow{
+  min-width:0
+}
 
-.moduleActivityAdmin b{font-size:10px}
+.moduleActivityAdmin b{
+  font-size:10px
+}
 
 .moduleActivityAdmin span{
   font-size:9px;
@@ -715,6 +731,57 @@ main{
   color:var(--muted)
 }
 
+.codeEditor{
+  width:100%;
+  min-height:300px;
+  border:1px solid #bfcbd3;
+  border-radius:4px;
+  padding:12px;
+  background:#0f1720;
+  color:#e8eef2;
+  font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  font-size:12px;
+  line-height:1.55;
+  resize:vertical;
+  tab-size:2
+}
+
+.codeHelp{
+  padding:11px 12px;
+  border:1px solid #d8e3e8;
+  border-left:3px solid var(--primary);
+  background:#f7fafb;
+  border-radius:4px;
+  color:#53636f;
+  font-size:10px;
+  line-height:1.65
+}
+
+.interactiveShell{
+  margin:14px 0;
+  border:1px solid #cfd8df;
+  border-radius:5px;
+  overflow:hidden;
+  background:#fff
+}
+
+.interactiveFrame{
+  display:block;
+  width:100%;
+  min-height:420px;
+  border:0;
+  background:#fff
+}
+
+.interactivePreview{
+  width:100%;
+  min-height:360px;
+  border:1px solid #cfd8df;
+  border-radius:4px;
+  background:#fff;
+  margin-top:10px
+}
+
 .overlay{
   display:none;
   position:fixed;
@@ -726,7 +793,9 @@ main{
   padding:20px
 }
 
-.overlay.show{display:flex}
+.overlay.show{
+  display:flex
+}
 
 .tour{
   width:min(520px,100%);
@@ -742,7 +811,9 @@ main{
   color:var(--primary)
 }
 
-.tour h2{margin:8px 0}
+.tour h2{
+  margin:8px 0
+}
 
 .tourActions{
   display:flex;
@@ -751,7 +822,9 @@ main{
   margin-top:18px
 }
 
-.tableWrap{overflow:auto}
+.tableWrap{
+  overflow:auto
+}
 
 table{
   width:100%;
@@ -787,7 +860,9 @@ th{
 }
 
 @media(max-width:740px){
-  .shell{display:block}
+  .shell{
+    display:block
+  }
 
   .side{
     position:static;
@@ -825,7 +900,9 @@ th{
     padding:0
   }
 
-  .tiny{display:none}
+  .tiny{
+    display:none
+  }
 
   main{
     padding:22px 14px
@@ -855,25 +932,47 @@ th{
 
     <div class="brand">
       <div class="logo">SC</div>
-
       <div>
         <b>Science Club</b>
         <small>Student Portal</small>
       </div>
     </div>
 
-
     <nav class="nav">
-      <button class="navBtn active" data-page="dashboard">Dashboard</button>
-      <button class="navBtn" data-page="calendar">Calendar</button>
-      <button class="navBtn" data-page="resources">Resources</button>
-      <button class="navBtn" data-page="projects">Project Lab</button>
-      <button class="navBtn" data-page="modules">CCC Modules</button>
-      <button class="navBtn" data-page="quizzes">CCC Quizzes</button>
-      <button class="navBtn" data-page="tutorial">How to Use</button>
-      <button class="navBtn" data-page="faq">FAQs</button>
-    </nav>
 
+      <button class="navBtn active" data-page="dashboard">
+        Dashboard
+      </button>
+
+      <button class="navBtn" data-page="calendar">
+        Calendar
+      </button>
+
+      <button class="navBtn" data-page="resources">
+        Resources
+      </button>
+
+      <button class="navBtn" data-page="projects">
+        Project Lab
+      </button>
+
+      <button class="navBtn" data-page="modules">
+        CCC Modules
+      </button>
+
+      <button class="navBtn" data-page="quizzes">
+        CCC Quizzes
+      </button>
+
+      <button class="navBtn" data-page="tutorial">
+        How to Use
+      </button>
+
+      <button class="navBtn" data-page="faq">
+        FAQs
+      </button>
+
+    </nav>
 
     <div class="sideBottom">
 
@@ -913,6 +1012,7 @@ th{
           </p>
 
           <div id="authMsg" class="msg"></div>
+
 
           <div class="authTabs">
 
@@ -1039,11 +1139,8 @@ th{
 
         </div>
 
-
         <div>
-          <b id="profileUsername">
-            —
-          </b>
+          <b id="profileUsername">—</b>
         </div>
 
       </div>
@@ -1208,15 +1305,8 @@ th{
       <header class="top">
 
         <div>
-
-          <h1>
-            Science Club Calendar
-          </h1>
-
-          <p>
-            Meetings, competitions and deadlines.
-          </p>
-
+          <h1>Science Club Calendar</h1>
+          <p>Meetings, competitions and deadlines.</p>
         </div>
 
       </header>
@@ -1232,6 +1322,7 @@ th{
           <h2>
             Calendar
           </h2>
+
 
           <div class="calControls">
 
@@ -1266,7 +1357,6 @@ th{
           <div>Sat</div>
         </div>
 
-
         <div
           id="calendarDays"
           class="cal"
@@ -1293,19 +1383,14 @@ th{
       <header class="top">
 
         <div>
-
-          <h1>
-            Resources & Assignments
-          </h1>
+          <h1>Resources & Assignments</h1>
 
           <p>
             CCC, WWSEF and general Science Club material.
           </p>
-
         </div>
 
       </header>
-
 
       <section class="card">
         <div id="allResources"></div>
@@ -1320,9 +1405,7 @@ th{
 
         <div>
 
-          <h1>
-            Project Lab
-          </h1>
+          <h1>Project Lab</h1>
 
           <p>
             Where to find project options, rules,
@@ -1520,32 +1603,15 @@ th{
         <div class="brainstorm">
 
           <select id="ideaType">
-
-            <option value="software">
-              Software / App
-            </option>
-
-            <option value="data">
-              Data / Study
-            </option>
-
-            <option value="engineering">
-              Engineering / Prototype
-            </option>
-
-            <option value="chemistry">
-              Chemistry
-            </option>
-
-            <option value="physics">
-              Physics / Math
-            </option>
-
+            <option value="software">Software / App</option>
+            <option value="data">Data / Study</option>
+            <option value="engineering">Engineering / Prototype</option>
+            <option value="chemistry">Chemistry</option>
+            <option value="physics">Physics / Math</option>
           </select>
 
 
           <select id="ideaTool">
-
             <option>Python</option>
             <option>JavaScript / Web</option>
             <option>Scratch</option>
@@ -1554,7 +1620,6 @@ th{
             <option>Spreadsheet / Data Analysis</option>
             <option>AI / Machine Learning</option>
             <option>No specific program yet</option>
-
           </select>
 
         </div>
@@ -1652,7 +1717,6 @@ th{
         >
 
           <div>
-
             <h2 id="activeModuleTitle">
               Module
             </h2>
@@ -1661,7 +1725,6 @@ th{
               id="activeModuleDesc"
               class="muted"
             ></p>
-
           </div>
 
 
@@ -1936,9 +1999,9 @@ th{
 
           <p>
             Open CCC Modules for lesson notes,
-            videos, practice questions, short answers,
-            checklists and resource activities.
-            Your progress is saved.
+            embedded videos, coded interactive simulations,
+            practice questions, short answers,
+            checklists and resources.
           </p>
 
         </div>
@@ -1970,7 +2033,6 @@ th{
 
           <p>
             Use the Calendar for dates and FAQs for common questions.
-            Admins can update portal content.
           </p>
 
         </div>
@@ -1985,15 +2047,11 @@ th{
       <header class="top">
 
         <div>
-
-          <h1>
-            FAQs
-          </h1>
+          <h1>FAQs</h1>
 
           <p>
             CCC, WWSEF and Science Club questions.
           </p>
-
         </div>
 
       </header>
@@ -2020,10 +2078,7 @@ th{
             Use the admin email/password created in Supabase.
           </p>
 
-          <div
-            id="adminLoginMsg"
-            class="msg"
-          ></div>
+          <div id="adminLoginMsg" class="msg"></div>
 
 
           <form
@@ -2224,7 +2279,6 @@ th{
               Create CCC Module
             </h2>
 
-
             <form
               id="createModuleForm"
               class="form"
@@ -2302,11 +2356,9 @@ th{
                 id="activityModule"
                 required
               >
-
                 <option value="">
                   Choose module
                 </option>
-
               </select>
 
 
@@ -2322,6 +2374,10 @@ th{
 
                 <option value="video">
                   Embedded Video
+                </option>
+
+                <option value="interactive">
+                  Interactive Animation / Simulation
                 </option>
 
                 <option value="mcq">
@@ -2411,9 +2467,7 @@ th{
               class="form"
             >
 
-              <label>
-                Title
-              </label>
+              <label>Title</label>
 
               <input
                 id="newQuizTitle"
@@ -2421,23 +2475,16 @@ th{
                 placeholder="Stoichiometry Practice"
               >
 
-
-              <label>
-                Description
-              </label>
+              <label>Description</label>
 
               <textarea id="newQuizDesc"></textarea>
 
-
-              <label>
-                Category
-              </label>
+              <label>Category</label>
 
               <select id="newQuizCat">
                 <option>CCC</option>
                 <option>Science Club</option>
               </select>
-
 
               <button class="primary">
                 Create Draft Quiz
@@ -2459,31 +2506,23 @@ th{
               class="form"
             >
 
-              <label>
-                Quiz
-              </label>
+              <label>Quiz</label>
 
               <select
                 id="questionQuiz"
                 required
               >
-
                 <option value="">
                   Choose quiz
                 </option>
-
               </select>
 
-
-              <label>
-                Question
-              </label>
+              <label>Question</label>
 
               <textarea
                 id="qText"
                 required
               ></textarea>
-
 
               <label>A</label>
               <input id="qA" required>
@@ -2497,7 +2536,6 @@ th{
               <label>D</label>
               <input id="qD" required>
 
-
               <label>
                 Correct answer
               </label>
@@ -2509,13 +2547,11 @@ th{
                 <option>D</option>
               </select>
 
-
               <label>
                 Explanation
               </label>
 
               <textarea id="qExplain"></textarea>
-
 
               <button class="primary">
                 Add Question
@@ -2713,7 +2749,6 @@ th{
       class="muted"
     ></p>
 
-
     <div class="tourActions">
 
       <button
@@ -2722,7 +2757,6 @@ th{
       >
         Skip
       </button>
-
 
       <div>
 
@@ -2743,7 +2777,6 @@ th{
       </div>
 
     </div>
-
 
     <p
       id="tourProgress"
@@ -2901,21 +2934,17 @@ function msg(
   const element =
     $(id);
 
-
   if (
     !element
   ) {
     return;
   }
 
-
   element.textContent =
     text;
 
-
   element.className =
     `msg show ${type}`;
-
 
   setTimeout(
     () =>
@@ -2935,7 +2964,6 @@ function setStatus(
 
   $("status").textContent =
     text;
-
 
   $("status")
     .classList
@@ -2960,13 +2988,11 @@ function showPage(
         )
     );
 
-
   pages[name]
     ?.classList
     .add(
       "active"
     );
-
 
   document
     .querySelectorAll(
@@ -2980,7 +3006,6 @@ function showPage(
             name
         )
     );
-
 
   window.scrollTo(
     0,
@@ -3034,7 +3059,6 @@ function randomName() {
     "Neon"
   ];
 
-
   const second = [
     "Ace",
     "Fox",
@@ -3047,7 +3071,6 @@ function randomName() {
     "Star",
     "Quest"
   ];
-
 
   return (
     first[
@@ -3085,30 +3108,25 @@ function setAuthMode(
   authMode =
     mode;
 
-
   $("showLogin").className =
     mode === "login"
       ? "primary"
       : "secondary";
-
 
   $("showSignup").className =
     mode === "signup"
       ? "primary"
       : "secondary";
 
-
   $("studentAuthSubmit").textContent =
     mode === "login"
       ? "Sign In"
       : "Create Account";
 
-
   $("authModeHelp").textContent =
     mode === "login"
       ? "Use the same random username and password you created."
       : "Your username should not contain your real name. Password must be at least 6 characters.";
-
 
   $("studentPassword").autocomplete =
     mode === "login"
@@ -3145,14 +3163,12 @@ $("studentAuthForm")
 
       event.preventDefault();
 
-
       const username =
         cleanUsername(
           $("studentUsername")
             .value
             .trim()
         );
-
 
       const password =
         $("studentPassword")
@@ -3512,18 +3528,15 @@ $("studentLogout").onclick =
     await db.auth
       .signOut();
 
-
     currentUser =
       null;
 
     currentProfile =
       null;
 
-
     showPage(
       "auth"
     );
-
 
     setStatus(
       "● Signed out"
@@ -3553,7 +3566,6 @@ document
             return;
 
           }
-
 
           showPage(
             button.dataset.page
@@ -3600,6 +3612,10 @@ document
     }
   );
 
+
+/* ================================
+   ANNOUNCEMENTS
+   ================================ */
 
 async function loadAnnouncements() {
 
@@ -3668,6 +3684,10 @@ async function loadAnnouncements() {
 
 }
 
+
+/* ================================
+   RESOURCES
+   ================================ */
 
 function resourceHTML(
   resource
@@ -3937,6 +3957,10 @@ async function loadStudentActivity() {
 }
 
 
+/* ================================
+   DATES
+   ================================ */
+
 function parseDate(
   value
 ) {
@@ -4087,7 +4111,6 @@ async function loadDates() {
               item.event_date
             );
 
-
           return (
             date &&
             date >= today
@@ -4183,10 +4206,8 @@ function renderCalendar() {
         "div"
       );
 
-
     empty.className =
       "day blank";
-
 
     $("calendarDays")
       .appendChild(
@@ -4307,6 +4328,10 @@ $("nextMonth").onclick =
   };
 
 
+/* ================================
+   FAQ
+   ================================ */
+
 async function loadFAQs() {
 
   const {
@@ -4389,6 +4414,10 @@ async function loadFAQs() {
 }
 
 
+/* ================================
+   PROJECT BRAINSTORM
+   ================================ */
+
 $("brainstormBtn").onclick =
   () => {
 
@@ -4467,7 +4496,7 @@ $("brainstormBtn").onclick =
 
 
 /* ================================
-   CCC MODULES
+   CCC LEARNING MODULES
    ================================ */
 
 async function loadModules() {
@@ -4764,6 +4793,9 @@ function moduleActivityTypeLabel(
     video:
       "VIDEO",
 
+    interactive:
+      "INTERACTIVE",
+
     mcq:
       "PRACTICE",
 
@@ -4908,6 +4940,208 @@ function getYouTubeEmbedURL(
   }
 
 }
+
+
+/* ================================
+   INTERACTIVE ACTIVITY SANDBOX
+   ================================ */
+
+function buildInteractiveDocument(
+  code
+) {
+
+  const safeCode =
+    String(
+      code ||
+      ""
+    );
+
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1.0"
+>
+
+<meta
+  http-equiv="Content-Security-Policy"
+  content="
+    default-src 'none';
+    style-src 'unsafe-inline';
+    script-src 'unsafe-inline';
+    img-src data: blob:;
+    font-src data:;
+    connect-src 'none';
+    media-src 'none';
+    frame-src 'none';
+  "
+>
+
+<style>
+
+html,
+body{
+  margin:0;
+  padding:0;
+  background:#fff;
+  color:#17232d;
+  font-family:Arial,Helvetica,sans-serif
+}
+
+*{
+  box-sizing:border-box
+}
+
+button,
+input,
+select,
+textarea{
+  font:inherit
+}
+
+button{
+  cursor:pointer
+}
+
+:focus{
+  outline:2px solid #1f627d;
+  outline-offset:2px
+}
+
+</style>
+
+</head>
+
+<body>
+
+<script>
+
+function completeActivity(){
+
+  parent.postMessage(
+    {
+      type:
+        "science-club-activity-complete"
+    },
+    "*"
+  );
+
+}
+
+<\/script>
+
+${safeCode}
+
+</body>
+</html>`;
+
+}
+
+
+function initializeInteractiveFrames() {
+
+  document
+    .querySelectorAll(
+      ".interactiveFrame"
+    )
+    .forEach(
+      frame => {
+
+        const activityId =
+          Number(
+            frame.dataset.activityId
+          );
+
+
+        const activity =
+          activeModuleActivities
+            .find(
+              item =>
+                Number(
+                  item.id
+                ) ===
+                activityId
+            );
+
+
+        if (
+          !activity
+        ) {
+          return;
+        }
+
+
+        frame.srcdoc =
+          buildInteractiveDocument(
+            activity.interactive_code ||
+            ""
+          );
+
+      }
+    );
+
+}
+
+
+window.addEventListener(
+  "message",
+  event => {
+
+    if (
+      !event.data ||
+      event.data.type !==
+        "science-club-activity-complete"
+    ) {
+      return;
+    }
+
+
+    const frame =
+      [
+        ...document
+          .querySelectorAll(
+            ".interactiveFrame"
+          )
+      ]
+      .find(
+        item =>
+          item.contentWindow ===
+          event.source
+      );
+
+
+    if (
+      !frame
+    ) {
+      return;
+    }
+
+
+    const activityId =
+      Number(
+        frame.dataset.activityId
+      );
+
+
+    if (
+      !activityId
+    ) {
+      return;
+    }
+
+
+    completeSimpleModuleActivity(
+      activityId,
+      "interactive"
+    );
+
+  }
+);
 
 
 function renderModuleActivities() {
@@ -5167,6 +5401,57 @@ function renderModuleActivities() {
 
           if (
             activity.activity_type ===
+            "interactive"
+          ) {
+
+            body =
+              `
+                <div class="activityBody">
+                  ${esc(
+                    activity.instructions ||
+                    ""
+                  )}
+                </div>
+
+                <div class="interactiveShell">
+
+                  <iframe
+                    class="interactiveFrame"
+                    data-activity-id="${activity.id}"
+                    sandbox="allow-scripts"
+                    title="${esc(
+                      activity.title
+                    )}"
+                  ></iframe>
+
+                </div>
+
+                <div class="videoNotice">
+                  Interact with the activity.
+                  It can mark itself complete with
+                  <code>completeActivity()</code>,
+                  or you can mark it complete below.
+                </div>
+
+                <button
+                  class="primary moduleCompleteBtn"
+                  data-id="${activity.id}"
+                  data-kind="interactive"
+                  style="margin-top:10px"
+                >
+                  ${
+                    complete
+                      ? "Interactive Activity Completed"
+                      : "Mark Activity Complete"
+                  }
+                </button>
+              `;
+
+          }
+
+
+          if (
+            activity.activity_type ===
             "mcq"
           ) {
 
@@ -5409,6 +5694,8 @@ function renderModuleActivities() {
       }
     );
 
+
+  initializeInteractiveFrames();
 
   updateModuleProgressBar();
 
@@ -5764,18 +6051,14 @@ function resetModuleView() {
   activeModule =
     null;
 
-
   activeModuleActivities =
     [];
-
 
   activeModuleProgress =
     [];
 
-
   $("modulePlayerCard").style.display =
     "none";
-
 
   $("moduleListCard").style.display =
     "block";
@@ -5795,6 +6078,200 @@ function renderActivityDynamicFields() {
 
   const type =
     $("activityType").value;
+
+
+  if (
+    type ===
+    "interactive"
+  ) {
+
+    const starter =
+`<style>
+
+.sim {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 24px;
+  text-align: center;
+}
+
+.ball {
+  width: 54px;
+  height: 54px;
+  margin: 28px auto;
+  border-radius: 50%;
+  background: #1f627d;
+  transition: transform .35s ease;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+</style>
+
+<div class="sim">
+
+  <h2>
+    Interactive Example
+  </h2>
+
+  <p>
+    Use the buttons to move the particle.
+  </p>
+
+  <div
+    id="ball"
+    class="ball"
+  ></div>
+
+  <div class="controls">
+
+    <button
+      id="left"
+      type="button"
+    >
+      Move Left
+    </button>
+
+    <button
+      id="right"
+      type="button"
+    >
+      Move Right
+    </button>
+
+    <button
+      id="finish"
+      type="button"
+    >
+      Finish Activity
+    </button>
+
+  </div>
+
+</div>
+
+<script>
+
+let x = 0;
+
+const ball =
+  document.getElementById("ball");
+
+
+document
+  .getElementById("left")
+  .addEventListener(
+    "click",
+    () => {
+
+      x -= 40;
+
+      ball.style.transform =
+        "translateX(" +
+        x +
+        "px)";
+
+    }
+  );
+
+
+document
+  .getElementById("right")
+  .addEventListener(
+    "click",
+    () => {
+
+      x += 40;
+
+      ball.style.transform =
+        "translateX(" +
+        x +
+        "px)";
+
+    }
+  );
+
+
+document
+  .getElementById("finish")
+  .addEventListener(
+    "click",
+    () => {
+
+      completeActivity();
+
+    }
+  );
+
+<\/script>`;
+
+
+    $("activityDynamicFields").innerHTML =
+      `
+        <label>
+          Interactive HTML / CSS / JavaScript
+        </label>
+
+        <textarea
+          id="moduleInteractiveCode"
+          class="codeEditor"
+          spellcheck="false"
+        ></textarea>
+
+        <div class="codeHelp">
+          Write a self-contained interactive activity
+          using HTML, CSS, SVG, Canvas and vanilla JavaScript.
+          External scripts, network requests, iframes
+          and remote media are blocked for safety.
+          Call <b>completeActivity()</b> anywhere in
+          your code when the student finishes the activity.
+        </div>
+
+        <button
+          id="previewInteractiveBtn"
+          type="button"
+          class="secondary"
+        >
+          Preview Interactive Activity
+        </button>
+
+        <iframe
+          id="interactivePreview"
+          class="interactivePreview"
+          sandbox="allow-scripts"
+          title="Interactive activity preview"
+        ></iframe>
+      `;
+
+
+    $("moduleInteractiveCode").value =
+      starter;
+
+
+    $("previewInteractiveBtn").onclick =
+      () => {
+
+        $("interactivePreview").srcdoc =
+          buildInteractiveDocument(
+            $("moduleInteractiveCode").value
+          );
+
+      };
+
+
+    $("interactivePreview").srcdoc =
+      buildInteractiveDocument(
+        starter
+      );
+
+
+    return;
+
+  }
 
 
   if (
@@ -6092,7 +6569,6 @@ async function loadAdminModules() {
 
   renderAdminModules();
 
-
   updateAdminStats();
 
 }
@@ -6379,7 +6855,6 @@ $("createModuleForm")
 
       event.target.reset();
 
-
       $("newModuleOrder").value =
         "1";
 
@@ -6457,29 +6932,24 @@ $("addModuleActivityForm")
             .value
             .trim();
 
-
         payload.option_b =
           $("moduleOptionB")
             .value
             .trim();
-
 
         payload.option_c =
           $("moduleOptionC")
             .value
             .trim();
 
-
         payload.option_d =
           $("moduleOptionD")
             .value
             .trim();
 
-
         payload.correct_option =
           $("moduleCorrect")
             .value;
-
 
         payload.explanation =
           $("moduleExplanation")
@@ -6501,12 +6971,23 @@ $("addModuleActivityForm")
             .trim() ||
           null;
 
-
         payload.explanation =
           $("moduleExplanation")
             .value
             .trim() ||
           null;
+
+      }
+
+
+      if (
+        type ===
+        "interactive"
+      ) {
+
+        payload.interactive_code =
+          $("moduleInteractiveCode")
+            .value;
 
       }
 
@@ -6580,7 +7061,6 @@ $("addModuleActivityForm")
 
       $("activityPoints").value =
         "1";
-
 
       $("activityOrder").value =
         "1";
@@ -7444,7 +7924,7 @@ const tourSteps = [
       "CCC Modules",
 
     x:
-      "Work through lesson notes, embedded videos, practice questions, short answers, checklists and resources. Your progress is saved."
+      "Work through lesson notes, embedded videos, coded interactive animations, practice questions, short answers, checklists and resources. Your progress is saved."
   },
 
   {
@@ -7607,7 +8087,7 @@ $("tourNext").onclick =
 
 
 /* ================================
-   ADMIN
+   ADMIN AUTH
    ================================ */
 
 $("adminButton").onclick =
@@ -7938,9 +8418,11 @@ function renderAdminActivity() {
 
       : `
           <tr>
+
             <td colspan="4">
               No activity yet.
             </td>
+
           </tr>
         `;
 
@@ -7980,6 +8462,10 @@ function updateAdminStats() {
 
 }
 
+
+/* ================================
+   ADMIN QUIZZES
+   ================================ */
 
 async function loadAdminQuizzes() {
 
@@ -8039,6 +8525,7 @@ async function loadAdminQuizzes() {
                   </h3>
 
                   <p>
+
                     ${esc(
                       quiz.category
                     )}
@@ -8050,6 +8537,7 @@ async function loadAdminQuizzes() {
                         ? "Published"
                         : "Draft"
                     }
+
                   </p>
 
                 </div>
@@ -8060,11 +8548,13 @@ async function loadAdminQuizzes() {
                   data-id="${quiz.id}"
                   data-pub="${quiz.is_published}"
                 >
+
                   ${
                     quiz.is_published
                       ? "Unpublish"
                       : "Publish"
                   }
+
                 </button>
 
 
@@ -8089,6 +8579,7 @@ async function loadAdminQuizzes() {
     adminQuizzes
       .map(
         quiz => `
+
           <option value="${quiz.id}">
             ${esc(
               quiz.title
@@ -8415,6 +8906,10 @@ async function deleteQuiz(
 
 }
 
+
+/* ================================
+   ADMIN CONTENT
+   ================================ */
 
 $("announcementForm")
   .addEventListener(
@@ -8785,6 +9280,10 @@ $("adminLogout").onclick =
 
   };
 
+
+/* ================================
+   START
+   ================================ */
 
 async function start() {
 
