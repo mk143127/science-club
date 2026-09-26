@@ -5301,25 +5301,29 @@ const SUPABASE_PUBLISHABLE_KEY =
 
   async function start() {
 
-    if (
-      SUPABASE_URL.includes(
-        https://xmegalhjfsjvqykexyll.supabase.co
-      ) ||
-      SUPABASE_PUBLISHABLE_KEY.includes(
-        sb_publishable_yUAUZxQ2o3eQXdDQverBSw_Lq5NRBaO
-      )
-    ) {
+    const validUrl =
+      SUPABASE_URL.startsWith("https://") &&
+      SUPABASE_URL.endsWith(".supabase.co");
 
+    const validKey =
+      SUPABASE_PUBLISHABLE_KEY.startsWith("sb_publishable_");
+
+    if (!validUrl || !validKey) {
+
+      setConnection(
+        "● Supabase configuration error",
+        true
       );
 
+      showMessage(
+        "studentMessage",
+        "The Supabase URL or publishable key is not configured correctly.",
+        "error"
+      );
 
       renderCalendars();
-
-
       return;
-
     }
-
 
     try {
 
@@ -5329,11 +5333,18 @@ const SUPABASE_PUBLISHABLE_KEY =
 
       console.error(error);
 
-
       setConnection(
         "● Could not connect",
         true
       );
+
+      showMessage(
+        "studentMessage",
+        "The website loaded, but it could not connect to Supabase. Check the browser console for details.",
+        "error"
+      );
+
+      renderCalendars();
 
     }
 
