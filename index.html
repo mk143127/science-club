@@ -1,16 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Science Club Student Portal</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Science Club Student Portal
+  </title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+  </script>
+
   <style>
-*{box-sizing:border-box}
-:root{--nav:#17324a;--text:#1d2a33;--muted:#667482;--line:#dbe2e8;--primary:#1f627d;--primary-soft:#edf4f7;--good:#2f7768;--good-soft:#edf7f3;--danger:#a33a3a;--danger-soft:#fbefef;--bg:#f3f5f6;--white:#fff}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,"Helvetica Neue",sans-serif}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
+   *{box-sizing:border-box}
+
+:root{
+  --nav:#17324a;
+  --text:#1d2a33;
+  --muted:#667482;
+  --line:#dbe2e8;
+  --primary:#1f627d;
+  --primary-soft:#edf4f7;
+  --good:#2f7768;
+  --good-soft:#edf7f3;
+  --danger:#a33a3a;
+  --danger-soft:#fbefef;
+  --bg:#f3f5f6;
+  --white:#fff
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,"Helvetica Neue",sans-serif
+}
+
+button,
+input,
+textarea,
+select{
+  font:inherit
+}
+
+button{
+  cursor:pointer
+}
 
 .shell{
   min-height:100vh;
@@ -53,7 +87,9 @@ button{cursor:pointer}
   letter-spacing:.5px
 }
 
-.brand b{font-size:15px}
+.brand b{
+  font-size:15px
+}
 
 .brand small{
   display:block;
@@ -117,8 +153,13 @@ main{
   margin:auto
 }
 
-.page{display:none}
-.page.active{display:block}
+.page{
+  display:none
+}
+
+.page.active{
+  display:block
+}
 
 .status{
   display:inline-block;
@@ -226,7 +267,9 @@ main{
   margin-bottom:12px
 }
 
-.msg.show{display:block}
+.msg.show{
+  display:block
+}
 
 .msg.ok{
   background:var(--good-soft);
@@ -301,7 +344,9 @@ main{
   margin:15px 0
 }
 
-.authTabs button{flex:1}
+.authTabs button{
+  flex:1
+}
 
 .usernameRow{
   display:grid;
@@ -384,7 +429,9 @@ main{
   border-bottom:0
 }
 
-.grow{flex:1}
+.grow{
+  flex:1
+}
 
 .resource h3,
 .dateRow h3,
@@ -596,6 +643,10 @@ main{
   margin-bottom:10px
 }
 
+/* ===============================
+   CODEHS STYLE MODULES
+   =============================== */
+
 .moduleGrid{
   grid-template-columns:repeat(auto-fit,minmax(240px,1fr))
 }
@@ -612,6 +663,107 @@ main{
   height:100%;
   background:var(--good);
   width:0
+}
+
+.moduleStepNav{
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  padding:4px 0 14px;
+  margin-bottom:14px
+}
+
+.moduleStep{
+  flex:0 0 auto;
+  min-width:38px;
+  height:38px;
+  border:1px solid #cbd5dc;
+  border-radius:5px;
+  background:#fff;
+  color:#50616d;
+  font-size:11px;
+  font-weight:800
+}
+
+.moduleStep.current{
+  background:var(--nav);
+  border-color:var(--nav);
+  color:#fff
+}
+
+.moduleStep.done{
+  background:var(--good-soft);
+  border-color:#b9d9ce;
+  color:#2f6659
+}
+
+.moduleStep.locked{
+  background:#f4f5f6;
+  color:#9aa5ac;
+  border-color:#e0e5e8;
+  cursor:not-allowed
+}
+
+.moduleSlideMeta{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+  padding:10px 12px;
+  margin:0 0 14px;
+  border:1px solid var(--line);
+  border-radius:5px;
+  background:#f8fafb;
+  font-size:10px;
+  color:var(--muted)
+}
+
+.moduleSlideControls{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-top:16px;
+  padding-top:16px;
+  border-top:1px solid var(--line)
+}
+
+.moduleSlideControls .right{
+  display:flex;
+  gap:8px;
+  align-items:center
+}
+
+.moduleSlideControls button:disabled{
+  cursor:not-allowed;
+  opacity:.45
+}
+
+.moduleLockedNote{
+  font-size:10px;
+  color:#7d6c45;
+  background:#fff9e8;
+  border:1px solid #eadfbf;
+  border-radius:4px;
+  padding:8px 10px
+}
+
+.moduleCompleteScreen{
+  text-align:center;
+  padding:38px 20px
+}
+
+.moduleCompleteScreen h3{
+  font-family:Georgia,"Times New Roman",serif;
+  color:var(--nav);
+  font-size:24px;
+  margin:0 0 8px
+}
+
+.moduleCompleteScreen p{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6
 }
 
 .activityCard.complete{
@@ -853,13 +1005,16 @@ th{
 }
 
 @media(max-width:950px){
+
   .grid2,
   .adminGrid{
     grid-template-columns:1fr
   }
+
 }
 
 @media(max-width:740px){
+
   .shell{
     display:block
   }
@@ -920,1876 +1075,2199 @@ th{
   .brainstorm{
     grid-template-columns:1fr
   }
+
+  .moduleSlideControls{
+    align-items:flex-start;
+    flex-direction:column
+  }
+
+  .moduleSlideControls .right{
+    width:100%;
+    flex-direction:column;
+    align-items:stretch
+  }
+
+  .moduleSlideControls button{
+    width:100%
+  }
+
 }
   </style>
-</head>
+ </head>
 
-<body>
+ <body>
 
-<div class="shell">
+  <div class="shell">
 
-  <aside class="side">
+   <aside class="side">
 
     <div class="brand">
-      <div class="logo">SC</div>
-      <div>
-        <b>Science Club</b>
-        <small>Student Portal</small>
-      </div>
+
+     <div class="logo">
+      SC
+     </div>
+
+     <div>
+      <b>
+       Science Club
+      </b>
+
+      <small>
+       Student Portal
+      </small>
+     </div>
+
     </div>
+
 
     <nav class="nav">
 
-      <button class="navBtn active" data-page="dashboard">
-        Dashboard
-      </button>
+     <button class="navBtn active" data-page="dashboard">
+      Dashboard
+     </button>
 
-      <button class="navBtn" data-page="calendar">
-        Calendar
-      </button>
+     <button class="navBtn" data-page="calendar">
+      Calendar
+     </button>
 
-      <button class="navBtn" data-page="resources">
-        Resources
-      </button>
+     <button class="navBtn" data-page="resources">
+      Resources
+     </button>
 
-      <button class="navBtn" data-page="projects">
-        Project Lab
-      </button>
+     <button class="navBtn" data-page="projects">
+      Project Lab
+     </button>
 
-      <button class="navBtn" data-page="modules">
-        CCC Modules
-      </button>
+     <button class="navBtn" data-page="modules">
+      CCC Modules
+     </button>
 
-      <button class="navBtn" data-page="quizzes">
-        CCC Quizzes
-      </button>
+     <button class="navBtn" data-page="quizzes">
+      CCC Quizzes
+     </button>
 
-      <button class="navBtn" data-page="tutorial">
-        How to Use
-      </button>
+     <button class="navBtn" data-page="tutorial">
+      How to Use
+     </button>
 
-      <button class="navBtn" data-page="faq">
-        FAQs
-      </button>
+     <button class="navBtn" data-page="faq">
+      FAQs
+     </button>
 
     </nav>
 
+
     <div class="sideBottom">
 
-      <button id="adminButton" class="adminBtn">
-        Admin
-      </button>
+     <button class="adminBtn" id="adminButton">
+      Admin
+     </button>
 
-      <div class="tiny">
-        Use a random username. Do not use your full real name.
-      </div>
+     <div class="tiny">
+      Use a random username. Do not use your full real name.
+     </div>
 
     </div>
 
-  </aside>
+   </aside>
 
 
-  <main>
+   <main>
 
-    <div id="status" class="status">
-      ● Starting…
+    <div class="status" id="status">
+     ● Starting…
     </div>
 
 
-    <section id="authPage" class="page active">
+    <!-- =============================
+         LOGIN
+         ============================= -->
 
-      <div class="authWrap">
+    <section class="page active" id="authPage">
 
-        <div class="authCard">
+     <div class="authWrap">
 
-          <h1 style="margin:0">
-            Science Club Portal
-          </h1>
+      <div class="authCard">
 
-          <p class="muted">
-            Students use a random username + password.
-            No real name or student email is required.
-          </p>
+       <h1 style="margin:0">
+        Science Club Portal
+       </h1>
 
-          <div id="authMsg" class="msg"></div>
-
-
-          <div class="authTabs">
-
-            <button id="showLogin" class="primary">
-              Sign In
-            </button>
-
-            <button id="showSignup" class="secondary">
-              Create Account
-            </button>
-
-          </div>
+       <p class="muted">
+        Students use a random username + password.
+        No real name or student email is required.
+       </p>
 
 
-          <form id="studentAuthForm" class="form">
-
-            <label>
-              Random username
-            </label>
-
-            <div class="usernameRow">
-
-              <input
-                id="studentUsername"
-                maxlength="20"
-                autocomplete="username"
-                placeholder="Example: AtomAce47"
-                required
-              >
-
-              <button
-                type="button"
-                id="randomUsername"
-                class="secondary"
-              >
-                Generate
-              </button>
-
-            </div>
+       <div class="msg" id="authMsg">
+       </div>
 
 
-            <label>
-              Password
-            </label>
+       <div class="authTabs">
 
-            <input
-              id="studentPassword"
-              type="password"
-              minlength="6"
-              autocomplete="current-password"
-              placeholder="At least 6 characters"
-              required
-            >
+        <button class="primary" id="showLogin">
+         Sign In
+        </button>
 
+        <button class="secondary" id="showSignup">
+         Create Account
+        </button>
 
-            <button
-              id="studentAuthSubmit"
-              class="primary"
-              type="submit"
-            >
-              Sign In
-            </button>
+       </div>
 
 
-            <p id="authModeHelp" class="muted">
-              Use the same random username and password you created.
-            </p>
+       <form class="form" id="studentAuthForm">
 
-          </form>
+        <label>
+         Random username
+        </label>
 
-        </div>
+        <div class="usernameRow">
 
-      </div>
+         <input
+          autocomplete="username"
+          id="studentUsername"
+          maxlength="20"
+          placeholder="Example: AtomAce47"
+          required
+         />
 
-    </section>
-
-
-    <section id="dashboardPage" class="page">
-
-      <header class="top">
-
-        <div>
-
-          <h1>
-            Welcome,
-            <span id="welcomeName">
-              Scientist
-            </span>
-          </h1>
-
-          <p>
-            Science Club competitions, projects,
-            quizzes and deadlines in one place.
-          </p>
-
-        </div>
-
-
-        <button
-          id="studentLogout"
+         <button
           class="secondary"
-        >
-          Sign Out
-        </button>
-
-      </header>
-
-
-      <div id="studentMsg" class="msg"></div>
-
-
-      <div class="nickBanner">
-
-        <div>
-
-          <b>
-            Your private club identity
-          </b>
-
-          <p>
-            Your random username is used for activity and quiz history.
-            Do not use your real name.
-          </p>
-
-        </div>
-
-        <div>
-          <b id="profileUsername">—</b>
-        </div>
-
-      </div>
-
-
-      <section class="stats">
-
-        <div class="stat">
-          <small>Important Dates</small>
-          <strong id="dateCount">0</strong>
-        </div>
-
-        <div class="stat">
-          <small>Resources Opened</small>
-          <strong id="openedCount">0</strong>
-        </div>
-
-        <div class="stat">
-          <small>Published Modules</small>
-          <strong id="moduleCount">0</strong>
-        </div>
-
-        <div class="stat">
-          <small>Published Quizzes</small>
-          <strong id="quizCount">0</strong>
-        </div>
-
-        <div class="stat">
-          <small>CCC</small>
-          <strong style="font-size:18px">
-            Chemistry
-          </strong>
-        </div>
-
-        <div class="stat">
-          <small>WWSEF</small>
-          <strong style="font-size:18px">
-            Science Fair
-          </strong>
-        </div>
-
-      </section>
-
-
-      <div class="grid2">
-
-        <div>
-
-          <section class="card">
-
-            <h2>
-              Latest Announcement
-            </h2>
-
-            <div
-              id="latestAnnouncement"
-              class="muted"
-            >
-              Loading…
-            </div>
-
-          </section>
-
-
-          <section class="card">
-
-            <h2>
-              Resources & Assignments
-            </h2>
-
-            <div id="dashboardResources"></div>
-
-          </section>
+          id="randomUsername"
+          type="button"
+         >
+          Generate
+         </button>
 
         </div>
 
 
-        <div>
-
-          <section class="card">
-
-            <h2>
-              Upcoming Dates
-            </h2>
-
-            <div id="importantDates"></div>
-
-          </section>
-
-
-          <section class="card">
-
-            <h2>
-              Need a project idea?
-            </h2>
-
-            <p class="muted">
-              Open Project Lab for WWSEF project parameters,
-              programming project resources and a brainstorm helper.
-            </p>
-
-            <button
-              class="primary jump"
-              data-jump="projects"
-            >
-              Open Project Lab
-            </button>
-
-          </section>
-
-
-          <section class="card">
-
-            <h2>
-              CCC Learning Modules
-            </h2>
-
-            <p class="muted">
-              Work through lesson notes, practice questions,
-              short responses, checklists and resources
-              built by your club leaders.
-            </p>
-
-            <button
-              class="primary jump"
-              data-jump="modules"
-            >
-              Open Modules
-            </button>
-
-          </section>
-
-
-          <section class="card">
-
-            <h2>
-              CCC Practice
-            </h2>
-
-            <p class="muted">
-              Take quizzes written by your Science Club leaders.
-            </p>
-
-            <button
-              class="primary jump"
-              data-jump="quizzes"
-            >
-              Open Quizzes
-            </button>
-
-          </section>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <section id="calendarPage" class="page">
-
-      <header class="top">
-
-        <div>
-          <h1>Science Club Calendar</h1>
-          <p>Meetings, competitions and deadlines.</p>
-        </div>
-
-      </header>
-
-
-      <section class="card">
-
-        <div
-          class="top"
-          style="margin-bottom:12px"
-        >
-
-          <h2>
-            Calendar
-          </h2>
-
-
-          <div class="calControls">
-
-            <button
-              id="prevMonth"
-              class="secondary"
-            >
-              ‹
-            </button>
-
-            <span id="calendarMonth"></span>
-
-            <button
-              id="nextMonth"
-              class="secondary"
-            >
-              ›
-            </button>
-
-          </div>
-
-        </div>
-
-
-        <div class="calHead">
-          <div>Sun</div>
-          <div>Mon</div>
-          <div>Tue</div>
-          <div>Wed</div>
-          <div>Thu</div>
-          <div>Fri</div>
-          <div>Sat</div>
-        </div>
-
-        <div
-          id="calendarDays"
-          class="cal"
-        ></div>
-
-      </section>
-
-
-      <section class="card">
-
-        <h2>
-          All Important Dates
-        </h2>
-
-        <div id="allDates"></div>
-
-      </section>
-
-    </section>
-
-
-    <section id="resourcesPage" class="page">
-
-      <header class="top">
-
-        <div>
-          <h1>Resources & Assignments</h1>
-
-          <p>
-            CCC, WWSEF and general Science Club material.
-          </p>
-        </div>
-
-      </header>
-
-      <section class="card">
-        <div id="allResources"></div>
-      </section>
-
-    </section>
-
-
-    <section id="projectsPage" class="page">
-
-      <header class="top">
-
-        <div>
-
-          <h1>Project Lab</h1>
-
-          <p>
-            Where to find project options, rules,
-            programs and ideas to brainstorm.
-          </p>
-
-        </div>
-
-      </header>
-
-
-      <section class="card">
-
-        <h2>
-          What kind of project can we work on?
-        </h2>
-
-        <p class="muted">
-          Start by checking the current WWSEF Exhibitor Manual.
-          Common directions include engineering/design,
-          software or apps, robotics, life science,
-          chemistry, physics, mathematics and data-based studies.
-          A coding project should still have a clear question,
-          need, test or measurable outcome.
-        </p>
-
-
-        <div class="pillRow">
-
-          <span class="pill">Engineering</span>
-          <span class="pill">Software / Apps</span>
-          <span class="pill">Robotics</span>
-          <span class="pill">Life Science</span>
-          <span class="pill">Chemistry</span>
-          <span class="pill">Physics</span>
-          <span class="pill">Mathematics</span>
-          <span class="pill">Data Studies</span>
-
-        </div>
-
-      </section>
-
-
-      <section class="card">
-
-        <h2>
-          Useful places to check before choosing a project
-        </h2>
-
-
-        <div class="linkCards">
-
-          <div class="linkCard">
-
-            <h3>
-              WWSEF Exhibitor Manual
-            </h3>
-
-            <p>
-              Use this first for current local fair rules,
-              categories, expectations and project parameters.
-            </p>
-
-            <button
-              class="primary ext"
-              data-url="https://wwsef.ca/exhibitor-manual/"
-            >
-              Open Manual
-            </button>
-
-          </div>
-
-
-          <div class="linkCard">
-
-            <h3>
-              WWSEF Main Site
-            </h3>
-
-            <p>
-              Current fair information, registration details
-              and official local updates.
-            </p>
-
-            <button
-              class="primary ext"
-              data-url="https://wwsef.ca/"
-            >
-              Open WWSEF
-            </button>
-
-          </div>
-
-
-          <div class="linkCard">
-
-            <h3>
-              How to Pick a Coding Project
-            </h3>
-
-            <p>
-              Explore coding projects by programming language,
-              technology, science area or problem.
-            </p>
-
-            <button
-              class="primary ext"
-              data-url="https://www.sciencebuddies.org/science-fair-projects/references/how-to-pick-a-coding-science-project"
-            >
-              Open Guide
-            </button>
-
-          </div>
-
-
-          <div class="linkCard">
-
-            <h3>
-              Computer Science Project Ideas
-            </h3>
-
-            <p>
-              Browse software, data, simulation
-              and computing project ideas.
-            </p>
-
-            <button
-              class="primary ext"
-              data-url="https://www.sciencebuddies.org/science-fair-projects/science-projects/computer-science"
-            >
-              Browse Ideas
-            </button>
-
-          </div>
-
-
-          <div class="linkCard">
-
-            <h3>
-              Engineering & Programming Tips
-            </h3>
-
-            <p>
-              Define a need, choose design criteria,
-              build, test and improve the project.
-            </p>
-
-            <button
-              class="primary ext"
-              data-url="https://www.sciencebuddies.org/science-fair-projects/competitions/engineering-programming-project-tips"
-            >
-              Open Tips
-            </button>
-
-          </div>
-
-
-          <div class="linkCard">
-
-            <h3>
-              Chemistry Contest Resources
-            </h3>
-
-            <p>
-              Use University of Waterloo chemistry contest material
-              and past-exam resources for CCC practice.
-            </p>
-
-            <button
-              class="primary ext"
-              data-url="https://uwaterloo.ca/chemistry/about-chemistry/community-outreach/chemistry-high-school-exams"
-            >
-              Open Chemistry Resources
-            </button>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <section class="card">
-
-        <h2>
-          Project Brainstorm Helper
-        </h2>
-
-        <p class="muted">
-          Choose the type of project and the tool/program
-          you are thinking about.
-        </p>
-
-
-        <div class="brainstorm">
-
-          <select id="ideaType">
-            <option value="software">Software / App</option>
-            <option value="data">Data / Study</option>
-            <option value="engineering">Engineering / Prototype</option>
-            <option value="chemistry">Chemistry</option>
-            <option value="physics">Physics / Math</option>
-          </select>
-
-
-          <select id="ideaTool">
-            <option>Python</option>
-            <option>JavaScript / Web</option>
-            <option>Scratch</option>
-            <option>Arduino</option>
-            <option>Raspberry Pi</option>
-            <option>Spreadsheet / Data Analysis</option>
-            <option>AI / Machine Learning</option>
-            <option>No specific program yet</option>
-          </select>
-
-        </div>
+        <label>
+         Password
+        </label>
+
+        <input
+         autocomplete="current-password"
+         id="studentPassword"
+         minlength="6"
+         placeholder="At least 6 characters"
+         required
+         type="password"
+        />
 
 
         <button
-          id="brainstormBtn"
-          class="primary"
-          style="margin-top:10px"
+         class="primary"
+         id="studentAuthSubmit"
+         type="submit"
         >
-          Give Me Directions to Brainstorm
+         Sign In
         </button>
 
 
-        <div
-          id="ideaOutput"
-          class="ideaOut"
-        >
-          Pick your options and click the button.
-        </div>
-
-      </section>
-
-    </section>
-
-
-    <section id="modulesPage" class="page">
-
-      <header class="top">
-
-        <div>
-
-          <h1>
-            CCC Learning Modules
-          </h1>
-
-          <p>
-            Work through contest topics and activities
-            created by Science Club leadership.
-          </p>
-
-        </div>
-
-      </header>
-
-
-      <div
-        id="moduleMsg"
-        class="msg"
-      ></div>
-
-
-      <section
-        id="moduleListCard"
-        class="card"
-      >
-
-        <div
-          class="top"
-          style="margin-bottom:10px"
-        >
-
-          <div>
-
-            <h2>
-              Published Modules
-            </h2>
-
-            <p class="muted">
-              Choose a module to begin.
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <div
-          id="moduleList"
-          class="moduleGrid"
-        ></div>
-
-      </section>
-
-
-      <section
-        id="modulePlayerCard"
-        class="card"
-        style="display:none"
-      >
-
-        <div
-          class="top"
-          style="margin-bottom:10px"
-        >
-
-          <div>
-            <h2 id="activeModuleTitle">
-              Module
-            </h2>
-
-            <p
-              id="activeModuleDesc"
-              class="muted"
-            ></p>
-          </div>
-
-
-          <button
-            id="backModules"
-            class="secondary"
-          >
-            ← Back to Modules
-          </button>
-
-        </div>
-
-
-        <div class="moduleProgress">
-          <div id="moduleProgressBar"></div>
-        </div>
-
-
-        <p
-          id="moduleProgressText"
-          class="muted"
-          style="margin-bottom:14px"
-        >
-          0% complete
+        <p class="muted" id="authModeHelp">
+         Use the same random username and password you created.
         </p>
 
-
-        <div id="moduleActivities"></div>
-
-      </section>
-
-    </section>
-
-
-    <section id="quizzesPage" class="page">
-
-      <header class="top">
-
-        <div>
-
-          <h1>
-            CCC Quizzes
-          </h1>
-
-          <p>
-            Custom quizzes created by Science Club leadership.
-          </p>
-
-        </div>
-
-      </header>
-
-
-      <div
-        id="quizMsg"
-        class="msg"
-      ></div>
-
-
-      <section
-        id="quizListCard"
-        class="card"
-      >
-
-        <h2>
-          Available Quizzes
-        </h2>
-
-        <div
-          id="quizList"
-          class="quizGrid"
-        ></div>
-
-      </section>
-
-
-      <section
-        id="quizTakeCard"
-        class="card"
-        style="display:none"
-      >
-
-        <div
-          class="top"
-          style="margin-bottom:10px"
-        >
-
-          <div>
-
-            <h2 id="activeQuizTitle">
-              Quiz
-            </h2>
-
-            <p
-              id="activeQuizDesc"
-              class="muted"
-            ></p>
-
-          </div>
-
-
-          <button
-            id="backQuizzes"
-            class="secondary"
-          >
-            ← Back
-          </button>
-
-        </div>
-
-
-        <form id="quizForm">
-
-          <div id="quizQuestions"></div>
-
-          <button
-            class="primary"
-            type="submit"
-          >
-            Submit Quiz
-          </button>
-
-        </form>
-
-      </section>
-
-
-      <section
-        id="quizResultCard"
-        class="card"
-        style="display:none"
-      >
-
-        <div
-          class="top"
-          style="margin-bottom:10px"
-        >
-
-          <h2>
-            Your Result
-          </h2>
-
-          <button
-            id="closeResult"
-            class="secondary"
-          >
-            Back to Quizzes
-          </button>
-
-        </div>
-
-
-        <div id="quizResult"></div>
-
-      </section>
-
-
-      <section class="card">
-
-        <h2>
-          Your Recent Attempts
-        </h2>
-
-        <div id="quizAttempts"></div>
-
-      </section>
-
-    </section>
-
-
-    <section id="tutorialPage" class="page">
-
-      <header class="top">
-
-        <div>
-
-          <h1>
-            How to Use the Portal
-          </h1>
-
-          <p>
-            New member? Start here.
-          </p>
-
-        </div>
-
-
-        <button
-          id="startTour"
-          class="primary"
-        >
-          Start Guided Tutorial
-        </button>
-
-      </header>
-
-
-      <div class="tutorialGrid">
-
-        <div class="tutorialStep">
-
-          <div class="num">1</div>
-
-          <h3>
-            Create a random username
-          </h3>
-
-          <p>
-            Use something like AtomAce47, not your real name.
-            Add a password so only you can use that account.
-          </p>
-
-        </div>
-
-
-        <div class="tutorialStep">
-
-          <div class="num">2</div>
-
-          <h3>
-            Check the Dashboard
-          </h3>
-
-          <p>
-            See announcements, upcoming dates,
-            your resource activity and quiz count.
-          </p>
-
-        </div>
-
-
-        <div class="tutorialStep">
-
-          <div class="num">3</div>
-
-          <h3>
-            Open Resources
-          </h3>
-
-          <p>
-            Use CCC, WWSEF and general club materials.
-            Resource opens are associated with your random username.
-          </p>
-
-        </div>
-
-
-        <div class="tutorialStep">
-
-          <div class="num">4</div>
-
-          <h3>
-            Use Project Lab
-          </h3>
-
-          <p>
-            Check current WWSEF parameters,
-            browse project idea websites and use the
-            brainstorm helper before choosing a project.
-          </p>
-
-        </div>
-
-
-        <div class="tutorialStep">
-
-          <div class="num">5</div>
-
-          <h3>
-            Complete CCC Modules
-          </h3>
-
-          <p>
-            Open CCC Modules for lesson notes,
-            embedded videos, coded interactive simulations,
-            practice questions, short answers,
-            checklists and resources.
-          </p>
-
-        </div>
-
-
-        <div class="tutorialStep">
-
-          <div class="num">6</div>
-
-          <h3>
-            Take CCC Quizzes
-          </h3>
-
-          <p>
-            Choose a quiz, answer every question and submit.
-            Your result and explanations appear immediately.
-          </p>
-
-        </div>
-
-
-        <div class="tutorialStep">
-
-          <div class="num">7</div>
-
-          <h3>
-            Check Calendar + FAQs
-          </h3>
-
-          <p>
-            Use the Calendar for dates and FAQs for common questions.
-          </p>
-
-        </div>
+       </form>
 
       </div>
 
-    </section>
-
-
-    <section id="faqPage" class="page">
-
-      <header class="top">
-
-        <div>
-          <h1>FAQs</h1>
-
-          <p>
-            CCC, WWSEF and Science Club questions.
-          </p>
-        </div>
-
-      </header>
-
-
-      <section class="card">
-        <div id="faqList"></div>
-      </section>
+     </div>
 
     </section>
 
 
-    <section id="adminLoginPage" class="page">
+    <!-- =============================
+         DASHBOARD
+         ============================= -->
 
-      <div class="authWrap">
+    <section class="page" id="dashboardPage">
 
-        <div class="authCard">
-
-          <h2>
-            Admin Sign In
-          </h2>
-
-          <p class="muted">
-            Use the admin email/password created in Supabase.
-          </p>
-
-          <div id="adminLoginMsg" class="msg"></div>
-
-
-          <form
-            id="adminLoginForm"
-            class="form"
-          >
-
-            <label>Email</label>
-
-            <input
-              id="adminEmail"
-              type="email"
-              required
-            >
-
-
-            <label>Password</label>
-
-            <input
-              id="adminPassword"
-              type="password"
-              required
-            >
-
-
-            <button class="primary">
-              Sign In
-            </button>
-
-
-            <button
-              type="button"
-              id="cancelAdmin"
-              class="secondary"
-            >
-              Cancel
-            </button>
-
-          </form>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <section id="adminPage" class="page">
-
-      <header class="top">
-
-        <div>
-
-          <h1>
-            Admin Dashboard
-          </h1>
-
-          <p>
-            Manage content, modules, quizzes and student activity.
-          </p>
-
-        </div>
-
-
-        <button
-          id="adminLogout"
-          class="secondary"
-        >
-          Sign Out
-        </button>
-
-      </header>
-
-
-      <div
-        id="adminMsg"
-        class="msg"
-      ></div>
-
-
-      <section class="stats">
-
-        <div class="stat">
-          <small>Students</small>
-          <strong id="adminStudents">0</strong>
-        </div>
-
-        <div class="stat">
-          <small>Resource Opens</small>
-          <strong id="adminActivityCount">0</strong>
-        </div>
-
-        <div class="stat">
-          <small>Announcements</small>
-          <strong id="adminAnnouncements">0</strong>
-        </div>
-
-        <div class="stat">
-          <small>Dates</small>
-          <strong id="adminDates">0</strong>
-        </div>
-
-        <div class="stat">
-          <small>Modules</small>
-          <strong id="adminModuleCount">0</strong>
-        </div>
-
-        <div class="stat">
-          <small>Quizzes</small>
-          <strong id="adminQuizCount">0</strong>
-        </div>
-
-      </section>
-
-
-      <div class="adminGrid">
-
-        <div>
-
-          <section class="card">
-
-            <div
-              class="top"
-              style="margin-bottom:10px"
-            >
-
-              <h2>
-                Recent Student Activity
-              </h2>
-
-              <button
-                id="clearActivity"
-                class="danger"
-              >
-                Clear Activity
-              </button>
-
-            </div>
-
-
-            <div class="tableWrap">
-
-              <table>
-
-                <thead>
-
-                  <tr>
-                    <th>Username</th>
-                    <th>Action</th>
-                    <th>Resource</th>
-                    <th>Time</th>
-                  </tr>
-
-                </thead>
-
-                <tbody id="activityTable"></tbody>
-
-              </table>
-
-            </div>
-
-          </section>
-
-
-          <section class="card">
-
-            <h2>
-              CCC Module Manager
-            </h2>
-
-            <p class="muted">
-              Publish, unpublish, inspect or delete modules and activities.
-            </p>
-
-            <div id="adminModuleList"></div>
-
-          </section>
-
-
-          <section class="card">
-
-            <h2>
-              CCC Quiz Manager
-            </h2>
-
-            <div id="adminQuizList"></div>
-
-          </section>
-
-        </div>
-
-
-        <div>
-
-          <section class="card">
-
-            <h2>
-              Create CCC Module
-            </h2>
-
-            <form
-              id="createModuleForm"
-              class="form"
-            >
-
-              <label>
-                Module title
-              </label>
-
-              <input
-                id="newModuleTitle"
-                required
-                placeholder="Module 1: Atomic Structure"
-              >
-
-
-              <label>
-                Description
-              </label>
-
-              <textarea
-                id="newModuleDesc"
-                placeholder="What students will learn and practise..."
-              ></textarea>
-
-
-              <label>
-                Category
-              </label>
-
-              <select id="newModuleCat">
-                <option>CCC</option>
-                <option>Science Club</option>
-              </select>
-
-
-              <label>
-                Module order
-              </label>
-
-              <input
-                id="newModuleOrder"
-                type="number"
-                min="0"
-                value="1"
-              >
-
-
-              <button class="primary">
-                Create Draft Module
-              </button>
-
-            </form>
-
-          </section>
-
-
-          <section class="card">
-
-            <h2>
-              Add Module Activity
-            </h2>
-
-
-            <form
-              id="addModuleActivityForm"
-              class="form"
-            >
-
-              <label>
-                Module
-              </label>
-
-              <select
-                id="activityModule"
-                required
-              >
-                <option value="">
-                  Choose module
-                </option>
-              </select>
-
-
-              <label>
-                Activity type
-              </label>
-
-              <select id="activityType">
-
-                <option value="lesson">
-                  Lesson / Notes
-                </option>
-
-                <option value="video">
-                  Embedded Video
-                </option>
-
-                <option value="interactive">
-                  Interactive Animation / Simulation
-                </option>
-
-                <option value="mcq">
-                  Multiple Choice Practice
-                </option>
-
-                <option value="short_answer">
-                  Short Answer / Reflection
-                </option>
-
-                <option value="checklist">
-                  Checklist / Task
-                </option>
-
-                <option value="resource">
-                  Resource / Link
-                </option>
-
-              </select>
-
-
-              <label>
-                Activity title
-              </label>
-
-              <input
-                id="activityTitle"
-                required
-                placeholder="Electron Configuration Review"
-              >
-
-
-              <label>
-                Instructions / content
-              </label>
-
-              <textarea
-                id="activityInstructions"
-                placeholder="Explain the concept, give instructions, or write the activity prompt..."
-              ></textarea>
-
-
-              <div id="activityDynamicFields"></div>
-
-
-              <label>
-                Points
-              </label>
-
-              <input
-                id="activityPoints"
-                type="number"
-                min="0"
-                value="1"
-              >
-
-
-              <label>
-                Activity order
-              </label>
-
-              <input
-                id="activityOrder"
-                type="number"
-                min="0"
-                value="1"
-              >
-
-
-              <button class="primary">
-                Add Activity
-              </button>
-
-            </form>
-
-          </section>
-
-
-          <section class="card">
-
-            <h2>
-              Create Quiz
-            </h2>
-
-            <form
-              id="createQuizForm"
-              class="form"
-            >
-
-              <label>Title</label>
-
-              <input
-                id="newQuizTitle"
-                required
-                placeholder="Stoichiometry Practice"
-              >
-
-              <label>Description</label>
-
-              <textarea id="newQuizDesc"></textarea>
-
-              <label>Category</label>
-
-              <select id="newQuizCat">
-                <option>CCC</option>
-                <option>Science Club</option>
-              </select>
-
-              <button class="primary">
-                Create Draft Quiz
-              </button>
-
-            </form>
-
-          </section>
-
-
-          <section class="card">
-
-            <h2>
-              Add Question
-            </h2>
-
-            <form
-              id="addQuestionForm"
-              class="form"
-            >
-
-              <label>Quiz</label>
-
-              <select
-                id="questionQuiz"
-                required
-              >
-                <option value="">
-                  Choose quiz
-                </option>
-              </select>
-
-              <label>Question</label>
-
-              <textarea
-                id="qText"
-                required
-              ></textarea>
-
-              <label>A</label>
-              <input id="qA" required>
-
-              <label>B</label>
-              <input id="qB" required>
-
-              <label>C</label>
-              <input id="qC" required>
-
-              <label>D</label>
-              <input id="qD" required>
-
-              <label>
-                Correct answer
-              </label>
-
-              <select id="qCorrect">
-                <option>A</option>
-                <option>B</option>
-                <option>C</option>
-                <option>D</option>
-              </select>
-
-              <label>
-                Explanation
-              </label>
-
-              <textarea id="qExplain"></textarea>
-
-              <button class="primary">
-                Add Question
-              </button>
-
-            </form>
-
-          </section>
-
-
-          <section class="card">
-
-            <h2>
-              Add Announcement
-            </h2>
-
-            <form
-              id="announcementForm"
-              class="form"
-            >
-
-              <input
-                id="annTitle"
-                required
-                placeholder="Title"
-              >
-
-              <textarea
-                id="annMessage"
-                required
-                placeholder="Message"
-              ></textarea>
-
-              <button class="primary">
-                Post
-              </button>
-
-            </form>
-
-          </section>
-
-
-          <section class="card">
-
-            <h2>
-              Add Important Date
-            </h2>
-
-            <form
-              id="dateForm"
-              class="form"
-            >
-
-              <input
-                id="dateTitle"
-                required
-                placeholder="Event"
-              >
-
-              <input
-                id="dateValue"
-                type="date"
-                required
-              >
-
-              <select id="dateCat">
-                <option>CCC</option>
-                <option>WWSEF</option>
-                <option>Meeting</option>
-                <option>Deadline</option>
-                <option>Other</option>
-              </select>
-
-              <input
-                id="dateDetails"
-                placeholder="Details"
-              >
-
-              <button class="primary">
-                Add Date
-              </button>
-
-            </form>
-
-          </section>
-
-
-          <section class="card">
-
-            <h2>
-              Add Resource
-            </h2>
-
-            <form
-              id="resourceForm"
-              class="form"
-            >
-
-              <input
-                id="resTitle"
-                required
-                placeholder="Resource title"
-              >
-
-              <select id="resCat">
-                <option>CCC</option>
-                <option>WWSEF</option>
-                <option>Science Club</option>
-              </select>
-
-              <input
-                id="resDesc"
-                required
-                placeholder="Description"
-              >
-
-              <input
-                id="resUrl"
-                type="url"
-                placeholder="https://..."
-              >
-
-              <button class="primary">
-                Add Resource
-              </button>
-
-            </form>
-
-          </section>
-
-
-          <section class="card">
-
-            <h2>
-              Add FAQ
-            </h2>
-
-            <form
-              id="faqForm"
-              class="form"
-            >
-
-              <input
-                id="faqQ"
-                required
-                placeholder="Question"
-              >
-
-              <textarea
-                id="faqA"
-                required
-                placeholder="Answer"
-              ></textarea>
-
-              <select id="faqCat">
-                <option>General</option>
-                <option>CCC</option>
-                <option>WWSEF</option>
-                <option>Projects</option>
-                <option>Privacy</option>
-              </select>
-
-              <button class="primary">
-                Add FAQ
-              </button>
-
-            </form>
-
-          </section>
-
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-</div>
-
-
-<div id="tourOverlay" class="overlay">
-
-  <div class="tour">
-
-    <div
-      id="tourIcon"
-      class="tourIcon"
-    ></div>
-
-    <h2 id="tourTitle"></h2>
-
-    <p
-      id="tourText"
-      class="muted"
-    ></p>
-
-    <div class="tourActions">
-
-      <button
-        id="tourSkip"
-        class="secondary"
-      >
-        Skip
-      </button>
+     <header class="top">
 
       <div>
 
-        <button
-          id="tourBack"
-          class="secondary"
-        >
-          Back
-        </button>
+       <h1>
+        Welcome,
+        <span id="welcomeName">
+         Scientist
+        </span>
+       </h1>
 
-        <button
-          id="tourNext"
-          class="primary"
-        >
-          Next
-        </button>
+       <p>
+        Science Club competitions, projects, quizzes and deadlines in one place.
+       </p>
 
       </div>
 
-    </div>
 
-    <p
-      id="tourProgress"
-      class="muted"
-      style="text-align:center"
-    ></p>
+      <button class="secondary" id="studentLogout">
+       Sign Out
+      </button>
+
+     </header>
+
+
+     <div class="msg" id="studentMsg">
+     </div>
+
+
+     <div class="nickBanner">
+
+      <div>
+
+       <b>
+        Your private club identity
+       </b>
+
+       <p>
+        Your random username is used for activity and quiz history.
+        Do not use your real name.
+       </p>
+
+      </div>
+
+      <div>
+       <b id="profileUsername">
+        —
+       </b>
+      </div>
+
+     </div>
+
+
+     <section class="stats">
+
+      <div class="stat">
+       <small>
+        Important Dates
+       </small>
+       <strong id="dateCount">
+        0
+       </strong>
+      </div>
+
+      <div class="stat">
+       <small>
+        Resources Opened
+       </small>
+       <strong id="openedCount">
+        0
+       </strong>
+      </div>
+
+      <div class="stat">
+       <small>
+        Published Modules
+       </small>
+       <strong id="moduleCount">
+        0
+       </strong>
+      </div>
+
+      <div class="stat">
+       <small>
+        Published Quizzes
+       </small>
+       <strong id="quizCount">
+        0
+       </strong>
+      </div>
+
+      <div class="stat">
+       <small>
+        CCC
+       </small>
+       <strong style="font-size:18px">
+        Chemistry
+       </strong>
+      </div>
+
+      <div class="stat">
+       <small>
+        WWSEF
+       </small>
+       <strong style="font-size:18px">
+        Science Fair
+       </strong>
+      </div>
+
+     </section>
+
+
+     <div class="grid2">
+
+      <div>
+
+       <section class="card">
+
+        <h2>
+         Latest Announcement
+        </h2>
+
+        <div class="muted" id="latestAnnouncement">
+         Loading…
+        </div>
+
+       </section>
+
+
+       <section class="card">
+
+        <h2>
+         Resources &amp; Assignments
+        </h2>
+
+        <div id="dashboardResources">
+        </div>
+
+       </section>
+
+      </div>
+
+
+      <div>
+
+       <section class="card">
+
+        <h2>
+         Upcoming Dates
+        </h2>
+
+        <div id="importantDates">
+        </div>
+
+       </section>
+
+
+       <section class="card">
+
+        <h2>
+         Need a project idea?
+        </h2>
+
+        <p class="muted">
+         Open Project Lab for WWSEF project parameters,
+         programming project resources and a brainstorm helper.
+        </p>
+
+        <button
+         class="primary jump"
+         data-jump="projects"
+        >
+         Open Project Lab
+        </button>
+
+       </section>
+
+
+       <section class="card">
+
+        <h2>
+         CCC Learning Modules
+        </h2>
+
+        <p class="muted">
+         Work through lessons one part at a time.
+         Complete each activity to unlock the next part.
+        </p>
+
+        <button
+         class="primary jump"
+         data-jump="modules"
+        >
+         Open Modules
+        </button>
+
+       </section>
+
+
+       <section class="card">
+
+        <h2>
+         CCC Practice
+        </h2>
+
+        <p class="muted">
+         Take quizzes written by your Science Club leaders.
+        </p>
+
+        <button
+         class="primary jump"
+         data-jump="quizzes"
+        >
+         Open Quizzes
+        </button>
+
+       </section>
+
+      </div>
+
+     </div>
+
+    </section>
+
+
+    <!-- =============================
+         CALENDAR
+         ============================= -->
+
+    <section class="page" id="calendarPage">
+
+     <header class="top">
+
+      <div>
+
+       <h1>
+        Science Club Calendar
+       </h1>
+
+       <p>
+        Meetings, competitions and deadlines.
+       </p>
+
+      </div>
+
+     </header>
+
+
+     <section class="card">
+
+      <div
+       class="top"
+       style="margin-bottom:12px"
+      >
+
+       <h2>
+        Calendar
+       </h2>
+
+
+       <div class="calControls">
+
+        <button
+         class="secondary"
+         id="prevMonth"
+        >
+         ‹
+        </button>
+
+        <span id="calendarMonth">
+        </span>
+
+        <button
+         class="secondary"
+         id="nextMonth"
+        >
+         ›
+        </button>
+
+       </div>
+
+      </div>
+
+
+      <div class="calHead">
+
+       <div>Sun</div>
+       <div>Mon</div>
+       <div>Tue</div>
+       <div>Wed</div>
+       <div>Thu</div>
+       <div>Fri</div>
+       <div>Sat</div>
+
+      </div>
+
+
+      <div
+       class="cal"
+       id="calendarDays"
+      >
+      </div>
+
+     </section>
+
+
+     <section class="card">
+
+      <h2>
+       All Important Dates
+      </h2>
+
+      <div id="allDates">
+      </div>
+
+     </section>
+
+    </section>
+
+
+    <!-- =============================
+         RESOURCES
+         ============================= -->
+
+    <section class="page" id="resourcesPage">
+
+     <header class="top">
+
+      <div>
+
+       <h1>
+        Resources &amp; Assignments
+       </h1>
+
+       <p>
+        CCC, WWSEF and general Science Club material.
+       </p>
+
+      </div>
+
+     </header>
+
+
+     <section class="card">
+
+      <div id="allResources">
+      </div>
+
+     </section>
+
+    </section>
+
+
+    <!-- =============================
+         PROJECT LAB
+         ============================= -->
+
+    <section class="page" id="projectsPage">
+
+     <header class="top">
+
+      <div>
+
+       <h1>
+        Project Lab
+       </h1>
+
+       <p>
+        Where to find project options, rules,
+        programs and ideas to brainstorm.
+       </p>
+
+      </div>
+
+     </header>
+
+
+     <section class="card">
+
+      <h2>
+       What kind of project can we work on?
+      </h2>
+
+      <p class="muted">
+       Start by checking the current WWSEF Exhibitor Manual.
+       Common directions include engineering/design, software or apps,
+       robotics, life science, chemistry, physics,
+       mathematics and data-based studies.
+      </p>
+
+
+      <div class="pillRow">
+
+       <span class="pill">Engineering</span>
+       <span class="pill">Software / Apps</span>
+       <span class="pill">Robotics</span>
+       <span class="pill">Life Science</span>
+       <span class="pill">Chemistry</span>
+       <span class="pill">Physics</span>
+       <span class="pill">Mathematics</span>
+       <span class="pill">Data Studies</span>
+
+      </div>
+
+     </section>
+
+
+     <section class="card">
+
+      <h2>
+       Useful places to check before choosing a project
+      </h2>
+
+
+      <div class="linkCards">
+
+       <div class="linkCard">
+
+        <h3>
+         WWSEF Exhibitor Manual
+        </h3>
+
+        <p>
+         Use this first for current local fair rules,
+         categories, expectations and project parameters.
+        </p>
+
+        <button
+         class="primary ext"
+         data-url="https://wwsef.ca/exhibitor-manual/"
+        >
+         Open Manual
+        </button>
+
+       </div>
+
+
+       <div class="linkCard">
+
+        <h3>
+         WWSEF Main Site
+        </h3>
+
+        <p>
+         Current fair information,
+         registration details and official local updates.
+        </p>
+
+        <button
+         class="primary ext"
+         data-url="https://wwsef.ca/"
+        >
+         Open WWSEF
+        </button>
+
+       </div>
+
+
+       <div class="linkCard">
+
+        <h3>
+         How to Pick a Coding Project
+        </h3>
+
+        <p>
+         Explore coding projects by programming language,
+         technology, science area or problem.
+        </p>
+
+        <button
+         class="primary ext"
+         data-url="https://www.sciencebuddies.org/science-fair-projects/references/how-to-pick-a-coding-science-project"
+        >
+         Open Guide
+        </button>
+
+       </div>
+
+
+       <div class="linkCard">
+
+        <h3>
+         Computer Science Project Ideas
+        </h3>
+
+        <p>
+         Browse software, data, simulation and computing project ideas.
+        </p>
+
+        <button
+         class="primary ext"
+         data-url="https://www.sciencebuddies.org/science-fair-projects/science-projects/computer-science"
+        >
+         Browse Ideas
+        </button>
+
+       </div>
+
+
+       <div class="linkCard">
+
+        <h3>
+         Engineering &amp; Programming Tips
+        </h3>
+
+        <p>
+         Define a need, choose design criteria,
+         build, test and improve the project.
+        </p>
+
+        <button
+         class="primary ext"
+         data-url="https://www.sciencebuddies.org/science-fair-projects/competitions/engineering-programming-project-tips"
+        >
+         Open Tips
+        </button>
+
+       </div>
+
+
+       <div class="linkCard">
+
+        <h3>
+         Chemistry Contest Resources
+        </h3>
+
+        <p>
+         Use University of Waterloo chemistry contest material
+         and past-exam resources for CCC practice.
+        </p>
+
+        <button
+         class="primary ext"
+         data-url="https://uwaterloo.ca/chemistry/about-chemistry/community-outreach/chemistry-high-school-exams"
+        >
+         Open Chemistry Resources
+        </button>
+
+       </div>
+
+      </div>
+
+     </section>
+
+
+     <section class="card">
+
+      <h2>
+       Project Brainstorm Helper
+      </h2>
+
+      <p class="muted">
+       Choose the type of project and the tool/program
+       you are thinking about.
+      </p>
+
+
+      <div class="brainstorm">
+
+       <select id="ideaType">
+
+        <option value="software">
+         Software / App
+        </option>
+
+        <option value="data">
+         Data / Study
+        </option>
+
+        <option value="engineering">
+         Engineering / Prototype
+        </option>
+
+        <option value="chemistry">
+         Chemistry
+        </option>
+
+        <option value="physics">
+         Physics / Math
+        </option>
+
+       </select>
+
+
+       <select id="ideaTool">
+
+        <option>
+         Python
+        </option>
+
+        <option>
+         JavaScript / Web
+        </option>
+
+        <option>
+         Scratch
+        </option>
+
+        <option>
+         Arduino
+        </option>
+
+        <option>
+         Raspberry Pi
+        </option>
+
+        <option>
+         Spreadsheet / Data Analysis
+        </option>
+
+        <option>
+         AI / Machine Learning
+        </option>
+
+        <option>
+         No specific program yet
+        </option>
+
+       </select>
+
+      </div>
+
+
+      <button
+       class="primary"
+       id="brainstormBtn"
+       style="margin-top:10px"
+      >
+       Give Me Directions to Brainstorm
+      </button>
+
+
+      <div
+       class="ideaOut"
+       id="ideaOutput"
+      >
+       Pick your options and click the button.
+      </div>
+
+     </section>
+
+    </section>
+
+
+    <!-- =============================
+         MODULES
+         ============================= -->
+
+    <section class="page" id="modulesPage">
+
+     <header class="top">
+
+      <div>
+
+       <h1>
+        CCC Learning Modules
+       </h1>
+
+       <p>
+        Work through each module one activity at a time.
+       </p>
+
+      </div>
+
+     </header>
+
+
+     <div class="msg" id="moduleMsg">
+     </div>
+
+
+     <section
+      class="card"
+      id="moduleListCard"
+     >
+
+      <div
+       class="top"
+       style="margin-bottom:10px"
+      >
+
+       <div>
+
+        <h2>
+         Published Modules
+        </h2>
+
+        <p class="muted">
+         Choose a module to begin.
+        </p>
+
+       </div>
+
+      </div>
+
+
+      <div
+       class="moduleGrid"
+       id="moduleList"
+      >
+      </div>
+
+     </section>
+
+
+     <section
+      class="card"
+      id="modulePlayerCard"
+      style="display:none"
+     >
+
+      <div
+       class="top"
+       style="margin-bottom:10px"
+      >
+
+       <div>
+
+        <h2 id="activeModuleTitle">
+         Module
+        </h2>
+
+        <p
+         class="muted"
+         id="activeModuleDesc"
+        >
+        </p>
+
+       </div>
+
+
+       <button
+        class="secondary"
+        id="backModules"
+       >
+        ← Back to Modules
+       </button>
+
+      </div>
+
+
+      <div class="moduleProgress">
+
+       <div id="moduleProgressBar">
+       </div>
+
+      </div>
+
+
+      <p
+       class="muted"
+       id="moduleProgressText"
+       style="margin-bottom:10px"
+      >
+       0% complete
+      </p>
+
+
+      <div
+       class="moduleStepNav"
+       id="moduleStepNav"
+       aria-label="Module activities"
+      >
+      </div>
+
+
+      <div class="moduleSlideMeta">
+
+       <span id="moduleStepCounter">
+        Activity 1 of 1
+       </span>
+
+       <span id="moduleStepStatus">
+        Complete this activity to continue.
+       </span>
+
+      </div>
+
+
+      <div id="moduleActivities">
+      </div>
+
+
+      <div
+       class="moduleSlideControls"
+       id="moduleSlideControls"
+      >
+
+       <button
+        class="secondary"
+        id="modulePrevBtn"
+        type="button"
+       >
+        ← Previous
+       </button>
+
+
+       <div class="right">
+
+        <span
+         class="moduleLockedNote"
+         id="moduleLockedNote"
+        >
+         Complete this activity to unlock the next one.
+        </span>
+
+
+        <button
+         class="primary"
+         id="moduleNextBtn"
+         type="button"
+         disabled
+        >
+         Continue →
+        </button>
+
+       </div>
+
+      </div>
+
+     </section>
+
+    </section>
+
+
+    <!-- =============================
+         QUIZZES
+         ============================= -->
+
+    <section class="page" id="quizzesPage">
+
+     <header class="top">
+
+      <div>
+
+       <h1>
+        CCC Quizzes
+       </h1>
+
+       <p>
+        Custom quizzes created by Science Club leadership.
+       </p>
+
+      </div>
+
+     </header>
+
+
+     <div class="msg" id="quizMsg">
+     </div>
+
+
+     <section
+      class="card"
+      id="quizListCard"
+     >
+
+      <h2>
+       Available Quizzes
+      </h2>
+
+      <div
+       class="quizGrid"
+       id="quizList"
+      >
+      </div>
+
+     </section>
+
+
+     <section
+      class="card"
+      id="quizTakeCard"
+      style="display:none"
+     >
+
+      <div
+       class="top"
+       style="margin-bottom:10px"
+      >
+
+       <div>
+
+        <h2 id="activeQuizTitle">
+         Quiz
+        </h2>
+
+        <p
+         class="muted"
+         id="activeQuizDesc"
+        >
+        </p>
+
+       </div>
+
+
+       <button
+        class="secondary"
+        id="backQuizzes"
+       >
+        ← Back
+       </button>
+
+      </div>
+
+
+      <form id="quizForm">
+
+       <div id="quizQuestions">
+       </div>
+
+       <button
+        class="primary"
+        type="submit"
+       >
+        Submit Quiz
+       </button>
+
+      </form>
+
+     </section>
+
+
+     <section
+      class="card"
+      id="quizResultCard"
+      style="display:none"
+     >
+
+      <div
+       class="top"
+       style="margin-bottom:10px"
+      >
+
+       <h2>
+        Your Result
+       </h2>
+
+       <button
+        class="secondary"
+        id="closeResult"
+       >
+        Back to Quizzes
+       </button>
+
+      </div>
+
+
+      <div id="quizResult">
+      </div>
+
+     </section>
+
+
+     <section class="card">
+
+      <h2>
+       Your Recent Attempts
+      </h2>
+
+      <div id="quizAttempts">
+      </div>
+
+     </section>
+
+    </section>
+
+
+    <!-- =============================
+         TUTORIAL
+         ============================= -->
+
+    <section class="page" id="tutorialPage">
+
+     <header class="top">
+
+      <div>
+
+       <h1>
+        How to Use the Portal
+       </h1>
+
+       <p>
+        New member? Start here.
+       </p>
+
+      </div>
+
+
+      <button
+       class="primary"
+       id="startTour"
+      >
+       Start Guided Tutorial
+      </button>
+
+     </header>
+
+
+     <div class="tutorialGrid">
+
+      <div class="tutorialStep">
+
+       <div class="num">
+        1
+       </div>
+
+       <h3>
+        Create a random username
+       </h3>
+
+       <p>
+        Use something like AtomAce47, not your real name.
+        Add a password so only you can use that account.
+       </p>
+
+      </div>
+
+
+      <div class="tutorialStep">
+
+       <div class="num">
+        2
+       </div>
+
+       <h3>
+        Check the Dashboard
+       </h3>
+
+       <p>
+        See announcements, upcoming dates,
+        your resource activity and quiz count.
+       </p>
+
+      </div>
+
+
+      <div class="tutorialStep">
+
+       <div class="num">
+        3
+       </div>
+
+       <h3>
+        Open Resources
+       </h3>
+
+       <p>
+        Use CCC, WWSEF and general club materials.
+       </p>
+
+      </div>
+
+
+      <div class="tutorialStep">
+
+       <div class="num">
+        4
+       </div>
+
+       <h3>
+        Use Project Lab
+       </h3>
+
+       <p>
+        Check WWSEF information,
+        browse project idea websites
+        and use the brainstorm helper.
+       </p>
+
+      </div>
+
+
+      <div class="tutorialStep">
+
+       <div class="num">
+        5
+       </div>
+
+       <h3>
+        Complete CCC Modules
+       </h3>
+
+       <p>
+        Modules work one activity at a time.
+        Complete the current activity before the next one unlocks.
+       </p>
+
+      </div>
+
+
+      <div class="tutorialStep">
+
+       <div class="num">
+        6
+       </div>
+
+       <h3>
+        Take CCC Quizzes
+       </h3>
+
+       <p>
+        Choose a quiz, answer every question and submit.
+       </p>
+
+      </div>
+
+
+      <div class="tutorialStep">
+
+       <div class="num">
+        7
+       </div>
+
+       <h3>
+        Check Calendar + FAQs
+       </h3>
+
+       <p>
+        Use the Calendar for dates and FAQs for common questions.
+       </p>
+
+      </div>
+
+     </div>
+
+    </section>
+
+
+    <!-- =============================
+         FAQ
+         ============================= -->
+
+    <section class="page" id="faqPage">
+
+     <header class="top">
+
+      <div>
+
+       <h1>
+        FAQs
+       </h1>
+
+       <p>
+        CCC, WWSEF and Science Club questions.
+       </p>
+
+      </div>
+
+     </header>
+
+
+     <section class="card">
+
+      <div id="faqList">
+      </div>
+
+     </section>
+
+    </section>
+
+
+    <!-- =============================
+         ADMIN LOGIN
+         ============================= -->
+
+    <section class="page" id="adminLoginPage">
+
+     <div class="authWrap">
+
+      <div class="authCard">
+
+       <h2>
+        Admin Sign In
+       </h2>
+
+       <p class="muted">
+        Use the admin email/password created in Supabase.
+       </p>
+
+
+       <div class="msg" id="adminLoginMsg">
+       </div>
+
+
+       <form
+        class="form"
+        id="adminLoginForm"
+       >
+
+        <label>
+         Email
+        </label>
+
+        <input
+         id="adminEmail"
+         required
+         type="email"
+        />
+
+
+        <label>
+         Password
+        </label>
+
+        <input
+         id="adminPassword"
+         required
+         type="password"
+        />
+
+
+        <button class="primary">
+         Sign In
+        </button>
+
+
+        <button
+         class="secondary"
+         id="cancelAdmin"
+         type="button"
+        >
+         Cancel
+        </button>
+
+       </form>
+
+      </div>
+
+     </div>
+
+    </section>
+
+
+    <!-- =============================
+         ADMIN
+         ============================= -->
+
+    <section class="page" id="adminPage">
+
+     <header class="top">
+
+      <div>
+
+       <h1>
+        Admin Dashboard
+       </h1>
+
+       <p>
+        Manage content, modules, quizzes and student activity.
+       </p>
+
+      </div>
+
+
+      <button
+       class="secondary"
+       id="adminLogout"
+      >
+       Sign Out
+      </button>
+
+     </header>
+
+
+     <div class="msg" id="adminMsg">
+     </div>
+
+
+     <section class="stats">
+
+      <div class="stat">
+       <small>Students</small>
+       <strong id="adminStudents">0</strong>
+      </div>
+
+      <div class="stat">
+       <small>Resource Opens</small>
+       <strong id="adminActivityCount">0</strong>
+      </div>
+
+      <div class="stat">
+       <small>Announcements</small>
+       <strong id="adminAnnouncements">0</strong>
+      </div>
+
+      <div class="stat">
+       <small>Dates</small>
+       <strong id="adminDates">0</strong>
+      </div>
+
+      <div class="stat">
+       <small>Modules</small>
+       <strong id="adminModuleCount">0</strong>
+      </div>
+
+      <div class="stat">
+       <small>Quizzes</small>
+       <strong id="adminQuizCount">0</strong>
+      </div>
+
+     </section>
+
+
+     <div class="adminGrid">
+
+      <div>
+
+       <section class="card">
+
+        <div
+         class="top"
+         style="margin-bottom:10px"
+        >
+
+         <h2>
+          Recent Student Activity
+         </h2>
+
+         <button
+          class="danger"
+          id="clearActivity"
+         >
+          Clear Activity
+         </button>
+
+        </div>
+
+
+        <div class="tableWrap">
+
+         <table>
+
+          <thead>
+
+           <tr>
+
+            <th>
+             Username
+            </th>
+
+            <th>
+             Action
+            </th>
+
+            <th>
+             Resource
+            </th>
+
+            <th>
+             Time
+            </th>
+
+           </tr>
+
+          </thead>
+
+
+          <tbody id="activityTable">
+          </tbody>
+
+         </table>
+
+        </div>
+
+       </section>
+
+
+       <section class="card">
+
+        <h2>
+         CCC Module Manager
+        </h2>
+
+        <p class="muted">
+         Publish, unpublish, inspect or delete modules and activities.
+        </p>
+
+        <div id="adminModuleList">
+        </div>
+
+       </section>
+
+
+       <section class="card">
+
+        <h2>
+         CCC Quiz Manager
+        </h2>
+
+        <div id="adminQuizList">
+        </div>
+
+       </section>
+
+      </div>
+
+
+      <div>
+
+       <section class="card">
+
+        <h2>
+         Create CCC Module
+        </h2>
+
+
+        <form
+         class="form"
+         id="createModuleForm"
+        >
+
+         <label>
+          Module title
+         </label>
+
+         <input
+          id="newModuleTitle"
+          placeholder="Module 1: Atomic Structure"
+          required
+         />
+
+
+         <label>
+          Description
+         </label>
+
+         <textarea
+          id="newModuleDesc"
+          placeholder="What students will learn and practise..."
+         ></textarea>
+
+
+         <label>
+          Category
+         </label>
+
+         <select id="newModuleCat">
+
+          <option>
+           CCC
+          </option>
+
+          <option>
+           Science Club
+          </option>
+
+         </select>
+
+
+         <label>
+          Module order
+         </label>
+
+         <input
+          id="newModuleOrder"
+          min="0"
+          type="number"
+          value="1"
+         />
+
+
+         <button class="primary">
+          Create Draft Module
+         </button>
+
+        </form>
+
+       </section>
+
+
+       <section class="card">
+
+        <h2>
+         Add Module Activity
+        </h2>
+
+
+        <form
+         class="form"
+         id="addModuleActivityForm"
+        >
+
+         <label>
+          Module
+         </label>
+
+         <select
+          id="activityModule"
+          required
+         >
+
+          <option value="">
+           Choose module
+          </option>
+
+         </select>
+
+
+         <label>
+          Activity type
+         </label>
+
+         <select id="activityType">
+
+          <option value="lesson">
+           Lesson / Notes
+          </option>
+
+          <option value="video">
+           Embedded Video
+          </option>
+
+          <option value="interactive">
+           Interactive Animation / Simulation
+          </option>
+
+          <option value="mcq">
+           Multiple Choice Practice
+          </option>
+
+          <option value="short_answer">
+           Short Answer / Reflection
+          </option>
+
+          <option value="checklist">
+           Checklist / Task
+          </option>
+
+          <option value="resource">
+           Resource / Link
+          </option>
+
+         </select>
+
+
+         <label>
+          Activity title
+         </label>
+
+         <input
+          id="activityTitle"
+          placeholder="Electron Configuration Review"
+          required
+         />
+
+
+         <label>
+          Instructions / content
+         </label>
+
+         <textarea
+          id="activityInstructions"
+          placeholder="Explain the concept, give instructions, or write the activity prompt..."
+         ></textarea>
+
+
+         <div id="activityDynamicFields">
+         </div>
+
+
+         <label>
+          Points
+         </label>
+
+         <input
+          id="activityPoints"
+          min="0"
+          type="number"
+          value="1"
+         />
+
+
+         <label>
+          Activity order
+         </label>
+
+         <input
+          id="activityOrder"
+          min="0"
+          type="number"
+          value="1"
+         />
+
+
+         <button class="primary">
+          Add Activity
+         </button>
+
+        </form>
+
+       </section>
+
+
+       <section class="card">
+
+        <h2>
+         Create Quiz
+        </h2>
+
+
+        <form
+         class="form"
+         id="createQuizForm"
+        >
+
+         <label>
+          Title
+         </label>
+
+         <input
+          id="newQuizTitle"
+          placeholder="Stoichiometry Practice"
+          required
+         />
+
+
+         <label>
+          Description
+         </label>
+
+         <textarea id="newQuizDesc">
+         </textarea>
+
+
+         <label>
+          Category
+         </label>
+
+         <select id="newQuizCat">
+
+          <option>
+           CCC
+          </option>
+
+          <option>
+           Science Club
+          </option>
+
+         </select>
+
+
+         <button class="primary">
+          Create Draft Quiz
+         </button>
+
+        </form>
+
+       </section>
+
+
+       <section class="card">
+
+        <h2>
+         Add Question
+        </h2>
+
+
+        <form
+         class="form"
+         id="addQuestionForm"
+        >
+
+         <label>
+          Quiz
+         </label>
+
+         <select
+          id="questionQuiz"
+          required
+         >
+
+          <option value="">
+           Choose quiz
+          </option>
+
+         </select>
+
+
+         <label>
+          Question
+         </label>
+
+         <textarea
+          id="qText"
+          required
+         ></textarea>
+
+
+         <label>A</label>
+         <input id="qA" required/>
+
+
+         <label>B</label>
+         <input id="qB" required/>
+
+
+         <label>C</label>
+         <input id="qC" required/>
+
+
+         <label>D</label>
+         <input id="qD" required/>
+
+
+         <label>
+          Correct answer
+         </label>
+
+         <select id="qCorrect">
+
+          <option>A</option>
+          <option>B</option>
+          <option>C</option>
+          <option>D</option>
+
+         </select>
+
+
+         <label>
+          Explanation
+         </label>
+
+         <textarea id="qExplain">
+         </textarea>
+
+
+         <button class="primary">
+          Add Question
+         </button>
+
+        </form>
+
+       </section>
+
+
+       <section class="card">
+
+        <h2>
+         Add Announcement
+        </h2>
+
+
+        <form
+         class="form"
+         id="announcementForm"
+        >
+
+         <input
+          id="annTitle"
+          placeholder="Title"
+          required
+         />
+
+         <textarea
+          id="annMessage"
+          placeholder="Message"
+          required
+         ></textarea>
+
+         <button class="primary">
+          Post
+         </button>
+
+        </form>
+
+       </section>
+
+
+       <section class="card">
+
+        <h2>
+         Add Important Date
+        </h2>
+
+
+        <form
+         class="form"
+         id="dateForm"
+        >
+
+         <input
+          id="dateTitle"
+          placeholder="Event"
+          required
+         />
+
+         <input
+          id="dateValue"
+          required
+          type="date"
+         />
+
+         <select id="dateCat">
+
+          <option>CCC</option>
+          <option>WWSEF</option>
+          <option>Meeting</option>
+          <option>Deadline</option>
+          <option>Other</option>
+
+         </select>
+
+         <input
+          id="dateDetails"
+          placeholder="Details"
+         />
+
+         <button class="primary">
+          Add Date
+         </button>
+
+        </form>
+
+       </section>
+
+
+       <section class="card">
+
+        <h2>
+         Add Resource
+        </h2>
+
+
+        <form
+         class="form"
+         id="resourceForm"
+        >
+
+         <input
+          id="resTitle"
+          placeholder="Resource title"
+          required
+         />
+
+         <select id="resCat">
+
+          <option>CCC</option>
+          <option>WWSEF</option>
+          <option>Science Club</option>
+
+         </select>
+
+         <input
+          id="resDesc"
+          placeholder="Description"
+          required
+         />
+
+         <input
+          id="resUrl"
+          placeholder="https://..."
+          type="url"
+         />
+
+         <button class="primary">
+          Add Resource
+         </button>
+
+        </form>
+
+       </section>
+
+
+       <section class="card">
+
+        <h2>
+         Add FAQ
+        </h2>
+
+
+        <form
+         class="form"
+         id="faqForm"
+        >
+
+         <input
+          id="faqQ"
+          placeholder="Question"
+          required
+         />
+
+         <textarea
+          id="faqA"
+          placeholder="Answer"
+          required
+         ></textarea>
+
+         <select id="faqCat">
+
+          <option>General</option>
+          <option>CCC</option>
+          <option>WWSEF</option>
+          <option>Projects</option>
+          <option>Privacy</option>
+
+         </select>
+
+         <button class="primary">
+          Add FAQ
+         </button>
+
+        </form>
+
+       </section>
+
+      </div>
+
+     </div>
+
+    </section>
+
+   </main>
 
   </div>
 
-</div>
+
+  <div
+   class="overlay"
+   id="tourOverlay"
+  >
+
+   <div class="tour">
+
+    <div
+     class="tourIcon"
+     id="tourIcon"
+    >
+    </div>
+
+    <h2 id="tourTitle">
+    </h2>
+
+    <p
+     class="muted"
+     id="tourText"
+    >
+    </p>
 
 
-<script>
+    <div class="tourActions">
+
+     <button
+      class="secondary"
+      id="tourSkip"
+     >
+      Skip
+     </button>
+
+     <div>
+
+      <button
+       class="secondary"
+       id="tourBack"
+      >
+       Back
+      </button>
+
+      <button
+       class="primary"
+       id="tourNext"
+      >
+       Next
+      </button>
+
+     </div>
+
+    </div>
+
+
+    <p
+     class="muted"
+     id="tourProgress"
+     style="text-align:center"
+    >
+    </p>
+
+   </div>
+
+  </div>
+
+
+  <script>
 
 const SUPABASE_URL =
   "https://xmegalhjfsjvqykexyll.supabase.co";
@@ -2869,12 +3347,17 @@ let activeModuleActivities =
 let activeModuleProgress =
   [];
 
+let activeModuleStep =
+  0;
+
 
 let calYear =
-  new Date().getFullYear();
+  new Date()
+    .getFullYear();
 
 let calMonth =
-  new Date().getMonth();
+  new Date()
+    .getMonth();
 
 
 const pages = {
@@ -2918,11 +3401,11 @@ const pages = {
 const esc =
   value =>
     String(value ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#039;");
 
 
 function msg(
@@ -2934,23 +3417,29 @@ function msg(
   const element =
     $(id);
 
+
   if (
     !element
   ) {
+
     return;
+
   }
+
 
   element.textContent =
     text;
 
+
   element.className =
     `msg show ${type}`;
 
+
   setTimeout(
     () =>
-      element.classList.remove(
-        "show"
-      ),
+      element
+        .classList
+        .remove("show"),
     4500
   );
 
@@ -2964,6 +3453,7 @@ function setStatus(
 
   $("status").textContent =
     text;
+
 
   $("status")
     .classList
@@ -2983,29 +3473,30 @@ function showPage(
     .values(pages)
     .forEach(
       page =>
-        page.classList.remove(
-          "active"
-        )
+        page
+          .classList
+          .remove("active")
     );
+
 
   pages[name]
     ?.classList
-    .add(
-      "active"
-    );
+    .add("active");
+
 
   document
-    .querySelectorAll(
-      ".navBtn"
-    )
+    .querySelectorAll(".navBtn")
     .forEach(
       button =>
-        button.classList.toggle(
-          "active",
-          button.dataset.page ===
-            name
-        )
+        button
+          .classList
+          .toggle(
+            "active",
+            button.dataset.page ===
+              name
+          )
     );
+
 
   window.scrollTo(
     0,
@@ -3059,6 +3550,7 @@ function randomName() {
     "Neon"
   ];
 
+
   const second = [
     "Ace",
     "Fox",
@@ -3071,6 +3563,7 @@ function randomName() {
     "Star",
     "Quest"
   ];
+
 
   return (
     first[
@@ -3097,9 +3590,9 @@ function randomName() {
 }
 
 
-/* ================================
+/* =============================
    STUDENT AUTH
-   ================================ */
+   ============================= */
 
 function setAuthMode(
   mode
@@ -3108,25 +3601,30 @@ function setAuthMode(
   authMode =
     mode;
 
+
   $("showLogin").className =
     mode === "login"
       ? "primary"
       : "secondary";
+
 
   $("showSignup").className =
     mode === "signup"
       ? "primary"
       : "secondary";
 
+
   $("studentAuthSubmit").textContent =
     mode === "login"
       ? "Sign In"
       : "Create Account";
 
+
   $("authModeHelp").textContent =
     mode === "login"
       ? "Use the same random username and password you created."
       : "Your username should not contain your real name. Password must be at least 6 characters.";
+
 
   $("studentPassword").autocomplete =
     mode === "login"
@@ -3138,16 +3636,12 @@ function setAuthMode(
 
 $("showLogin").onclick =
   () =>
-    setAuthMode(
-      "login"
-    );
+    setAuthMode("login");
 
 
 $("showSignup").onclick =
   () =>
-    setAuthMode(
-      "signup"
-    );
+    setAuthMode("signup");
 
 
 $("randomUsername").onclick =
@@ -3163,12 +3657,14 @@ $("studentAuthForm")
 
       event.preventDefault();
 
+
       const username =
         cleanUsername(
           $("studentUsername")
             .value
             .trim()
         );
+
 
       const password =
         $("studentPassword")
@@ -3260,7 +3756,9 @@ $("studentAuthForm")
           if (
             error
           ) {
+
             throw error;
+
           }
 
 
@@ -3291,9 +3789,7 @@ $("studentAuthForm")
               profileError
           } =
             await db
-              .from(
-                "profiles"
-              )
+              .from("profiles")
               .upsert(
                 {
 
@@ -3352,7 +3848,9 @@ $("studentAuthForm")
           if (
             error
           ) {
+
             throw error;
+
           }
 
 
@@ -3412,7 +3910,9 @@ async function loadProfile() {
   if (
     !currentUser
   ) {
+
     return;
+
   }
 
 
@@ -3421,9 +3921,7 @@ async function loadProfile() {
     error
   } =
     await db
-      .from(
-        "profiles"
-      )
+      .from("profiles")
       .select(
         "nickname,username,role"
       )
@@ -3510,9 +4008,10 @@ async function enterStudent() {
 
 
   if (
-    !localStorage.getItem(
-      "scienceClubTutorialSeen"
-    )
+    !localStorage
+      .getItem(
+        "scienceClubTutorialSeen"
+      )
   ) {
 
     openTour();
@@ -3528,15 +4027,19 @@ $("studentLogout").onclick =
     await db.auth
       .signOut();
 
+
     currentUser =
       null;
+
 
     currentProfile =
       null;
 
+
     showPage(
       "auth"
     );
+
 
     setStatus(
       "● Signed out"
@@ -3566,6 +4069,7 @@ document
             return;
 
           }
+
 
           showPage(
             button.dataset.page
@@ -3613,9 +4117,9 @@ document
   );
 
 
-/* ================================
+/* =============================
    ANNOUNCEMENTS
-   ================================ */
+   ============================= */
 
 async function loadAnnouncements() {
 
@@ -3624,9 +4128,7 @@ async function loadAnnouncements() {
     error
   } =
     await db
-      .from(
-        "announcements"
-      )
+      .from("announcements")
       .select("*")
       .order(
         "created_at",
@@ -3662,21 +4164,21 @@ async function loadAnnouncements() {
 
       ? `
           <b>
-            ${esc(
-              announcements[0].title
-            )}
+           ${esc(
+             announcements[0].title
+           )}
           </b>
 
           <p>
-            ${esc(
-              announcements[0].message
-            )}
+           ${esc(
+             announcements[0].message
+           )}
           </p>
 
           <small>
-            ${new Date(
-              announcements[0].created_at
-            ).toLocaleString()}
+           ${new Date(
+             announcements[0].created_at
+           ).toLocaleString()}
           </small>
         `
 
@@ -3685,9 +4187,9 @@ async function loadAnnouncements() {
 }
 
 
-/* ================================
+/* =============================
    RESOURCES
-   ================================ */
+   ============================= */
 
 function resourceHTML(
   resource
@@ -3699,33 +4201,33 @@ function resourceHTML(
       <div class="grow">
 
         <h3>
-          ${esc(
-            resource.title
-          )}
+         ${esc(
+           resource.title
+         )}
         </h3>
 
         <p>
-          ${esc(
-            resource.category
-          )}
+         ${esc(
+           resource.category
+         )}
 
-          ${
-            resource.description
-              ? " • " +
-                esc(
-                  resource.description
-                )
-              : ""
-          }
+         ${
+           resource.description
+             ? " • " +
+               esc(
+                 resource.description
+               )
+             : ""
+         }
         </p>
 
       </div>
 
       <button
-        class="primary openRes"
-        data-id="${resource.id}"
+       class="primary openRes"
+       data-id="${resource.id}"
       >
-        Open
+       Open
       </button>
 
     </div>
@@ -3741,9 +4243,7 @@ async function loadResources() {
     error
   } =
     await db
-      .from(
-        "resources"
-      )
+      .from("resources")
       .select("*")
       .order(
         "created_at",
@@ -3840,7 +4340,9 @@ async function openResource(
   if (
     !resource
   ) {
+
     return;
+
   }
 
 
@@ -3848,9 +4350,7 @@ async function openResource(
     error
   } =
     await db
-      .from(
-        "activity"
-      )
+      .from("activity")
       .insert({
 
         user_id:
@@ -3912,7 +4412,9 @@ async function loadStudentActivity() {
     currentProfile?.role !==
       "student"
   ) {
+
     return;
+
   }
 
 
@@ -3921,9 +4423,7 @@ async function loadStudentActivity() {
     error
   } =
     await db
-      .from(
-        "activity"
-      )
+      .from("activity")
       .select("*")
       .eq(
         "user_id",
@@ -3957,9 +4457,9 @@ async function loadStudentActivity() {
 }
 
 
-/* ================================
+/* =============================
    DATES
-   ================================ */
+   ============================= */
 
 function parseDate(
   value
@@ -3968,7 +4468,9 @@ function parseDate(
   if (
     !value
   ) {
+
     return null;
+
   }
 
 
@@ -4007,36 +4509,37 @@ function dateHTML(
       <div class="grow">
 
         <h3>
-          ${esc(
-            item.title
-          )}
+         ${esc(
+           item.title
+         )}
         </h3>
 
         <p>
 
-          ${
-            date
-              ? date.toLocaleDateString()
-              : ""
-          }
+         ${
+           date
+             ? date
+                 .toLocaleDateString()
+             : ""
+         }
 
-          ${
-            item.details
-              ? " • " +
-                esc(
-                  item.details
-                )
-              : ""
-          }
+         ${
+           item.details
+             ? " • " +
+               esc(
+                 item.details
+               )
+             : ""
+         }
 
         </p>
 
       </div>
 
       <span class="badge">
-        ${esc(
-          item.category
-        )}
+       ${esc(
+         item.category
+       )}
       </span>
 
     </div>
@@ -4052,9 +4555,7 @@ async function loadDates() {
     error
   } =
     await db
-      .from(
-        "important_dates"
-      )
+      .from("important_dates")
       .select("*")
       .order(
         "event_date",
@@ -4110,6 +4611,7 @@ async function loadDates() {
             parseDate(
               item.event_date
             );
+
 
           return (
             date &&
@@ -4206,8 +4708,10 @@ function renderCalendar() {
         "div"
       );
 
+
     empty.className =
       "day blank";
+
 
     $("calendarDays")
       .appendChild(
@@ -4227,10 +4731,10 @@ function renderCalendar() {
       `${calYear}-` +
       `${String(
         calMonth + 1
-      ).padStart(2, "0")}-` +
+      ).padStart(2,"0")}-` +
       `${String(
         day
-      ).padStart(2, "0")}`;
+      ).padStart(2,"0")}`;
 
 
     const element =
@@ -4262,7 +4766,8 @@ function renderCalendar() {
 
       (
         date.toDateString() ===
-        new Date().toDateString()
+        new Date()
+          .toDateString()
           ? " today"
           : ""
       );
@@ -4328,9 +4833,9 @@ $("nextMonth").onclick =
   };
 
 
-/* ================================
+/* =============================
    FAQ
-   ================================ */
+   ============================= */
 
 async function loadFAQs() {
 
@@ -4339,9 +4844,7 @@ async function loadFAQs() {
     error
   } =
     await db
-      .from(
-        "faqs"
-      )
+      .from("faqs")
       .select("*")
       .order(
         "sort_order",
@@ -4380,31 +4883,32 @@ async function loadFAQs() {
             faq => `
 
               <details
-                style="
-                  padding:10px 0;
-                  border-bottom:1px solid var(--line)
-                "
+               style="
+                padding:10px 0;
+                border-bottom:1px solid var(--line)
+               "
               >
 
-                <summary
-                  style="
-                    font-size:12px;
-                    font-weight:750;
-                    cursor:pointer
-                  "
-                >
-                  ${esc(
-                    faq.question
-                  )}
-                </summary>
+               <summary
+                style="
+                 font-size:12px;
+                 font-weight:750;
+                 cursor:pointer
+                "
+               >
+                ${esc(
+                  faq.question
+                )}
+               </summary>
 
-                <p class="muted">
-                  ${esc(
-                    faq.answer
-                  )}
-                </p>
+               <p class="muted">
+                ${esc(
+                  faq.answer
+                )}
+               </p>
 
               </details>
+
             `
           )
           .join("")
@@ -4414,9 +4918,9 @@ async function loadFAQs() {
 }
 
 
-/* ================================
+/* =============================
    PROJECT BRAINSTORM
-   ================================ */
+   ============================= */
 
 $("brainstormBtn").onclick =
   () => {
@@ -4467,7 +4971,7 @@ $("brainstormBtn").onclick =
     $("ideaOutput").innerHTML =
       `
         <b>
-          Using ${esc(tool)}:
+         Using ${esc(tool)}:
         </b>
 
         <br>
@@ -4485,7 +4989,7 @@ $("brainstormBtn").onclick =
         <br><br>
 
         <b>
-          Next:
+         Next:
         </b>
 
         check the current WWSEF Exhibitor Manual
@@ -4495,9 +4999,10 @@ $("brainstormBtn").onclick =
   };
 
 
-/* ================================
+/* ==========================================
    CCC LEARNING MODULES
-   ================================ */
+   ONE ACTIVITY AT A TIME
+   ========================================== */
 
 async function loadModules() {
 
@@ -4547,6 +5052,7 @@ async function loadModules() {
     $("moduleList").innerHTML =
       '<p class="muted">Could not load modules. Make sure the module SQL has been run.</p>';
 
+
     return;
 
   }
@@ -4569,10 +5075,11 @@ async function loadModules() {
 function renderModuleList() {
 
   const published =
-    modules.filter(
-      module =>
-        module.is_published
-    );
+    modules
+      .filter(
+        module =>
+          module.is_published
+      );
 
 
   $("moduleList").innerHTML =
@@ -4584,33 +5091,34 @@ function renderModuleList() {
 
               <div class="moduleCard">
 
-                <span class="badge">
-                  ${esc(
-                    module.category
-                  )}
-                </span>
+               <span class="badge">
+                ${esc(
+                  module.category
+                )}
+               </span>
 
-                <h3>
-                  ${esc(
-                    module.title
-                  )}
-                </h3>
+               <h3>
+                ${esc(
+                  module.title
+                )}
+               </h3>
 
-                <p>
-                  ${esc(
-                    module.description ||
-                    "Contest preparation module"
-                  )}
-                </p>
+               <p>
+                ${esc(
+                  module.description ||
+                  "Contest preparation module"
+                )}
+               </p>
 
-                <button
-                  class="primary openModule"
-                  data-id="${module.id}"
-                >
-                  Open Module
-                </button>
+               <button
+                class="primary openModule"
+                data-id="${module.id}"
+               >
+                Open Module
+               </button>
 
               </div>
+
             `
           )
           .join("")
@@ -4658,7 +5166,9 @@ async function beginModule(
   if (
     !activeModule
   ) {
+
     return;
+
   }
 
 
@@ -4710,6 +5220,7 @@ async function beginModule(
       "err"
     );
 
+
     return;
 
   }
@@ -4734,6 +5245,26 @@ async function beginModule(
   activeModuleProgress =
     progressResult.data ||
     [];
+
+
+  const firstIncomplete =
+    activeModuleActivities
+      .findIndex(
+        activity =>
+          !progressForActivity(
+            activity.id
+          )
+          ?.is_complete
+      );
+
+
+  activeModuleStep =
+    firstIncomplete === -1
+      ? Math.max(
+          activeModuleActivities.length - 1,
+          0
+        )
+      : firstIncomplete;
 
 
   $("moduleListCard").style.display =
@@ -4819,6 +5350,10 @@ function moduleActivityTypeLabel(
 }
 
 
+/* =============================
+   YOUTUBE
+   ============================= */
+
 function getYouTubeEmbedURL(
   url
 ) {
@@ -4826,7 +5361,9 @@ function getYouTubeEmbedURL(
   if (
     !url
   ) {
+
     return "";
+
   }
 
 
@@ -4863,9 +5400,12 @@ function getYouTubeEmbedURL(
         "";
 
     } else if (
-      host === "youtube.com" ||
-      host === "m.youtube.com" ||
-      host === "music.youtube.com"
+      host ===
+        "youtube.com" ||
+      host ===
+        "m.youtube.com" ||
+      host ===
+        "music.youtube.com"
     ) {
 
       if (
@@ -4874,15 +5414,15 @@ function getYouTubeEmbedURL(
       ) {
 
         videoId =
-          parsed.searchParams.get(
-            "v"
-          ) ||
+          parsed.searchParams
+            .get("v") ||
           "";
 
       } else if (
-        parsed.pathname.startsWith(
-          "/shorts/"
-        )
+        parsed.pathname
+          .startsWith(
+            "/shorts/"
+          )
       ) {
 
         videoId =
@@ -4891,9 +5431,10 @@ function getYouTubeEmbedURL(
           "";
 
       } else if (
-        parsed.pathname.startsWith(
-          "/embed/"
-        )
+        parsed.pathname
+          .startsWith(
+            "/embed/"
+          )
       ) {
 
         videoId =
@@ -4914,9 +5455,10 @@ function getYouTubeEmbedURL(
 
 
     if (
-      !/^[A-Za-z0-9_-]{6,20}$/.test(
-        videoId
-      )
+      !/^[A-Za-z0-9_-]{6,20}$/
+        .test(
+          videoId
+        )
     ) {
 
       return "";
@@ -4942,9 +5484,9 @@ function getYouTubeEmbedURL(
 }
 
 
-/* ================================
-   INTERACTIVE ACTIVITY SANDBOX
-   ================================ */
+/* =============================
+   INTERACTIVE ACTIVITIES
+   ============================= */
 
 function buildInteractiveDocument(
   code
@@ -4959,27 +5501,19 @@ function buildInteractiveDocument(
 
   return `<!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
 
 <meta
-  name="viewport"
-  content="width=device-width,initial-scale=1.0"
+ name="viewport"
+ content="width=device-width,initial-scale=1.0"
 >
 
 <meta
-  http-equiv="Content-Security-Policy"
-  content="
-    default-src 'none';
-    style-src 'unsafe-inline';
-    script-src 'unsafe-inline';
-    img-src data: blob:;
-    font-src data:;
-    connect-src 'none';
-    media-src 'none';
-    frame-src 'none';
-  "
+ http-equiv="Content-Security-Policy"
+ content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data: blob:; font-src data:; connect-src 'none'; media-src 'none'; frame-src 'none';"
 >
 
 <style>
@@ -5038,6 +5572,7 @@ function completeActivity(){
 ${safeCode}
 
 </body>
+
 </html>`;
 
 }
@@ -5072,7 +5607,9 @@ function initializeInteractiveFrames() {
         if (
           !activity
         ) {
+
           return;
+
         }
 
 
@@ -5088,6 +5625,13 @@ function initializeInteractiveFrames() {
 }
 
 
+/*
+ Interactive activity code can call:
+ completeActivity()
+
+ That sends this message to the portal.
+*/
+
 window.addEventListener(
   "message",
   event => {
@@ -5097,7 +5641,9 @@ window.addEventListener(
       event.data.type !==
         "science-club-activity-complete"
     ) {
+
       return;
+
     }
 
 
@@ -5118,7 +5664,9 @@ window.addEventListener(
     if (
       !frame
     ) {
+
       return;
+
     }
 
 
@@ -5131,7 +5679,9 @@ window.addEventListener(
     if (
       !activityId
     ) {
+
       return;
+
     }
 
 
@@ -5144,24 +5694,64 @@ window.addEventListener(
 );
 
 
-function renderModuleActivities() {
+/* =============================
+   MODULE LOCKING
+   ============================= */
+
+function moduleStepUnlocked(
+  index
+) {
 
   if (
-    !activeModuleActivities.length
+    index <= 0
   ) {
 
-    $("moduleActivities").innerHTML =
-      '<p class="muted">This module does not have activities yet.</p>';
+    return true;
+
+  }
 
 
-    updateModuleProgressBar();
+  /*
+    To open Activity 3,
+    Activities 1 and 2 must already be complete.
+  */
+
+  return activeModuleActivities
+    .slice(
+      0,
+      index
+    )
+    .every(
+      activity =>
+        progressForActivity(
+          activity.id
+        )
+        ?.is_complete
+    );
+
+}
+
+
+/* =============================
+   TOP STEP BUTTONS
+   ============================= */
+
+function renderModuleStepNav() {
+
+  const nav =
+    $("moduleStepNav");
+
+
+  if (
+    !nav
+  ) {
 
     return;
 
   }
 
 
-  $("moduleActivities").innerHTML =
+  nav.innerHTML =
     activeModuleActivities
       .map(
         (
@@ -5169,471 +5759,662 @@ function renderModuleActivities() {
           index
         ) => {
 
-          const progress =
-            progressForActivity(
+          const done =
+            !!progressForActivity(
               activity.id
+            )
+            ?.is_complete;
+
+
+          const unlocked =
+            moduleStepUnlocked(
+              index
             );
 
 
-          const complete =
-            !!progress
-              ?.is_complete;
-
-
-          let body =
-            "";
-
-
-          if (
-            activity.activity_type ===
-            "lesson"
-          ) {
-
-            body =
-              `
-                <div class="activityBody">
-                  ${esc(
-                    activity.instructions ||
-                    ""
-                  )}
-                </div>
-
-                <button
-                  class="primary moduleCompleteBtn"
-                  data-id="${activity.id}"
-                  data-kind="lesson"
-                  style="margin-top:12px"
-                >
-                  ${
-                    complete
-                      ? "Completed"
-                      : "Mark Complete"
-                  }
-                </button>
-              `;
-
-          }
-
-
-          if (
-            activity.activity_type ===
-            "checklist"
-          ) {
-
-            body =
-              `
-                <div class="activityBody">
-                  ${esc(
-                    activity.instructions ||
-                    ""
-                  )}
-                </div>
-
-                <label
-                  class="activityOption"
-                  style="margin-top:12px"
-                >
-
-                  <input
-                    type="checkbox"
-                    id="check_${activity.id}"
-                    ${
-                      complete
-                        ? "checked"
-                        : ""
-                    }
-                  >
-
-                  <span>
-                    I completed this task.
-                  </span>
-
-                </label>
-
-                <button
-                  class="primary moduleCompleteBtn"
-                  data-id="${activity.id}"
-                  data-kind="checklist"
-                >
-                  ${
-                    complete
-                      ? "Completed"
-                      : "Save Completion"
-                  }
-                </button>
-              `;
-
-          }
-
-
-          if (
-            activity.activity_type ===
-            "resource"
-          ) {
-
-            body =
-              `
-                <div class="activityBody">
-                  ${esc(
-                    activity.instructions ||
-                    ""
-                  )}
-                </div>
-
-                <div
-                  style="
-                    display:flex;
-                    gap:7px;
-                    flex-wrap:wrap;
-                    margin-top:12px
-                  "
-                >
-
-                  ${
-                    activity.resource_url
-                      ? `
-                          <button
-                            class="secondary moduleResourceBtn"
-                            type="button"
-                            data-url="${esc(
-                              activity.resource_url
-                            )}"
-                          >
-                            Open Resource ↗
-                          </button>
-                        `
-                      : ""
-                  }
-
-                  <button
-                    class="primary moduleCompleteBtn"
-                    data-id="${activity.id}"
-                    data-kind="resource"
-                  >
-                    ${
-                      complete
-                        ? "Completed"
-                        : "Mark Complete"
-                    }
-                  </button>
-
-                </div>
-              `;
-
-          }
-
-
-          if (
-            activity.activity_type ===
-            "video"
-          ) {
-
-            const embedURL =
-              getYouTubeEmbedURL(
-                activity.resource_url
-              );
-
-
-            body =
-              `
-                <div class="activityBody">
-                  ${esc(
-                    activity.instructions ||
-                    ""
-                  )}
-                </div>
-
-                ${
-                  embedURL
-
-                    ? `
-                        <div class="videoWrapper">
-
-                          <iframe
-                            src="${embedURL}"
-                            title="${esc(
-                              activity.title
-                            )}"
-                            loading="lazy"
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allow="
-                              accelerometer;
-                              autoplay;
-                              clipboard-write;
-                              encrypted-media;
-                              gyroscope;
-                              picture-in-picture;
-                              web-share
-                            "
-                            allowfullscreen
-                          ></iframe>
-
-                        </div>
-                      `
-
-                    : `
-                        <p class="muted">
-                          This video link could not be loaded.
-                        </p>
-                      `
-                }
-
-                <div class="videoNotice">
-                  Watch the video, then mark it complete.
-                </div>
-
-                <button
-                  class="primary moduleCompleteBtn"
-                  data-id="${activity.id}"
-                  data-kind="video"
-                  style="margin-top:10px"
-                >
-                  ${
-                    complete
-                      ? "Video Completed"
-                      : "Mark Video Complete"
-                  }
-                </button>
-              `;
-
-          }
-
-
-          if (
-            activity.activity_type ===
-            "interactive"
-          ) {
-
-            body =
-              `
-                <div class="activityBody">
-                  ${esc(
-                    activity.instructions ||
-                    ""
-                  )}
-                </div>
-
-                <div class="interactiveShell">
-
-                  <iframe
-                    class="interactiveFrame"
-                    data-activity-id="${activity.id}"
-                    sandbox="allow-scripts"
-                    title="${esc(
-                      activity.title
-                    )}"
-                  ></iframe>
-
-                </div>
-
-                <div class="videoNotice">
-                  Interact with the activity.
-                  It can mark itself complete with
-                  <code>completeActivity()</code>,
-                  or you can mark it complete below.
-                </div>
-
-                <button
-                  class="primary moduleCompleteBtn"
-                  data-id="${activity.id}"
-                  data-kind="interactive"
-                  style="margin-top:10px"
-                >
-                  ${
-                    complete
-                      ? "Interactive Activity Completed"
-                      : "Mark Activity Complete"
-                  }
-                </button>
-              `;
-
-          }
-
-
-          if (
-            activity.activity_type ===
-            "mcq"
-          ) {
-
-            const oldAnswer =
-              progress
-                ?.response
-                ?.answer ||
-              "";
-
-
-            body =
-              `
-                <div class="activityBody">
-                  ${esc(
-                    activity.instructions ||
-                    ""
-                  )}
-                </div>
-
-                <div class="activityOptions">
-
-                  ${
-                    [
-                      "A",
-                      "B",
-                      "C",
-                      "D"
-                    ]
-                    .map(
-                      letter => `
-
-                        <label class="activityOption">
-
-                          <input
-                            type="radio"
-                            name="module_q_${activity.id}"
-                            value="${letter}"
-                            ${
-                              oldAnswer ===
-                              letter
-                                ? "checked"
-                                : ""
-                            }
-                          >
-
-                          <span>
-
-                            <b>
-                              ${letter}.
-                            </b>
-
-                            ${esc(
-                              activity[
-                                "option_" +
-                                letter.toLowerCase()
-                              ] ||
-                              ""
-                            )}
-
-                          </span>
-
-                        </label>
-                      `
-                    )
-                    .join("")
-                  }
-
-                </div>
-
-                <button
-                  class="primary moduleSubmitBtn"
-                  data-id="${activity.id}"
-                  data-kind="mcq"
-                >
-                  ${
-                    complete
-                      ? "Try Again"
-                      : "Check Answer"
-                  }
-                </button>
-
-                <div
-                  id="activityFeedback_${activity.id}"
-                  class="activityFeedback"
-                ></div>
-              `;
-
-          }
-
-
-          if (
-            activity.activity_type ===
-            "short_answer"
-          ) {
-
-            const oldText =
-              progress
-                ?.response
-                ?.text ||
-              "";
-
-
-            body =
-              `
-                <div class="activityBody">
-                  ${esc(
-                    activity.instructions ||
-                    ""
-                  )}
-                </div>
-
-                <textarea
-                  id="short_${activity.id}"
-                  style="
-                    width:100%;
-                    min-height:100px;
-                    margin:12px 0;
-                    border:1px solid var(--line);
-                    border-radius:4px;
-                    padding:10px
-                  "
-                  placeholder="Write your response here..."
-                >${esc(oldText)}</textarea>
-
-                <button
-                  class="primary moduleSubmitBtn"
-                  data-id="${activity.id}"
-                  data-kind="short_answer"
-                >
-                  ${
-                    complete
-                      ? "Update Response"
-                      : "Submit Response"
-                  }
-                </button>
-
-                <div
-                  id="activityFeedback_${activity.id}"
-                  class="activityFeedback"
-                ></div>
-              `;
-
-          }
+          const current =
+            index ===
+            activeModuleStep;
+
+
+          const className =
+            current
+              ? "current"
+              : done
+                ? "done"
+                : unlocked
+                  ? ""
+                  : "locked";
+
+
+          const label =
+            done
+              ? "✓"
+              : String(
+                  index + 1
+                );
 
 
           return `
-            <div
-              class="
-                activityCard
-                ${
-                  complete
-                    ? "complete"
-                    : ""
-                }
-              "
+
+            <button
+             type="button"
+             class="moduleStep ${className}"
+             data-step="${index}"
+             ${
+               unlocked
+                 ? ""
+                 : "disabled"
+             }
+             title="${esc(
+               activity.title
+             )}"
+             aria-label="Activity ${index + 1}: ${esc(
+               activity.title
+             )}${done ? ", completed" : ""}"
             >
+             ${label}
+            </button>
 
-              <div class="activityHead">
-
-                <h3>
-                  ${index + 1}.
-                  ${esc(
-                    activity.title
-                  )}
-                </h3>
-
-                <span class="activityType">
-                  ${moduleActivityTypeLabel(
-                    activity.activity_type
-                  )}
-                </span>
-
-              </div>
-
-              ${body}
-
-            </div>
           `;
 
         }
       )
       .join("");
+
+
+  nav
+    .querySelectorAll(
+      ".moduleStep:not(:disabled)"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            activeModuleStep =
+              Number(
+                button.dataset.step
+              );
+
+
+            renderModuleActivities();
+
+
+            window.scrollTo({
+              top:
+                0,
+
+              behavior:
+                "smooth"
+            });
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+/* =============================
+   DISPLAY CURRENT MODULE ACTIVITY
+   ============================= */
+
+function renderModuleActivities() {
+
+  updateModuleProgressBar();
+
+
+  if (
+    !activeModuleActivities.length
+  ) {
+
+    $("moduleStepNav").innerHTML =
+      "";
+
+
+    $("moduleStepCounter").textContent =
+      "No activities";
+
+
+    $("moduleStepStatus").textContent =
+      "";
+
+
+    $("moduleActivities").innerHTML =
+      '<p class="muted">This module does not have activities yet.</p>';
+
+
+    $("moduleSlideControls").style.display =
+      "none";
+
+
+    return;
+
+  }
+
+
+  $("moduleSlideControls").style.display =
+    "flex";
+
+
+  activeModuleStep =
+    Math.max(
+      0,
+      Math.min(
+        activeModuleStep,
+        activeModuleActivities.length - 1
+      )
+    );
+
+
+  renderModuleStepNav();
+
+
+  const activity =
+    activeModuleActivities[
+      activeModuleStep
+    ];
+
+
+  const progress =
+    progressForActivity(
+      activity.id
+    );
+
+
+  const complete =
+    !!progress
+      ?.is_complete;
+
+
+  let body =
+    "";
+
+
+  $("moduleStepCounter").textContent =
+    `Activity ${activeModuleStep + 1} of ${activeModuleActivities.length}`;
+
+
+  $("moduleStepStatus").textContent =
+    complete
+      ? "Completed — you can continue."
+      : "Complete this activity to continue.";
+
+
+  /* =====================
+     LESSON
+     ===================== */
+
+  if (
+    activity.activity_type ===
+    "lesson"
+  ) {
+
+    body =
+      `
+        <div class="activityBody">
+         ${esc(
+           activity.instructions ||
+           ""
+         )}
+        </div>
+
+        <button
+         class="primary moduleCompleteBtn"
+         data-id="${activity.id}"
+         data-kind="lesson"
+         style="margin-top:12px"
+        >
+         ${
+           complete
+             ? "Completed"
+             : "Mark Complete"
+         }
+        </button>
+      `;
+
+  }
+
+
+  /* =====================
+     CHECKLIST
+     ===================== */
+
+  if (
+    activity.activity_type ===
+    "checklist"
+  ) {
+
+    body =
+      `
+        <div class="activityBody">
+         ${esc(
+           activity.instructions ||
+           ""
+         )}
+        </div>
+
+        <label
+         class="activityOption"
+         style="margin-top:12px"
+        >
+
+         <input
+          type="checkbox"
+          id="check_${activity.id}"
+          ${
+            complete
+              ? "checked"
+              : ""
+          }
+         >
+
+         <span>
+          I completed this task.
+         </span>
+
+        </label>
+
+        <button
+         class="primary moduleCompleteBtn"
+         data-id="${activity.id}"
+         data-kind="checklist"
+        >
+         ${
+           complete
+             ? "Completed"
+             : "Save Completion"
+         }
+        </button>
+      `;
+
+  }
+
+
+  /* =====================
+     RESOURCE
+     ===================== */
+
+  if (
+    activity.activity_type ===
+    "resource"
+  ) {
+
+    body =
+      `
+        <div class="activityBody">
+         ${esc(
+           activity.instructions ||
+           ""
+         )}
+        </div>
+
+        <div
+         style="
+          display:flex;
+          gap:7px;
+          flex-wrap:wrap;
+          margin-top:12px
+         "
+        >
+
+         ${
+           activity.resource_url
+             ? `
+                 <button
+                  class="secondary moduleResourceBtn"
+                  type="button"
+                  data-url="${esc(
+                    activity.resource_url
+                  )}"
+                 >
+                  Open Resource ↗
+                 </button>
+               `
+             : ""
+         }
+
+         <button
+          class="primary moduleCompleteBtn"
+          data-id="${activity.id}"
+          data-kind="resource"
+         >
+          ${
+            complete
+              ? "Completed"
+              : "Mark Complete"
+          }
+         </button>
+
+        </div>
+      `;
+
+  }
+
+
+  /* =====================
+     VIDEO
+     ===================== */
+
+  if (
+    activity.activity_type ===
+    "video"
+  ) {
+
+    const embedURL =
+      getYouTubeEmbedURL(
+        activity.resource_url
+      );
+
+
+    body =
+      `
+        <div class="activityBody">
+         ${esc(
+           activity.instructions ||
+           ""
+         )}
+        </div>
+
+        ${
+          embedURL
+
+            ? `
+                <div class="videoWrapper">
+
+                 <iframe
+                  src="${embedURL}"
+                  title="${esc(
+                    activity.title
+                  )}"
+                  loading="lazy"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                 >
+                 </iframe>
+
+                </div>
+              `
+
+            : `
+                <p class="muted">
+                 This video link could not be loaded.
+                </p>
+              `
+        }
+
+        <div class="videoNotice">
+         Watch the video, then mark it complete.
+        </div>
+
+        <button
+         class="primary moduleCompleteBtn"
+         data-id="${activity.id}"
+         data-kind="video"
+         style="margin-top:10px"
+        >
+         ${
+           complete
+             ? "Video Completed"
+             : "Mark Video Complete"
+         }
+        </button>
+      `;
+
+  }
+
+
+  /* =====================
+     INTERACTIVE
+     ===================== */
+
+  if (
+    activity.activity_type ===
+    "interactive"
+  ) {
+
+    body =
+      `
+        <div class="activityBody">
+         ${esc(
+           activity.instructions ||
+           ""
+         )}
+        </div>
+
+        <div class="interactiveShell">
+
+         <iframe
+          class="interactiveFrame"
+          data-activity-id="${activity.id}"
+          sandbox="allow-scripts"
+          title="${esc(
+            activity.title
+          )}"
+         >
+         </iframe>
+
+        </div>
+
+        <div class="videoNotice">
+         Complete the interactive activity.
+         If its code calls
+         <code>completeActivity()</code>,
+         completion is recorded automatically.
+        </div>
+
+        <button
+         class="primary moduleCompleteBtn"
+         data-id="${activity.id}"
+         data-kind="interactive"
+         style="margin-top:10px"
+        >
+         ${
+           complete
+             ? "Interactive Activity Completed"
+             : "Mark Activity Complete"
+         }
+        </button>
+      `;
+
+  }
+
+
+  /* =====================
+     MULTIPLE CHOICE
+     ===================== */
+
+  if (
+    activity.activity_type ===
+    "mcq"
+  ) {
+
+    const oldAnswer =
+      progress
+        ?.response
+        ?.answer ||
+      "";
+
+
+    body =
+      `
+        <div class="activityBody">
+         ${esc(
+           activity.instructions ||
+           ""
+         )}
+        </div>
+
+        <div class="activityOptions">
+
+         ${
+           [
+             "A",
+             "B",
+             "C",
+             "D"
+           ]
+           .map(
+             letter => `
+
+               <label class="activityOption">
+
+                <input
+                 type="radio"
+                 name="module_q_${activity.id}"
+                 value="${letter}"
+                 ${
+                   oldAnswer ===
+                   letter
+                     ? "checked"
+                     : ""
+                 }
+                >
+
+                <span>
+
+                 <b>
+                  ${letter}.
+                 </b>
+
+                 ${esc(
+                   activity[
+                     "option_" +
+                     letter.toLowerCase()
+                   ] ||
+                   ""
+                 )}
+
+                </span>
+
+               </label>
+
+             `
+           )
+           .join("")
+         }
+
+        </div>
+
+        <button
+         class="primary moduleSubmitBtn"
+         data-id="${activity.id}"
+         data-kind="mcq"
+        >
+         ${
+           complete
+             ? "Try Again"
+             : "Check Answer"
+         }
+        </button>
+
+        <div
+         id="activityFeedback_${activity.id}"
+         class="activityFeedback"
+        >
+        </div>
+      `;
+
+  }
+
+
+  /* =====================
+     SHORT ANSWER
+     ===================== */
+
+  if (
+    activity.activity_type ===
+    "short_answer"
+  ) {
+
+    const oldText =
+      progress
+        ?.response
+        ?.text ||
+      "";
+
+
+    body =
+      `
+        <div class="activityBody">
+         ${esc(
+           activity.instructions ||
+           ""
+         )}
+        </div>
+
+        <textarea
+         id="short_${activity.id}"
+         style="
+          width:100%;
+          min-height:100px;
+          margin:12px 0;
+          border:1px solid var(--line);
+          border-radius:4px;
+          padding:10px
+         "
+         placeholder="Write your response here..."
+        >${esc(oldText)}</textarea>
+
+        <button
+         class="primary moduleSubmitBtn"
+         data-id="${activity.id}"
+         data-kind="short_answer"
+        >
+         ${
+           complete
+             ? "Update Response"
+             : "Submit Response"
+         }
+        </button>
+
+        <div
+         id="activityFeedback_${activity.id}"
+         class="activityFeedback"
+        >
+        </div>
+      `;
+
+  }
+
+
+  $("moduleActivities").innerHTML =
+    `
+      <div
+       class="activityCard ${
+         complete
+           ? "complete"
+           : ""
+       }"
+      >
+
+       <div class="activityHead">
+
+        <h3>
+         ${activeModuleStep + 1}.
+         ${esc(
+           activity.title
+         )}
+        </h3>
+
+        <span class="activityType">
+         ${moduleActivityTypeLabel(
+           activity.activity_type
+         )}
+        </span>
+
+       </div>
+
+       ${body}
+
+      </div>
+    `;
 
 
   document
@@ -5697,10 +6478,182 @@ function renderModuleActivities() {
 
   initializeInteractiveFrames();
 
-  updateModuleProgressBar();
+
+  $("modulePrevBtn").disabled =
+    activeModuleStep ===
+    0;
+
+
+  $("moduleNextBtn").disabled =
+    !complete;
+
+
+  $("moduleLockedNote").style.display =
+    complete
+      ? "none"
+      : "inline-block";
+
+
+  $("moduleNextBtn").textContent =
+    activeModuleStep ===
+      activeModuleActivities.length - 1
+      ? "Finish Module"
+      : "Continue →";
 
 }
 
+
+/* =============================
+   FINISH MODULE
+   ============================= */
+
+function showModuleCompletion() {
+
+  updateModuleProgressBar();
+
+  renderModuleStepNav();
+
+
+  $("moduleStepCounter").textContent =
+    `${activeModuleActivities.length} of ${activeModuleActivities.length} activities`;
+
+
+  $("moduleStepStatus").textContent =
+    "Module completed";
+
+
+  $("moduleActivities").innerHTML =
+    `
+      <div class="moduleCompleteScreen">
+
+       <h3>
+        Module complete
+       </h3>
+
+       <p>
+        You completed every activity in
+        <b>
+         ${esc(
+           activeModule?.title ||
+           "this module"
+         )}
+        </b>.
+       </p>
+
+       <button
+        type="button"
+        class="primary"
+        id="moduleCompleteBackBtn"
+       >
+        Back to Modules
+       </button>
+
+      </div>
+    `;
+
+
+  $("moduleSlideControls").style.display =
+    "none";
+
+
+  $("moduleCompleteBackBtn").onclick =
+    resetModuleView;
+
+}
+
+
+/* =============================
+   PREVIOUS / NEXT
+   ============================= */
+
+$("modulePrevBtn").onclick =
+  () => {
+
+    if (
+      activeModuleStep >
+      0
+    ) {
+
+      activeModuleStep--;
+
+
+      renderModuleActivities();
+
+
+      window.scrollTo({
+        top:
+          0,
+
+        behavior:
+          "smooth"
+      });
+
+    }
+
+  };
+
+
+$("moduleNextBtn").onclick =
+  () => {
+
+    const current =
+      activeModuleActivities[
+        activeModuleStep
+      ];
+
+
+    if (
+      !current ||
+      !progressForActivity(
+        current.id
+      )
+      ?.is_complete
+    ) {
+
+      msg(
+        "moduleMsg",
+        "Complete this activity before continuing.",
+        "err"
+      );
+
+
+      return;
+
+    }
+
+
+    if (
+      activeModuleStep ===
+      activeModuleActivities.length - 1
+    ) {
+
+      showModuleCompletion();
+
+      return;
+
+    }
+
+
+    activeModuleStep++;
+
+
+    renderModuleActivities();
+
+
+    window.scrollTo({
+      top:
+        0,
+
+      behavior:
+        "smooth"
+    });
+
+  };
+
+
+/* =============================
+   MODULE PROGRESS
+   ============================= */
 
 function updateModuleProgressBar() {
 
@@ -5741,6 +6694,10 @@ function updateModuleProgressBar() {
 }
 
 
+/* =============================
+   SIMPLE COMPLETION
+   ============================= */
+
 async function completeSimpleModuleActivity(
   activityId,
   kind
@@ -5762,6 +6719,7 @@ async function completeSimpleModuleActivity(
       "err"
     );
 
+
     return;
 
   }
@@ -5777,6 +6735,10 @@ async function completeSimpleModuleActivity(
 
 }
 
+
+/* =============================
+   QUESTION SUBMISSION
+   ============================= */
 
 async function submitModuleActivity(
   activityId,
@@ -5807,6 +6769,7 @@ async function submitModuleActivity(
         "Choose an answer first.",
         "err"
       );
+
 
       return;
 
@@ -5845,6 +6808,7 @@ async function submitModuleActivity(
         "err"
       );
 
+
       return;
 
     }
@@ -5864,6 +6828,10 @@ async function submitModuleActivity(
 
 }
 
+
+/* =============================
+   SAVE MODULE PROGRESS
+   ============================= */
 
 async function sendModuleActivity(
   activityId,
@@ -5902,6 +6870,7 @@ async function sendModuleActivity(
       "Could not save this activity.",
       "err"
     );
+
 
     return;
 
@@ -5976,7 +6945,8 @@ async function sendModuleActivity(
     let text =
       "";
 
-    let type =
+
+    let className =
       "neutral";
 
 
@@ -5991,7 +6961,7 @@ async function sendModuleActivity(
           : `Not quite. Correct answer: ${result.correct_option || ""}`;
 
 
-      type =
+      className =
         result.correct
           ? "good"
           : "bad";
@@ -6039,26 +7009,38 @@ async function sendModuleActivity(
 
 
     feedback.className =
-      `activityFeedback show ${type}`;
+      `activityFeedback show ${className}`;
 
   }
 
 }
 
 
+/* =============================
+   CLOSE MODULE
+   ============================= */
+
 function resetModuleView() {
 
   activeModule =
     null;
 
+
   activeModuleActivities =
     [];
+
 
   activeModuleProgress =
     [];
 
+
+  activeModuleStep =
+    0;
+
+
   $("modulePlayerCard").style.display =
     "none";
+
 
   $("moduleListCard").style.display =
     "block";
@@ -6070,15 +7052,19 @@ $("backModules").onclick =
   resetModuleView;
 
 
-/* ================================
+/* ==========================================
    ADMIN MODULE BUILDER
-   ================================ */
+   ========================================== */
 
 function renderActivityDynamicFields() {
 
   const type =
     $("activityType").value;
 
+
+  /* =====================
+     INTERACTIVE
+     ===================== */
 
   if (
     type ===
@@ -6112,6 +7098,7 @@ function renderActivityDynamicFields() {
 
 </style>
 
+
 <div class="sim">
 
   <h2>
@@ -6126,6 +7113,7 @@ function renderActivityDynamicFields() {
     id="ball"
     class="ball"
   ></div>
+
 
   <div class="controls">
 
@@ -6153,6 +7141,7 @@ function renderActivityDynamicFields() {
   </div>
 
 </div>
+
 
 <script>
 
@@ -6213,38 +7202,44 @@ document
     $("activityDynamicFields").innerHTML =
       `
         <label>
-          Interactive HTML / CSS / JavaScript
+         Interactive HTML / CSS / JavaScript
         </label>
 
         <textarea
-          id="moduleInteractiveCode"
-          class="codeEditor"
-          spellcheck="false"
+         id="moduleInteractiveCode"
+         class="codeEditor"
+         spellcheck="false"
         ></textarea>
 
         <div class="codeHelp">
-          Write a self-contained interactive activity
-          using HTML, CSS, SVG, Canvas and vanilla JavaScript.
-          External scripts, network requests, iframes
-          and remote media are blocked for safety.
-          Call <b>completeActivity()</b> anywhere in
-          your code when the student finishes the activity.
+
+         Write a self-contained interactive activity using
+         HTML, CSS, SVG, Canvas and vanilla JavaScript.
+
+         External scripts, network requests,
+         iframes and remote media are blocked for safety.
+
+         Call
+         <b>completeActivity()</b>
+         anywhere in your code when the student finishes.
+
         </div>
 
         <button
-          id="previewInteractiveBtn"
-          type="button"
-          class="secondary"
+         id="previewInteractiveBtn"
+         type="button"
+         class="secondary"
         >
-          Preview Interactive Activity
+         Preview Interactive Activity
         </button>
 
         <iframe
-          id="interactivePreview"
-          class="interactivePreview"
-          sandbox="allow-scripts"
-          title="Interactive activity preview"
-        ></iframe>
+         id="interactivePreview"
+         class="interactivePreview"
+         sandbox="allow-scripts"
+         title="Interactive activity preview"
+        >
+        </iframe>
       `;
 
 
@@ -6274,6 +7269,10 @@ document
   }
 
 
+  /* =====================
+     VIDEO
+     ===================== */
+
   if (
     type ===
     "video"
@@ -6282,27 +7281,32 @@ document
     $("activityDynamicFields").innerHTML =
       `
         <label>
-          YouTube Video URL
+         YouTube Video URL
         </label>
 
         <input
-          id="moduleVideoUrl"
-          type="url"
-          placeholder="https://www.youtube.com/watch?v=..."
-          required
+         id="moduleVideoUrl"
+         type="url"
+         placeholder="https://www.youtube.com/watch?v=..."
+         required
         >
 
         <p class="fieldHint">
-          Paste a normal YouTube, YouTube Shorts,
-          or youtu.be link. Students will watch it
-          directly inside the portal.
+         Paste a normal YouTube,
+         YouTube Shorts,
+         or youtu.be link.
         </p>
       `;
+
 
     return;
 
   }
 
+
+  /* =====================
+     MCQ
+     ===================== */
 
   if (
     type ===
@@ -6312,66 +7316,73 @@ document
     $("activityDynamicFields").innerHTML =
       `
         <label>
-          Option A
+         Option A
         </label>
 
         <input
-          id="moduleOptionA"
-          required
+         id="moduleOptionA"
+         required
         >
 
         <label>
-          Option B
+         Option B
         </label>
 
         <input
-          id="moduleOptionB"
-          required
+         id="moduleOptionB"
+         required
         >
 
         <label>
-          Option C
+         Option C
         </label>
 
         <input
-          id="moduleOptionC"
-          required
+         id="moduleOptionC"
+         required
         >
 
         <label>
-          Option D
+         Option D
         </label>
 
         <input
-          id="moduleOptionD"
-          required
+         id="moduleOptionD"
+         required
         >
 
         <label>
-          Correct answer
+         Correct answer
         </label>
 
         <select id="moduleCorrect">
-          <option>A</option>
-          <option>B</option>
-          <option>C</option>
-          <option>D</option>
+
+         <option>A</option>
+         <option>B</option>
+         <option>C</option>
+         <option>D</option>
+
         </select>
 
         <label>
-          Explanation shown after answering
+         Explanation shown after answering
         </label>
 
         <textarea
-          id="moduleExplanation"
-          placeholder="Explain why the answer is correct..."
+         id="moduleExplanation"
+         placeholder="Explain why the answer is correct..."
         ></textarea>
       `;
+
 
     return;
 
   }
 
+
+  /* =====================
+     SHORT ANSWER
+     ===================== */
 
   if (
     type ===
@@ -6381,28 +7392,33 @@ document
     $("activityDynamicFields").innerHTML =
       `
         <label>
-          Suggested / model answer
+         Suggested / model answer
         </label>
 
         <textarea
-          id="moduleModelAnswer"
-          placeholder="Students see this only after submitting their response."
+         id="moduleModelAnswer"
+         placeholder="Students see this only after submitting their response."
         ></textarea>
 
         <label>
-          Feedback / explanation
+         Feedback / explanation
         </label>
 
         <textarea
-          id="moduleExplanation"
-          placeholder="Optional extra feedback..."
+         id="moduleExplanation"
+         placeholder="Optional extra feedback..."
         ></textarea>
       `;
+
 
     return;
 
   }
 
+
+  /* =====================
+     RESOURCE
+     ===================== */
 
   if (
     type ===
@@ -6412,20 +7428,21 @@ document
     $("activityDynamicFields").innerHTML =
       `
         <label>
-          Resource URL
+         Resource URL
         </label>
 
         <input
-          id="moduleResourceUrl"
-          type="url"
-          placeholder="https://..."
+         id="moduleResourceUrl"
+         type="url"
+         placeholder="https://..."
         >
 
         <p class="fieldHint">
-          Students can open the link and then
-          mark the activity complete.
+         Students can open the link and
+         then mark the activity complete.
         </p>
       `;
+
 
     return;
 
@@ -6438,15 +7455,15 @@ document
 
       ? `
           <p class="fieldHint">
-            Use the Instructions/content box for lesson notes,
-            worked examples, formula review or contest strategy.
+           Use the Instructions/content box for lesson notes,
+           worked examples, formula review or contest strategy.
           </p>
         `
 
       : `
           <p class="fieldHint">
-            Use the Instructions/content box to describe
-            the task students need to complete.
+           Use the Instructions/content box
+           to describe the task students need to complete.
           </p>
         `;
 
@@ -6459,6 +7476,10 @@ $("activityType").onchange =
 
 renderActivityDynamicFields();
 
+
+/* =============================
+   LOAD ADMIN MODULES
+   ============================= */
 
 async function loadAdminModules() {
 
@@ -6557,11 +7578,13 @@ async function loadAdminModules() {
     adminModules
       .map(
         module => `
+
           <option value="${module.id}">
-            ${esc(
-              module.title
-            )}
+           ${esc(
+             module.title
+           )}
           </option>
+
         `
       )
       .join("");
@@ -6569,10 +7592,15 @@ async function loadAdminModules() {
 
   renderAdminModules();
 
+
   updateAdminStats();
 
 }
 
+
+/* =============================
+   ADMIN MODULE LIST
+   ============================= */
 
 function renderAdminModules() {
 
@@ -6600,121 +7628,125 @@ function renderAdminModules() {
 
                 <div class="moduleAdminItem">
 
-                  <h3>
-                    ${esc(
-                      module.title
-                    )}
-                  </h3>
-
-                  <div class="moduleAdminMeta">
-
-                    ${esc(
-                      module.category
-                    )}
-
-                    •
-
-                    ${
-                      module.is_published
-                        ? "Published"
-                        : "Draft"
-                    }
-
-                    •
-
-                    ${activities.length}
-                    activities
-
-                  </div>
+                 <h3>
+                  ${esc(
+                    module.title
+                  )}
+                 </h3>
 
 
-                  <div
-                    style="
-                      display:flex;
-                      gap:7px;
-                      flex-wrap:wrap
-                    "
-                  >
+                 <div class="moduleAdminMeta">
 
-                    <button
-                      class="secondary toggleModule"
-                      data-id="${module.id}"
-                      data-pub="${module.is_published}"
-                    >
-                      ${
-                        module.is_published
-                          ? "Unpublish"
-                          : "Publish"
-                      }
-                    </button>
+                  ${esc(
+                    module.category
+                  )}
 
-                    <button
-                      class="danger deleteModule"
-                      data-id="${module.id}"
-                    >
-                      Delete Module
-                    </button>
-
-                  </div>
-
+                  •
 
                   ${
-                    activities.length
-
-                      ? activities
-                          .map(
-                            activity => `
-
-                              <div class="moduleActivityAdmin">
-
-                                <div class="grow">
-
-                                  <b>
-                                    ${esc(
-                                      activity.title
-                                    )}
-                                  </b>
-
-                                  <br>
-
-                                  <span>
-
-                                    ${moduleActivityTypeLabel(
-                                      activity.activity_type
-                                    )}
-
-                                    •
-
-                                    order
-                                    ${activity.sort_order}
-
-                                  </span>
-
-                                </div>
-
-                                <button
-                                  class="danger deleteModuleActivity"
-                                  data-id="${activity.id}"
-                                >
-                                  Delete
-                                </button>
-
-                              </div>
-                            `
-                          )
-                          .join("")
-
-                      : `
-                          <p
-                            class="muted"
-                            style="margin-top:8px"
-                          >
-                            No activities yet.
-                          </p>
-                        `
+                    module.is_published
+                      ? "Published"
+                      : "Draft"
                   }
 
+                  •
+
+                  ${activities.length}
+                  activities
+
+                 </div>
+
+
+                 <div
+                  style="
+                   display:flex;
+                   gap:7px;
+                   flex-wrap:wrap
+                  "
+                 >
+
+                  <button
+                   class="secondary toggleModule"
+                   data-id="${module.id}"
+                   data-pub="${module.is_published}"
+                  >
+                   ${
+                     module.is_published
+                       ? "Unpublish"
+                       : "Publish"
+                   }
+                  </button>
+
+
+                  <button
+                   class="danger deleteModule"
+                   data-id="${module.id}"
+                  >
+                   Delete Module
+                  </button>
+
+                 </div>
+
+
+                 ${
+                   activities.length
+
+                     ? activities
+                         .map(
+                           activity => `
+
+                             <div class="moduleActivityAdmin">
+
+                              <div class="grow">
+
+                               <b>
+                                ${esc(
+                                  activity.title
+                                )}
+                               </b>
+
+                               <br>
+
+                               <span>
+
+                                ${moduleActivityTypeLabel(
+                                  activity.activity_type
+                                )}
+
+                                •
+
+                                order
+                                ${activity.sort_order}
+
+                               </span>
+
+                              </div>
+
+                              <button
+                               class="danger deleteModuleActivity"
+                               data-id="${activity.id}"
+                              >
+                               Delete
+                              </button>
+
+                             </div>
+
+                           `
+                         )
+                         .join("")
+
+                     : `
+                         <p
+                          class="muted"
+                          style="margin-top:8px"
+                         >
+                          No activities yet.
+                         </p>
+                       `
+                 }
+
                 </div>
+
               `;
 
             }
@@ -6785,6 +7817,10 @@ function renderAdminModules() {
 }
 
 
+/* =============================
+   CREATE MODULE
+   ============================= */
+
 $("createModuleForm")
   .addEventListener(
     "submit",
@@ -6848,12 +7884,14 @@ $("createModuleForm")
           "err"
         );
 
+
         return;
 
       }
 
 
       event.target.reset();
+
 
       $("newModuleOrder").value =
         "1";
@@ -6870,6 +7908,10 @@ $("createModuleForm")
     }
   );
 
+
+/* =============================
+   ADD MODULE ACTIVITY
+   ============================= */
 
 $("addModuleActivityForm")
   .addEventListener(
@@ -6932,24 +7974,29 @@ $("addModuleActivityForm")
             .value
             .trim();
 
+
         payload.option_b =
           $("moduleOptionB")
             .value
             .trim();
+
 
         payload.option_c =
           $("moduleOptionC")
             .value
             .trim();
 
+
         payload.option_d =
           $("moduleOptionD")
             .value
             .trim();
 
+
         payload.correct_option =
           $("moduleCorrect")
             .value;
+
 
         payload.explanation =
           $("moduleExplanation")
@@ -6970,6 +8017,7 @@ $("addModuleActivityForm")
             .value
             .trim() ||
           null;
+
 
         payload.explanation =
           $("moduleExplanation")
@@ -7047,6 +8095,7 @@ $("addModuleActivityForm")
           "err"
         );
 
+
         return;
 
       }
@@ -7061,6 +8110,7 @@ $("addModuleActivityForm")
 
       $("activityPoints").value =
         "1";
+
 
       $("activityOrder").value =
         "1";
@@ -7124,6 +8174,7 @@ async function toggleModule(
       "err"
     );
 
+
     return;
 
   }
@@ -7151,7 +8202,9 @@ async function deleteModule(
       "Delete this module, all its activities and student progress?"
     )
   ) {
+
     return;
+
   }
 
 
@@ -7184,6 +8237,7 @@ async function deleteModule(
       "err"
     );
 
+
     return;
 
   }
@@ -7209,7 +8263,9 @@ async function deleteModuleActivity(
       "Delete this activity?"
     )
   ) {
+
     return;
+
   }
 
 
@@ -7242,6 +8298,7 @@ async function deleteModuleActivity(
       "err"
     );
 
+
     return;
 
   }
@@ -7258,9 +8315,9 @@ async function deleteModuleActivity(
 }
 
 
-/* ================================
+/* =============================
    QUIZZES
-   ================================ */
+   ============================= */
 
 async function loadQuizzes() {
 
@@ -7303,10 +8360,11 @@ async function loadQuizzes() {
 
 
   const published =
-    quizzes.filter(
-      quiz =>
-        quiz.is_published
-    );
+    quizzes
+      .filter(
+        quiz =>
+          quiz.is_published
+      );
 
 
   $("quizCount").textContent =
@@ -7322,33 +8380,34 @@ async function loadQuizzes() {
 
               <div class="quizCard">
 
-                <span class="badge">
-                  ${esc(
-                    quiz.category
-                  )}
-                </span>
+               <span class="badge">
+                ${esc(
+                  quiz.category
+                )}
+               </span>
 
-                <h3>
-                  ${esc(
-                    quiz.title
-                  )}
-                </h3>
+               <h3>
+                ${esc(
+                  quiz.title
+                )}
+               </h3>
 
-                <p>
-                  ${esc(
-                    quiz.description ||
-                    "Practice quiz"
-                  )}
-                </p>
+               <p>
+                ${esc(
+                  quiz.description ||
+                  "Practice quiz"
+                )}
+               </p>
 
-                <button
-                  class="primary takeQuiz"
-                  data-id="${quiz.id}"
-                >
-                  Take Quiz
-                </button>
+               <button
+                class="primary takeQuiz"
+                data-id="${quiz.id}"
+               >
+                Take Quiz
+               </button>
 
               </div>
+
             `
           )
           .join("")
@@ -7394,7 +8453,9 @@ async function beginQuiz(
   if (
     !activeQuiz
   ) {
+
     return;
+
   }
 
 
@@ -7425,6 +8486,7 @@ async function beginQuiz(
       "Could not load quiz.",
       "err"
     );
+
 
     return;
 
@@ -7469,54 +8531,56 @@ async function beginQuiz(
 
               <div class="question">
 
-                <h3>
-                  ${index + 1}.
-                  ${esc(
-                    question.question_text
-                  )}
-                </h3>
+               <h3>
+                ${index + 1}.
+                ${esc(
+                  question.question_text
+                )}
+               </h3>
 
-                ${
-                  [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                  ]
-                  .map(
-                    letter => `
+               ${
+                 [
+                   "A",
+                   "B",
+                   "C",
+                   "D"
+                 ]
+                 .map(
+                   letter => `
 
-                      <label class="option">
+                     <label class="option">
 
-                        <input
-                          type="radio"
-                          name="q_${question.id}"
-                          value="${letter}"
-                          required
-                        >
+                      <input
+                       type="radio"
+                       name="q_${question.id}"
+                       value="${letter}"
+                       required
+                      >
 
-                        <span>
+                      <span>
 
-                          <b>
-                            ${letter}.
-                          </b>
+                       <b>
+                        ${letter}.
+                       </b>
 
-                          ${esc(
-                            question[
-                              "option_" +
-                              letter.toLowerCase()
-                            ]
-                          )}
+                       ${esc(
+                         question[
+                           "option_" +
+                           letter.toLowerCase()
+                         ]
+                       )}
 
-                        </span>
+                      </span>
 
-                      </label>
-                    `
-                  )
-                  .join("")
-                }
+                     </label>
+
+                   `
+                 )
+                 .join("")
+               }
 
               </div>
+
             `
           )
           .join("")
@@ -7543,7 +8607,9 @@ $("quizForm")
       if (
         !activeQuizQuestions.length
       ) {
+
         return;
+
       }
 
 
@@ -7571,6 +8637,7 @@ $("quizForm")
             "Answer every question first.",
             "err"
           );
+
 
           return;
 
@@ -7620,6 +8687,7 @@ $("quizForm")
           "err"
         );
 
+
         return;
 
       }
@@ -7647,14 +8715,14 @@ $("quizForm")
         `
 
           <div
-            class="card"
-            style="background:var(--primary-soft)"
+           class="card"
+           style="background:var(--primary-soft)"
           >
 
-            <b style="font-size:20px">
-              ${data.score}/${data.total}
-              (${percent}%)
-            </b>
+           <b style="font-size:20px">
+            ${data.score}/${data.total}
+            (${percent}%)
+           </b>
 
           </div>
 
@@ -7671,56 +8739,57 @@ $("quizForm")
           ) => `
 
             <div
-              class="
-                review
-                ${
-                  result.correct
-                    ? "good"
-                    : "bad"
-                }
-              "
+             class="
+              review
+              ${
+                result.correct
+                  ? "good"
+                  : "bad"
+              }
+             "
             >
 
-              <b>
+             <b>
 
-                Question ${index + 1}:
-
-                ${
-                  result.correct
-                    ? "Correct"
-                    : "Incorrect"
-                }
-
-              </b>
-
-              <br>
-
-              Your answer:
-              ${esc(
-                result.your_answer ||
-                "—"
-              )}
-
-              • Correct:
-              ${esc(
-                result.correct_option
-              )}
+              Question ${index + 1}:
 
               ${
-                result.explanation
-                  ? `
-                      <br>
-
-                      <span class="muted">
-                        ${esc(
-                          result.explanation
-                        )}
-                      </span>
-                    `
-                  : ""
+                result.correct
+                  ? "Correct"
+                  : "Incorrect"
               }
 
+             </b>
+
+             <br>
+
+             Your answer:
+             ${esc(
+               result.your_answer ||
+               "—"
+             )}
+
+             • Correct:
+             ${esc(
+               result.correct_option
+             )}
+
+             ${
+               result.explanation
+                 ? `
+                     <br>
+
+                     <span class="muted">
+                      ${esc(
+                        result.explanation
+                      )}
+                     </span>
+                   `
+                 : ""
+             }
+
             </div>
+
           `
         )
         .join("");
@@ -7771,7 +8840,9 @@ async function loadQuizAttempts() {
     currentProfile?.role !==
       "student"
   ) {
+
     return;
+
   }
 
 
@@ -7814,6 +8885,7 @@ async function loadQuizAttempts() {
     $("quizAttempts").innerHTML =
       '<p class="muted">Could not load attempts.</p>';
 
+
     return;
 
   }
@@ -7835,39 +8907,40 @@ async function loadQuizAttempts() {
 
             <div class="attempt">
 
-              <div class="grow">
+             <div class="grow">
 
-                <h3>
+              <h3>
 
-                  ${esc(
-                    quizzes.find(
-                      quiz =>
-                        Number(
-                          quiz.id
-                        ) ===
-                        Number(
-                          attempt.quiz_id
-                        )
-                    )
-                    ?.title ||
-                    "Quiz"
-                  )}
+               ${esc(
+                 quizzes.find(
+                   quiz =>
+                     Number(
+                       quiz.id
+                     ) ===
+                     Number(
+                       attempt.quiz_id
+                     )
+                 )
+                 ?.title ||
+                 "Quiz"
+               )}
 
-                </h3>
+              </h3>
 
-                <p>
-                  ${new Date(
-                    attempt.created_at
-                  ).toLocaleString()}
-                </p>
+              <p>
+               ${new Date(
+                 attempt.created_at
+               ).toLocaleString()}
+              </p>
 
-              </div>
+             </div>
 
-              <span class="badge">
-                ${attempt.score}/${attempt.total_questions}
-              </span>
+             <span class="badge">
+              ${attempt.score}/${attempt.total_questions}
+             </span>
 
             </div>
+
           `
         )
         .join("")
@@ -7877,9 +8950,9 @@ async function loadQuizAttempts() {
 }
 
 
-/* ================================
+/* =============================
    TUTORIAL
-   ================================ */
+   ============================= */
 
 const tourSteps = [
 
@@ -7913,7 +8986,7 @@ const tourSteps = [
       "Project Lab",
 
     x:
-      "Use the current WWSEF manual plus coding and engineering idea links before choosing a project."
+      "Use the WWSEF manual plus coding and engineering idea links before choosing a project."
   },
 
   {
@@ -7924,7 +8997,7 @@ const tourSteps = [
       "CCC Modules",
 
     x:
-      "Work through lesson notes, embedded videos, coded interactive animations, practice questions, short answers, checklists and resources. Your progress is saved."
+      "Modules work one activity at a time. Complete the current activity before the next part unlocks."
   },
 
   {
@@ -7975,9 +9048,7 @@ function openTour() {
 
   $("tourOverlay")
     .classList
-    .add(
-      "show"
-    );
+    .add("show");
 
 
   renderTour();
@@ -8017,7 +9088,7 @@ function renderTour() {
 
   $("tourNext").textContent =
     tourIndex ===
-    tourSteps.length - 1
+      tourSteps.length - 1
       ? "Finish"
       : "Next";
 
@@ -8028,9 +9099,7 @@ function closeTour() {
 
   $("tourOverlay")
     .classList
-    .remove(
-      "show"
-    );
+    .remove("show");
 
 
   localStorage.setItem(
@@ -8058,6 +9127,7 @@ $("tourBack").onclick =
 
       tourIndex--;
 
+
       renderTour();
 
     }
@@ -8075,6 +9145,7 @@ $("tourNext").onclick =
 
       tourIndex++;
 
+
       renderTour();
 
     } else {
@@ -8086,9 +9157,9 @@ $("tourNext").onclick =
   };
 
 
-/* ================================
+/* =============================
    ADMIN AUTH
-   ================================ */
+   ============================= */
 
 $("adminButton").onclick =
   () =>
@@ -8162,6 +9233,7 @@ $("adminLoginForm")
           "err"
         );
 
+
         return;
 
       }
@@ -8203,6 +9275,7 @@ $("adminLoginForm")
           "This account is not an admin.",
           "err"
         );
+
 
         return;
 
@@ -8384,45 +9457,44 @@ function renderAdminActivity() {
 
               <tr>
 
-                <td>
-                  @${esc(
-                    usernameFor(
-                      item.user_id
-                    )
-                  )}
-                </td>
+               <td>
+                @${esc(
+                  usernameFor(
+                    item.user_id
+                  )
+                )}
+               </td>
 
-                <td>
-                  ${esc(
-                    item.action
-                  )}
-                </td>
+               <td>
+                ${esc(
+                  item.action
+                )}
+               </td>
 
-                <td>
-                  ${esc(
-                    item.resource_title ||
-                    ""
-                  )}
-                </td>
+               <td>
+                ${esc(
+                  item.resource_title ||
+                  ""
+                )}
+               </td>
 
-                <td>
-                  ${new Date(
-                    item.created_at
-                  ).toLocaleString()}
-                </td>
+               <td>
+                ${new Date(
+                  item.created_at
+                ).toLocaleString()}
+               </td>
 
               </tr>
+
             `
           )
           .join("")
 
       : `
           <tr>
-
-            <td colspan="4">
-              No activity yet.
-            </td>
-
+           <td colspan="4">
+            No activity yet.
+           </td>
           </tr>
         `;
 
@@ -8463,9 +9535,9 @@ function updateAdminStats() {
 }
 
 
-/* ================================
+/* =============================
    ADMIN QUIZZES
-   ================================ */
+   ============================= */
 
 async function loadAdminQuizzes() {
 
@@ -8516,56 +9588,53 @@ async function loadAdminQuizzes() {
 
               <div class="dateRow">
 
-                <div class="grow">
+               <div class="grow">
 
-                  <h3>
-                    ${esc(
-                      quiz.title
-                    )}
-                  </h3>
+                <h3>
+                 ${esc(
+                   quiz.title
+                 )}
+                </h3>
 
-                  <p>
+                <p>
 
-                    ${esc(
-                      quiz.category
-                    )}
+                 ${esc(
+                   quiz.category
+                 )}
 
-                    •
+                 •
 
-                    ${
-                      quiz.is_published
-                        ? "Published"
-                        : "Draft"
-                    }
+                 ${
+                   quiz.is_published
+                     ? "Published"
+                     : "Draft"
+                 }
 
-                  </p>
+                </p>
 
-                </div>
+               </div>
 
+               <button
+                class="secondary toggleQuiz"
+                data-id="${quiz.id}"
+                data-pub="${quiz.is_published}"
+               >
+                ${
+                  quiz.is_published
+                    ? "Unpublish"
+                    : "Publish"
+                }
+               </button>
 
-                <button
-                  class="secondary toggleQuiz"
-                  data-id="${quiz.id}"
-                  data-pub="${quiz.is_published}"
-                >
-
-                  ${
-                    quiz.is_published
-                      ? "Unpublish"
-                      : "Publish"
-                  }
-
-                </button>
-
-
-                <button
-                  class="danger deleteQuiz"
-                  data-id="${quiz.id}"
-                >
-                  Delete
-                </button>
+               <button
+                class="danger deleteQuiz"
+                data-id="${quiz.id}"
+               >
+                Delete
+               </button>
 
               </div>
+
             `
           )
           .join("")
@@ -8581,10 +9650,11 @@ async function loadAdminQuizzes() {
         quiz => `
 
           <option value="${quiz.id}">
-            ${esc(
-              quiz.title
-            )}
+           ${esc(
+             quiz.title
+           )}
           </option>
+
         `
       )
       .join("");
@@ -8691,6 +9761,7 @@ $("createQuizForm")
           "err"
         );
 
+
         return;
 
       }
@@ -8787,6 +9858,7 @@ $("addQuestionForm")
           "err"
         );
 
+
         return;
 
       }
@@ -8836,6 +9908,7 @@ async function toggleQuiz(
       "err"
     );
 
+
     return;
 
   }
@@ -8863,7 +9936,9 @@ async function deleteQuiz(
       "Delete this quiz and all its questions?"
     )
   ) {
+
     return;
+
   }
 
 
@@ -8891,6 +9966,7 @@ async function deleteQuiz(
       "err"
     );
 
+
     return;
 
   }
@@ -8907,9 +9983,9 @@ async function deleteQuiz(
 }
 
 
-/* ================================
+/* =============================
    ADMIN CONTENT
-   ================================ */
+   ============================= */
 
 $("announcementForm")
   .addEventListener(
@@ -8953,6 +10029,7 @@ $("announcementForm")
           "Could not post announcement.",
           "err"
         );
+
 
         return;
 
@@ -9028,6 +10105,7 @@ $("dateForm")
           "Could not add date.",
           "err"
         );
+
 
         return;
 
@@ -9105,6 +10183,7 @@ $("resourceForm")
           "err"
         );
 
+
         return;
 
       }
@@ -9176,6 +10255,7 @@ $("faqForm")
           "err"
         );
 
+
         return;
 
       }
@@ -9204,7 +10284,9 @@ $("clearActivity").onclick =
         "Clear all student resource activity?"
       )
     ) {
+
       return;
+
     }
 
 
@@ -9231,6 +10313,7 @@ $("clearActivity").onclick =
         "Could not clear activity.",
         "err"
       );
+
 
       return;
 
@@ -9281,9 +10364,9 @@ $("adminLogout").onclick =
   };
 
 
-/* ================================
+/* =============================
    START
-   ================================ */
+   ============================= */
 
 async function start() {
 
@@ -9414,1793 +10497,7 @@ async function start() {
 
 start();
 
-</script>
+  </script>
 
-</body>
+ </body>
 </html>
-<!-- ==========================================
-     CODEHS-STYLE MODULE PARTS
-     ========================================== -->
-
-<style>
-
-.module-part-progress {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding: 5px 0 18px;
-}
-
-.module-part-button {
-  width: 40px;
-  height: 40px;
-  flex: 0 0 40px;
-
-  border: 1px solid #cbd5dc;
-  border-radius: 6px;
-
-  background: white;
-  color: #52636f;
-
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.module-part-button.current {
-  background: #17324a;
-  border-color: #17324a;
-  color: white;
-}
-
-.module-part-button.complete {
-  background: #edf7f3;
-  border-color: #b9d9ce;
-  color: #2f6659;
-}
-
-.module-part-button.locked {
-  background: #f2f4f5;
-  border-color: #e0e5e8;
-  color: #9ba6ad;
-  cursor: not-allowed;
-}
-
-
-.module-part-info {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-
-  padding: 11px 13px;
-  margin-bottom: 15px;
-
-  border: 1px solid #dbe2e8;
-  border-radius: 5px;
-
-  background: #f8fafb;
-
-  font-size: 11px;
-  color: #667482;
-}
-
-
-.module-part-card {
-  border: 1px solid #dbe2e8;
-  border-radius: 7px;
-  background: white;
-  padding: 20px;
-}
-
-
-.module-part-header {
-  display: flex;
-  justify-content: space-between;
-  gap: 15px;
-  align-items: flex-start;
-
-  margin-bottom: 15px;
-}
-
-
-.module-part-header h3 {
-  margin: 0;
-  color: #17324a;
-}
-
-
-.module-part-type {
-  padding: 5px 8px;
-
-  border: 1px solid #d9e6eb;
-  border-radius: 4px;
-
-  background: #edf4f7;
-  color: #275f75;
-
-  font-size: 9px;
-  font-weight: bold;
-}
-
-
-.module-navigation {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  gap: 10px;
-
-  margin-top: 18px;
-  padding-top: 18px;
-
-  border-top: 1px solid #dbe2e8;
-}
-
-
-.module-navigation-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-
-.module-locked-message {
-  padding: 8px 10px;
-
-  border: 1px solid #eadfbf;
-  border-radius: 4px;
-
-  background: #fff9e8;
-  color: #79683f;
-
-  font-size: 10px;
-}
-
-
-.module-navigation button {
-  padding: 10px 15px;
-
-  border-radius: 5px;
-
-  font-weight: bold;
-  cursor: pointer;
-}
-
-
-.module-navigation button:disabled {
-  opacity: .4;
-  cursor: not-allowed;
-}
-
-
-.module-complete-screen {
-  text-align: center;
-  padding: 45px 20px;
-}
-
-
-.module-complete-screen h2 {
-  color: #17324a;
-  font-size: 27px;
-  margin-bottom: 8px;
-}
-
-
-.module-complete-screen p {
-  color: #667482;
-}
-
-
-.module-video {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-
-  margin: 15px 0;
-
-  border: 0;
-  border-radius: 7px;
-
-  background: black;
-}
-
-
-.module-interactive {
-  width: 100%;
-  min-height: 430px;
-
-  border: 1px solid #dbe2e8;
-  border-radius: 7px;
-
-  margin-top: 15px;
-}
-
-</style>
-
-
-<!-- ==========================================
-     MODULE PLAYER
-     ========================================== -->
-
-<div id="modulePartPlayer">
-
-  <div
-    id="modulePartProgress"
-    class="module-part-progress"
-  ></div>
-
-
-  <div class="module-part-info">
-
-    <span id="modulePartNumber">
-      Part 1 of 1
-    </span>
-
-    <span id="modulePartStatus">
-      Complete this part to continue.
-    </span>
-
-  </div>
-
-
-  <div id="modulePartContent"></div>
-
-
-  <div
-    id="modulePartNavigation"
-    class="module-navigation"
-  >
-
-    <button
-      id="modulePrevious"
-      class="secondary"
-      type="button"
-    >
-      ← Previous
-    </button>
-
-
-    <div class="module-navigation-right">
-
-      <span
-        id="modulePartLocked"
-        class="module-locked-message"
-      >
-        Complete this part to unlock the next one.
-      </span>
-
-
-      <button
-        id="moduleContinue"
-        class="primary"
-        type="button"
-        disabled
-      >
-        Continue →
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<script>
-
-/*
-  activeModuleActivities
-  = activities belonging to the currently opened module.
-
-  activeModuleProgress
-  = student's saved progress.
-
-  These already exist in your portal.
-*/
-
-let currentModulePart = 0;
-
-
-/* ------------------------------------------
-   FIND SAVED PROGRESS FOR AN ACTIVITY
-   ------------------------------------------ */
-
-function getPartProgress(
-  activityId
-) {
-
-  return activeModuleProgress.find(
-    item =>
-      Number(
-        item.activity_id
-      ) ===
-      Number(
-        activityId
-      )
-  );
-
-}
-
-
-/* ------------------------------------------
-   CHECK WHETHER A PART IS UNLOCKED
-   ------------------------------------------ */
-
-function partIsUnlocked(
-  partIndex
-) {
-
-  if (
-    partIndex === 0
-  ) {
-
-    return true;
-
-  }
-
-
-  /*
-    Every activity before this one
-    must already be complete.
-  */
-
-  return activeModuleActivities
-    .slice(
-      0,
-      partIndex
-    )
-    .every(
-      activity => {
-
-        return !!getPartProgress(
-          activity.id
-        )?.is_complete;
-
-      }
-    );
-
-}
-
-
-/* ------------------------------------------
-   DISPLAY TOP PART BUTTONS
-   ------------------------------------------ */
-
-function renderModulePartProgress() {
-
-  const holder =
-    document.getElementById(
-      "modulePartProgress"
-    );
-
-
-  holder.innerHTML =
-    activeModuleActivities
-      .map(
-        (
-          activity,
-          index
-        ) => {
-
-          const complete =
-            !!getPartProgress(
-              activity.id
-            )?.is_complete;
-
-
-          const unlocked =
-            partIsUnlocked(
-              index
-            );
-
-
-          let className =
-            "module-part-button";
-
-
-          if (
-            index ===
-            currentModulePart
-          ) {
-
-            className +=
-              " current";
-
-          } else if (
-            complete
-          ) {
-
-            className +=
-              " complete";
-
-          } else if (
-            !unlocked
-          ) {
-
-            className +=
-              " locked";
-
-          }
-
-
-          return `
-            <button
-              type="button"
-
-              class="${className}"
-
-              data-part="${index}"
-
-              ${
-                unlocked
-                  ? ""
-                  : "disabled"
-              }
-
-              title="Part ${index + 1}: ${escapeModuleText(
-                activity.title
-              )}"
-            >
-
-              ${
-                complete
-                  ? "✓"
-                  : index + 1
-              }
-
-            </button>
-          `;
-
-        }
-      )
-      .join("");
-
-
-  holder
-    .querySelectorAll(
-      ".module-part-button:not(:disabled)"
-    )
-    .forEach(
-      button => {
-
-        button.addEventListener(
-          "click",
-          () => {
-
-            currentModulePart =
-              Number(
-                button.dataset.part
-              );
-
-
-            renderCurrentModulePart();
-
-          }
-        );
-
-      }
-    );
-
-}
-
-
-/* ------------------------------------------
-   BASIC SAFE TEXT
-   ------------------------------------------ */
-
-function escapeModuleText(
-  value
-) {
-
-  return String(
-    value ?? ""
-  )
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-    .replace(
-      /</g,
-      "&lt;"
-    )
-    .replace(
-      />/g,
-      "&gt;"
-    )
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-
-}
-
-
-/* ------------------------------------------
-   ACTIVITY TYPE LABEL
-   ------------------------------------------ */
-
-function modulePartType(
-  type
-) {
-
-  const labels = {
-
-    lesson:
-      "LESSON",
-
-    video:
-      "VIDEO",
-
-    interactive:
-      "INTERACTIVE",
-
-    mcq:
-      "PRACTICE",
-
-    short_answer:
-      "SHORT ANSWER",
-
-    checklist:
-      "TASK",
-
-    resource:
-      "RESOURCE"
-
-  };
-
-
-  return (
-    labels[type] ||
-    type.toUpperCase()
-  );
-
-}
-
-
-/* ------------------------------------------
-   YOUTUBE URL → EMBED
-   ------------------------------------------ */
-
-function moduleYouTubeEmbed(
-  url
-) {
-
-  if (
-    !url
-  ) {
-
-    return "";
-
-  }
-
-
-  try {
-
-    const parsed =
-      new URL(
-        url
-      );
-
-
-    let id =
-      "";
-
-
-    if (
-      parsed.hostname.includes(
-        "youtu.be"
-      )
-    ) {
-
-      id =
-        parsed.pathname
-          .split("/")
-          .filter(Boolean)[0] ||
-        "";
-
-    }
-
-
-    if (
-      parsed.hostname.includes(
-        "youtube.com"
-      )
-    ) {
-
-      if (
-        parsed.pathname ===
-        "/watch"
-      ) {
-
-        id =
-          parsed.searchParams.get(
-            "v"
-          ) ||
-          "";
-
-      }
-
-
-      if (
-        parsed.pathname.startsWith(
-          "/shorts/"
-        )
-      ) {
-
-        id =
-          parsed.pathname
-            .split("/")[2] ||
-          "";
-
-      }
-
-    }
-
-
-    if (
-      !id
-    ) {
-
-      return "";
-
-    }
-
-
-    return (
-      "https://www.youtube-nocookie.com/embed/" +
-      encodeURIComponent(
-        id
-      )
-    );
-
-  } catch (
-    error
-  ) {
-
-    return "";
-
-  }
-
-}
-
-
-/* ------------------------------------------
-   SHOW ONE PART ONLY
-   ------------------------------------------ */
-
-function renderCurrentModulePart() {
-
-  if (
-    !activeModuleActivities.length
-  ) {
-
-    document
-      .getElementById(
-        "modulePartContent"
-      )
-      .innerHTML =
-        `
-          <p>
-            This module does not have any parts yet.
-          </p>
-        `;
-
-
-    return;
-
-  }
-
-
-  currentModulePart =
-    Math.max(
-      0,
-      Math.min(
-        currentModulePart,
-        activeModuleActivities.length - 1
-      )
-    );
-
-
-  const activity =
-    activeModuleActivities[
-      currentModulePart
-    ];
-
-
-  const progress =
-    getPartProgress(
-      activity.id
-    );
-
-
-  const complete =
-    !!progress
-      ?.is_complete;
-
-
-  document
-    .getElementById(
-      "modulePartNumber"
-    )
-    .textContent =
-      `Part ${currentModulePart + 1} of ${activeModuleActivities.length}`;
-
-
-  document
-    .getElementById(
-      "modulePartStatus"
-    )
-    .textContent =
-      complete
-        ? "Completed — next part unlocked."
-        : "Complete this part to continue.";
-
-
-  let activityHTML =
-    "";
-
-
-  /* =========================
-     LESSON
-     ========================= */
-
-  if (
-    activity.activity_type ===
-    "lesson"
-  ) {
-
-    activityHTML =
-      `
-        <div>
-          ${escapeModuleText(
-            activity.instructions ||
-            ""
-          )}
-        </div>
-
-        <button
-          class="primary"
-          id="completeCurrentPart"
-          style="margin-top:15px"
-        >
-
-          ${
-            complete
-              ? "Completed ✓"
-              : "Mark Part Complete"
-          }
-
-        </button>
-      `;
-
-  }
-
-
-  /* =========================
-     VIDEO
-     ========================= */
-
-  if (
-    activity.activity_type ===
-    "video"
-  ) {
-
-    const video =
-      moduleYouTubeEmbed(
-        activity.resource_url
-      );
-
-
-    activityHTML =
-      `
-        <p>
-          ${escapeModuleText(
-            activity.instructions ||
-            ""
-          )}
-        </p>
-
-
-        ${
-          video
-            ? `
-                <iframe
-                  class="module-video"
-                  src="${video}"
-                  allowfullscreen
-                ></iframe>
-              `
-            : `
-                <p>
-                  Video unavailable.
-                </p>
-              `
-        }
-
-
-        <button
-          class="primary"
-          id="completeCurrentPart"
-        >
-
-          ${
-            complete
-              ? "Video Completed ✓"
-              : "I Finished the Video"
-          }
-
-        </button>
-      `;
-
-  }
-
-
-  /* =========================
-     INTERACTIVE ANIMATION
-     ========================= */
-
-  if (
-    activity.activity_type ===
-    "interactive"
-  ) {
-
-    activityHTML =
-      `
-        <p>
-          ${escapeModuleText(
-            activity.instructions ||
-            ""
-          )}
-        </p>
-
-
-        <iframe
-          id="currentInteractiveFrame"
-          class="module-interactive"
-          sandbox="allow-scripts"
-        ></iframe>
-
-
-        <button
-          class="primary"
-          id="completeCurrentPart"
-          style="margin-top:12px"
-        >
-
-          ${
-            complete
-              ? "Activity Completed ✓"
-              : "Mark Activity Complete"
-          }
-
-        </button>
-      `;
-
-  }
-
-
-  /* =========================
-     MULTIPLE CHOICE
-     ========================= */
-
-  if (
-    activity.activity_type ===
-    "mcq"
-  ) {
-
-    activityHTML =
-      `
-        <p>
-          ${escapeModuleText(
-            activity.instructions ||
-            ""
-          )}
-        </p>
-
-
-        ${
-          [
-            "A",
-            "B",
-            "C",
-            "D"
-          ]
-          .map(
-            letter => `
-
-              <label class="activityOption">
-
-                <input
-                  type="radio"
-                  name="currentModuleAnswer"
-                  value="${letter}"
-                >
-
-                <span>
-
-                  <b>
-                    ${letter}.
-                  </b>
-
-                  ${escapeModuleText(
-                    activity[
-                      "option_" +
-                      letter.toLowerCase()
-                    ] ||
-                    ""
-                  )}
-
-                </span>
-
-              </label>
-            `
-          )
-          .join("")
-        }
-
-
-        <button
-          class="primary"
-          id="checkCurrentPart"
-          style="margin-top:10px"
-        >
-          Check Answer
-        </button>
-
-
-        <div
-          id="currentPartFeedback"
-          class="activityFeedback"
-        ></div>
-      `;
-
-  }
-
-
-  /* =========================
-     SHORT ANSWER
-     ========================= */
-
-  if (
-    activity.activity_type ===
-    "short_answer"
-  ) {
-
-    activityHTML =
-      `
-        <p>
-          ${escapeModuleText(
-            activity.instructions ||
-            ""
-          )}
-        </p>
-
-
-        <textarea
-          id="currentShortAnswer"
-          style="
-            width:100%;
-            min-height:120px;
-            margin:12px 0;
-            padding:10px;
-          "
-          placeholder="Write your answer..."
-        ></textarea>
-
-
-        <button
-          id="submitCurrentShortAnswer"
-          class="primary"
-        >
-          Submit Answer
-        </button>
-
-
-        <div
-          id="currentPartFeedback"
-          class="activityFeedback"
-        ></div>
-      `;
-
-  }
-
-
-  /* =========================
-     CHECKLIST
-     ========================= */
-
-  if (
-    activity.activity_type ===
-    "checklist"
-  ) {
-
-    activityHTML =
-      `
-        <p>
-          ${escapeModuleText(
-            activity.instructions ||
-            ""
-          )}
-        </p>
-
-
-        <label class="activityOption">
-
-          <input
-            id="currentChecklist"
-            type="checkbox"
-            ${
-              complete
-                ? "checked"
-                : ""
-            }
-          >
-
-          I completed this task.
-
-        </label>
-
-
-        <button
-          class="primary"
-          id="completeCurrentPart"
-        >
-          Save Completion
-        </button>
-      `;
-
-  }
-
-
-  /* =========================
-     RESOURCE
-     ========================= */
-
-  if (
-    activity.activity_type ===
-    "resource"
-  ) {
-
-    activityHTML =
-      `
-        <p>
-          ${escapeModuleText(
-            activity.instructions ||
-            ""
-          )}
-        </p>
-
-
-        ${
-          activity.resource_url
-            ? `
-                <button
-                  id="openCurrentResource"
-                  class="secondary"
-                  type="button"
-                >
-                  Open Resource ↗
-                </button>
-              `
-            : ""
-        }
-
-
-        <button
-          class="primary"
-          id="completeCurrentPart"
-        >
-          ${
-            complete
-              ? "Completed ✓"
-              : "Mark Part Complete"
-          }
-        </button>
-      `;
-
-  }
-
-
-  document
-    .getElementById(
-      "modulePartContent"
-    )
-    .innerHTML =
-      `
-        <div class="module-part-card">
-
-          <div class="module-part-header">
-
-            <h3>
-              ${currentModulePart + 1}.
-              ${escapeModuleText(
-                activity.title
-              )}
-            </h3>
-
-            <span class="module-part-type">
-              ${modulePartType(
-                activity.activity_type
-              )}
-            </span>
-
-          </div>
-
-          ${activityHTML}
-
-        </div>
-      `;
-
-
-  /*
-    INTERACTIVE ACTIVITY
-  */
-
-  if (
-    activity.activity_type ===
-    "interactive"
-  ) {
-
-    const frame =
-      document.getElementById(
-        "currentInteractiveFrame"
-      );
-
-
-    if (
-      frame
-    ) {
-
-      frame.srcdoc =
-        buildInteractiveDocument(
-          activity.interactive_code ||
-          ""
-        );
-
-    }
-
-  }
-
-
-  /*
-    RESOURCE BUTTON
-  */
-
-  const resourceButton =
-    document.getElementById(
-      "openCurrentResource"
-    );
-
-
-  if (
-    resourceButton
-  ) {
-
-    resourceButton.onclick =
-      () => {
-
-        window.open(
-          activity.resource_url,
-          "_blank",
-          "noopener,noreferrer"
-        );
-
-      };
-
-  }
-
-
-  /*
-    SIMPLE COMPLETION
-  */
-
-  const completeButton =
-    document.getElementById(
-      "completeCurrentPart"
-    );
-
-
-  if (
-    completeButton
-  ) {
-
-    completeButton.onclick =
-      async () => {
-
-        if (
-          activity.activity_type ===
-            "checklist" &&
-          !document
-            .getElementById(
-              "currentChecklist"
-            )
-            ?.checked
-        ) {
-
-          alert(
-            "Complete the task first."
-          );
-
-          return;
-
-        }
-
-
-        await completeModulePart(
-          activity.id,
-          {
-            completed:
-              true
-          }
-        );
-
-      };
-
-  }
-
-
-  /*
-    MCQ
-  */
-
-  const checkButton =
-    document.getElementById(
-      "checkCurrentPart"
-    );
-
-
-  if (
-    checkButton
-  ) {
-
-    checkButton.onclick =
-      async () => {
-
-        const answer =
-          document.querySelector(
-            'input[name="currentModuleAnswer"]:checked'
-          );
-
-
-        if (
-          !answer
-        ) {
-
-          alert(
-            "Choose an answer first."
-          );
-
-          return;
-
-        }
-
-
-        await completeModulePart(
-          activity.id,
-          {
-            answer:
-              answer.value
-          }
-        );
-
-      };
-
-  }
-
-
-  /*
-    SHORT ANSWER
-  */
-
-  const shortButton =
-    document.getElementById(
-      "submitCurrentShortAnswer"
-    );
-
-
-  if (
-    shortButton
-  ) {
-
-    shortButton.onclick =
-      async () => {
-
-        const text =
-          document
-            .getElementById(
-              "currentShortAnswer"
-            )
-            .value
-            .trim();
-
-
-        if (
-          !text
-        ) {
-
-          alert(
-            "Write your answer first."
-          );
-
-          return;
-
-        }
-
-
-        await completeModulePart(
-          activity.id,
-          {
-            text
-          }
-        );
-
-      };
-
-  }
-
-
-  updateModulePartControls();
-
-  renderModulePartProgress();
-
-}
-
-
-/* ------------------------------------------
-   SAVE COMPLETION TO SUPABASE
-   ------------------------------------------ */
-
-async function completeModulePart(
-  activityId,
-  response
-) {
-
-  const {
-    data,
-    error
-  } =
-    await db.rpc(
-      "submit_module_activity",
-      {
-
-        p_activity_id:
-          activityId,
-
-        p_response:
-          response
-
-      }
-    );
-
-
-  if (
-    error
-  ) {
-
-    console.error(
-      error
-    );
-
-
-    alert(
-      "Could not save this part."
-    );
-
-    return;
-
-  }
-
-
-  /*
-    Reload progress
-  */
-
-  const {
-    data:
-      newProgress,
-
-    error:
-      progressError
-  } =
-    await db
-      .from(
-        "module_progress"
-      )
-      .select(
-        "activity_id,response,is_complete,score,max_score,updated_at"
-      )
-      .eq(
-        "user_id",
-        currentUser.id
-      )
-      .eq(
-        "module_id",
-        activeModule.id
-      );
-
-
-  if (
-    progressError
-  ) {
-
-    console.error(
-      progressError
-    );
-
-    return;
-
-  }
-
-
-  activeModuleProgress =
-    newProgress ||
-    [];
-
-
-  /*
-    MCQ feedback
-  */
-
-  if (
-    data?.activity_type ===
-    "mcq"
-  ) {
-
-    if (
-      data.correct
-    ) {
-
-      alert(
-        "Correct! The next part is now unlocked."
-      );
-
-    } else {
-
-      alert(
-        "Not quite. Review the explanation and try again."
-      );
-
-    }
-
-  }
-
-
-  renderCurrentModulePart();
-
-}
-
-
-/* ------------------------------------------
-   PREVIOUS / CONTINUE BUTTONS
-   ------------------------------------------ */
-
-function updateModulePartControls() {
-
-  const activity =
-    activeModuleActivities[
-      currentModulePart
-    ];
-
-
-  const complete =
-    !!getPartProgress(
-      activity.id
-    )?.is_complete;
-
-
-  const previous =
-    document.getElementById(
-      "modulePrevious"
-    );
-
-
-  const next =
-    document.getElementById(
-      "moduleContinue"
-    );
-
-
-  const lockMessage =
-    document.getElementById(
-      "modulePartLocked"
-    );
-
-
-  previous.disabled =
-    currentModulePart ===
-    0;
-
-
-  next.disabled =
-    !complete;
-
-
-  lockMessage.style.display =
-    complete
-      ? "none"
-      : "inline-block";
-
-
-  if (
-    currentModulePart ===
-    activeModuleActivities.length - 1
-  ) {
-
-    next.textContent =
-      "Finish Module";
-
-  } else {
-
-    next.textContent =
-      "Continue →";
-
-  }
-
-}
-
-
-document
-  .getElementById(
-    "modulePrevious"
-  )
-  .addEventListener(
-    "click",
-    () => {
-
-      if (
-        currentModulePart >
-        0
-      ) {
-
-        currentModulePart--;
-
-        renderCurrentModulePart();
-
-      }
-
-    }
-  );
-
-
-document
-  .getElementById(
-    "moduleContinue"
-  )
-  .addEventListener(
-    "click",
-    () => {
-
-      const current =
-        activeModuleActivities[
-          currentModulePart
-        ];
-
-
-      if (
-        !getPartProgress(
-          current.id
-        )
-        ?.is_complete
-      ) {
-
-        return;
-
-      }
-
-
-      /*
-        LAST PART
-      */
-
-      if (
-        currentModulePart ===
-        activeModuleActivities.length - 1
-      ) {
-
-        showModuleFinished();
-
-        return;
-
-      }
-
-
-      /*
-        NEXT PART
-      */
-
-      currentModulePart++;
-
-      renderCurrentModulePart();
-
-    }
-  );
-
-
-/* ------------------------------------------
-   FINISHED SCREEN
-   ------------------------------------------ */
-
-function showModuleFinished() {
-
-  document
-    .getElementById(
-      "modulePartProgress"
-    )
-    .innerHTML =
-      activeModuleActivities
-        .map(
-          () => `
-
-            <button
-              class="
-                module-part-button
-                complete
-              "
-            >
-              ✓
-            </button>
-          `
-        )
-        .join("");
-
-
-  document
-    .getElementById(
-      "modulePartContent"
-    )
-    .innerHTML =
-      `
-        <div class="module-complete-screen">
-
-          <h2>
-            Module Complete
-          </h2>
-
-          <p>
-            You completed every part of
-            <b>
-              ${escapeModuleText(
-                activeModule.title
-              )}
-            </b>.
-          </p>
-
-        </div>
-      `;
-
-
-  document
-    .getElementById(
-      "modulePartNumber"
-    )
-    .textContent =
-      `${activeModuleActivities.length} of ${activeModuleActivities.length} parts complete`;
-
-
-  document
-    .getElementById(
-      "modulePartStatus"
-    )
-    .textContent =
-      "Module completed";
-
-
-  document
-    .getElementById(
-      "modulePartNavigation"
-    )
-    .style.display =
-      "none";
-
-}
-
-
-/* ------------------------------------------
-   OPEN MODULE
-   ------------------------------------------ */
-
-async function openModuleInParts(
-  module
-) {
-
-  activeModule =
-    module;
-
-
-  const {
-    data:
-      activities,
-
-    error:
-      activityError
-  } =
-    await db.rpc(
-      "get_module_activities",
-      {
-        p_module_id:
-          module.id
-      }
-    );
-
-
-  if (
-    activityError
-  ) {
-
-    console.error(
-      activityError
-    );
-
-    return;
-
-  }
-
-
-  const {
-    data:
-      progress
-  } =
-    await db
-      .from(
-        "module_progress"
-      )
-      .select(
-        "activity_id,response,is_complete,score,max_score,updated_at"
-      )
-      .eq(
-        "user_id",
-        currentUser.id
-      )
-      .eq(
-        "module_id",
-        module.id
-      );
-
-
-  activeModuleActivities =
-    activities ||
-    [];
-
-
-  activeModuleProgress =
-    progress ||
-    [];
-
-
-  /*
-    Automatically start on
-    the first unfinished part.
-  */
-
-  const unfinished =
-    activeModuleActivities
-      .findIndex(
-        activity =>
-          !getPartProgress(
-            activity.id
-          )
-          ?.is_complete
-      );
-
-
-  currentModulePart =
-    unfinished === -1
-      ? 0
-      : unfinished;
-
-
-  document
-    .getElementById(
-      "modulePartNavigation"
-    )
-    .style.display =
-      "flex";
-
-
-  renderCurrentModulePart();
-
-}
-
-</script>
