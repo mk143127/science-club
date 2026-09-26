@@ -1,0 +1,5353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Science Club Student Portal</title>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #f6f7fb;
+      --sidebar: #151824;
+      --card: #ffffff;
+      --text: #1d202b;
+      --muted: #747a89;
+      --border: #e7e9ef;
+
+      --purple: #675ff2;
+      --purple-dark: #554de0;
+      --purple-soft: #efeeff;
+
+      --blue: #3b82f6;
+      --blue-soft: #edf5ff;
+
+      --green: #10b981;
+      --green-soft: #eafaf5;
+
+      --orange: #f59e0b;
+      --orange-soft: #fff7e7;
+
+      --red: #ef4444;
+      --red-soft: #fff0f0;
+
+      --shadow:
+        0 7px 25px rgba(0, 0, 0, 0.045);
+    }
+
+    body {
+      min-height: 100vh;
+
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    input,
+    textarea,
+    select {
+      outline: none;
+    }
+
+    .app {
+      min-height: 100vh;
+
+      display: grid;
+      grid-template-columns: 245px 1fr;
+    }
+
+    /* ===========================
+       SIDEBAR
+       =========================== */
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+
+      width: 245px;
+      height: 100vh;
+
+      padding: 28px 18px;
+
+      display: flex;
+      flex-direction: column;
+
+      background: var(--sidebar);
+      color: white;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+
+      margin-bottom: 38px;
+    }
+
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 13px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #6d66ff,
+          #9166ef
+        );
+
+      font-size: 22px;
+    }
+
+    .brand h2 {
+      font-size: 16px;
+    }
+
+    .brand p {
+      margin-top: 3px;
+
+      color: #949bad;
+      font-size: 11px;
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .nav-button {
+      width: 100%;
+
+      padding: 12px 13px;
+
+      border: none;
+      border-radius: 10px;
+
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      background: transparent;
+      color: #aeb4c4;
+
+      text-align: left;
+
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .nav-button:hover,
+    .nav-button.active {
+      background:
+        rgba(255, 255, 255, 0.08);
+
+      color: white;
+    }
+
+    .sidebar-bottom {
+      margin-top: auto;
+
+      padding-top: 18px;
+
+      border-top:
+        1px solid rgba(255,255,255,.08);
+    }
+
+    .admin-button {
+      width: 100%;
+
+      padding: 11px;
+
+      border: none;
+      border-radius: 9px;
+
+      background:
+        rgba(255,255,255,.08);
+
+      color: white;
+
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .privacy-note {
+      margin-top: 11px;
+
+      color: #7f8699;
+
+      font-size: 10px;
+      line-height: 1.5;
+    }
+
+    /* ===========================
+       MAIN
+       =========================== */
+
+    main {
+      grid-column: 2;
+
+      width: 100%;
+      max-width: 1500px;
+
+      padding: 30px 34px;
+
+      margin: 0 auto;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* ===========================
+       CONNECTION
+       =========================== */
+
+    .connection {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+
+      margin-bottom: 15px;
+
+      padding: 6px 10px;
+
+      border-radius: 8px;
+
+      background: var(--green-soft);
+      color: #087d59;
+
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .connection.error {
+      background: var(--red-soft);
+      color: #bd2929;
+    }
+
+    /* ===========================
+       HEADER
+       =========================== */
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      gap: 20px;
+
+      margin-bottom: 25px;
+    }
+
+    .topbar h1 {
+      font-size: 27px;
+      letter-spacing: -.6px;
+    }
+
+    .topbar p {
+      margin-top: 5px;
+
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .notification-button {
+      position: relative;
+
+      width: 43px;
+      height: 43px;
+
+      border: 1px solid var(--border);
+      border-radius: 11px;
+
+      background: white;
+
+      font-size: 18px;
+    }
+
+    .notification-count {
+      position: absolute;
+
+      top: -5px;
+      right: -4px;
+
+      min-width: 17px;
+      height: 17px;
+
+      display: grid;
+      place-items: center;
+
+      padding: 2px 4px;
+
+      border-radius: 999px;
+
+      background: var(--red);
+      color: white;
+
+      font-size: 9px;
+      font-weight: 800;
+    }
+
+    .profile-box {
+      min-width: 150px;
+
+      padding: 8px 11px;
+
+      display: flex;
+      align-items: center;
+      gap: 9px;
+
+      border: 1px solid var(--border);
+      border-radius: 11px;
+
+      background: white;
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 50%;
+
+      background: var(--purple-soft);
+      color: var(--purple);
+
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .profile-name {
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .profile-role {
+      margin-top: 2px;
+
+      color: var(--muted);
+      font-size: 9px;
+    }
+
+    /* ===========================
+       NICKNAME BOX
+       =========================== */
+
+    .nickname-card {
+      margin-bottom: 22px;
+
+      padding: 23px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      gap: 25px;
+
+      border-radius: 17px;
+
+      background:
+        linear-gradient(
+          120deg,
+          #6861f2,
+          #865ff0
+        );
+
+      color: white;
+    }
+
+    .nickname-card h2 {
+      margin-bottom: 6px;
+
+      font-size: 18px;
+    }
+
+    .nickname-card p {
+      max-width: 630px;
+
+      font-size: 12px;
+      line-height: 1.6;
+
+      opacity: .85;
+    }
+
+    .nickname-form {
+      min-width: 310px;
+
+      display: flex;
+      gap: 7px;
+    }
+
+    .nickname-form input {
+      min-width: 0;
+      flex: 1;
+
+      padding: 11px 12px;
+
+      border: none;
+      border-radius: 9px;
+    }
+
+    .nickname-form button {
+      padding: 10px 14px;
+
+      border: none;
+      border-radius: 9px;
+
+      background: white;
+      color: var(--purple);
+
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    /* ===========================
+       STATS
+       =========================== */
+
+    .stats {
+      margin-bottom: 21px;
+
+      display: grid;
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 15px;
+    }
+
+    .stat-card {
+      padding: 19px;
+
+      border: 1px solid var(--border);
+      border-radius: 15px;
+
+      background: white;
+
+      box-shadow: var(--shadow);
+    }
+
+    .stat-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stat-label {
+      color: var(--muted);
+
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .stat-icon {
+      width: 34px;
+      height: 34px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 9px;
+    }
+
+    .purple-soft {
+      background: var(--purple-soft);
+    }
+
+    .blue-soft {
+      background: var(--blue-soft);
+    }
+
+    .green-soft {
+      background: var(--green-soft);
+    }
+
+    .orange-soft {
+      background: var(--orange-soft);
+    }
+
+    .stat-number {
+      margin-top: 10px;
+
+      font-size: 25px;
+      font-weight: 800;
+    }
+
+    .stat-small {
+      font-size: 18px;
+    }
+
+    .stat-detail {
+      margin-top: 4px;
+
+      color: var(--muted);
+
+      font-size: 10px;
+    }
+
+    /* ===========================
+       CARDS
+       =========================== */
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns:
+        1.55fr .85fr;
+
+      gap: 20px;
+    }
+
+    .card {
+      margin-bottom: 19px;
+
+      padding: 21px;
+
+      border: 1px solid var(--border);
+      border-radius: 16px;
+
+      background: white;
+
+      box-shadow: var(--shadow);
+    }
+
+    .card-header {
+      margin-bottom: 17px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      gap: 10px;
+    }
+
+    .card-header h2 {
+      font-size: 15px;
+    }
+
+    .card-header p {
+      margin-top: 3px;
+
+      color: var(--muted);
+
+      font-size: 10px;
+    }
+
+    /* ===========================
+       ANNOUNCEMENT
+       =========================== */
+
+    .announcement-card {
+      background:
+        linear-gradient(
+          135deg,
+          #171b29,
+          #292d42
+        );
+
+      color: white;
+    }
+
+    .announcement-card h3 {
+      margin-bottom: 8px;
+
+      font-size: 15px;
+    }
+
+    .announcement-card p {
+      color: #c0c4d1;
+
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .announcement-date {
+      display: block;
+
+      margin-top: 12px;
+
+      color: #858c9f;
+
+      font-size: 10px;
+    }
+
+    /* ===========================
+       RESOURCES
+       =========================== */
+
+    .resource {
+      padding: 14px 0;
+
+      display: grid;
+      grid-template-columns:
+        42px 1fr auto;
+
+      align-items: center;
+
+      gap: 12px;
+
+      border-bottom:
+        1px solid var(--border);
+    }
+
+    .resource:last-child {
+      border-bottom: none;
+    }
+
+    .resource-icon {
+      width: 40px;
+      height: 40px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 10px;
+
+      background: var(--purple-soft);
+    }
+
+    .resource h3 {
+      margin-bottom: 4px;
+
+      font-size: 12px;
+    }
+
+    .resource p {
+      color: var(--muted);
+
+      font-size: 10px;
+      line-height: 1.5;
+    }
+
+    .open-resource {
+      padding: 8px 11px;
+
+      border: none;
+      border-radius: 8px;
+
+      background: var(--purple);
+      color: white;
+
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .open-resource:hover {
+      background: var(--purple-dark);
+    }
+
+    /* ===========================
+       IMPORTANT DATES
+       =========================== */
+
+    .date-item {
+      padding: 11px 0;
+
+      display: flex;
+      align-items: center;
+
+      gap: 11px;
+
+      border-bottom:
+        1px solid var(--border);
+    }
+
+    .date-item:last-child {
+      border-bottom: none;
+    }
+
+    .date-box {
+      min-width: 47px;
+
+      padding: 7px 5px;
+
+      border-radius: 9px;
+
+      background: #f4f5f9;
+
+      text-align: center;
+    }
+
+    .date-month {
+      color: var(--purple);
+
+      font-size: 9px;
+      font-weight: 800;
+
+      text-transform: uppercase;
+    }
+
+    .date-day {
+      margin-top: 1px;
+
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .date-info {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .date-info h3 {
+      margin-bottom: 3px;
+
+      font-size: 12px;
+    }
+
+    .date-info p {
+      color: var(--muted);
+
+      font-size: 10px;
+      line-height: 1.4;
+    }
+
+    .date-tag {
+      padding: 5px 7px;
+
+      border-radius: 6px;
+
+      background: var(--blue-soft);
+      color: var(--blue);
+
+      font-size: 8px;
+      font-weight: 700;
+    }
+
+    /* ===========================
+       CALENDAR
+       =========================== */
+
+    .calendar-controls {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .calendar-controls button {
+      width: 30px;
+      height: 30px;
+
+      border: none;
+      border-radius: 7px;
+
+      background: #f1f2f6;
+    }
+
+    .calendar-controls span {
+      min-width: 120px;
+
+      text-align: center;
+
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns:
+        repeat(7, 1fr);
+
+      gap: 5px;
+    }
+
+    .weekday {
+      padding: 7px 0;
+
+      text-align: center;
+
+      color: var(--muted);
+
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    .calendar-day {
+      min-height: 57px;
+
+      position: relative;
+
+      padding: 6px;
+
+      border: 1px solid var(--border);
+      border-radius: 8px;
+
+      background: white;
+
+      font-size: 10px;
+    }
+
+    .calendar-day.empty {
+      background: #fafafa;
+    }
+
+    .calendar-day.today {
+      border-color: var(--purple);
+      background: var(--purple-soft);
+    }
+
+    .calendar-day.has-event::after {
+      content: "";
+
+      position: absolute;
+
+      right: 5px;
+      bottom: 5px;
+
+      width: 6px;
+      height: 6px;
+
+      border-radius: 50%;
+
+      background: var(--purple);
+    }
+
+    /* ===========================
+       FAQ
+       =========================== */
+
+    .faq-item {
+      border-bottom:
+        1px solid var(--border);
+    }
+
+    .faq-question {
+      width: 100%;
+
+      padding: 14px 0;
+
+      border: none;
+      background: transparent;
+
+      display: flex;
+      justify-content: space-between;
+
+      text-align: left;
+
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .faq-answer {
+      display: none;
+
+      padding: 0 0 14px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    /* ===========================
+       NOTIFICATIONS
+       =========================== */
+
+    .notifications {
+      display: none;
+
+      position: absolute;
+
+      top: 78px;
+      right: 34px;
+
+      width: 340px;
+
+      z-index: 50;
+
+      padding: 15px;
+
+      border: 1px solid var(--border);
+      border-radius: 14px;
+
+      background: white;
+
+      box-shadow:
+        0 20px 60px rgba(0,0,0,.14);
+    }
+
+    .notifications.show {
+      display: block;
+    }
+
+    .notifications h3 {
+      margin-bottom: 10px;
+
+      font-size: 14px;
+    }
+
+    .notification-item {
+      margin-bottom: 7px;
+
+      padding: 11px;
+
+      border-radius: 9px;
+
+      background: #f7f8fb;
+    }
+
+    .notification-item strong {
+      display: block;
+
+      margin-bottom: 4px;
+
+      font-size: 11px;
+    }
+
+    .notification-item p {
+      color: var(--muted);
+
+      font-size: 10px;
+      line-height: 1.5;
+    }
+
+    /* ===========================
+       ADMIN
+       =========================== */
+
+    .admin-grid {
+      display: grid;
+      grid-template-columns:
+        1.35fr .65fr;
+
+      gap: 20px;
+    }
+
+    .activity-wrapper {
+      overflow-x: auto;
+    }
+
+    .activity-table {
+      width: 100%;
+
+      border-collapse: collapse;
+    }
+
+    .activity-table th {
+      padding: 10px 8px;
+
+      text-align: left;
+
+      border-bottom:
+        1px solid var(--border);
+
+      color: var(--muted);
+
+      font-size: 9px;
+      text-transform: uppercase;
+    }
+
+    .activity-table td {
+      padding: 12px 8px;
+
+      border-bottom:
+        1px solid var(--border);
+
+      font-size: 10px;
+    }
+
+    .student-dot {
+      width: 8px;
+      height: 8px;
+
+      display: inline-block;
+
+      margin-right: 5px;
+
+      border-radius: 50%;
+
+      background: var(--green);
+    }
+
+    .admin-form {
+      display: flex;
+      flex-direction: column;
+
+      gap: 9px;
+    }
+
+    .admin-form label {
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .admin-form input,
+    .admin-form textarea,
+    .admin-form select {
+      width: 100%;
+
+      padding: 10px 11px;
+
+      border: 1px solid var(--border);
+      border-radius: 8px;
+
+      background: white;
+    }
+
+    .admin-form textarea {
+      min-height: 90px;
+
+      resize: vertical;
+    }
+
+    .primary-button {
+      padding: 10px 13px;
+
+      border: none;
+      border-radius: 8px;
+
+      background: var(--purple);
+      color: white;
+
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .secondary-button {
+      padding: 9px 12px;
+
+      border: 1px solid var(--border);
+      border-radius: 8px;
+
+      background: white;
+
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .danger-button {
+      padding: 9px 12px;
+
+      border: none;
+      border-radius: 8px;
+
+      background: var(--red-soft);
+      color: var(--red);
+
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    /* ===========================
+       LOGIN
+       =========================== */
+
+    .login-box {
+      width: 100%;
+      max-width: 430px;
+
+      margin: 60px auto;
+
+      padding: 28px;
+
+      border: 1px solid var(--border);
+      border-radius: 17px;
+
+      background: white;
+
+      box-shadow: var(--shadow);
+    }
+
+    .login-box h2 {
+      margin-bottom: 7px;
+
+      font-size: 20px;
+    }
+
+    .login-box p {
+      margin-bottom: 20px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .login-box input {
+      width: 100%;
+
+      margin-bottom: 10px;
+
+      padding: 11px 12px;
+
+      border: 1px solid var(--border);
+      border-radius: 9px;
+    }
+
+    .login-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .login-actions button {
+      flex: 1;
+    }
+
+    /* ===========================
+       MESSAGES
+       =========================== */
+
+    .empty {
+      padding: 18px 0;
+
+      color: var(--muted);
+
+      text-align: center;
+
+      font-size: 11px;
+    }
+
+    .message {
+      display: none;
+
+      margin-bottom: 15px;
+
+      padding: 11px 12px;
+
+      border-radius: 9px;
+
+      font-size: 11px;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.success {
+      background: var(--green-soft);
+      color: #087d59;
+    }
+
+    .message.error {
+      background: var(--red-soft);
+      color: #b92828;
+    }
+
+    .description {
+      color: var(--muted);
+
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    /* ===========================
+       RESPONSIVE
+       =========================== */
+
+    @media (max-width: 1050px) {
+      .stats {
+        grid-template-columns:
+          repeat(2, 1fr);
+      }
+
+      .dashboard-grid,
+      .admin-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .app {
+        display: block;
+      }
+
+      .sidebar {
+        position: static;
+
+        width: 100%;
+        height: auto;
+
+        padding: 13px;
+
+        flex-direction: row;
+        align-items: center;
+
+        overflow-x: auto;
+      }
+
+      .brand {
+        min-width: 175px;
+
+        margin: 0 12px 0 0;
+      }
+
+      .nav {
+        flex-direction: row;
+      }
+
+      .nav-button {
+        white-space: nowrap;
+      }
+
+      .sidebar-bottom {
+        margin: 0 0 0 8px;
+        padding: 0;
+
+        border: none;
+      }
+
+      .privacy-note {
+        display: none;
+      }
+
+      main {
+        padding: 19px 14px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+      }
+
+      .topbar h1 {
+        font-size: 22px;
+      }
+
+      .profile-box {
+        display: none;
+      }
+
+      .nickname-card {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .nickname-form {
+        min-width: 0;
+      }
+
+      .stats {
+        grid-template-columns:
+          1fr 1fr;
+
+        gap: 10px;
+      }
+
+      .resource {
+        grid-template-columns:
+          40px 1fr;
+      }
+
+      .resource button {
+        grid-column: 2;
+
+        width: fit-content;
+      }
+
+      .notifications {
+        width: auto;
+
+        top: 145px;
+        left: 14px;
+        right: 14px;
+      }
+
+      .calendar-day {
+        min-height: 44px;
+        padding: 4px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+    <div class="brand">
+
+      <div class="brand-icon">
+        ⚗️
+      </div>
+
+      <div>
+        <h2>Science Club</h2>
+        <p>Student Portal</p>
+      </div>
+
+    </div>
+
+
+    <nav class="nav">
+
+      <button
+        class="nav-button active"
+        data-page="dashboard"
+      >
+        ▦ Dashboard
+      </button>
+
+      <button
+        class="nav-button"
+        data-page="calendar"
+      >
+        📅 Calendar
+      </button>
+
+      <button
+        class="nav-button"
+        data-page="resources"
+      >
+        📚 Resources
+      </button>
+
+      <button
+        class="nav-button"
+        data-page="faq"
+      >
+        ? FAQs
+      </button>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+      <button
+        id="adminButton"
+        class="admin-button"
+      >
+        ⚙ Admin
+      </button>
+
+      <div class="privacy-note">
+        Students should use a nickname,
+        initials or another non-identifying name.
+      </div>
+
+    </div>
+
+  </aside>
+
+
+  <!-- MAIN -->
+
+  <main>
+
+    <div
+      id="connectionStatus"
+      class="connection"
+    >
+      ● Connecting...
+    </div>
+
+
+    <!-- ===========================
+         DASHBOARD
+         =========================== -->
+
+    <section
+      id="dashboardPage"
+      class="page active"
+    >
+
+      <header class="topbar">
+
+        <div>
+
+          <h1>
+            Welcome,
+            <span id="welcomeName">
+              Scientist
+            </span>
+            👋
+          </h1>
+
+          <p>
+            Keep track of Science Club
+            competitions, projects and deadlines.
+          </p>
+
+        </div>
+
+
+        <div class="top-actions">
+
+          <button
+            id="notificationButton"
+            class="notification-button"
+          >
+            🔔
+
+            <span
+              id="notificationCount"
+              class="notification-count"
+            >
+              0
+            </span>
+
+          </button>
+
+
+          <div class="profile-box">
+
+            <div
+              id="avatar"
+              class="avatar"
+            >
+              S
+            </div>
+
+            <div>
+
+              <div
+                id="profileName"
+                class="profile-name"
+              >
+                Scientist
+              </div>
+
+              <div class="profile-role">
+                Science Club Member
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </header>
+
+
+      <div
+        id="notificationsPanel"
+        class="notifications"
+      >
+
+        <h3>
+          Notifications
+        </h3>
+
+        <div id="notificationList">
+        </div>
+
+      </div>
+
+
+      <div
+        id="studentMessage"
+        class="message"
+      >
+      </div>
+
+
+      <!-- NICKNAME -->
+
+      <section class="nickname-card">
+
+        <div>
+
+          <h2>
+            Choose your Science Club name 🔬
+          </h2>
+
+          <p>
+            Do not enter your real name.
+            Use a nickname, initials or a
+            science-themed username instead.
+          </p>
+
+        </div>
+
+
+        <div class="nickname-form">
+
+          <input
+            id="nicknameInput"
+            maxlength="20"
+            placeholder="Example: AtomAce"
+          >
+
+          <button
+            id="saveNicknameButton"
+          >
+            Save
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- STATS -->
+
+      <section class="stats">
+
+        <div class="stat-card">
+
+          <div class="stat-top">
+
+            <span class="stat-label">
+              Important Dates
+            </span>
+
+            <span
+              class="stat-icon purple-soft"
+            >
+              📅
+            </span>
+
+          </div>
+
+          <div
+            id="dateCount"
+            class="stat-number"
+          >
+            0
+          </div>
+
+          <div class="stat-detail">
+            dates being tracked
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-top">
+
+            <span class="stat-label">
+              Resources Opened
+            </span>
+
+            <span
+              class="stat-icon blue-soft"
+            >
+              📖
+            </span>
+
+          </div>
+
+          <div
+            id="openedCount"
+            class="stat-number"
+          >
+            0
+          </div>
+
+          <div class="stat-detail">
+            resources viewed by you
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-top">
+
+            <span class="stat-label">
+              CCC
+            </span>
+
+            <span
+              class="stat-icon green-soft"
+            >
+              ⚗️
+            </span>
+
+          </div>
+
+          <div
+            class="stat-number stat-small"
+          >
+            Chemistry
+          </div>
+
+          <div class="stat-detail">
+            Canadian Chemistry Contest
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-top">
+
+            <span class="stat-label">
+              WWSEF
+            </span>
+
+            <span
+              class="stat-icon orange-soft"
+            >
+              🧪
+            </span>
+
+          </div>
+
+          <div
+            class="stat-number stat-small"
+          >
+            Science Fair
+          </div>
+
+          <div class="stat-detail">
+            Waterloo-Wellington Science &
+            Engineering Fair
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <div class="dashboard-grid">
+
+        <div>
+
+          <!-- ANNOUNCEMENT -->
+
+          <section class="card announcement-card">
+
+            <div class="card-header">
+
+              <div>
+                <h2>
+                  📣 Latest Announcement
+                </h2>
+              </div>
+
+            </div>
+
+            <div id="latestAnnouncement">
+
+              <p>
+                Loading announcement...
+              </p>
+
+            </div>
+
+          </section>
+
+
+          <!-- RESOURCES -->
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <div>
+
+                <h2>
+                  Resources & Assignments
+                </h2>
+
+                <p>
+                  CCC, WWSEF and club materials
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div id="dashboardResources">
+
+              <div class="empty">
+                Loading resources...
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- CALENDAR -->
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <div>
+
+                <h2>
+                  Club Calendar
+                </h2>
+
+                <p>
+                  Meetings, competitions
+                  and deadlines
+                </p>
+
+              </div>
+
+
+              <div class="calendar-controls">
+
+                <button id="prevMonth">
+                  ‹
+                </button>
+
+                <span id="calendarMonth">
+                </span>
+
+                <button id="nextMonth">
+                  ›
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <div class="calendar-grid">
+
+              <div class="weekday">Sun</div>
+              <div class="weekday">Mon</div>
+              <div class="weekday">Tue</div>
+              <div class="weekday">Wed</div>
+              <div class="weekday">Thu</div>
+              <div class="weekday">Fri</div>
+              <div class="weekday">Sat</div>
+
+            </div>
+
+
+            <div
+              id="calendarDays"
+              class="calendar-grid"
+            >
+            </div>
+
+          </section>
+
+        </div>
+
+
+        <div>
+
+          <!-- IMPORTANT DATES -->
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <div>
+
+                <h2>
+                  📌 Important Dates
+                </h2>
+
+                <p>
+                  Upcoming deadlines
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div id="importantDates">
+            </div>
+
+          </section>
+
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <div>
+
+                <h2>
+                  ⚗️ CCC
+                </h2>
+
+                <p>
+                  Canadian Chemistry Contest
+                </p>
+
+              </div>
+
+            </div>
+
+            <div class="description">
+              Find chemistry preparation,
+              practice material, review resources
+              and contest dates here.
+            </div>
+
+          </section>
+
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <div>
+
+                <h2>
+                  🧪 WWSEF
+                </h2>
+
+                <p>
+                  Science Fair
+                </p>
+
+              </div>
+
+            </div>
+
+            <div class="description">
+              Track project deadlines,
+              research resources, registration
+              information and presentation
+              preparation.
+            </div>
+
+          </section>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===========================
+         CALENDAR PAGE
+         =========================== -->
+
+    <section
+      id="calendarPage"
+      class="page"
+    >
+
+      <header class="topbar">
+
+        <div>
+
+          <h1>
+            Science Club Calendar 📅
+          </h1>
+
+          <p>
+            Competitions, meetings and deadlines.
+          </p>
+
+        </div>
+
+      </header>
+
+
+      <section class="card">
+
+        <div class="card-header">
+
+          <h2>
+            Full Calendar
+          </h2>
+
+
+          <div class="calendar-controls">
+
+            <button id="fullPrevMonth">
+              ‹
+            </button>
+
+            <span id="fullCalendarMonth">
+            </span>
+
+            <button id="fullNextMonth">
+              ›
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div class="calendar-grid">
+
+          <div class="weekday">Sun</div>
+          <div class="weekday">Mon</div>
+          <div class="weekday">Tue</div>
+          <div class="weekday">Wed</div>
+          <div class="weekday">Thu</div>
+          <div class="weekday">Fri</div>
+          <div class="weekday">Sat</div>
+
+        </div>
+
+
+        <div
+          id="fullCalendarDays"
+          class="calendar-grid"
+        >
+        </div>
+
+      </section>
+
+
+      <section class="card">
+
+        <div class="card-header">
+          <h2>
+            All Important Dates
+          </h2>
+        </div>
+
+        <div id="allImportantDates">
+        </div>
+
+      </section>
+
+    </section>
+
+
+    <!-- ===========================
+         RESOURCES PAGE
+         =========================== -->
+
+    <section
+      id="resourcesPage"
+      class="page"
+    >
+
+      <header class="topbar">
+
+        <div>
+
+          <h1>
+            Resources & Assignments 📚
+          </h1>
+
+          <p>
+            CCC preparation, WWSEF materials
+            and club assignments.
+          </p>
+
+        </div>
+
+      </header>
+
+
+      <section class="card">
+
+        <div id="allResources">
+        </div>
+
+      </section>
+
+    </section>
+
+
+    <!-- ===========================
+         FAQ PAGE
+         =========================== -->
+
+    <section
+      id="faqPage"
+      class="page"
+    >
+
+      <header class="topbar">
+
+        <div>
+
+          <h1>
+            Frequently Asked Questions
+          </h1>
+
+          <p>
+            CCC, WWSEF and Science Club
+            information.
+          </p>
+
+        </div>
+
+      </header>
+
+
+      <section class="card">
+
+        <div id="faqList">
+        </div>
+
+      </section>
+
+    </section>
+
+
+    <!-- ===========================
+         ADMIN LOGIN
+         =========================== -->
+
+    <section
+      id="adminLoginPage"
+      class="page"
+    >
+
+      <div class="login-box">
+
+        <h2>
+          Science Club Admin
+        </h2>
+
+        <p>
+          This area is for club leadership.
+          Students do not need an email address
+          or password to use the portal.
+        </p>
+
+
+        <div
+          id="loginMessage"
+          class="message"
+        >
+        </div>
+
+
+        <form id="adminLoginForm">
+
+          <input
+            id="adminEmail"
+            type="email"
+            required
+            placeholder="Admin email"
+          >
+
+          <input
+            id="adminPassword"
+            type="password"
+            required
+            placeholder="Admin password"
+          >
+
+
+          <div class="login-actions">
+
+            <button
+              id="cancelAdminLogin"
+              class="secondary-button"
+              type="button"
+            >
+              Cancel
+            </button>
+
+            <button
+              class="primary-button"
+              type="submit"
+            >
+              Sign In
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===========================
+         ADMIN DASHBOARD
+         =========================== -->
+
+    <section
+      id="adminPage"
+      class="page"
+    >
+
+      <header class="topbar">
+
+        <div>
+
+          <h1>
+            Club Activity Dashboard
+          </h1>
+
+          <p>
+            Manage portal content and view
+            student activity.
+          </p>
+
+        </div>
+
+
+        <button
+          id="adminLogoutButton"
+          class="secondary-button"
+        >
+          Sign Out
+        </button>
+
+      </header>
+
+
+      <div
+        id="adminMessage"
+        class="message"
+      >
+      </div>
+
+
+      <section class="stats">
+
+        <div class="stat-card">
+
+          <div class="stat-label">
+            Student Nicknames
+          </div>
+
+          <div
+            id="adminStudentCount"
+            class="stat-number"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-label">
+            Resource Opens
+          </div>
+
+          <div
+            id="adminActivityCount"
+            class="stat-number"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-label">
+            Announcements
+          </div>
+
+          <div
+            id="adminAnnouncementCount"
+            class="stat-number"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-label">
+            Important Dates
+          </div>
+
+          <div
+            id="adminDateCount"
+            class="stat-number"
+          >
+            0
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <div class="admin-grid">
+
+        <div>
+
+          <section class="card">
+
+            <div class="card-header">
+
+              <div>
+
+                <h2>
+                  Recent Student Activity
+                </h2>
+
+                <p>
+                  Nicknames only
+                </p>
+
+              </div>
+
+
+              <button
+                id="clearActivityButton"
+                class="danger-button"
+              >
+                Clear Activity
+              </button>
+
+            </div>
+
+
+            <div class="activity-wrapper">
+
+              <table class="activity-table">
+
+                <thead>
+
+                  <tr>
+                    <th>Student</th>
+                    <th>Action</th>
+                    <th>Resource</th>
+                    <th>Time</th>
+                  </tr>
+
+                </thead>
+
+                <tbody id="activityTable">
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </section>
+
+        </div>
+
+
+        <div>
+
+          <!-- ADD ANNOUNCEMENT -->
+
+          <section class="card">
+
+            <div class="card-header">
+              <h2>
+                Add Announcement
+              </h2>
+            </div>
+
+
+            <form
+              id="announcementForm"
+              class="admin-form"
+            >
+
+              <label>
+                Title
+              </label>
+
+              <input
+                id="announcementTitle"
+                required
+                placeholder="CCC Prep Meeting"
+              >
+
+
+              <label>
+                Message
+              </label>
+
+              <textarea
+                id="announcementMessage"
+                required
+                placeholder="Write the announcement..."
+              ></textarea>
+
+
+              <button
+                class="primary-button"
+                type="submit"
+              >
+                Post Announcement
+              </button>
+
+            </form>
+
+          </section>
+
+
+          <!-- ADD DATE -->
+
+          <section class="card">
+
+            <div class="card-header">
+              <h2>
+                Add Important Date
+              </h2>
+            </div>
+
+
+            <form
+              id="dateForm"
+              class="admin-form"
+            >
+
+              <label>
+                Event Name
+              </label>
+
+              <input
+                id="dateTitle"
+                required
+                placeholder="CCC Contest"
+              >
+
+
+              <label>
+                Date
+              </label>
+
+              <input
+                id="dateValue"
+                type="date"
+                required
+              >
+
+
+              <label>
+                Category
+              </label>
+
+              <select id="dateCategory">
+
+                <option value="CCC">
+                  CCC
+                </option>
+
+                <option value="WWSEF">
+                  WWSEF
+                </option>
+
+                <option value="Meeting">
+                  Meeting
+                </option>
+
+                <option value="Deadline">
+                  Deadline
+                </option>
+
+                <option value="Other">
+                  Other
+                </option>
+
+              </select>
+
+
+              <label>
+                Details
+              </label>
+
+              <input
+                id="dateDetails"
+                placeholder="Optional details"
+              >
+
+
+              <button
+                class="primary-button"
+                type="submit"
+              >
+                Add Date
+              </button>
+
+            </form>
+
+          </section>
+
+
+          <!-- ADD RESOURCE -->
+
+          <section class="card">
+
+            <div class="card-header">
+              <h2>
+                Add Resource / Assignment
+              </h2>
+            </div>
+
+
+            <form
+              id="resourceForm"
+              class="admin-form"
+            >
+
+              <label>
+                Resource Name
+              </label>
+
+              <input
+                id="resourceTitle"
+                required
+                placeholder="Stoichiometry Practice"
+              >
+
+
+              <label>
+                Category
+              </label>
+
+              <select id="resourceCategory">
+
+                <option value="CCC">
+                  CCC
+                </option>
+
+                <option value="WWSEF">
+                  WWSEF
+                </option>
+
+                <option value="Science Club">
+                  Science Club
+                </option>
+
+              </select>
+
+
+              <label>
+                Description
+              </label>
+
+              <input
+                id="resourceDescription"
+                required
+                placeholder="Short description"
+              >
+
+
+              <label>
+                Link
+              </label>
+
+              <input
+                id="resourceURL"
+                type="url"
+                placeholder="https://..."
+              >
+
+
+              <button
+                class="primary-button"
+                type="submit"
+              >
+                Add Resource
+              </button>
+
+            </form>
+
+          </section>
+
+
+          <!-- ADD FAQ -->
+
+          <section class="card">
+
+            <div class="card-header">
+              <h2>
+                Add FAQ
+              </h2>
+            </div>
+
+
+            <form
+              id="faqForm"
+              class="admin-form"
+            >
+
+              <label>
+                Question
+              </label>
+
+              <input
+                id="faqQuestion"
+                required
+                placeholder="What should I bring?"
+              >
+
+
+              <label>
+                Answer
+              </label>
+
+              <textarea
+                id="faqAnswer"
+                required
+                placeholder="Write the answer..."
+              ></textarea>
+
+
+              <label>
+                Category
+              </label>
+
+              <select id="faqCategory">
+
+                <option value="General">
+                  General
+                </option>
+
+                <option value="CCC">
+                  CCC
+                </option>
+
+                <option value="WWSEF">
+                  WWSEF
+                </option>
+
+                <option value="Privacy">
+                  Privacy
+                </option>
+
+              </select>
+
+
+              <button
+                class="primary-button"
+                type="submit"
+              >
+                Add FAQ
+              </button>
+
+            </form>
+
+          </section>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<script>
+
+  /* ======================================================
+     IMPORTANT:
+     PASTE YOUR SUPABASE INFORMATION HERE
+     ====================================================== */
+
+  const SUPABASE_URL =
+    "PASTE_YOUR_PROJECT_URL_HERE";
+
+  const SUPABASE_PUBLISHABLE_KEY =
+    "PASTE_YOUR_PUBLISHABLE_KEY_HERE";
+
+
+  /* ======================================================
+     SUPABASE
+     ====================================================== */
+
+  const db =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+  /* ======================================================
+     STATE
+     ====================================================== */
+
+  let currentUser = null;
+  let currentProfile = null;
+
+  let announcements = [];
+  let resources = [];
+  let importantDates = [];
+  let faqs = [];
+
+  let studentActivity = [];
+
+  let adminActivity = [];
+  let adminProfiles = [];
+
+
+  const now =
+    new Date();
+
+
+  let dashboardYear =
+    now.getFullYear();
+
+  let dashboardMonth =
+    now.getMonth();
+
+
+  let fullYear =
+    dashboardYear;
+
+  let fullMonth =
+    dashboardMonth;
+
+
+  /* ======================================================
+     HELPERS
+     ====================================================== */
+
+  function escapeHTML(value) {
+
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  function showMessage(
+    id,
+    text,
+    type = "success"
+  ) {
+
+    const box =
+      document.getElementById(id);
+
+    box.textContent =
+      text;
+
+    box.className =
+      `message show ${type}`;
+
+
+    setTimeout(
+      () => {
+
+        box.classList.remove(
+          "show"
+        );
+
+      },
+      4500
+    );
+
+  }
+
+
+  function setConnection(
+    text,
+    error = false
+  ) {
+
+    const element =
+      document.getElementById(
+        "connectionStatus"
+      );
+
+    element.textContent =
+      text;
+
+    element.classList.toggle(
+      "error",
+      error
+    );
+
+  }
+
+
+  function parseDateOnly(
+    value
+  ) {
+
+    if (!value) {
+      return null;
+    }
+
+
+    const [
+      year,
+      month,
+      day
+    ] =
+      value
+        .split("-")
+        .map(Number);
+
+
+    return new Date(
+      year,
+      month - 1,
+      day
+    );
+
+  }
+
+
+  /* ======================================================
+     PAGE NAVIGATION
+     ====================================================== */
+
+  const pages = {
+
+    dashboard:
+      document.getElementById(
+        "dashboardPage"
+      ),
+
+    calendar:
+      document.getElementById(
+        "calendarPage"
+      ),
+
+    resources:
+      document.getElementById(
+        "resourcesPage"
+      ),
+
+    faq:
+      document.getElementById(
+        "faqPage"
+      ),
+
+    adminLogin:
+      document.getElementById(
+        "adminLoginPage"
+      ),
+
+    admin:
+      document.getElementById(
+        "adminPage"
+      )
+
+  };
+
+
+  function showPage(name) {
+
+    Object.values(pages)
+      .forEach(
+        page => {
+
+          page.classList.remove(
+            "active"
+          );
+
+        }
+      );
+
+
+    pages[name]
+      .classList.add(
+        "active"
+      );
+
+
+    document
+      .querySelectorAll(
+        ".nav-button"
+      )
+      .forEach(
+        button => {
+
+          button.classList.remove(
+            "active"
+          );
+
+        }
+      );
+
+
+    const button =
+      document.querySelector(
+        `[data-page="${name}"]`
+      );
+
+
+    if (button) {
+
+      button.classList.add(
+        "active"
+      );
+
+    }
+
+
+    window.scrollTo(
+      0,
+      0
+    );
+
+  }
+
+
+  document
+    .querySelectorAll(
+      ".nav-button"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            showPage(
+              button.dataset.page
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+  /* ======================================================
+     AUTH
+     ====================================================== */
+
+  async function getSession() {
+
+    const {
+      data,
+      error
+    } =
+      await db.auth.getSession();
+
+
+    if (error) {
+
+      console.error(error);
+
+      return null;
+
+    }
+
+
+    return data.session;
+
+  }
+
+
+  async function createAnonymousStudent() {
+
+    const session =
+      await getSession();
+
+
+    if (
+      session?.user
+    ) {
+
+      currentUser =
+        session.user;
+
+      return currentUser;
+
+    }
+
+
+    const {
+      data,
+      error
+    } =
+      await db.auth
+        .signInAnonymously();
+
+
+    if (error) {
+
+      console.error(error);
+
+      setConnection(
+        "● Connection failed",
+        true
+      );
+
+
+      showMessage(
+        "studentMessage",
+        "Could not create the student session. Make sure Anonymous Sign-ins are enabled in Supabase.",
+        "error"
+      );
+
+
+      return null;
+
+    }
+
+
+    currentUser =
+      data.user;
+
+
+    return currentUser;
+
+  }
+
+
+  /* ======================================================
+     PROFILE
+     ====================================================== */
+
+  async function loadProfile() {
+
+    if (!currentUser) {
+      return;
+    }
+
+
+    const {
+      data,
+      error
+    } =
+      await db
+        .from("profiles")
+        .select(
+          "nickname, role"
+        )
+        .eq(
+          "user_id",
+          currentUser.id
+        )
+        .maybeSingle();
+
+
+    if (error) {
+
+      console.error(error);
+
+      return;
+
+    }
+
+
+    currentProfile =
+      data;
+
+
+    updateProfileDisplay();
+
+  }
+
+
+  function updateProfileDisplay() {
+
+    const nickname =
+      currentProfile?.nickname ||
+      "Scientist";
+
+
+    document.getElementById(
+      "welcomeName"
+    ).textContent =
+      nickname;
+
+
+    document.getElementById(
+      "profileName"
+    ).textContent =
+      nickname;
+
+
+    document.getElementById(
+      "avatar"
+    ).textContent =
+      nickname
+        .charAt(0)
+        .toUpperCase();
+
+  }
+
+
+  async function saveNickname() {
+
+    const nickname =
+      document
+        .getElementById(
+          "nicknameInput"
+        )
+        .value
+        .trim();
+
+
+    if (!nickname) {
+
+      showMessage(
+        "studentMessage",
+        "Please enter a nickname.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    if (
+      nickname.length > 20
+    ) {
+
+      showMessage(
+        "studentMessage",
+        "Your nickname must be 20 characters or fewer.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    const user =
+      await createAnonymousStudent();
+
+
+    if (!user) {
+      return;
+    }
+
+
+    const {
+      data,
+      error
+    } =
+      await db
+        .from("profiles")
+        .upsert(
+          {
+            user_id:
+              user.id,
+
+            nickname:
+              nickname,
+
+            role:
+              "student"
+          },
+          {
+            onConflict:
+              "user_id"
+          }
+        )
+        .select()
+        .single();
+
+
+    if (error) {
+
+      console.error(error);
+
+
+      showMessage(
+        "studentMessage",
+        "Could not save your nickname.",
+        "error"
+      );
+
+
+      return;
+
+    }
+
+
+    currentProfile =
+      data;
+
+
+    updateProfileDisplay();
+
+
+    document.getElementById(
+      "nicknameInput"
+    ).value = "";
+
+
+    showMessage(
+      "studentMessage",
+      `Nickname saved as ${nickname}.`,
+      "success"
+    );
+
+  }
+
+
+  document.getElementById(
+    "saveNicknameButton"
+  ).addEventListener(
+    "click",
+    saveNickname
+  );
+
+
+  document.getElementById(
+    "nicknameInput"
+  ).addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key === "Enter"
+      ) {
+
+        saveNickname();
+
+      }
+
+    }
+  );
+
+
+  /* ======================================================
+     ANNOUNCEMENTS
+     ====================================================== */
+
+  async function loadAnnouncements() {
+
+    const {
+      data,
+      error
+    } =
+      await db
+        .from("announcements")
+        .select("*")
+        .order(
+          "created_at",
+          {
+            ascending: false
+          }
+        );
+
+
+    if (error) {
+
+      console.error(error);
+
+      announcements = [];
+
+      return;
+
+    }
+
+
+    announcements =
+      data || [];
+
+
+    renderAnnouncement();
+
+    renderNotifications();
+
+  }
+
+
+  function renderAnnouncement() {
+
+    const container =
+      document.getElementById(
+        "latestAnnouncement"
+      );
+
+
+    if (
+      announcements.length === 0
+    ) {
+
+      container.innerHTML = `
+        <p>
+          No announcements have
+          been posted yet.
+        </p>
+      `;
+
+      return;
+
+    }
+
+
+    const item =
+      announcements[0];
+
+
+    container.innerHTML = `
+
+      <h3>
+        ${escapeHTML(
+          item.title
+        )}
+      </h3>
+
+      <p>
+        ${escapeHTML(
+          item.message
+        )}
+      </p>
+
+      <span class="announcement-date">
+
+        ${
+          item.created_at
+            ? escapeHTML(
+                new Date(
+                  item.created_at
+                )
+                .toLocaleString()
+              )
+            : ""
+        }
+
+      </span>
+
+    `;
+
+  }
+
+
+  /* ======================================================
+     RESOURCES
+     ====================================================== */
+
+  async function loadResources() {
+
+    const {
+      data,
+      error
+    } =
+      await db
+        .from("resources")
+        .select("*")
+        .order(
+          "created_at",
+          {
+            ascending: false
+          }
+        );
+
+
+    if (error) {
+
+      console.error(error);
+
+      resources = [];
+
+      return;
+
+    }
+
+
+    resources =
+      data || [];
+
+
+    renderResources();
+
+  }
+
+
+  function resourceIcon(
+    category
+  ) {
+
+    if (
+      category === "CCC"
+    ) {
+      return "⚗️";
+    }
+
+
+    if (
+      category === "WWSEF"
+    ) {
+      return "🧪";
+    }
+
+
+    return "📚";
+
+  }
+
+
+  function resourceHTML(
+    item
+  ) {
+
+    return `
+
+      <div class="resource">
+
+        <div class="resource-icon">
+
+          ${resourceIcon(
+            item.category
+          )}
+
+        </div>
+
+
+        <div>
+
+          <h3>
+            ${escapeHTML(
+              item.title
+            )}
+          </h3>
+
+          <p>
+
+            ${escapeHTML(
+              item.category
+            )}
+
+            ·
+
+            ${escapeHTML(
+              item.description || ""
+            )}
+
+          </p>
+
+        </div>
+
+
+        <button
+          class="open-resource"
+          data-resource="${item.id}"
+        >
+          Open
+        </button>
+
+      </div>
+
+    `;
+
+  }
+
+
+  function renderResources() {
+
+    const html =
+      resources.length
+        ? resources
+            .map(resourceHTML)
+            .join("")
+        : `
+            <div class="empty">
+              No resources have
+              been added yet.
+            </div>
+          `;
+
+
+    document.getElementById(
+      "dashboardResources"
+    ).innerHTML =
+      html;
+
+
+    document.getElementById(
+      "allResources"
+    ).innerHTML =
+      html;
+
+
+    document
+      .querySelectorAll(
+        "[data-resource]"
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              openResource(
+                Number(
+                  button.dataset.resource
+                )
+              );
+
+            }
+          );
+
+        }
+      );
+
+  }
+
+
+  async function openResource(
+    id
+  ) {
+
+    const resource =
+      resources.find(
+        item =>
+          Number(item.id) ===
+          Number(id)
+      );
+
+
+    if (!resource) {
+      return;
+    }
+
+
+    if (
+      !currentProfile?.nickname
+    ) {
+
+      showPage(
+        "dashboard"
+      );
+
+
+      showMessage(
+        "studentMessage",
+        "Choose your Science Club nickname before opening resources.",
+        "error"
+      );
+
+
+      return;
+
+    }
+
+
+    const {
+      error
+    } =
+      await db
+        .from("activity")
+        .insert({
+          user_id:
+            currentUser.id,
+
+          resource_id:
+            resource.id,
+
+          resource_title:
+            resource.title,
+
+          action:
+            "opened"
+        });
+
+
+    if (error) {
+
+      console.error(
+        "Activity tracking error:",
+        error
+      );
+
+    }
+
+
+    await loadStudentActivity();
+
+
+    if (
+      resource.url
+    ) {
+
+      window.open(
+        resource.url,
+        "_blank",
+        "noopener,noreferrer"
+      );
+
+    } else {
+
+      alert(
+        `${resource.title}\n\n` +
+        `${resource.description || ""}\n\n` +
+        "No external link has been added yet."
+      );
+
+    }
+
+  }
+
+
+  /* ======================================================
+     STUDENT ACTIVITY
+     ====================================================== */
+
+  async function loadStudentActivity() {
+
+    if (
+      !currentUser ||
+      currentProfile?.role ===
+        "admin"
+    ) {
+      return;
+    }
+
+
+    const {
+      data,
+      error
+    } =
+      await db
+        .from("activity")
+        .select("*")
+        .eq(
+          "user_id",
+          currentUser.id
+        );
+
+
+    if (error) {
+
+      console.error(error);
+
+      studentActivity = [];
+
+      return;
+
+    }
+
+
+    studentActivity =
+      data || [];
+
+
+    document.getElementById(
+      "openedCount"
+    ).textContent =
+      studentActivity.length;
+
+  }
+
+
+  /* ======================================================
+     IMPORTANT DATES
+     ====================================================== */
+
+  async function loadDates() {
+
+    const {
+      data,
+      error
+    } =
+      await db
+        .from(
+          "important_dates"
+        )
+        .select("*")
+        .order(
+          "event_date",
+          {
+            ascending: true
+          }
+        );
+
+
+    if (error) {
+
+      console.error(error);
+
+      importantDates = [];
+
+      return;
+
+    }
+
+
+    importantDates =
+      data || [];
+
+
+    document.getElementById(
+      "dateCount"
+    ).textContent =
+      importantDates.length;
+
+
+    renderDates();
+
+    renderCalendars();
+
+    renderNotifications();
+
+  }
+
+
+  function dateHTML(
+    item
+  ) {
+
+    const date =
+      parseDateOnly(
+        item.event_date
+      );
+
+
+    if (!date) {
+      return "";
+    }
+
+
+    return `
+
+      <div class="date-item">
+
+        <div class="date-box">
+
+          <div class="date-month">
+
+            ${date.toLocaleString(
+              "en",
+              {
+                month:
+                  "short"
+              }
+            )}
+
+          </div>
+
+          <div class="date-day">
+            ${date.getDate()}
+          </div>
+
+        </div>
+
+
+        <div class="date-info">
+
+          <h3>
+            ${escapeHTML(
+              item.title
+            )}
+          </h3>
+
+          <p>
+
+            ${date.toLocaleDateString(
+              "en-CA",
+              {
+                weekday:
+                  "long",
+
+                year:
+                  "numeric",
+
+                month:
+                  "long",
+
+                day:
+                  "numeric"
+              }
+            )}
+
+            ${
+              item.details
+                ? ` · ${escapeHTML(
+                    item.details
+                  )}`
+                : ""
+            }
+
+          </p>
+
+        </div>
+
+
+        <span class="date-tag">
+          ${escapeHTML(
+            item.category
+          )}
+        </span>
+
+      </div>
+
+    `;
+
+  }
+
+
+  function renderDates() {
+
+    const today =
+      new Date();
+
+    today.setHours(
+      0,
+      0,
+      0,
+      0
+    );
+
+
+    const upcoming =
+      importantDates.filter(
+        item => {
+
+          const date =
+            parseDateOnly(
+              item.event_date
+            );
+
+          return (
+            date &&
+            date >= today
+          );
+
+        }
+      );
+
+
+    document.getElementById(
+      "importantDates"
+    ).innerHTML =
+      upcoming.length
+        ? upcoming
+            .slice(0, 7)
+            .map(dateHTML)
+            .join("")
+        : `
+            <div class="empty">
+              No upcoming dates yet.
+            </div>
+          `;
+
+
+    document.getElementById(
+      "allImportantDates"
+    ).innerHTML =
+      importantDates.length
+        ? importantDates
+            .map(dateHTML)
+            .join("")
+        : `
+            <div class="empty">
+              No dates have been
+              added yet.
+            </div>
+          `;
+
+  }
+
+
+  /* ======================================================
+     CALENDAR
+     ====================================================== */
+
+  function eventNamesForDate(
+    value
+  ) {
+
+    return importantDates
+      .filter(
+        item =>
+          item.event_date ===
+          value
+      )
+      .map(
+        item =>
+          item.title
+      )
+      .join(", ");
+
+  }
+
+
+  function drawCalendar(
+    year,
+    month,
+    titleElement,
+    daysElement
+  ) {
+
+    titleElement.textContent =
+      new Date(
+        year,
+        month,
+        1
+      )
+      .toLocaleString(
+        "en",
+        {
+          month:
+            "long",
+
+          year:
+            "numeric"
+        }
+      );
+
+
+    const first =
+      new Date(
+        year,
+        month,
+        1
+      ).getDay();
+
+
+    const total =
+      new Date(
+        year,
+        month + 1,
+        0
+      ).getDate();
+
+
+    let html = "";
+
+
+    for (
+      let i = 0;
+      i < first;
+      i++
+    ) {
+
+      html += `
+        <div
+          class="calendar-day empty"
+        >
+        </div>
+      `;
+
+    }
+
+
+    for (
+      let day = 1;
+      day <= total;
+      day++
+    ) {
+
+      const key =
+        `${year}-` +
+        `${String(
+          month + 1
+        ).padStart(2, "0")}-` +
+        `${String(day)
+          .padStart(2, "0")}`;
+
+
+      const events =
+        eventNamesForDate(
+          key
+        );
+
+
+      const isToday =
+        year ===
+          now.getFullYear() &&
+        month ===
+          now.getMonth() &&
+        day ===
+          now.getDate();
+
+
+      html += `
+
+        <div
+          class="
+            calendar-day
+            ${
+              isToday
+                ? "today"
+                : ""
+            }
+            ${
+              events
+                ? "has-event"
+                : ""
+            }
+          "
+
+          title="${escapeHTML(
+            events
+          )}"
+        >
+
+          ${day}
+
+        </div>
+
+      `;
+
+    }
+
+
+    daysElement.innerHTML =
+      html;
+
+  }
+
+
+  function renderCalendars() {
+
+    drawCalendar(
+      dashboardYear,
+      dashboardMonth,
+
+      document.getElementById(
+        "calendarMonth"
+      ),
+
+      document.getElementById(
+        "calendarDays"
+      )
+    );
+
+
+    drawCalendar(
+      fullYear,
+      fullMonth,
+
+      document.getElementById(
+        "fullCalendarMonth"
+      ),
+
+      document.getElementById(
+        "fullCalendarDays"
+      )
+    );
+
+  }
+
+
+  document.getElementById(
+    "prevMonth"
+  ).addEventListener(
+    "click",
+    () => {
+
+      dashboardMonth--;
+
+
+      if (
+        dashboardMonth < 0
+      ) {
+
+        dashboardMonth = 11;
+        dashboardYear--;
+
+      }
+
+
+      renderCalendars();
+
+    }
+  );
+
+
+  document.getElementById(
+    "nextMonth"
+  ).addEventListener(
+    "click",
+    () => {
+
+      dashboardMonth++;
+
+
+      if (
+        dashboardMonth > 11
+      ) {
+
+        dashboardMonth = 0;
+        dashboardYear++;
+
+      }
+
+
+      renderCalendars();
+
+    }
+  );
+
+
+  document.getElementById(
+    "fullPrevMonth"
+  ).addEventListener(
+    "click",
+    () => {
+
+      fullMonth--;
+
+
+      if (
+        fullMonth < 0
+      ) {
+
+        fullMonth = 11;
+        fullYear--;
+
+      }
+
+
+      renderCalendars();
+
+    }
+  );
+
+
+  document.getElementById(
+    "fullNextMonth"
+  ).addEventListener(
+    "click",
+    () => {
+
+      fullMonth++;
+
+
+      if (
+        fullMonth > 11
+      ) {
+
+        fullMonth = 0;
+        fullYear++;
+
+      }
+
+
+      renderCalendars();
+
+    }
+  );
+
+
+  /* ======================================================
+     FAQ
+     ====================================================== */
+
+  async function loadFAQs() {
+
+    const {
+      data,
+      error
+    } =
+      await db
+        .from("faqs")
+        .select("*")
+        .order(
+          "sort_order",
+          {
+            ascending: true
+          }
+        );
+
+
+    if (error) {
+
+      console.error(error);
+
+      faqs = [];
+
+      return;
+
+    }
+
+
+    faqs =
+      data || [];
+
+
+    renderFAQs();
+
+  }
+
+
+  function renderFAQs() {
+
+    const container =
+      document.getElementById(
+        "faqList"
+      );
+
+
+    if (
+      faqs.length === 0
+    ) {
+
+      container.innerHTML = `
+        <div class="empty">
+          No FAQs have been added yet.
+        </div>
+      `;
+
+      return;
+
+    }
+
+
+    container.innerHTML =
+      faqs.map(
+        faq => `
+
+          <div class="faq-item">
+
+            <button
+              class="faq-question"
+            >
+
+              <span>
+                ${escapeHTML(
+                  faq.question
+                )}
+              </span>
+
+              <span>
+                +
+              </span>
+
+            </button>
+
+
+            <div class="faq-answer">
+
+              ${escapeHTML(
+                faq.answer
+              )}
+
+            </div>
+
+          </div>
+
+        `
+      )
+      .join("");
+
+
+    container
+      .querySelectorAll(
+        ".faq-question"
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              const item =
+                button.parentElement;
+
+
+              item.classList.toggle(
+                "open"
+              );
+
+
+              button
+                .lastElementChild
+                .textContent =
+                  item.classList.contains(
+                    "open"
+                  )
+                    ? "−"
+                    : "+";
+
+            }
+          );
+
+        }
+      );
+
+  }
+
+
+  /* ======================================================
+     NOTIFICATIONS
+     ====================================================== */
+
+  function renderNotifications() {
+
+    const list =
+      document.getElementById(
+        "notificationList"
+      );
+
+
+    const notifications = [];
+
+
+    announcements
+      .slice(0, 3)
+      .forEach(
+        item => {
+
+          notifications.push({
+            title:
+              `📣 ${item.title}`,
+            text:
+              item.message
+          });
+
+        }
+      );
+
+
+    importantDates
+      .slice(0, 3)
+      .forEach(
+        item => {
+
+          notifications.push({
+            title:
+              `📅 ${item.title}`,
+            text:
+              `${item.category} · ${item.event_date}`
+          });
+
+        }
+      );
+
+
+    document.getElementById(
+      "notificationCount"
+    ).textContent =
+      notifications.length;
+
+
+    list.innerHTML =
+      notifications.length
+        ? notifications
+            .map(
+              item => `
+
+                <div
+                  class="notification-item"
+                >
+
+                  <strong>
+                    ${escapeHTML(
+                      item.title
+                    )}
+                  </strong>
+
+                  <p>
+                    ${escapeHTML(
+                      item.text
+                    )}
+                  </p>
+
+                </div>
+
+              `
+            )
+            .join("")
+        : `
+            <div class="empty">
+              No notifications.
+            </div>
+          `;
+
+  }
+
+
+  const notificationButton =
+    document.getElementById(
+      "notificationButton"
+    );
+
+
+  const notificationPanel =
+    document.getElementById(
+      "notificationsPanel"
+    );
+
+
+  notificationButton
+    .addEventListener(
+      "click",
+      event => {
+
+        event.stopPropagation();
+
+
+        notificationPanel
+          .classList.toggle(
+            "show"
+          );
+
+      }
+    );
+
+
+  document.addEventListener(
+    "click",
+    event => {
+
+      if (
+        !notificationPanel.contains(
+          event.target
+        ) &&
+        !notificationButton.contains(
+          event.target
+        )
+      ) {
+
+        notificationPanel
+          .classList.remove(
+            "show"
+          );
+
+      }
+
+    }
+  );
+
+
+  /* ======================================================
+     ADMIN BUTTON
+     ====================================================== */
+
+  document.getElementById(
+    "adminButton"
+  ).addEventListener(
+    "click",
+    async () => {
+
+      const session =
+        await getSession();
+
+
+      if (
+        session?.user
+      ) {
+
+        const {
+          data
+        } =
+          await db
+            .from("profiles")
+            .select(
+              "nickname, role"
+            )
+            .eq(
+              "user_id",
+              session.user.id
+            )
+            .maybeSingle();
+
+
+        if (
+          data?.role ===
+          "admin"
+        ) {
+
+          currentUser =
+            session.user;
+
+          currentProfile =
+            data;
+
+
+          await openAdmin();
+
+          return;
+
+        }
+
+      }
+
+
+      showPage(
+        "adminLogin"
+      );
+
+    }
+  );
+
+
+  document.getElementById(
+    "cancelAdminLogin"
+  ).addEventListener(
+    "click",
+    () => {
+
+      showPage(
+        "dashboard"
+      );
+
+    }
+  );
+
+
+  /* ======================================================
+     ADMIN LOGIN
+     ====================================================== */
+
+  document.getElementById(
+    "adminLoginForm"
+  ).addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+
+      const email =
+        document.getElementById(
+          "adminEmail"
+        )
+        .value
+        .trim();
+
+
+      const password =
+        document.getElementById(
+          "adminPassword"
+        )
+        .value;
+
+
+      const existing =
+        await getSession();
+
+
+      if (existing) {
+
+        await db.auth.signOut();
+
+      }
+
+
+      const {
+        data,
+        error
+      } =
+        await db.auth
+          .signInWithPassword({
+            email,
+            password
+          });
+
+
+      if (error) {
+
+        showMessage(
+          "loginMessage",
+          "Incorrect admin email or password.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      const {
+        data: profile,
+        error: profileError
+      } =
+        await db
+          .from("profiles")
+          .select(
+            "nickname, role"
+          )
+          .eq(
+            "user_id",
+            data.user.id
+          )
+          .maybeSingle();
+
+
+      if (
+        profileError ||
+        !profile ||
+        profile.role !==
+          "admin"
+      ) {
+
+        await db.auth.signOut();
+
+
+        showMessage(
+          "loginMessage",
+          "This account is not an administrator.",
+          "error"
+        );
+
+
+        await createAnonymousStudent();
+
+        await loadProfile();
+
+
+        return;
+
+      }
+
+
+      currentUser =
+        data.user;
+
+      currentProfile =
+        profile;
+
+
+      document.getElementById(
+        "adminPassword"
+      ).value = "";
+
+
+      await openAdmin();
+
+    }
+  );
+
+
+  /* ======================================================
+     OPEN ADMIN
+     ====================================================== */
+
+  async function openAdmin() {
+
+    showPage(
+      "admin"
+    );
+
+
+    await Promise.all([
+      loadAdminProfiles(),
+      loadAdminActivity(),
+      loadAnnouncements(),
+      loadResources(),
+      loadDates(),
+      loadFAQs()
+    ]);
+
+
+    renderAdminActivity();
+
+    updateAdminStats();
+
+  }
+
+
+  /* ======================================================
+     ADMIN PROFILES
+     ====================================================== */
+
+  async function loadAdminProfiles() {
+
+    const {
+      data,
+      error
+    } =
+      await db
+        .from("profiles")
+        .select(
+          "user_id, nickname, role"
+        );
+
+
+    if (error) {
+
+      console.error(error);
+
+      adminProfiles = [];
+
+      return;
+
+    }
+
+
+    adminProfiles =
+      data || [];
+
+  }
+
+
+  /* ======================================================
+     ADMIN ACTIVITY
+     ====================================================== */
+
+  async function loadAdminActivity() {
+
+    const {
+      data,
+      error
+    } =
+      await db
+        .from("activity")
+        .select(
+          "id, user_id, action, resource_title, created_at"
+        )
+        .order(
+          "created_at",
+          {
+            ascending: false
+          }
+        )
+        .limit(200);
+
+
+    if (error) {
+
+      console.error(error);
+
+      adminActivity = [];
+
+      return;
+
+    }
+
+
+    adminActivity =
+      data || [];
+
+  }
+
+
+  function getNickname(
+    userId
+  ) {
+
+    const profile =
+      adminProfiles.find(
+        item =>
+          item.user_id ===
+          userId
+      );
+
+
+    return (
+      profile?.nickname ||
+      "Unknown"
+    );
+
+  }
+
+
+  function renderAdminActivity() {
+
+    const body =
+      document.getElementById(
+        "activityTable"
+      );
+
+
+    if (
+      adminActivity.length === 0
+    ) {
+
+      body.innerHTML = `
+
+        <tr>
+
+          <td colspan="4">
+
+            <div class="empty">
+              No activity yet.
+            </div>
+
+          </td>
+
+        </tr>
+
+      `;
+
+      return;
+
+    }
+
+
+    body.innerHTML =
+      adminActivity.map(
+        item => `
+
+          <tr>
+
+            <td>
+
+              <span class="student-dot">
+              </span>
+
+              ${escapeHTML(
+                getNickname(
+                  item.user_id
+                )
+              )}
+
+            </td>
+
+            <td>
+              ${escapeHTML(
+                item.action
+              )}
+            </td>
+
+            <td>
+              ${escapeHTML(
+                item.resource_title || ""
+              )}
+            </td>
+
+            <td>
+
+              ${
+                item.created_at
+                  ? escapeHTML(
+                      new Date(
+                        item.created_at
+                      )
+                      .toLocaleString()
+                    )
+                  : ""
+              }
+
+            </td>
+
+          </tr>
+
+        `
+      )
+      .join("");
+
+  }
+
+
+  function updateAdminStats() {
+
+    document.getElementById(
+      "adminStudentCount"
+    ).textContent =
+      adminProfiles.filter(
+        profile =>
+          profile.role ===
+          "student"
+      ).length;
+
+
+    document.getElementById(
+      "adminActivityCount"
+    ).textContent =
+      adminActivity.length;
+
+
+    document.getElementById(
+      "adminAnnouncementCount"
+    ).textContent =
+      announcements.length;
+
+
+    document.getElementById(
+      "adminDateCount"
+    ).textContent =
+      importantDates.length;
+
+  }
+
+
+  /* ======================================================
+     ADMIN ADD ANNOUNCEMENT
+     ====================================================== */
+
+  document.getElementById(
+    "announcementForm"
+  ).addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+
+      const title =
+        document.getElementById(
+          "announcementTitle"
+        )
+        .value
+        .trim();
+
+
+      const message =
+        document.getElementById(
+          "announcementMessage"
+        )
+        .value
+        .trim();
+
+
+      const {
+        error
+      } =
+        await db
+          .from("announcements")
+          .insert({
+            title,
+            message,
+            created_by:
+              currentUser.id
+          });
+
+
+      if (error) {
+
+        console.error(error);
+
+
+        showMessage(
+          "adminMessage",
+          "Could not post announcement.",
+          "error"
+        );
+
+
+        return;
+
+      }
+
+
+      event.target.reset();
+
+
+      await loadAnnouncements();
+
+
+      updateAdminStats();
+
+
+      showMessage(
+        "adminMessage",
+        "Announcement posted.",
+        "success"
+      );
+
+    }
+  );
+
+
+  /* ======================================================
+     ADMIN ADD DATE
+     ====================================================== */
+
+  document.getElementById(
+    "dateForm"
+  ).addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+
+      const title =
+        document.getElementById(
+          "dateTitle"
+        )
+        .value
+        .trim();
+
+
+      const date =
+        document.getElementById(
+          "dateValue"
+        )
+        .value;
+
+
+      const category =
+        document.getElementById(
+          "dateCategory"
+        )
+        .value;
+
+
+      const details =
+        document.getElementById(
+          "dateDetails"
+        )
+        .value
+        .trim();
+
+
+      const {
+        error
+      } =
+        await db
+          .from(
+            "important_dates"
+          )
+          .insert({
+            title,
+
+            event_date:
+              date,
+
+            category,
+
+            details,
+
+            created_by:
+              currentUser.id
+          });
+
+
+      if (error) {
+
+        console.error(error);
+
+
+        showMessage(
+          "adminMessage",
+          "Could not add date.",
+          "error"
+        );
+
+
+        return;
+
+      }
+
+
+      event.target.reset();
+
+
+      await loadDates();
+
+
+      updateAdminStats();
+
+
+      showMessage(
+        "adminMessage",
+        "Important date added.",
+        "success"
+      );
+
+    }
+  );
+
+
+  /* ======================================================
+     ADMIN ADD RESOURCE
+     ====================================================== */
+
+  document.getElementById(
+    "resourceForm"
+  ).addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+
+      const title =
+        document.getElementById(
+          "resourceTitle"
+        )
+        .value
+        .trim();
+
+
+      const category =
+        document.getElementById(
+          "resourceCategory"
+        )
+        .value;
+
+
+      const description =
+        document.getElementById(
+          "resourceDescription"
+        )
+        .value
+        .trim();
+
+
+      const url =
+        document.getElementById(
+          "resourceURL"
+        )
+        .value
+        .trim();
+
+
+      const {
+        error
+      } =
+        await db
+          .from("resources")
+          .insert({
+            title,
+            category,
+            description,
+
+            url:
+              url || null,
+
+            created_by:
+              currentUser.id
+          });
+
+
+      if (error) {
+
+        console.error(error);
+
+
+        showMessage(
+          "adminMessage",
+          "Could not add resource.",
+          "error"
+        );
+
+
+        return;
+
+      }
+
+
+      event.target.reset();
+
+
+      await loadResources();
+
+
+      showMessage(
+        "adminMessage",
+        "Resource added.",
+        "success"
+      );
+
+    }
+  );
+
+
+  /* ======================================================
+     ADMIN ADD FAQ
+     ====================================================== */
+
+  document.getElementById(
+    "faqForm"
+  ).addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+
+      const question =
+        document.getElementById(
+          "faqQuestion"
+        )
+        .value
+        .trim();
+
+
+      const answer =
+        document.getElementById(
+          "faqAnswer"
+        )
+        .value
+        .trim();
+
+
+      const category =
+        document.getElementById(
+          "faqCategory"
+        )
+        .value;
+
+
+      const {
+        error
+      } =
+        await db
+          .from("faqs")
+          .insert({
+            question,
+            answer,
+            category,
+
+            sort_order:
+              faqs.length + 1,
+
+            created_by:
+              currentUser.id
+          });
+
+
+      if (error) {
+
+        console.error(error);
+
+
+        showMessage(
+          "adminMessage",
+          "Could not add FAQ.",
+          "error"
+        );
+
+
+        return;
+
+      }
+
+
+      event.target.reset();
+
+
+      await loadFAQs();
+
+
+      showMessage(
+        "adminMessage",
+        "FAQ added.",
+        "success"
+      );
+
+    }
+  );
+
+
+  /* ======================================================
+     CLEAR ACTIVITY
+     ====================================================== */
+
+  document.getElementById(
+    "clearActivityButton"
+  ).addEventListener(
+    "click",
+    async () => {
+
+      const yes =
+        confirm(
+          "Clear all recorded student activity?"
+        );
+
+
+      if (!yes) {
+        return;
+      }
+
+
+      const {
+        error
+      } =
+        await db
+          .from("activity")
+          .delete()
+          .gte(
+            "id",
+            0
+          );
+
+
+      if (error) {
+
+        console.error(error);
+
+
+        showMessage(
+          "adminMessage",
+          "Could not clear activity.",
+          "error"
+        );
+
+
+        return;
+
+      }
+
+
+      await loadAdminActivity();
+
+
+      renderAdminActivity();
+
+      updateAdminStats();
+
+
+      showMessage(
+        "adminMessage",
+        "Activity cleared.",
+        "success"
+      );
+
+    }
+  );
+
+
+  /* ======================================================
+     ADMIN LOGOUT
+     ====================================================== */
+
+  document.getElementById(
+    "adminLogoutButton"
+  ).addEventListener(
+    "click",
+    async () => {
+
+      await db.auth.signOut();
+
+
+      currentUser = null;
+      currentProfile = null;
+
+
+      await initializeStudent();
+
+
+      showPage(
+        "dashboard"
+      );
+
+    }
+  );
+
+
+  /* ======================================================
+     INITIALIZE
+     ====================================================== */
+
+  async function loadSharedData() {
+
+    await Promise.all([
+      loadAnnouncements(),
+      loadResources(),
+      loadDates(),
+      loadFAQs()
+    ]);
+
+  }
+
+
+  async function initializeStudent() {
+
+    const user =
+      await createAnonymousStudent();
+
+
+    if (!user) {
+      return;
+    }
+
+
+    await loadProfile();
+
+
+    if (
+      currentProfile?.role ===
+      "admin"
+    ) {
+
+      setConnection(
+        "● Connected as administrator"
+      );
+
+      return;
+
+    }
+
+
+    await Promise.all([
+      loadSharedData(),
+      loadStudentActivity()
+    ]);
+
+
+    setConnection(
+      "● Connected to Science Club"
+    );
+
+  }
+
+
+  async function start() {
+
+    if (
+      SUPABASE_URL.includes(
+        "PASTE_"
+      ) ||
+      SUPABASE_PUBLISHABLE_KEY.includes(
+        "PASTE_"
+      )
+    ) {
+
+      setConnection(
+        "● Supabase information needed",
+        true
+      );
+
+
+      showMessage(
+        "studentMessage",
+        "Paste your Supabase Project URL and Publishable Key into the code first.",
+        "error"
+      );
+
+
+      renderCalendars();
+
+
+      return;
+
+    }
+
+
+    try {
+
+      await initializeStudent();
+
+    } catch (error) {
+
+      console.error(error);
+
+
+      setConnection(
+        "● Could not connect",
+        true
+      );
+
+    }
+
+  }
+
+
+  start();
+
+</script>
+
+</body>
+</html>
