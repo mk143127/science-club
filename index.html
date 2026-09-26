@@ -4,844 +4,690 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Science Club Student Portal</title>
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-
-    :root{
-      --bg:#f6f7fb;
-      --sidebar:#151824;
-      --card:#fff;
-      --text:#1d202b;
-      --muted:#747a89;
-      --border:#e7e9ef;
-      --purple:#675ff2;
-      --purple-dark:#554de0;
-      --purple-soft:#efeeff;
-      --blue:#3b82f6;
-      --blue-soft:#edf5ff;
-      --green:#10b981;
-      --green-soft:#eafaf5;
-      --orange:#f59e0b;
-      --orange-soft:#fff7e7;
-      --red:#ef4444;
-      --red-soft:#fff0f0;
-      --shadow:0 7px 25px rgba(0,0,0,.045);
-    }
-
-    body{
-      min-height:100vh;
-      font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      background:var(--bg);
-      color:var(--text);
-    }
-
-    button,input,textarea,select{font:inherit}
-    button{cursor:pointer}
-    input,textarea,select{outline:none}
-
-    .app{
-      min-height:100vh;
-      display:grid;
-      grid-template-columns:245px 1fr;
-    }
-
-    .sidebar{
-      position:fixed;
-      inset:0 auto 0 0;
-      width:245px;
-      height:100vh;
-      padding:28px 18px;
-      display:flex;
-      flex-direction:column;
-      background:var(--sidebar);
-      color:white;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:11px;
-      margin-bottom:38px;
-    }
-
-    .brand-icon{
-      width:44px;
-      height:44px;
-      display:grid;
-      place-items:center;
-      border-radius:13px;
-      background:linear-gradient(135deg,#6d66ff,#9166ef);
-      font-size:22px;
-    }
-
-    .brand h2{font-size:16px}
-    .brand p{margin-top:3px;color:#949bad;font-size:11px}
-
-    .nav{
-      display:flex;
-      flex-direction:column;
-      gap:7px;
-    }
-
-    .nav-button,
-    .admin-button{
-      width:100%;
-      padding:12px 13px;
-      border:none;
-      border-radius:10px;
-      background:transparent;
-      color:#aeb4c4;
-      text-align:left;
-      font-size:13px;
-      font-weight:600;
-    }
-
-    .nav-button:hover,
-    .nav-button.active{
-      background:rgba(255,255,255,.08);
-      color:white;
-    }
-
-    .sidebar-bottom{
-      margin-top:auto;
-      padding-top:18px;
-      border-top:1px solid rgba(255,255,255,.08);
-    }
-
-    .admin-button{
-      background:rgba(255,255,255,.08);
-      color:white;
-      text-align:center;
-      font-size:12px;
-      font-weight:700;
-    }
-
-    .privacy-note{
-      margin-top:11px;
-      color:#7f8699;
-      font-size:10px;
-      line-height:1.5;
-    }
-
-    main{
-      grid-column:2;
-      width:100%;
-      max-width:1500px;
-      padding:30px 34px;
-      margin:0 auto;
-    }
-
-    .page{display:none}
-    .page.active{display:block}
-
-    .connection{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      margin-bottom:15px;
-      padding:6px 10px;
-      border-radius:8px;
-      background:var(--green-soft);
-      color:#087d59;
-      font-size:10px;
-      font-weight:700;
-    }
-
-    .connection.error{
-      background:var(--red-soft);
-      color:#bd2929;
-    }
-
-    .topbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:20px;
-      margin-bottom:25px;
-    }
-
-    .topbar h1{
-      font-size:27px;
-      letter-spacing:-.6px;
-    }
-
-    .topbar p{
-      margin-top:5px;
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    .top-actions{
-      display:flex;
-      align-items:center;
-      gap:9px;
-    }
-
-    .notification-button{
-      position:relative;
-      width:43px;
-      height:43px;
-      border:1px solid var(--border);
-      border-radius:11px;
-      background:white;
-      font-size:18px;
-    }
-
-    .notification-count{
-      position:absolute;
-      top:-5px;
-      right:-4px;
-      min-width:17px;
-      height:17px;
-      display:grid;
-      place-items:center;
-      padding:2px 4px;
-      border-radius:999px;
-      background:var(--red);
-      color:white;
-      font-size:9px;
-      font-weight:800;
-    }
-
-    .profile-box{
-      min-width:150px;
-      padding:8px 11px;
-      display:flex;
-      align-items:center;
-      gap:9px;
-      border:1px solid var(--border);
-      border-radius:11px;
-      background:white;
+    * {
+      box-sizing: border-box;
     }
 
-    .avatar{
-      width:32px;
-      height:32px;
-      display:grid;
-      place-items:center;
-      border-radius:50%;
-      background:var(--purple-soft);
-      color:var(--purple);
-      font-size:12px;
-      font-weight:800;
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f6f7fb;
+      color: #1f2430;
     }
 
-    .profile-name{font-size:12px;font-weight:700}
-    .profile-role{margin-top:2px;color:var(--muted);font-size:9px}
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    :root {
+      --dark: #171a27;
+      --card: #fff;
+      --line: #e7e9f0;
+      --muted: #717887;
+      --p: #665cf2;
+      --ps: #efeeff;
+      --g: #0ea878;
+      --gs: #e9faf4;
+      --r: #e5484d;
+      --rs: #fff0f0;
+    }
 
-    .nickname-card{
-      margin-bottom:22px;
-      padding:23px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:25px;
-      border-radius:17px;
-      background:linear-gradient(120deg,#6861f2,#865ff0);
-      color:white;
+    .shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 245px 1fr;
     }
 
-    .nickname-card h2{
-      margin-bottom:6px;
-      font-size:18px;
+    .side {
+      position: fixed;
+      inset: 0 auto 0 0;
+      width: 245px;
+      height: 100vh;
+      background: var(--dark);
+      padding: 24px 16px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
     }
 
-    .nickname-card p{
-      max-width:630px;
-      font-size:12px;
-      line-height:1.6;
-      opacity:.85;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 30px;
     }
 
-    .nickname-form{
-      min-width:310px;
-      display:flex;
-      gap:7px;
+    .logo {
+      width: 43px;
+      height: 43px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background: linear-gradient(135deg, #665cf2, #9566f5);
+      font-size: 21px;
     }
 
-    .nickname-form input{
-      min-width:0;
-      flex:1;
-      padding:11px 12px;
-      border:none;
-      border-radius:9px;
+    .brand small {
+      display: block;
+      color: #9299aa;
+      margin-top: 3px;
     }
 
-    .nickname-form button{
-      padding:10px 14px;
-      border:none;
-      border-radius:9px;
-      background:white;
-      color:var(--purple);
-      font-size:12px;
-      font-weight:800;
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
 
-    .stats{
-      margin-bottom:21px;
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:15px;
+    .nav button,
+    .adminBtn {
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 12px;
+      background: transparent;
+      color: #adb4c3;
+      text-align: left;
+      font-weight: 650;
     }
 
-    .stat-card{
-      padding:19px;
-      border:1px solid var(--border);
-      border-radius:15px;
-      background:white;
-      box-shadow:var(--shadow);
+    .nav button:hover,
+    .nav button.active {
+      background: #ffffff14;
+      color: #fff;
     }
 
-    .stat-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
+    .sideBottom {
+      margin-top: auto;
+      border-top: 1px solid #ffffff12;
+      padding-top: 15px;
     }
 
-    .stat-label{
-      color:var(--muted);
-      font-size:11px;
-      font-weight:600;
+    .adminBtn {
+      width: 100%;
+      background: #ffffff14;
+      color: #fff;
+      text-align: center;
     }
 
-    .stat-icon{
-      width:34px;
-      height:34px;
-      display:grid;
-      place-items:center;
-      border-radius:9px;
+    .tiny {
+      font-size: 10px;
+      line-height: 1.5;
+      color: #858c9f;
+      margin-top: 10px;
     }
 
-    .purple-soft{background:var(--purple-soft)}
-    .blue-soft{background:var(--blue-soft)}
-    .green-soft{background:var(--green-soft)}
-    .orange-soft{background:var(--orange-soft)}
+    main {
+      grid-column: 2;
+      padding: 28px 32px;
+      max-width: 1450px;
+      width: 100%;
+      margin: auto;
+    }
+
+    .page {
+      display: none;
+    }
 
-    .stat-number{
-      margin-top:10px;
-      font-size:25px;
-      font-weight:800;
+    .page.active {
+      display: block;
     }
 
-    .stat-small{font-size:18px}
+    .status {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: var(--gs);
+      color: #087655;
+      font-size: 10px;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
 
-    .stat-detail{
-      margin-top:4px;
-      color:var(--muted);
-      font-size:10px;
+    .status.bad {
+      background: var(--rs);
+      color: #b5282d;
     }
 
-    .dashboard-grid{
-      display:grid;
-      grid-template-columns:1.55fr .85fr;
-      gap:20px;
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 15px;
+      margin-bottom: 22px;
     }
 
-    .card{
-      margin-bottom:19px;
-      padding:21px;
-      border:1px solid var(--border);
-      border-radius:16px;
-      background:white;
-      box-shadow:var(--shadow);
+    .top h1 {
+      font-size: 27px;
+      margin: 0;
     }
 
-    .card-header{
-      margin-bottom:17px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
+    .top p {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 6px 0 0;
     }
 
-    .card-header h2{font-size:15px}
+    .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 7px 24px rgba(0, 0, 0, .04);
+    }
 
-    .card-header p{
-      margin-top:3px;
-      color:var(--muted);
-      font-size:10px;
+    .card h2 {
+      font-size: 15px;
+      margin: 0 0 12px;
     }
 
-    .announcement-card{
-      background:linear-gradient(135deg,#171b29,#292d42);
-      color:white;
+    .muted {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.65;
     }
 
-    .announcement-card h3{
-      margin-bottom:8px;
-      font-size:15px;
+    .primary,
+    .secondary,
+    .danger {
+      border-radius: 9px;
+      padding: 9px 12px;
+      font-weight: 750;
+      font-size: 11px;
     }
 
-    .announcement-card p{
-      color:#c0c4d1;
-      font-size:12px;
-      line-height:1.65;
+    .primary {
+      border: 0;
+      background: var(--p);
+      color: #fff;
     }
 
-    .announcement-date{
-      display:block;
-      margin-top:12px;
-      color:#858c9f;
-      font-size:10px;
+    .secondary {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #1f2430;
     }
 
-    .resource{
-      padding:14px 0;
-      display:grid;
-      grid-template-columns:42px 1fr auto;
-      align-items:center;
-      gap:12px;
-      border-bottom:1px solid var(--border);
+    .danger {
+      border: 0;
+      background: var(--rs);
+      color: var(--r);
     }
 
-    .resource:last-child{border-bottom:none}
+    .msg {
+      display: none;
+      padding: 10px 12px;
+      border-radius: 9px;
+      font-size: 11px;
+      margin-bottom: 12px;
+    }
 
-    .resource-icon{
-      width:40px;
-      height:40px;
-      display:grid;
-      place-items:center;
-      border-radius:10px;
-      background:var(--purple-soft);
+    .msg.show {
+      display: block;
     }
 
-    .resource h3{
-      margin-bottom:4px;
-      font-size:12px;
+    .msg.ok {
+      background: var(--gs);
+      color: #087655;
     }
 
-    .resource p{
-      color:var(--muted);
-      font-size:10px;
-      line-height:1.5;
+    .msg.err {
+      background: var(--rs);
+      color: #b5282d;
     }
 
-    .open-resource{
-      padding:8px 11px;
-      border:none;
-      border-radius:8px;
-      background:var(--purple);
-      color:white;
-      font-size:10px;
-      font-weight:700;
+    .form {
+      display: grid;
+      gap: 9px;
     }
 
-    .open-resource:hover{background:var(--purple-dark)}
+    .form label {
+      font-size: 10px;
+      font-weight: 800;
+    }
 
-    .date-item{
-      padding:11px 0;
-      display:flex;
-      align-items:center;
-      gap:11px;
-      border-bottom:1px solid var(--border);
+    .form input,
+    .form textarea,
+    .form select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 10px 11px;
+      background: #fff;
     }
 
-    .date-item:last-child{border-bottom:none}
+    .form textarea {
+      min-height: 85px;
+      resize: vertical;
+    }
 
-    .date-box{
-      min-width:47px;
-      padding:7px 5px;
-      border-radius:9px;
-      background:#f4f5f9;
-      text-align:center;
+    .authWrap {
+      min-height: 72vh;
+      display: grid;
+      place-items: center;
     }
 
-    .date-month{
-      color:var(--purple);
-      font-size:9px;
-      font-weight:800;
-      text-transform:uppercase;
+    .authCard {
+      width: min(470px, 100%);
+      padding: 27px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
     }
 
-    .date-day{
-      margin-top:1px;
-      font-size:18px;
-      font-weight:800;
+    .authTabs {
+      display: flex;
+      gap: 7px;
+      margin: 15px 0;
     }
 
-    .date-info{
-      min-width:0;
-      flex:1;
+    .authTabs button {
+      flex: 1;
     }
 
-    .date-info h3{
-      margin-bottom:3px;
-      font-size:12px;
+    .usernameRow {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
     }
 
-    .date-info p{
-      color:var(--muted);
-      font-size:10px;
-      line-height:1.4;
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
     }
 
-    .date-tag{
-      padding:5px 7px;
-      border-radius:6px;
-      background:var(--blue-soft);
-      color:var(--blue);
-      font-size:8px;
-      font-weight:700;
+    .stat {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 17px;
     }
 
-    .calendar-controls{
-      display:flex;
-      align-items:center;
-      gap:7px;
+    .stat small {
+      color: var(--muted);
     }
 
-    .calendar-controls button{
-      width:30px;
-      height:30px;
-      border:none;
-      border-radius:7px;
-      background:#f1f2f6;
+    .stat strong {
+      display: block;
+      font-size: 24px;
+      margin-top: 8px;
     }
 
-    .calendar-controls span{
-      min-width:120px;
-      text-align:center;
-      font-size:11px;
-      font-weight:700;
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1.35fr .85fr;
+      gap: 18px;
     }
 
-    .calendar-grid{
-      display:grid;
-      grid-template-columns:repeat(7,1fr);
-      gap:5px;
+    .nickBanner {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      padding: 20px;
+      margin-bottom: 18px;
+      border-radius: 16px;
+      background: linear-gradient(120deg, #665cf2, #895ff0);
+      color: #fff;
     }
 
-    .weekday{
-      padding:7px 0;
-      text-align:center;
-      color:var(--muted);
-      font-size:9px;
-      font-weight:700;
+    .nickBanner p {
+      font-size: 11px;
+      opacity: .88;
+      margin: 5px 0 0;
     }
 
-    .calendar-day{
-      min-height:57px;
-      position:relative;
-      padding:6px;
-      border:1px solid var(--border);
-      border-radius:8px;
-      background:white;
-      font-size:10px;
+    .resource,
+    .dateRow,
+    .attempt {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--line);
     }
 
-    .calendar-day.empty{background:#fafafa}
+    .resource:last-child,
+    .dateRow:last-child,
+    .attempt:last-child {
+      border-bottom: 0;
+    }
 
-    .calendar-day.today{
-      border-color:var(--purple);
-      background:var(--purple-soft);
+    .grow {
+      flex: 1;
     }
 
-    .calendar-day.has-event::after{
-      content:"";
-      position:absolute;
-      right:5px;
-      bottom:5px;
-      width:6px;
-      height:6px;
-      border-radius:50%;
-      background:var(--purple);
+    .resource h3,
+    .dateRow h3,
+    .attempt h3 {
+      font-size: 12px;
+      margin: 0 0 4px;
     }
 
-    .faq-item{border-bottom:1px solid var(--border)}
+    .resource p,
+    .dateRow p,
+    .attempt p {
+      font-size: 10px;
+      color: var(--muted);
+      margin: 0;
+    }
 
-    .faq-question{
-      width:100%;
-      padding:14px 0;
-      border:none;
-      background:transparent;
-      display:flex;
-      justify-content:space-between;
-      text-align:left;
-      font-size:12px;
-      font-weight:700;
+    .badge {
+      font-size: 9px;
+      font-weight: 800;
+      padding: 5px 7px;
+      border-radius: 7px;
+      background: var(--ps);
+      color: var(--p);
     }
 
-    .faq-answer{
-      display:none;
-      padding:0 0 14px;
-      color:var(--muted);
-      font-size:11px;
-      line-height:1.7;
+    .calHead,
+    .cal {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
     }
 
-    .faq-item.open .faq-answer{display:block}
+    .calHead div {
+      text-align: center;
+      color: var(--muted);
+      font-size: 9px;
+      font-weight: 700;
+      padding: 5px;
+    }
 
-    .notifications{
-      display:none;
-      position:absolute;
-      top:78px;
-      right:34px;
-      width:340px;
-      z-index:50;
-      padding:15px;
-      border:1px solid var(--border);
-      border-radius:14px;
-      background:white;
-      box-shadow:0 20px 60px rgba(0,0,0,.14);
+    .day {
+      min-height: 55px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 6px;
+      font-size: 10px;
+      position: relative;
+      background: #fff;
     }
 
-    .notifications.show{display:block}
+    .day.blank {
+      background: #fafafa;
+    }
 
-    .notifications h3{
-      margin-bottom:10px;
-      font-size:14px;
+    .day.today {
+      background: var(--ps);
+      border-color: var(--p);
     }
 
-    .notification-item{
-      margin-bottom:7px;
-      padding:11px;
-      border-radius:9px;
-      background:#f7f8fb;
+    .day.event:after {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--p);
+      position: absolute;
+      right: 5px;
+      bottom: 5px;
     }
 
-    .notification-item strong{
-      display:block;
-      margin-bottom:4px;
-      font-size:11px;
+    .calControls {
+      display: flex;
+      align-items: center;
+      gap: 7px;
     }
 
-    .notification-item p{
-      color:var(--muted);
-      font-size:10px;
-      line-height:1.5;
+    .calControls span {
+      min-width: 120px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 750;
     }
 
-    .admin-grid{
-      display:grid;
-      grid-template-columns:1.35fr .65fr;
-      gap:20px;
+    .linkCards,
+    .quizGrid,
+    .tutorialGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+      gap: 13px;
     }
 
-    .activity-wrapper{overflow-x:auto}
+    .linkCard,
+    .quizCard,
+    .tutorialStep {
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      padding: 16px;
+      background: #fff;
+    }
 
-    .activity-table{
-      width:100%;
-      border-collapse:collapse;
+    .linkCard h3,
+    .quizCard h3,
+    .tutorialStep h3 {
+      font-size: 13px;
+      margin: 0 0 7px;
     }
 
-    .activity-table th{
-      padding:10px 8px;
-      text-align:left;
-      border-bottom:1px solid var(--border);
-      color:var(--muted);
-      font-size:9px;
-      text-transform:uppercase;
+    .linkCard p,
+    .quizCard p,
+    .tutorialStep p {
+      font-size: 10px;
+      color: var(--muted);
+      line-height: 1.6;
     }
 
-    .activity-table td{
-      padding:12px 8px;
-      border-bottom:1px solid var(--border);
-      font-size:10px;
+    .pillRow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
     }
 
-    .student-dot{
-      width:8px;
-      height:8px;
-      display:inline-block;
-      margin-right:5px;
-      border-radius:50%;
-      background:var(--green);
+    .pill {
+      background: #f3f4f8;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 5px 8px;
+      font-size: 9px;
     }
 
-    .admin-form{
-      display:flex;
-      flex-direction:column;
-      gap:9px;
+    .brainstorm {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
 
-    .admin-form label{
-      font-size:10px;
-      font-weight:700;
+    .ideaOut {
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 12px;
+      background: var(--ps);
+      font-size: 11px;
+      line-height: 1.7;
     }
 
-    .admin-form input,
-    .admin-form textarea,
-    .admin-form select{
-      width:100%;
-      padding:10px 11px;
-      border:1px solid var(--border);
-      border-radius:8px;
-      background:white;
+    .question {
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      padding: 15px;
+      margin-bottom: 12px;
     }
 
-    .admin-form textarea{
-      min-height:90px;
-      resize:vertical;
+    .question h3 {
+      font-size: 12px;
+      line-height: 1.5;
     }
 
-    .primary-button,
-    .secondary-button,
-    .danger-button{
-      padding:10px 13px;
-      border-radius:8px;
-      font-size:11px;
-      font-weight:700;
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px 9px;
+      margin: 6px 0;
+      font-size: 11px;
     }
 
-    .primary-button{
-      border:none;
-      background:var(--purple);
-      color:white;
+    .review {
+      padding: 10px;
+      border-bottom: 1px solid var(--line);
+      font-size: 11px;
     }
 
-    .secondary-button{
-      border:1px solid var(--border);
-      background:white;
+    .review.good {
+      background: #f4fff9;
     }
 
-    .danger-button{
-      border:none;
-      background:var(--red-soft);
-      color:var(--red);
+    .review.bad {
+      background: #fff6f6;
     }
 
-    .login-box{
-      width:100%;
-      max-width:430px;
-      margin:60px auto;
-      padding:28px;
-      border:1px solid var(--border);
-      border-radius:17px;
-      background:white;
-      box-shadow:var(--shadow);
+    .num {
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      background: var(--ps);
+      color: var(--p);
+      display: grid;
+      place-items: center;
+      font-weight: 850;
+      margin-bottom: 10px;
     }
 
-    .login-box h2{
-      margin-bottom:7px;
-      font-size:20px;
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #11131dbb;
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
 
-    .login-box p{
-      margin-bottom:20px;
-      color:var(--muted);
-      font-size:11px;
-      line-height:1.6;
+    .overlay.show {
+      display: flex;
     }
 
-    .login-box input{
-      width:100%;
-      margin-bottom:10px;
-      padding:11px 12px;
-      border:1px solid var(--border);
-      border-radius:9px;
+    .tour {
+      width: min(520px, 100%);
+      background: #fff;
+      border-radius: 18px;
+      padding: 25px;
     }
 
-    .login-actions{
-      display:flex;
-      gap:8px;
+    .tourIcon {
+      font-size: 34px;
     }
 
-    .login-actions button{flex:1}
+    .tour h2 {
+      margin: 8px 0;
+    }
 
-    .empty{
-      padding:18px 0;
-      color:var(--muted);
-      text-align:center;
-      font-size:11px;
+    .tourActions {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 18px;
     }
 
-    .message{
-      display:none;
-      margin-bottom:15px;
-      padding:11px 12px;
-      border-radius:9px;
-      font-size:11px;
+    .tableWrap {
+      overflow: auto;
     }
 
-    .message.show{display:block}
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
-    .message.success{
-      background:var(--green-soft);
-      color:#087d59;
+    th,
+    td {
+      text-align: left;
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--line);
+      font-size: 10px;
     }
 
-    .message.error{
-      background:var(--red-soft);
-      color:#b92828;
+    th {
+      color: var(--muted);
+      font-size: 9px;
+      text-transform: uppercase;
     }
 
-    .description{
-      color:var(--muted);
-      font-size:11px;
-      line-height:1.7;
+    .adminGrid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 18px;
     }
 
-    @media(max-width:1050px){
-      .stats{grid-template-columns:repeat(2,1fr)}
-      .dashboard-grid,.admin-grid{grid-template-columns:1fr}
+    @media (max-width: 950px) {
+      .grid2,
+      .adminGrid {
+        grid-template-columns: 1fr;
+      }
     }
 
-    @media(max-width:760px){
-      .app{display:block}
-      .sidebar{
-        position:static;
-        width:100%;
-        height:auto;
-        padding:13px;
-        flex-direction:row;
-        align-items:center;
-        overflow-x:auto;
+    @media (max-width: 740px) {
+      .shell {
+        display: block;
       }
 
-      .brand{
-        min-width:175px;
-        margin:0 12px 0 0;
+      .side {
+        position: static;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        align-items: center;
+        overflow: auto;
+        padding: 12px;
       }
 
-      .nav{flex-direction:row}
-      .nav-button{white-space:nowrap}
-
-      .sidebar-bottom{
-        margin:0 0 0 8px;
-        padding:0;
-        border:none;
+      .brand {
+        min-width: 165px;
+        margin: 0 10px 0 0;
       }
 
-      .privacy-note{display:none}
-      main{padding:19px 14px}
-      .topbar{align-items:flex-start}
-      .topbar h1{font-size:22px}
-      .profile-box{display:none}
-
-      .nickname-card{
-        flex-direction:column;
-        align-items:stretch;
+      .nav {
+        flex-direction: row;
       }
 
-      .nickname-form{min-width:0}
-
-      .stats{
-        grid-template-columns:1fr 1fr;
-        gap:10px;
+      .nav button {
+        white-space: nowrap;
       }
 
-      .resource{
-        grid-template-columns:40px 1fr;
+      .sideBottom {
+        margin: 0 0 0 8px;
+        border: 0;
+        padding: 0;
       }
 
-      .resource button{
-        grid-column:2;
-        width:fit-content;
+      .tiny {
+        display: none;
       }
 
-      .notifications{
-        width:auto;
-        top:145px;
-        left:14px;
-        right:14px;
+      main {
+        padding: 18px 13px;
       }
 
-      .calendar-day{
-        min-height:44px;
-        padding:4px;
+      .top h1 {
+        font-size: 22px;
+      }
+
+      .nickBanner {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .brainstorm {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -849,47 +695,36 @@
 
 <body>
 
-<div class="app">
+<div class="shell">
 
-  <aside class="sidebar">
+  <aside class="side">
 
     <div class="brand">
-      <div class="brand-icon">⚗️</div>
-
+      <div class="logo">⚗️</div>
       <div>
-        <h2>Science Club</h2>
-        <p>Student Portal</p>
+        <b>Science Club</b>
+        <small>Student Portal</small>
       </div>
     </div>
 
     <nav class="nav">
-
-      <button class="nav-button active" data-page="dashboard">
-        ▦ Dashboard
-      </button>
-
-      <button class="nav-button" data-page="calendar">
-        📅 Calendar
-      </button>
-
-      <button class="nav-button" data-page="resources">
-        📚 Resources
-      </button>
-
-      <button class="nav-button" data-page="faq">
-        ? FAQs
-      </button>
-
+      <button class="navBtn active" data-page="dashboard">▦ Dashboard</button>
+      <button class="navBtn" data-page="calendar">📅 Calendar</button>
+      <button class="navBtn" data-page="resources">📚 Resources</button>
+      <button class="navBtn" data-page="projects">💡 Project Lab</button>
+      <button class="navBtn" data-page="quizzes">🧠 CCC Quizzes</button>
+      <button class="navBtn" data-page="tutorial">✨ Tutorial</button>
+      <button class="navBtn" data-page="faq">? FAQs</button>
     </nav>
 
-    <div class="sidebar-bottom">
+    <div class="sideBottom">
 
-      <button id="adminButton" class="admin-button">
+      <button id="adminButton" class="adminBtn">
         ⚙ Admin
       </button>
 
-      <div class="privacy-note">
-        Students should use a nickname, initials or another non-identifying name.
+      <div class="tiny">
+        Use a random username. Do not use your full real name.
       </div>
 
     </div>
@@ -899,185 +734,234 @@
 
   <main>
 
-    <div id="connectionStatus" class="connection">
-      ● Connecting...
+    <div id="status" class="status">
+      ● Starting…
     </div>
 
 
-    <section id="dashboardPage" class="page active">
+    <!-- STUDENT LOGIN -->
 
-      <header class="topbar">
+    <section id="authPage" class="page active">
+
+      <div class="authWrap">
+
+        <div class="authCard">
+
+          <h1 style="margin:0">
+            Science Club Portal 🔬
+          </h1>
+
+          <p class="muted">
+            Students use a random username + password.
+            No real name or student email is required.
+          </p>
+
+          <div id="authMsg" class="msg"></div>
+
+          <div class="authTabs">
+
+            <button
+              id="showLogin"
+              class="primary"
+            >
+              Sign In
+            </button>
+
+            <button
+              id="showSignup"
+              class="secondary"
+            >
+              Create Account
+            </button>
+
+          </div>
+
+
+          <form
+            id="studentAuthForm"
+            class="form"
+          >
+
+            <label>
+              Random username
+            </label>
+
+            <div class="usernameRow">
+
+              <input
+                id="studentUsername"
+                maxlength="20"
+                autocomplete="username"
+                placeholder="Example: AtomAce47"
+                required
+              >
+
+              <button
+                type="button"
+                id="randomUsername"
+                class="secondary"
+              >
+                Generate
+              </button>
+
+            </div>
+
+
+            <label>
+              Password
+            </label>
+
+            <input
+              id="studentPassword"
+              type="password"
+              minlength="6"
+              autocomplete="current-password"
+              placeholder="At least 6 characters"
+              required
+            >
+
+
+            <button
+              id="studentAuthSubmit"
+              class="primary"
+              type="submit"
+            >
+              Sign In
+            </button>
+
+
+            <p
+              id="authModeHelp"
+              class="muted"
+            >
+              Use the same random username and password you created.
+            </p>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- DASHBOARD -->
+
+    <section
+      id="dashboardPage"
+      class="page"
+    >
+
+      <header class="top">
 
         <div>
+
           <h1>
             Welcome,
-            <span id="welcomeName">Scientist</span>
+            <span id="welcomeName">
+              Scientist
+            </span>
             👋
           </h1>
 
           <p>
-            Keep track of Science Club competitions, projects and deadlines.
+            Science Club competitions, projects,
+            quizzes and deadlines in one place.
           </p>
-        </div>
-
-        <div class="top-actions">
-
-          <button id="notificationButton" class="notification-button">
-            🔔
-
-            <span id="notificationCount" class="notification-count">
-              0
-            </span>
-          </button>
-
-          <div class="profile-box">
-
-            <div id="avatar" class="avatar">
-              S
-            </div>
-
-            <div>
-              <div id="profileName" class="profile-name">
-                Scientist
-              </div>
-
-              <div class="profile-role">
-                Science Club Member
-              </div>
-            </div>
-
-          </div>
 
         </div>
+
+
+        <button
+          id="studentLogout"
+          class="secondary"
+        >
+          Sign Out
+        </button>
 
       </header>
 
 
-      <div id="notificationsPanel" class="notifications">
-        <h3>Notifications</h3>
-        <div id="notificationList"></div>
-      </div>
+      <div
+        id="studentMsg"
+        class="msg"
+      ></div>
 
 
-      <div id="studentMessage" class="message"></div>
-
-
-      <section class="nickname-card">
+      <div class="nickBanner">
 
         <div>
-          <h2>Choose your Science Club name 🔬</h2>
+
+          <b>
+            Your private club identity
+          </b>
 
           <p>
-            Do not enter your real name. Use a nickname, initials or a
-            science-themed username instead.
+            Your random username is used for activity
+            and quiz history. Do not use your real name.
           </p>
-        </div>
-
-        <div class="nickname-form">
-
-          <input
-            id="nicknameInput"
-            maxlength="20"
-            placeholder="Example: AtomAce"
-          />
-
-          <button id="saveNicknameButton">
-            Save
-          </button>
 
         </div>
 
-      </section>
+        <div>
+          <b id="profileUsername">
+            —
+          </b>
+        </div>
+
+      </div>
 
 
       <section class="stats">
 
-        <div class="stat-card">
-
-          <div class="stat-top">
-            <span class="stat-label">Important Dates</span>
-            <span class="stat-icon purple-soft">📅</span>
-          </div>
-
-          <div id="dateCount" class="stat-number">
-            0
-          </div>
-
-          <div class="stat-detail">
-            dates being tracked
-          </div>
-
+        <div class="stat">
+          <small>Important Dates</small>
+          <strong id="dateCount">0</strong>
         </div>
 
-
-        <div class="stat-card">
-
-          <div class="stat-top">
-            <span class="stat-label">Resources Opened</span>
-            <span class="stat-icon blue-soft">📖</span>
-          </div>
-
-          <div id="openedCount" class="stat-number">
-            0
-          </div>
-
-          <div class="stat-detail">
-            resources viewed by you
-          </div>
-
+        <div class="stat">
+          <small>Resources Opened</small>
+          <strong id="openedCount">0</strong>
         </div>
 
+        <div class="stat">
+          <small>Published Quizzes</small>
+          <strong id="quizCount">0</strong>
+        </div>
 
-        <div class="stat-card">
-
-          <div class="stat-top">
-            <span class="stat-label">CCC</span>
-            <span class="stat-icon green-soft">⚗️</span>
-          </div>
-
-          <div class="stat-number stat-small">
+        <div class="stat">
+          <small>CCC</small>
+          <strong style="font-size:18px">
             Chemistry
-          </div>
-
-          <div class="stat-detail">
-            Canadian Chemistry Contest
-          </div>
-
+          </strong>
         </div>
 
-
-        <div class="stat-card">
-
-          <div class="stat-top">
-            <span class="stat-label">WWSEF</span>
-            <span class="stat-icon orange-soft">🧪</span>
-          </div>
-
-          <div class="stat-number stat-small">
+        <div class="stat">
+          <small>WWSEF</small>
+          <strong style="font-size:18px">
             Science Fair
-          </div>
-
-          <div class="stat-detail">
-            Waterloo-Wellington Science & Engineering Fair
-          </div>
-
+          </strong>
         </div>
 
       </section>
 
 
-      <div class="dashboard-grid">
+      <div class="grid2">
 
         <div>
 
-          <section class="card announcement-card">
+          <section class="card">
 
-            <div class="card-header">
-              <h2>📣 Latest Announcement</h2>
-            </div>
+            <h2>
+              📣 Latest Announcement
+            </h2>
 
-            <div id="latestAnnouncement">
-              <p>Loading announcement...</p>
+            <div
+              id="latestAnnouncement"
+              class="muted"
+            >
+              Loading…
             </div>
 
           </section>
@@ -1085,61 +969,11 @@
 
           <section class="card">
 
-            <div class="card-header">
+            <h2>
+              📚 Resources & Assignments
+            </h2>
 
-              <div>
-                <h2>Resources & Assignments</h2>
-                <p>CCC, WWSEF and club materials</p>
-              </div>
-
-            </div>
-
-            <div id="dashboardResources">
-              <div class="empty">
-                Loading resources...
-              </div>
-            </div>
-
-          </section>
-
-
-          <section class="card">
-
-            <div class="card-header">
-
-              <div>
-                <h2>Club Calendar</h2>
-                <p>Meetings, competitions and deadlines</p>
-              </div>
-
-              <div class="calendar-controls">
-
-                <button id="prevMonth">
-                  ‹
-                </button>
-
-                <span id="calendarMonth"></span>
-
-                <button id="nextMonth">
-                  ›
-                </button>
-
-              </div>
-
-            </div>
-
-
-            <div class="calendar-grid">
-              <div class="weekday">Sun</div>
-              <div class="weekday">Mon</div>
-              <div class="weekday">Tue</div>
-              <div class="weekday">Wed</div>
-              <div class="weekday">Thu</div>
-              <div class="weekday">Fri</div>
-              <div class="weekday">Sat</div>
-            </div>
-
-            <div id="calendarDays" class="calendar-grid"></div>
+            <div id="dashboardResources"></div>
 
           </section>
 
@@ -1150,14 +984,9 @@
 
           <section class="card">
 
-            <div class="card-header">
-
-              <div>
-                <h2>📌 Important Dates</h2>
-                <p>Upcoming deadlines</p>
-              </div>
-
-            </div>
+            <h2>
+              📌 Upcoming Dates
+            </h2>
 
             <div id="importantDates"></div>
 
@@ -1166,38 +995,41 @@
 
           <section class="card">
 
-            <div class="card-header">
+            <h2>
+              💡 Need a project idea?
+            </h2>
 
-              <div>
-                <h2>⚗️ CCC</h2>
-                <p>Canadian Chemistry Contest</p>
-              </div>
+            <p class="muted">
+              Open Project Lab for WWSEF project parameters,
+              programming project resources and a brainstorm helper.
+            </p>
 
-            </div>
-
-            <div class="description">
-              Find chemistry preparation, practice material,
-              review resources and contest dates here.
-            </div>
+            <button
+              class="primary jump"
+              data-jump="projects"
+            >
+              Open Project Lab
+            </button>
 
           </section>
 
 
           <section class="card">
 
-            <div class="card-header">
+            <h2>
+              🧠 CCC Practice
+            </h2>
 
-              <div>
-                <h2>🧪 WWSEF</h2>
-                <p>Science Fair</p>
-              </div>
+            <p class="muted">
+              Take quizzes written by your Science Club leaders.
+            </p>
 
-            </div>
-
-            <div class="description">
-              Track project deadlines, research resources,
-              registration information and presentation preparation.
-            </div>
+            <button
+              class="primary jump"
+              data-jump="quizzes"
+            >
+              Open Quizzes
+            </button>
 
           </section>
 
@@ -1208,13 +1040,25 @@
     </section>
 
 
-    <section id="calendarPage" class="page">
+    <!-- CALENDAR -->
 
-      <header class="topbar">
+    <section
+      id="calendarPage"
+      class="page"
+    >
+
+      <header class="top">
 
         <div>
-          <h1>Science Club Calendar 📅</h1>
-          <p>Competitions, meetings and deadlines.</p>
+
+          <h1>
+            Science Club Calendar 📅
+          </h1>
+
+          <p>
+            Meetings, competitions and deadlines.
+          </p>
+
         </div>
 
       </header>
@@ -1222,19 +1066,30 @@
 
       <section class="card">
 
-        <div class="card-header">
+        <div
+          class="top"
+          style="margin-bottom:12px"
+        >
 
-          <h2>Full Calendar</h2>
+          <h2>
+            Calendar
+          </h2>
 
-          <div class="calendar-controls">
+          <div class="calControls">
 
-            <button id="fullPrevMonth">
+            <button
+              id="prevMonth"
+              class="secondary"
+            >
               ‹
             </button>
 
-            <span id="fullCalendarMonth"></span>
+            <span id="calendarMonth"></span>
 
-            <button id="fullNextMonth">
+            <button
+              id="nextMonth"
+              class="secondary"
+            >
               ›
             </button>
 
@@ -1243,47 +1098,61 @@
         </div>
 
 
-        <div class="calendar-grid">
-          <div class="weekday">Sun</div>
-          <div class="weekday">Mon</div>
-          <div class="weekday">Tue</div>
-          <div class="weekday">Wed</div>
-          <div class="weekday">Thu</div>
-          <div class="weekday">Fri</div>
-          <div class="weekday">Sat</div>
+        <div class="calHead">
+          <div>Sun</div>
+          <div>Mon</div>
+          <div>Tue</div>
+          <div>Wed</div>
+          <div>Thu</div>
+          <div>Fri</div>
+          <div>Sat</div>
         </div>
 
-        <div id="fullCalendarDays" class="calendar-grid"></div>
+
+        <div
+          id="calendarDays"
+          class="cal"
+        ></div>
 
       </section>
 
 
       <section class="card">
 
-        <div class="card-header">
-          <h2>All Important Dates</h2>
-        </div>
+        <h2>
+          All Important Dates
+        </h2>
 
-        <div id="allImportantDates"></div>
+        <div id="allDates"></div>
 
       </section>
 
     </section>
 
 
-    <section id="resourcesPage" class="page">
+    <!-- RESOURCES -->
 
-      <header class="topbar">
+    <section
+      id="resourcesPage"
+      class="page"
+    >
+
+      <header class="top">
 
         <div>
-          <h1>Resources & Assignments 📚</h1>
+
+          <h1>
+            Resources & Assignments 📚
+          </h1>
 
           <p>
-            CCC preparation, WWSEF materials and club assignments.
+            CCC, WWSEF and general Science Club material.
           </p>
+
         </div>
 
       </header>
+
 
       <section class="card">
         <div id="allResources"></div>
@@ -1292,19 +1161,611 @@
     </section>
 
 
-    <section id="faqPage" class="page">
+    <!-- PROJECT LAB -->
 
-      <header class="topbar">
+    <section
+      id="projectsPage"
+      class="page"
+    >
+
+      <header class="top">
 
         <div>
-          <h1>Frequently Asked Questions</h1>
+
+          <h1>
+            Project Lab 💡
+          </h1>
 
           <p>
-            CCC, WWSEF and Science Club information.
+            Where to find project options, rules,
+            programs and ideas to brainstorm.
           </p>
+
         </div>
 
       </header>
+
+
+      <section class="card">
+
+        <h2>
+          What kind of project can we work on?
+        </h2>
+
+        <p class="muted">
+          Start by checking the current WWSEF Exhibitor Manual.
+          Common directions include engineering/design,
+          software or apps, robotics, life science,
+          chemistry, physics, mathematics and data-based studies.
+          A coding project should still have a clear question,
+          need, test or measurable outcome.
+        </p>
+
+        <div class="pillRow">
+
+          <span class="pill">Engineering</span>
+          <span class="pill">Software / Apps</span>
+          <span class="pill">Robotics</span>
+          <span class="pill">Life Science</span>
+          <span class="pill">Chemistry</span>
+          <span class="pill">Physics</span>
+          <span class="pill">Mathematics</span>
+          <span class="pill">Data Studies</span>
+
+        </div>
+
+      </section>
+
+
+      <section class="card">
+
+        <h2>
+          Useful places to check before choosing a project
+        </h2>
+
+
+        <div class="linkCards">
+
+          <div class="linkCard">
+
+            <h3>
+              WWSEF Exhibitor Manual
+            </h3>
+
+            <p>
+              Use this first for current local fair rules,
+              categories, expectations and project parameters.
+            </p>
+
+            <button
+              class="primary ext"
+              data-url="https://wwsef.ca/exhibitor-manual/"
+            >
+              Open Manual
+            </button>
+
+          </div>
+
+
+          <div class="linkCard">
+
+            <h3>
+              WWSEF Main Site
+            </h3>
+
+            <p>
+              Current fair information, registration details
+              and official local updates.
+            </p>
+
+            <button
+              class="primary ext"
+              data-url="https://wwsef.ca/"
+            >
+              Open WWSEF
+            </button>
+
+          </div>
+
+
+          <div class="linkCard">
+
+            <h3>
+              How to Pick a Coding Project
+            </h3>
+
+            <p>
+              Explore coding projects by programming language,
+              technology, science area or problem.
+            </p>
+
+            <button
+              class="primary ext"
+              data-url="https://www.sciencebuddies.org/science-fair-projects/references/how-to-pick-a-coding-science-project"
+            >
+              Open Guide
+            </button>
+
+          </div>
+
+
+          <div class="linkCard">
+
+            <h3>
+              Computer Science Project Ideas
+            </h3>
+
+            <p>
+              Browse software, data, simulation and
+              computing project ideas.
+            </p>
+
+            <button
+              class="primary ext"
+              data-url="https://www.sciencebuddies.org/science-fair-projects/science-projects/computer-science"
+            >
+              Browse Ideas
+            </button>
+
+          </div>
+
+
+          <div class="linkCard">
+
+            <h3>
+              Engineering & Programming Tips
+            </h3>
+
+            <p>
+              Define a need, choose design criteria,
+              build, test and improve the project.
+            </p>
+
+            <button
+              class="primary ext"
+              data-url="https://www.sciencebuddies.org/science-fair-projects/competitions/engineering-programming-project-tips"
+            >
+              Open Tips
+            </button>
+
+          </div>
+
+
+          <div class="linkCard">
+
+            <h3>
+              Chemistry Contest Resources
+            </h3>
+
+            <p>
+              Use University of Waterloo chemistry contest material
+              and past-exam resources for CCC practice.
+            </p>
+
+            <button
+              class="primary ext"
+              data-url="https://uwaterloo.ca/chemistry/about-chemistry/community-outreach/chemistry-high-school-exams"
+            >
+              Open Chemistry Resources
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section class="card">
+
+        <h2>
+          Project Brainstorm Helper
+        </h2>
+
+        <p class="muted">
+          Choose the type of project and the tool/program
+          you are thinking about.
+        </p>
+
+
+        <div class="brainstorm">
+
+          <select id="ideaType">
+
+            <option value="software">
+              Software / App
+            </option>
+
+            <option value="data">
+              Data / Study
+            </option>
+
+            <option value="engineering">
+              Engineering / Prototype
+            </option>
+
+            <option value="chemistry">
+              Chemistry
+            </option>
+
+            <option value="physics">
+              Physics / Math
+            </option>
+
+          </select>
+
+
+          <select id="ideaTool">
+
+            <option>
+              Python
+            </option>
+
+            <option>
+              JavaScript / Web
+            </option>
+
+            <option>
+              Scratch
+            </option>
+
+            <option>
+              Arduino
+            </option>
+
+            <option>
+              Raspberry Pi
+            </option>
+
+            <option>
+              Spreadsheet / Data Analysis
+            </option>
+
+            <option>
+              AI / Machine Learning
+            </option>
+
+            <option>
+              No specific program yet
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <button
+          id="brainstormBtn"
+          class="primary"
+          style="margin-top:10px"
+        >
+          Give Me Directions to Brainstorm
+        </button>
+
+
+        <div
+          id="ideaOutput"
+          class="ideaOut"
+        >
+          Pick your options and click the button.
+        </div>
+
+      </section>
+
+    </section>
+
+
+    <!-- QUIZZES -->
+
+    <section
+      id="quizzesPage"
+      class="page"
+    >
+
+      <header class="top">
+
+        <div>
+
+          <h1>
+            CCC Quizzes 🧠
+          </h1>
+
+          <p>
+            Custom quizzes created by Science Club leadership.
+          </p>
+
+        </div>
+
+      </header>
+
+
+      <div
+        id="quizMsg"
+        class="msg"
+      ></div>
+
+
+      <section
+        id="quizListCard"
+        class="card"
+      >
+
+        <h2>
+          Available Quizzes
+        </h2>
+
+        <div
+          id="quizList"
+          class="quizGrid"
+        ></div>
+
+      </section>
+
+
+      <section
+        id="quizTakeCard"
+        class="card"
+        style="display:none"
+      >
+
+        <div
+          class="top"
+          style="margin-bottom:10px"
+        >
+
+          <div>
+
+            <h2 id="activeQuizTitle">
+              Quiz
+            </h2>
+
+            <p
+              id="activeQuizDesc"
+              class="muted"
+            ></p>
+
+          </div>
+
+
+          <button
+            id="backQuizzes"
+            class="secondary"
+          >
+            ← Back
+          </button>
+
+        </div>
+
+
+        <form id="quizForm">
+
+          <div id="quizQuestions"></div>
+
+          <button
+            class="primary"
+            type="submit"
+          >
+            Submit Quiz
+          </button>
+
+        </form>
+
+      </section>
+
+
+      <section
+        id="quizResultCard"
+        class="card"
+        style="display:none"
+      >
+
+        <div
+          class="top"
+          style="margin-bottom:10px"
+        >
+
+          <h2>
+            Your Result
+          </h2>
+
+          <button
+            id="closeResult"
+            class="secondary"
+          >
+            Back to Quizzes
+          </button>
+
+        </div>
+
+
+        <div id="quizResult"></div>
+
+      </section>
+
+
+      <section class="card">
+
+        <h2>
+          Your Recent Attempts
+        </h2>
+
+        <div id="quizAttempts"></div>
+
+      </section>
+
+    </section>
+
+
+    <!-- TUTORIAL -->
+
+    <section
+      id="tutorialPage"
+      class="page"
+    >
+
+      <header class="top">
+
+        <div>
+
+          <h1>
+            How to Use the Portal ✨
+          </h1>
+
+          <p>
+            New member? Start here.
+          </p>
+
+        </div>
+
+
+        <button
+          id="startTour"
+          class="primary"
+        >
+          Start Guided Tutorial
+        </button>
+
+      </header>
+
+
+      <div class="tutorialGrid">
+
+        <div class="tutorialStep">
+
+          <div class="num">
+            1
+          </div>
+
+          <h3>
+            Create a random username
+          </h3>
+
+          <p>
+            Use something like AtomAce47, not your real name.
+            Add a password so only you can use that account.
+          </p>
+
+        </div>
+
+
+        <div class="tutorialStep">
+
+          <div class="num">
+            2
+          </div>
+
+          <h3>
+            Check the Dashboard
+          </h3>
+
+          <p>
+            See announcements, upcoming dates,
+            your resource activity and quiz count.
+          </p>
+
+        </div>
+
+
+        <div class="tutorialStep">
+
+          <div class="num">
+            3
+          </div>
+
+          <h3>
+            Open Resources
+          </h3>
+
+          <p>
+            Use CCC, WWSEF and general club materials.
+            Resource opens are associated with your random username.
+          </p>
+
+        </div>
+
+
+        <div class="tutorialStep">
+
+          <div class="num">
+            4
+          </div>
+
+          <h3>
+            Use Project Lab
+          </h3>
+
+          <p>
+            Check current WWSEF parameters,
+            browse project idea websites and use the
+            brainstorm helper before choosing a project.
+          </p>
+
+        </div>
+
+
+        <div class="tutorialStep">
+
+          <div class="num">
+            5
+          </div>
+
+          <h3>
+            Take CCC Quizzes
+          </h3>
+
+          <p>
+            Choose a quiz, answer every question and submit.
+            Your result and explanations appear immediately.
+          </p>
+
+        </div>
+
+
+        <div class="tutorialStep">
+
+          <div class="num">
+            6
+          </div>
+
+          <h3>
+            Check Calendar + FAQs
+          </h3>
+
+          <p>
+            Use the Calendar for dates and FAQs for common questions.
+            Admins can update portal content.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- FAQ -->
+
+    <section
+      id="faqPage"
+      class="page"
+    >
+
+      <header class="top">
+
+        <div>
+
+          <h1>
+            FAQs
+          </h1>
+
+          <p>
+            CCC, WWSEF and Science Club questions.
+          </p>
+
+        </div>
+
+      </header>
+
 
       <section class="card">
         <div id="faqList"></div>
@@ -1313,79 +1774,104 @@
     </section>
 
 
-    <section id="adminLoginPage" class="page">
+    <!-- ADMIN LOGIN -->
 
-      <div class="login-box">
+    <section
+      id="adminLoginPage"
+      class="page"
+    >
 
-        <h2>
-          Science Club Admin
-        </h2>
+      <div class="authWrap">
 
-        <p>
-          This area is for club leadership.
-          Students do not need an email address or password
-          to use the portal.
-        </p>
+        <div class="authCard">
 
-        <div id="loginMessage" class="message"></div>
+          <h2>
+            Admin Sign In
+          </h2>
 
-        <form id="adminLoginForm">
+          <p class="muted">
+            Use the admin email/password created in Supabase.
+          </p>
 
-          <input
-            id="adminEmail"
-            type="email"
-            required
-            placeholder="Admin email"
-          />
+          <div
+            id="adminLoginMsg"
+            class="msg"
+          ></div>
 
-          <input
-            id="adminPassword"
-            type="password"
-            required
-            placeholder="Admin password"
-          />
 
-          <div class="login-actions">
+          <form
+            id="adminLoginForm"
+            class="form"
+          >
+
+            <label>
+              Email
+            </label>
+
+            <input
+              id="adminEmail"
+              type="email"
+              required
+            >
+
+
+            <label>
+              Password
+            </label>
+
+            <input
+              id="adminPassword"
+              type="password"
+              required
+            >
+
+
+            <button class="primary">
+              Sign In
+            </button>
 
             <button
-              id="cancelAdminLogin"
-              class="secondary-button"
               type="button"
+              id="cancelAdmin"
+              class="secondary"
             >
               Cancel
             </button>
 
-            <button
-              class="primary-button"
-              type="submit"
-            >
-              Sign In
-            </button>
+          </form>
 
-          </div>
-
-        </form>
+        </div>
 
       </div>
 
     </section>
 
 
-    <section id="adminPage" class="page">
+    <!-- ADMIN -->
 
-      <header class="topbar">
+    <section
+      id="adminPage"
+      class="page"
+    >
+
+      <header class="top">
 
         <div>
-          <h1>Club Activity Dashboard</h1>
+
+          <h1>
+            Admin Dashboard
+          </h1>
 
           <p>
-            Manage portal content and view student activity.
+            Manage content, quizzes and student activity.
           </p>
+
         </div>
 
+
         <button
-          id="adminLogoutButton"
-          class="secondary-button"
+          id="adminLogout"
+          class="secondary"
         >
           Sign Out
         </button>
@@ -1393,81 +1879,60 @@
       </header>
 
 
-      <div id="adminMessage" class="message"></div>
+      <div
+        id="adminMsg"
+        class="msg"
+      ></div>
 
 
       <section class="stats">
 
-        <div class="stat-card">
-
-          <div class="stat-label">
-            Student Nicknames
-          </div>
-
-          <div id="adminStudentCount" class="stat-number">
-            0
-          </div>
-
+        <div class="stat">
+          <small>Students</small>
+          <strong id="adminStudents">0</strong>
         </div>
 
-
-        <div class="stat-card">
-
-          <div class="stat-label">
-            Resource Opens
-          </div>
-
-          <div id="adminActivityCount" class="stat-number">
-            0
-          </div>
-
+        <div class="stat">
+          <small>Resource Opens</small>
+          <strong id="adminActivityCount">0</strong>
         </div>
 
-
-        <div class="stat-card">
-
-          <div class="stat-label">
-            Announcements
-          </div>
-
-          <div id="adminAnnouncementCount" class="stat-number">
-            0
-          </div>
-
+        <div class="stat">
+          <small>Announcements</small>
+          <strong id="adminAnnouncements">0</strong>
         </div>
 
+        <div class="stat">
+          <small>Dates</small>
+          <strong id="adminDates">0</strong>
+        </div>
 
-        <div class="stat-card">
-
-          <div class="stat-label">
-            Important Dates
-          </div>
-
-          <div id="adminDateCount" class="stat-number">
-            0
-          </div>
-
+        <div class="stat">
+          <small>Quizzes</small>
+          <strong id="adminQuizCount">0</strong>
         </div>
 
       </section>
 
 
-      <div class="admin-grid">
+      <div class="adminGrid">
 
         <div>
 
           <section class="card">
 
-            <div class="card-header">
+            <div
+              class="top"
+              style="margin-bottom:10px"
+            >
 
-              <div>
-                <h2>Recent Student Activity</h2>
-                <p>Nicknames only</p>
-              </div>
+              <h2>
+                Recent Student Activity
+              </h2>
 
               <button
-                id="clearActivityButton"
-                class="danger-button"
+                id="clearActivity"
+                class="danger"
               >
                 Clear Activity
               </button>
@@ -1475,17 +1940,19 @@
             </div>
 
 
-            <div class="activity-wrapper">
+            <div class="tableWrap">
 
-              <table class="activity-table">
+              <table>
 
                 <thead>
+
                   <tr>
-                    <th>Student</th>
+                    <th>Username</th>
                     <th>Action</th>
                     <th>Resource</th>
                     <th>Time</th>
                   </tr>
+
                 </thead>
 
                 <tbody id="activityTable"></tbody>
@@ -1496,6 +1963,17 @@
 
           </section>
 
+
+          <section class="card">
+
+            <h2>
+              CCC Quiz Manager
+            </h2>
+
+            <div id="adminQuizList"></div>
+
+          </section>
+
         </div>
 
 
@@ -1503,36 +1981,53 @@
 
           <section class="card">
 
-            <div class="card-header">
-              <h2>Add Announcement</h2>
-            </div>
+            <h2>
+              Create Quiz
+            </h2>
+
 
             <form
-              id="announcementForm"
-              class="admin-form"
+              id="createQuizForm"
+              class="form"
             >
 
-              <label>Title</label>
+              <label>
+                Title
+              </label>
 
               <input
-                id="announcementTitle"
+                id="newQuizTitle"
                 required
-                placeholder="CCC Prep Meeting"
-              />
-
-              <label>Message</label>
-
-              <textarea
-                id="announcementMessage"
-                required
-                placeholder="Write the announcement..."
-              ></textarea>
-
-              <button
-                class="primary-button"
-                type="submit"
+                placeholder="Stoichiometry Practice"
               >
-                Post Announcement
+
+
+              <label>
+                Description
+              </label>
+
+              <textarea id="newQuizDesc"></textarea>
+
+
+              <label>
+                Category
+              </label>
+
+              <select id="newQuizCat">
+
+                <option>
+                  CCC
+                </option>
+
+                <option>
+                  Science Club
+                </option>
+
+              </select>
+
+
+              <button class="primary">
+                Create Draft Quiz
               </button>
 
             </form>
@@ -1542,34 +2037,166 @@
 
           <section class="card">
 
-            <div class="card-header">
-              <h2>Add Important Date</h2>
-            </div>
+            <h2>
+              Add Question
+            </h2>
+
+
+            <form
+              id="addQuestionForm"
+              class="form"
+            >
+
+              <label>
+                Quiz
+              </label>
+
+              <select
+                id="questionQuiz"
+                required
+              >
+                <option value="">
+                  Choose quiz
+                </option>
+              </select>
+
+
+              <label>
+                Question
+              </label>
+
+              <textarea
+                id="qText"
+                required
+              ></textarea>
+
+
+              <label>
+                A
+              </label>
+
+              <input
+                id="qA"
+                required
+              >
+
+
+              <label>
+                B
+              </label>
+
+              <input
+                id="qB"
+                required
+              >
+
+
+              <label>
+                C
+              </label>
+
+              <input
+                id="qC"
+                required
+              >
+
+
+              <label>
+                D
+              </label>
+
+              <input
+                id="qD"
+                required
+              >
+
+
+              <label>
+                Correct answer
+              </label>
+
+              <select id="qCorrect">
+                <option>A</option>
+                <option>B</option>
+                <option>C</option>
+                <option>D</option>
+              </select>
+
+
+              <label>
+                Explanation
+              </label>
+
+              <textarea id="qExplain"></textarea>
+
+
+              <button class="primary">
+                Add Question
+              </button>
+
+            </form>
+
+          </section>
+
+
+          <section class="card">
+
+            <h2>
+              Add Announcement
+            </h2>
+
+
+            <form
+              id="announcementForm"
+              class="form"
+            >
+
+              <input
+                id="annTitle"
+                required
+                placeholder="Title"
+              >
+
+              <textarea
+                id="annMessage"
+                required
+                placeholder="Message"
+              ></textarea>
+
+              <button class="primary">
+                Post
+              </button>
+
+            </form>
+
+          </section>
+
+
+          <section class="card">
+
+            <h2>
+              Add Important Date
+            </h2>
+
 
             <form
               id="dateForm"
-              class="admin-form"
+              class="form"
             >
-
-              <label>Event Name</label>
 
               <input
                 id="dateTitle"
                 required
-                placeholder="CCC Contest"
-              />
-
-              <label>Date</label>
+                placeholder="Event"
+              >
 
               <input
                 id="dateValue"
                 type="date"
                 required
-              />
+              >
 
-              <label>Category</label>
-
-              <select id="dateCategory">
+              <select id="dateCat">
                 <option>CCC</option>
                 <option>WWSEF</option>
                 <option>Meeting</option>
@@ -1577,17 +2204,12 @@
                 <option>Other</option>
               </select>
 
-              <label>Details</label>
-
               <input
                 id="dateDetails"
-                placeholder="Optional details"
-              />
-
-              <button
-                class="primary-button"
-                type="submit"
+                placeholder="Details"
               >
+
+              <button class="primary">
                 Add Date
               </button>
 
@@ -1598,51 +2220,41 @@
 
           <section class="card">
 
-            <div class="card-header">
-              <h2>Add Resource / Assignment</h2>
-            </div>
+            <h2>
+              Add Resource
+            </h2>
+
 
             <form
               id="resourceForm"
-              class="admin-form"
+              class="form"
             >
 
-              <label>Resource Name</label>
-
               <input
-                id="resourceTitle"
+                id="resTitle"
                 required
-                placeholder="Stoichiometry Practice"
-              />
+                placeholder="Resource title"
+              >
 
-              <label>Category</label>
-
-              <select id="resourceCategory">
+              <select id="resCat">
                 <option>CCC</option>
                 <option>WWSEF</option>
                 <option>Science Club</option>
               </select>
 
-              <label>Description</label>
-
               <input
-                id="resourceDescription"
+                id="resDesc"
                 required
-                placeholder="Short description"
-              />
-
-              <label>Link</label>
+                placeholder="Description"
+              >
 
               <input
-                id="resourceURL"
+                id="resUrl"
                 type="url"
                 placeholder="https://..."
-              />
-
-              <button
-                class="primary-button"
-                type="submit"
               >
+
+              <button class="primary">
                 Add Resource
               </button>
 
@@ -1653,44 +2265,37 @@
 
           <section class="card">
 
-            <div class="card-header">
-              <h2>Add FAQ</h2>
-            </div>
+            <h2>
+              Add FAQ
+            </h2>
+
 
             <form
               id="faqForm"
-              class="admin-form"
+              class="form"
             >
 
-              <label>Question</label>
-
               <input
-                id="faqQuestion"
+                id="faqQ"
                 required
-                placeholder="What should I bring?"
-              />
-
-              <label>Answer</label>
+                placeholder="Question"
+              >
 
               <textarea
-                id="faqAnswer"
+                id="faqA"
                 required
-                placeholder="Write the answer..."
+                placeholder="Answer"
               ></textarea>
 
-              <label>Category</label>
-
-              <select id="faqCategory">
+              <select id="faqCat">
                 <option>General</option>
                 <option>CCC</option>
                 <option>WWSEF</option>
+                <option>Projects</option>
                 <option>Privacy</option>
               </select>
 
-              <button
-                class="primary-button"
-                type="submit"
-              >
+              <button class="primary">
                 Add FAQ
               </button>
 
@@ -1709,1844 +2314,458 @@
 </div>
 
 
+<!-- GUIDED TUTORIAL -->
+
+<div
+  id="tourOverlay"
+  class="overlay"
+>
+
+  <div class="tour">
+
+    <div
+      id="tourIcon"
+      class="tourIcon"
+    >
+      👋
+    </div>
+
+    <h2 id="tourTitle"></h2>
+
+    <p
+      id="tourText"
+      class="muted"
+    ></p>
+
+
+    <div class="tourActions">
+
+      <button
+        id="tourSkip"
+        class="secondary"
+      >
+        Skip
+      </button>
+
+      <div>
+
+        <button
+          id="tourBack"
+          class="secondary"
+        >
+          Back
+        </button>
+
+        <button
+          id="tourNext"
+          class="primary"
+        >
+          Next
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <p
+      id="tourProgress"
+      class="muted"
+      style="text-align:center"
+    ></p>
+
+  </div>
+
+</div>
+
+
 <script>
 
-  const SUPABASE_URL =
-    "https://xmegalhjfsjvqykexyll.supabase.co";
+const SUPABASE_URL =
+  "https://xmegalhjfsjvqykexyll.supabase.co";
 
-  const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_yUAUZxQ2o3eQXdDQverBSw_Lq5NRBaO";
-
-
-  let db = null;
-
-  let currentUser = null;
-  let currentProfile = null;
-
-  let announcements = [];
-  let resources = [];
-  let importantDates = [];
-  let faqs = [];
-
-  let studentActivity = [];
-  let adminActivity = [];
-  let adminProfiles = [];
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_yUAUZxQ2o3eQXdDQverBSw_Lq5NRBaO";
 
 
-  const now = new Date();
-
-  let dashboardYear =
-    now.getFullYear();
-
-  let dashboardMonth =
-    now.getMonth();
-
-  let fullYear =
-    dashboardYear;
-
-  let fullMonth =
-    dashboardMonth;
+const $ =
+  id =>
+    document.getElementById(id);
 
 
-  const pages = {
+let db;
 
-    dashboard:
-      document.getElementById(
-        "dashboardPage"
-      ),
+let currentUser =
+  null;
 
-    calendar:
-      document.getElementById(
-        "calendarPage"
-      ),
+let currentProfile =
+  null;
 
-    resources:
-      document.getElementById(
-        "resourcesPage"
-      ),
-
-    faq:
-      document.getElementById(
-        "faqPage"
-      ),
-
-    adminLogin:
-      document.getElementById(
-        "adminLoginPage"
-      ),
-
-    admin:
-      document.getElementById(
-        "adminPage"
-      )
-
-  };
+let authMode =
+  "login";
 
 
-  function escapeHTML(value) {
+let announcements =
+  [];
 
-    return String(value ?? "")
-      .replace(/&/g,"&amp;")
-      .replace(/</g,"&lt;")
-      .replace(/>/g,"&gt;")
-      .replace(/"/g,"&quot;")
-      .replace(/'/g,"&#039;");
+let resources =
+  [];
 
+let importantDates =
+  [];
+
+let faqs =
+  [];
+
+let quizzes =
+  [];
+
+let studentActivity =
+  [];
+
+
+let adminProfiles =
+  [];
+
+let adminActivity =
+  [];
+
+let adminQuizzes =
+  [];
+
+
+let activeQuiz =
+  null;
+
+let activeQuizQuestions =
+  [];
+
+
+let calYear =
+  new Date().getFullYear();
+
+let calMonth =
+  new Date().getMonth();
+
+
+const pages = {
+
+  auth:
+    $("authPage"),
+
+  dashboard:
+    $("dashboardPage"),
+
+  calendar:
+    $("calendarPage"),
+
+  resources:
+    $("resourcesPage"),
+
+  projects:
+    $("projectsPage"),
+
+  quizzes:
+    $("quizzesPage"),
+
+  tutorial:
+    $("tutorialPage"),
+
+  faq:
+    $("faqPage"),
+
+  adminLogin:
+    $("adminLoginPage"),
+
+  admin:
+    $("adminPage")
+
+};
+
+
+const esc =
+  value =>
+    String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+
+function msg(
+  id,
+  text,
+  type = "ok"
+) {
+
+  const element =
+    $(id);
+
+
+  if (!element) {
+    return;
   }
 
 
-  function showMessage(
-    id,
-    text,
-    type = "success"
-  ) {
-
-    const box =
-      document.getElementById(id);
-
-    if (!box) {
-      return;
-    }
-
-    box.textContent =
-      text;
-
-    box.className =
-      `message show ${type}`;
+  element.textContent =
+    text;
 
 
-    setTimeout(
-      () => {
+  element.className =
+    `msg show ${type}`;
 
-        box.classList.remove(
-          "show"
-        );
 
-      },
-      4500
+  setTimeout(
+    () =>
+      element.classList.remove(
+        "show"
+      ),
+    4500
+  );
+
+}
+
+
+function setStatus(
+  text,
+  bad = false
+) {
+
+  $("status").textContent =
+    text;
+
+
+  $("status")
+    .classList
+    .toggle(
+      "bad",
+      bad
     );
 
-  }
+}
 
 
-  function setConnection(
-    text,
-    error = false
-  ) {
+function showPage(
+  name
+) {
 
-    const element =
-      document.getElementById(
-        "connectionStatus"
-      );
-
-    element.textContent =
-      text;
-
-    element.classList.toggle(
-      "error",
-      error
+  Object
+    .values(pages)
+    .forEach(
+      page =>
+        page.classList.remove(
+          "active"
+        )
     );
 
-  }
 
-
-  function parseDateOnly(value) {
-
-    if (!value) {
-      return null;
-    }
-
-    const [
-      year,
-      month,
-      day
-    ] =
-      value
-        .split("-")
-        .map(Number);
-
-    return new Date(
-      year,
-      month - 1,
-      day
+  pages[name]
+    ?.classList
+    .add(
+      "active"
     );
-
-  }
-
-
-  function showPage(name) {
-
-    Object.values(pages)
-      .forEach(
-        page => {
-
-          page.classList.remove(
-            "active"
-          );
-
-        }
-      );
-
-
-    pages[name]
-      ?.classList
-      .add(
-        "active"
-      );
-
-
-    document
-      .querySelectorAll(
-        ".nav-button"
-      )
-      .forEach(
-        button => {
-
-          button.classList.remove(
-            "active"
-          );
-
-        }
-      );
-
-
-    const button =
-      document.querySelector(
-        `[data-page="${name}"]`
-      );
-
-
-    if (button) {
-
-      button.classList.add(
-        "active"
-      );
-
-    }
-
-
-    window.scrollTo(
-      0,
-      0
-    );
-
-  }
 
 
   document
     .querySelectorAll(
-      ".nav-button"
+      ".navBtn"
     )
     .forEach(
-      button => {
-
-        button.addEventListener(
-          "click",
-          () => {
-
-            showPage(
-              button.dataset.page
-            );
-
-          }
-        );
-
-      }
+      button =>
+        button.classList.toggle(
+          "active",
+          button.dataset.page ===
+            name
+        )
     );
 
 
-  async function getSession() {
-
-    if (!db) {
-      return null;
-    }
-
-    const {
-      data,
-      error
-    } =
-      await db.auth
-        .getSession();
-
-
-    if (error) {
-
-      console.error(
-        error
-      );
-
-      return null;
-
-    }
-
-
-    return data.session;
-
-  }
-
-
-  async function createAnonymousStudent() {
-
-    if (!db) {
-      return null;
-    }
-
-
-    const session =
-      await getSession();
-
-
-    if (
-      session?.user
-    ) {
-
-      currentUser =
-        session.user;
-
-      return currentUser;
-
-    }
-
-
-    const {
-      data,
-      error
-    } =
-      await db.auth
-        .signInAnonymously();
-
-
-    if (error) {
-
-      console.error(
-        error
-      );
-
-      setConnection(
-        "● Connection failed",
-        true
-      );
-
-      showMessage(
-        "studentMessage",
-        "Could not create the student session. Make sure Anonymous Sign-ins are enabled in Supabase.",
-        "error"
-      );
-
-      return null;
-
-    }
-
-
-    currentUser =
-      data.user;
-
-    return currentUser;
-
-  }
-
-
-  async function loadProfile() {
-
-    if (
-      !currentUser ||
-      !db
-    ) {
-      return;
-    }
-
-
-    const {
-      data,
-      error
-    } =
-      await db
-        .from(
-          "profiles"
-        )
-        .select(
-          "nickname, role"
-        )
-        .eq(
-          "user_id",
-          currentUser.id
-        )
-        .maybeSingle();
-
-
-    if (error) {
-
-      console.error(
-        error
-      );
-
-      return;
-
-    }
-
-
-    currentProfile =
-      data;
-
-    updateProfileDisplay();
-
-  }
-
-
-  function updateProfileDisplay() {
-
-    const nickname =
-      currentProfile?.nickname ||
-      "Scientist";
-
-
-    document.getElementById(
-      "welcomeName"
-    ).textContent =
-      nickname;
-
-
-    document.getElementById(
-      "profileName"
-    ).textContent =
-      nickname;
-
-
-    document.getElementById(
-      "avatar"
-    ).textContent =
-      nickname
-        .charAt(0)
-        .toUpperCase() ||
-      "S";
-
-  }
-
-
-  async function saveNickname() {
-
-    const nickname =
-      document
-        .getElementById(
-          "nicknameInput"
-        )
-        .value
-        .trim();
-
-
-    if (!nickname) {
-
-      showMessage(
-        "studentMessage",
-        "Please enter a nickname.",
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    if (
-      nickname.length > 20
-    ) {
-
-      showMessage(
-        "studentMessage",
-        "Your nickname must be 20 characters or fewer.",
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    const user =
-      await createAnonymousStudent();
-
-
-    if (!user) {
-      return;
-    }
-
-
-    if (
-      currentProfile?.role ===
-      "admin"
-    ) {
-
-      showMessage(
-        "studentMessage",
-        "Admin accounts cannot be changed into student profiles.",
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    const {
-      data,
-      error
-    } =
-      await db
-        .from(
-          "profiles"
-        )
-        .upsert(
-          {
-            user_id:
-              user.id,
-
-            nickname:
-              nickname,
-
-            role:
-              "student"
-          },
-          {
-            onConflict:
-              "user_id"
-          }
-        )
-        .select()
-        .single();
-
-
-    if (error) {
-
-      console.error(
-        error
-      );
-
-      showMessage(
-        "studentMessage",
-        "Could not save your nickname.",
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    currentProfile =
-      data;
-
-    updateProfileDisplay();
-
-
-    document.getElementById(
-      "nicknameInput"
-    ).value =
-      "";
-
-
-    showMessage(
-      "studentMessage",
-      `Nickname saved as ${nickname}.`,
-      "success"
-    );
-
-  }
-
-
-  document.getElementById(
-    "saveNicknameButton"
-  ).addEventListener(
-    "click",
-    saveNickname
+  window.scrollTo(
+    0,
+    0
   );
 
-
-  async function loadAnnouncements() {
-
-    if (!db) {
-      return;
-    }
-
-
-    const {
-      data,
-      error
-    } =
-      await db
-        .from(
-          "announcements"
-        )
-        .select("*")
-        .order(
-          "created_at",
-          {
-            ascending:
-              false
-          }
-        );
-
-
-    if (error) {
-
-      console.error(
-        error
-      );
-
-      announcements =
-        [];
-
-    } else {
-
-      announcements =
-        data || [];
-
-    }
-
-
-    renderAnnouncements();
-    renderNotifications();
-
-  }
-
-
-  function renderAnnouncements() {
-
-    const box =
-      document.getElementById(
-        "latestAnnouncement"
-      );
-
-
-    if (
-      !announcements.length
-    ) {
-
-      box.innerHTML =
-        "<p>No announcements yet.</p>";
-
-      return;
-
-    }
-
-
-    const announcement =
-      announcements[0];
-
-    const date =
-      new Date(
-        announcement.created_at
-      );
-
-
-    box.innerHTML =
-      `
-        <h3>
-          ${escapeHTML(
-            announcement.title
-          )}
-        </h3>
-
-        <p>
-          ${escapeHTML(
-            announcement.message
-          )}
-        </p>
-
-        <span class="announcement-date">
-          ${date.toLocaleString()}
-        </span>
-      `;
-
-  }
-
-
-  async function loadResources() {
-
-    if (!db) {
-      return;
-    }
-
-
-    const {
-      data,
-      error
-    } =
-      await db
-        .from(
-          "resources"
-        )
-        .select("*")
-        .order(
-          "created_at",
-          {
-            ascending:
-              false
-          }
-        );
-
-
-    if (error) {
-
-      console.error(
-        error
-      );
-
-      resources =
-        [];
-
-    } else {
-
-      resources =
-        data || [];
-
-    }
-
-
-    renderResources();
-
-  }
-
-
-  function resourceHTML(resource) {
-
-    let icon =
-      "📘";
-
-
-    if (
-      resource.category ===
-      "CCC"
-    ) {
-
-      icon =
-        "⚗️";
-
-    }
-
-
-    if (
-      resource.category ===
-      "WWSEF"
-    ) {
-
-      icon =
-        "🧪";
-
-    }
-
-
-    return `
-      <div class="resource">
-
-        <div class="resource-icon">
-          ${icon}
-        </div>
-
-        <div>
-
-          <h3>
-            ${escapeHTML(
-              resource.title
-            )}
-          </h3>
-
-          <p>
-            ${escapeHTML(
-              resource.category
-            )}
-
-            ${
-              resource.description
-                ? " • " +
-                  escapeHTML(
-                    resource.description
-                  )
-                : ""
-            }
-          </p>
-
-        </div>
-
-        <button
-          class="open-resource"
-          data-resource="${resource.id}"
-        >
-          Open
-        </button>
-
-      </div>
-    `;
-
-  }
-
-
-  function renderResources() {
-
-    const html =
-      resources.length
-        ? resources
-            .map(
-              resourceHTML
-            )
-            .join("")
-        : '<div class="empty">No resources yet.</div>';
-
-
-    document.getElementById(
-      "allResources"
-    ).innerHTML =
-      html;
-
-
-    document.getElementById(
-      "dashboardResources"
-    ).innerHTML =
-      resources.length
-        ? resources
-            .slice(0,5)
-            .map(
-              resourceHTML
-            )
-            .join("")
-        : '<div class="empty">No resources yet.</div>';
-
-
-    document
-      .querySelectorAll(
-        "[data-resource]"
+}
+
+
+function cleanUsername(
+  value
+) {
+
+  return value
+    .toLowerCase()
+    .replace(
+      /[^a-z0-9]/g,
+      ""
+    )
+    .slice(
+      0,
+      20
+    );
+
+}
+
+
+function internalEmail(
+  username
+) {
+
+  return (
+    `${username}@scienceclub.example.com`
+  );
+
+}
+
+
+function randomName() {
+
+  const first = [
+    "Atom",
+    "Nova",
+    "Ion",
+    "Orbit",
+    "Quark",
+    "Photon",
+    "Catalyst",
+    "Cosmo",
+    "Molecule",
+    "Neon"
+  ];
+
+
+  const second = [
+    "Ace",
+    "Fox",
+    "Spark",
+    "Mind",
+    "Lab",
+    "Wave",
+    "Scout",
+    "Byte",
+    "Star",
+    "Quest"
+  ];
+
+
+  return (
+    first[
+      Math.floor(
+        Math.random() *
+        first.length
       )
-      .forEach(
-        button => {
-
-          button.addEventListener(
-            "click",
-            () => {
-
-              openResource(
-                Number(
-                  button.dataset.resource
-                )
-              );
-
-            }
-          );
-
-        }
-      );
-
-  }
-
-
-  async function openResource(id) {
-
-    const resource =
-      resources.find(
-        item =>
-          Number(item.id) ===
-          Number(id)
-      );
-
-
-    if (!resource) {
-      return;
-    }
-
-
-    if (
-      !currentProfile?.nickname
-    ) {
-
-      showPage(
-        "dashboard"
-      );
-
-
-      showMessage(
-        "studentMessage",
-        "Choose your Science Club nickname before opening resources.",
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    if (
-      db &&
-      currentUser
-    ) {
-
-      const {
-        error
-      } =
-        await db
-          .from(
-            "activity"
-          )
-          .insert({
-            user_id:
-              currentUser.id,
-
-            resource_id:
-              resource.id,
-
-            resource_title:
-              resource.title,
-
-            action:
-              "opened"
-          });
-
-
-      if (error) {
-
-        console.error(
-          "Activity tracking error:",
-          error
-        );
-
-      }
-
-
-      await loadStudentActivity();
-
-    }
-
-
-    if (
-      resource.url
-    ) {
-
-      window.open(
-        resource.url,
-        "_blank",
-        "noopener,noreferrer"
-      );
-
-    } else {
-
-      alert(
-        `${resource.title}\n\n` +
-        `${resource.description || ""}\n\n` +
-        "No external link has been added yet."
-      );
-
-    }
-
-  }
-
-
-  async function loadStudentActivity() {
-
-    if (
-      !db ||
-      !currentUser ||
-      currentProfile?.role ===
-        "admin"
-    ) {
-      return;
-    }
-
-
-    const {
-      data,
-      error
-    } =
-      await db
-        .from(
-          "activity"
-        )
-        .select("*")
-        .eq(
-          "user_id",
-          currentUser.id
-        );
-
-
-    if (error) {
-
-      console.error(
-        error
-      );
-
-      studentActivity =
-        [];
-
-    } else {
-
-      studentActivity =
-        data || [];
-
-    }
-
-
-    document.getElementById(
-      "openedCount"
-    ).textContent =
-      studentActivity.length;
-
-  }
-
-
-  async function loadDates() {
-
-    if (!db) {
-      return;
-    }
-
-
-    const {
-      data,
-      error
-    } =
-      await db
-        .from(
-          "important_dates"
-        )
-        .select("*")
-        .order(
-          "event_date",
-          {
-            ascending:
-              true
-          }
-        );
-
-
-    if (error) {
-
-      console.error(
-        error
-      );
-
-      importantDates =
-        [];
-
-    } else {
-
-      importantDates =
-        data || [];
-
-    }
-
-
-    document.getElementById(
-      "dateCount"
-    ).textContent =
-      importantDates.length;
-
-
-    renderDates();
-    renderCalendars();
-    renderNotifications();
-
-  }
-
-
-  function dateHTML(item) {
-
-    const date =
-      parseDateOnly(
-        item.event_date
-      );
-
-
-    if (!date) {
-      return "";
-    }
-
-
-    return `
-      <div class="date-item">
-
-        <div class="date-box">
-
-          <div class="date-month">
-            ${date.toLocaleString(
-              "en",
-              {
-                month:
-                  "short"
-              }
-            )}
-          </div>
-
-          <div class="date-day">
-            ${date.getDate()}
-          </div>
-
-        </div>
-
-        <div class="date-info">
-
-          <h3>
-            ${escapeHTML(
-              item.title
-            )}
-          </h3>
-
-          <p>
-            ${escapeHTML(
-              item.details || ""
-            )}
-          </p>
-
-        </div>
-
-        <span class="date-tag">
-          ${escapeHTML(
-            item.category
-          )}
-        </span>
-
-      </div>
-    `;
-
-  }
-
-
-  function renderDates() {
-
-    const all =
-      importantDates.length
-        ? importantDates
-            .map(
-              dateHTML
-            )
-            .join("")
-        : '<div class="empty">No important dates yet.</div>';
-
-
-    document.getElementById(
-      "allImportantDates"
-    ).innerHTML =
-      all;
-
-
-    const today =
-      new Date();
-
-    today.setHours(
-      0,
-      0,
-      0,
-      0
-    );
-
-
-    const upcoming =
-      importantDates
-        .filter(
-          item => {
-
-            const date =
-              parseDateOnly(
-                item.event_date
-              );
-
-            return (
-              date &&
-              date >= today
-            );
-
-          }
-        )
-        .slice(
-          0,
-          6
-        );
-
-
-    document.getElementById(
-      "importantDates"
-    ).innerHTML =
-      upcoming.length
-        ? upcoming
-            .map(
-              dateHTML
-            )
-            .join("")
-        : '<div class="empty">No upcoming dates.</div>';
-
-  }
-
-
-  function renderCalendar(
-    year,
-    month,
-    targetId,
-    labelId
-  ) {
-
-    const target =
-      document.getElementById(
-        targetId
-      );
-
-    const label =
-      document.getElementById(
-        labelId
-      );
-
-
-    label.textContent =
-      new Date(
-        year,
-        month,
-        1
-      ).toLocaleString(
-        "en",
-        {
-          month:
-            "long",
-
-          year:
-            "numeric"
-        }
-      );
-
-
-    target.innerHTML =
-      "";
-
-
-    const first =
-      new Date(
-        year,
-        month,
-        1
-      ).getDay();
-
-
-    const days =
-      new Date(
-        year,
-        month + 1,
-        0
-      ).getDate();
-
-
-    for (
-      let i = 0;
-      i < first;
-      i++
-    ) {
-
-      const empty =
-        document.createElement(
-          "div"
-        );
-
-      empty.className =
-        "calendar-day empty";
-
-      target.appendChild(
-        empty
-      );
-
-    }
-
-
-    for (
-      let day = 1;
-      day <= days;
-      day++
-    ) {
-
-      const date =
-        new Date(
-          year,
-          month,
-          day
-        );
-
-
-      const dateString =
-        `${year}-` +
-        `${String(
-          month + 1
-        ).padStart(2,"0")}-` +
-        `${String(
-          day
-        ).padStart(2,"0")}`;
-
-
-      const hasEvent =
-        importantDates.some(
-          item =>
-            item.event_date ===
-            dateString
-        );
-
-
-      const today =
-        new Date();
-
-
-      const element =
-        document.createElement(
-          "div"
-        );
-
-
-      element.className =
-        "calendar-day" +
-        (
-          hasEvent
-            ? " has-event"
-            : ""
-        ) +
-        (
-          date.toDateString() ===
-          today.toDateString()
-            ? " today"
-            : ""
-        );
-
-
-      element.textContent =
-        day;
-
-
-      if (
-        hasEvent
-      ) {
-
-        element.title =
-          importantDates
-            .filter(
-              item =>
-                item.event_date ===
-                dateString
-            )
-            .map(
-              item =>
-                item.title
-            )
-            .join(", ");
-
-      }
-
-
-      target.appendChild(
-        element
-      );
-
-    }
-
-  }
-
-
-  function renderCalendars() {
-
-    renderCalendar(
-      dashboardYear,
-      dashboardMonth,
-      "calendarDays",
-      "calendarMonth"
-    );
-
-    renderCalendar(
-      fullYear,
-      fullMonth,
-      "fullCalendarDays",
-      "fullCalendarMonth"
-    );
-
-  }
-
-
-  document.getElementById(
-    "prevMonth"
-  ).addEventListener(
-    "click",
-    () => {
-
-      dashboardMonth--;
-
-      if (
-        dashboardMonth < 0
-      ) {
-
-        dashboardMonth =
-          11;
-
-        dashboardYear--;
-
-      }
-
-      renderCalendars();
-
-    }
-  );
-
-
-  document.getElementById(
-    "nextMonth"
-  ).addEventListener(
-    "click",
-    () => {
-
-      dashboardMonth++;
-
-      if (
-        dashboardMonth > 11
-      ) {
-
-        dashboardMonth =
-          0;
-
-        dashboardYear++;
-
-      }
-
-      renderCalendars();
-
-    }
-  );
-
-
-  document.getElementById(
-    "fullPrevMonth"
-  ).addEventListener(
-    "click",
-    () => {
-
-      fullMonth--;
-
-      if (
-        fullMonth < 0
-      ) {
-
-        fullMonth =
-          11;
-
-        fullYear--;
-
-      }
-
-      renderCalendars();
-
-    }
-  );
-
-
-  document.getElementById(
-    "fullNextMonth"
-  ).addEventListener(
-    "click",
-    () => {
-
-      fullMonth++;
-
-      if (
-        fullMonth > 11
-      ) {
-
-        fullMonth =
-          0;
-
-        fullYear++;
-
-      }
-
-      renderCalendars();
-
-    }
-  );
-
-
-  async function loadFAQs() {
-
-    if (!db) {
-      return;
-    }
-
-
-    const {
-      data,
-      error
-    } =
-      await db
-        .from(
-          "faqs"
-        )
-        .select("*")
-        .order(
-          "sort_order",
-          {
-            ascending:
-              true
-          }
-        )
-        .order(
-          "created_at",
-          {
-            ascending:
-              true
-          }
-        );
-
-
-    if (error) {
-
-      console.error(
-        error
-      );
-
-      faqs =
-        [];
-
-    } else {
-
-      faqs =
-        data || [];
-
-    }
-
-
-    renderFAQs();
-
-  }
-
-
-  function renderFAQs() {
-
-    const box =
-      document.getElementById(
-        "faqList"
-      );
-
-
-    if (
-      !faqs.length
-    ) {
-
-      box.innerHTML =
-        '<div class="empty">No FAQs yet.</div>';
-
-      return;
-
-    }
-
-
-    box.innerHTML =
-      faqs
-        .map(
-          (faq,index) => `
-            <div class="faq-item">
-
-              <button
-                class="faq-question"
-                data-faq="${index}"
-              >
-
-                <span>
-                  ${escapeHTML(
-                    faq.question
-                  )}
-                </span>
-
-                <span>
-                  +
-                </span>
-
-              </button>
-
-              <div class="faq-answer">
-                ${escapeHTML(
-                  faq.answer
-                )}
-              </div>
-
-            </div>
-          `
-        )
-        .join("");
-
-
-    box
-      .querySelectorAll(
-        "[data-faq]"
+    ] +
+
+    second[
+      Math.floor(
+        Math.random() *
+        second.length
       )
-      .forEach(
-        button => {
+    ] +
 
-          button.addEventListener(
-            "click",
-            () => {
+    Math.floor(
+      10 +
+      Math.random() *
+      90
+    )
+  );
 
-              button
-                .closest(
-                  ".faq-item"
-                )
-                .classList
-                .toggle(
-                  "open"
-                );
-
-            }
-          );
-
-        }
-      );
-
-  }
+}
 
 
-  function renderNotifications() {
+/* ==========================================
+   STUDENT USERNAME + PASSWORD AUTH
+   ========================================== */
 
-    const list =
-      [];
+function setAuthMode(
+  mode
+) {
 
-
-    announcements
-      .slice(
-        0,
-        3
-      )
-      .forEach(
-        announcement => {
-
-          list.push({
-            title:
-              "📣 " +
-              announcement.title,
-
-            text:
-              announcement.message
-          });
-
-        }
-      );
+  authMode =
+    mode;
 
 
-    const today =
-      new Date();
+  $("showLogin").className =
+    mode === "login"
+      ? "primary"
+      : "secondary";
 
-    today.setHours(
-      0,
-      0,
-      0,
-      0
+
+  $("showSignup").className =
+    mode === "signup"
+      ? "primary"
+      : "secondary";
+
+
+  $("studentAuthSubmit").textContent =
+    mode === "login"
+      ? "Sign In"
+      : "Create Account";
+
+
+  $("authModeHelp").textContent =
+    mode === "login"
+      ? "Use the same random username and password you created."
+      : "Your username should not contain your real name. Password must be at least 6 characters.";
+
+
+  $("studentPassword").autocomplete =
+    mode === "login"
+      ? "current-password"
+      : "new-password";
+
+}
+
+
+$("showLogin").onclick =
+  () =>
+    setAuthMode(
+      "login"
     );
 
 
-    importantDates
-      .filter(
-        item => {
-
-          const date =
-            parseDateOnly(
-              item.event_date
-            );
-
-          return (
-            date &&
-            date >= today
-          );
-
-        }
-      )
-      .slice(
-        0,
-        3
-      )
-      .forEach(
-        item => {
-
-          list.push({
-            title:
-              "📅 " +
-              item.title,
-
-            text:
-              `${item.event_date} • ${item.category}`
-          });
-
-        }
-      );
-
-
-    document.getElementById(
-      "notificationCount"
-    ).textContent =
-      list.length;
-
-
-    document.getElementById(
-      "notificationList"
-    ).innerHTML =
-      list.length
-        ? list
-            .map(
-              notification => `
-                <div class="notification-item">
-
-                  <strong>
-                    ${escapeHTML(
-                      notification.title
-                    )}
-                  </strong>
-
-                  <p>
-                    ${escapeHTML(
-                      notification.text
-                    )}
-                  </p>
-
-                </div>
-              `
-            )
-            .join("")
-        : '<div class="empty">No notifications.</div>';
-
-  }
-
-
-  const notificationButton =
-    document.getElementById(
-      "notificationButton"
+$("showSignup").onclick =
+  () =>
+    setAuthMode(
+      "signup"
     );
 
 
-  const notificationPanel =
-    document.getElementById(
-      "notificationsPanel"
-    );
+$("randomUsername").onclick =
+  () =>
+    $("studentUsername").value =
+      randomName();
 
 
-  notificationButton.addEventListener(
-    "click",
-    event => {
-
-      event.stopPropagation();
-
-      notificationPanel
-        .classList
-        .toggle(
-          "show"
-        );
-
-    }
-  );
-
-
-  document.addEventListener(
-    "click",
-    event => {
-
-      if (
-        !notificationPanel.contains(
-          event.target
-        ) &&
-        !notificationButton.contains(
-          event.target
-        )
-      ) {
-
-        notificationPanel
-          .classList
-          .remove(
-            "show"
-          );
-
-      }
-
-    }
-  );
-
-
-  document.getElementById(
-    "adminButton"
-  ).addEventListener(
-    "click",
-    async () => {
-
-      const session =
-        await getSession();
-
-
-      if (
-        session?.user &&
-        db
-      ) {
-
-        const {
-          data
-        } =
-          await db
-            .from(
-              "profiles"
-            )
-            .select(
-              "nickname, role"
-            )
-            .eq(
-              "user_id",
-              session.user.id
-            )
-            .maybeSingle();
-
-
-        if (
-          data?.role ===
-          "admin"
-        ) {
-
-          currentUser =
-            session.user;
-
-          currentProfile =
-            data;
-
-          await openAdmin();
-
-          return;
-
-        }
-
-      }
-
-
-      showPage(
-        "adminLogin"
-      );
-
-    }
-  );
-
-
-  document.getElementById(
-    "cancelAdminLogin"
-  ).addEventListener(
-    "click",
-    () => {
-
-      showPage(
-        "dashboard"
-      );
-
-    }
-  );
-
-
-  document.getElementById(
-    "adminLoginForm"
-  ).addEventListener(
+$("studentAuthForm")
+  .addEventListener(
     "submit",
     async event => {
 
       event.preventDefault();
 
 
-      if (!db) {
+      const username =
+        cleanUsername(
+          $("studentUsername")
+            .value
+            .trim()
+        );
 
-        showMessage(
-          "loginMessage",
-          "Supabase is not connected.",
-          "error"
+
+      const password =
+        $("studentPassword")
+          .value;
+
+
+      if (
+        username.length < 3
+      ) {
+
+        msg(
+          "authMsg",
+          "Username must be at least 3 characters and use letters/numbers only.",
+          "err"
         );
 
         return;
@@ -3554,25 +2773,2199 @@
       }
 
 
-      const email =
-        document
-          .getElementById(
-            "adminEmail"
-          )
-          .value
-          .trim();
+      if (
+        password.length < 6
+      ) {
+
+        msg(
+          "authMsg",
+          "Password must be at least 6 characters.",
+          "err"
+        );
+
+        return;
+
+      }
 
 
-      const password =
-        document
-          .getElementById(
-            "adminPassword"
+      try {
+
+        const existing =
+          (
+            await db.auth
+              .getSession()
           )
-          .value;
+          .data
+          .session;
+
+
+        if (
+          existing
+        ) {
+
+          await db.auth
+            .signOut();
+
+        }
+
+
+        if (
+          authMode ===
+          "signup"
+        ) {
+
+          const {
+            data,
+            error
+          } =
+            await db.auth
+              .signUp({
+
+                email:
+                  internalEmail(
+                    username
+                  ),
+
+                password,
+
+                options: {
+
+                  data: {
+                    portal_username:
+                      username
+                  }
+
+                }
+
+              });
+
+
+          if (
+            error
+          ) {
+            throw error;
+          }
+
+
+          if (
+            !data.session
+          ) {
+
+            msg(
+              "authMsg",
+              "Account was created, but Confirm email is still ON in Supabase. Turn it OFF, then try signing in.",
+              "err"
+            );
+
+            return;
+
+          }
+
+
+          currentUser =
+            data.user;
+
+
+          const {
+            data:
+              profile,
+
+            error:
+              profileError
+          } =
+            await db
+              .from(
+                "profiles"
+              )
+              .upsert(
+                {
+
+                  user_id:
+                    currentUser.id,
+
+                  nickname:
+                    username,
+
+                  username,
+
+                  role:
+                    "student"
+
+                },
+                {
+                  onConflict:
+                    "user_id"
+                }
+              )
+              .select()
+              .single();
+
+
+          if (
+            profileError
+          ) {
+
+            throw profileError;
+
+          }
+
+
+          currentProfile =
+            profile;
+
+        } else {
+
+          const {
+            data,
+            error
+          } =
+            await db.auth
+              .signInWithPassword({
+
+                email:
+                  internalEmail(
+                    username
+                  ),
+
+                password
+
+              });
+
+
+          if (
+            error
+          ) {
+            throw error;
+          }
+
+
+          currentUser =
+            data.user;
+
+
+          await loadProfile();
+
+
+          if (
+            !currentProfile ||
+            currentProfile.role !==
+              "student"
+          ) {
+
+            throw new Error(
+              "Student profile not found"
+            );
+
+          }
+
+        }
+
+
+        $("studentPassword").value =
+          "";
+
+
+        await enterStudent();
+
+      } catch (
+        error
+      ) {
+
+        console.error(
+          error
+        );
+
+
+        msg(
+          "authMsg",
+          authMode === "signup"
+            ? "Could not create account. That username may already exist."
+            : "Incorrect username or password.",
+          "err"
+        );
+
+      }
+
+    }
+  );
+
+
+async function loadProfile() {
+
+  if (
+    !currentUser
+  ) {
+    return;
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from(
+        "profiles"
+      )
+      .select(
+        "nickname,username,role"
+      )
+      .eq(
+        "user_id",
+        currentUser.id
+      )
+      .maybeSingle();
+
+
+  if (
+    error
+  ) {
+
+    console.error(
+      error
+    );
+
+  }
+
+
+  currentProfile =
+    data;
+
+}
+
+
+async function enterStudent() {
+
+  if (
+    !currentUser ||
+    currentProfile?.role !==
+      "student" ||
+    !currentProfile.username
+  ) {
+
+    showPage(
+      "auth"
+    );
+
+    return;
+
+  }
+
+
+  $("welcomeName").textContent =
+    currentProfile.username;
+
+
+  $("profileUsername").textContent =
+    "@" +
+    currentProfile.username;
+
+
+  showPage(
+    "dashboard"
+  );
+
+
+  await Promise.all([
+    loadAnnouncements(),
+    loadResources(),
+    loadDates(),
+    loadFAQs(),
+    loadQuizzes(),
+    loadStudentActivity(),
+    loadQuizAttempts()
+  ]);
+
+
+  setStatus(
+    "● Connected to Science Club"
+  );
+
+
+  if (
+    !localStorage.getItem(
+      "scienceClubTutorialSeen"
+    )
+  ) {
+
+    openTour();
+
+  }
+
+}
+
+
+$("studentLogout").onclick =
+  async () => {
+
+    await db.auth
+      .signOut();
+
+
+    currentUser =
+      null;
+
+    currentProfile =
+      null;
+
+
+    showPage(
+      "auth"
+    );
+
+
+    setStatus(
+      "● Signed out"
+    );
+
+  };
+
+
+/* ==========================================
+   NAVIGATION
+   ========================================== */
+
+document
+  .querySelectorAll(
+    ".navBtn"
+  )
+  .forEach(
+    button => {
+
+      button.onclick =
+        () => {
+
+          if (
+            !currentProfile
+          ) {
+
+            showPage(
+              "auth"
+            );
+
+            return;
+
+          }
+
+
+          showPage(
+            button.dataset.page
+          );
+
+        };
+
+    }
+  );
+
+
+document
+  .querySelectorAll(
+    ".jump"
+  )
+  .forEach(
+    button => {
+
+      button.onclick =
+        () =>
+          showPage(
+            button.dataset.jump
+          );
+
+    }
+  );
+
+
+document
+  .querySelectorAll(
+    ".ext"
+  )
+  .forEach(
+    button => {
+
+      button.onclick =
+        () =>
+          window.open(
+            button.dataset.url,
+            "_blank",
+            "noopener,noreferrer"
+          );
+
+    }
+  );
+
+
+/* ==========================================
+   ANNOUNCEMENTS
+   ========================================== */
+
+async function loadAnnouncements() {
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from(
+        "announcements"
+      )
+      .select("*")
+      .order(
+        "created_at",
+        {
+          ascending:
+            false
+        }
+      );
+
+
+  announcements =
+    error
+      ? []
+      : (
+          data ||
+          []
+        );
+
+
+  if (
+    error
+  ) {
+
+    console.error(
+      error
+    );
+
+  }
+
+
+  $("latestAnnouncement").innerHTML =
+    announcements.length
+
+      ? `
+          <b>
+            ${esc(
+              announcements[0].title
+            )}
+          </b>
+
+          <p>
+            ${esc(
+              announcements[0].message
+            )}
+          </p>
+
+          <small>
+            ${new Date(
+              announcements[0].created_at
+            ).toLocaleString()}
+          </small>
+        `
+
+      : "No announcements yet.";
+
+}
+
+
+/* ==========================================
+   RESOURCES
+   ========================================== */
+
+function resourceHTML(
+  resource
+) {
+
+  return `
+    <div class="resource">
+
+      <div>
+        📘
+      </div>
+
+      <div class="grow">
+
+        <h3>
+          ${esc(
+            resource.title
+          )}
+        </h3>
+
+        <p>
+          ${esc(
+            resource.category
+          )}
+
+          ${
+            resource.description
+              ? " • " +
+                esc(
+                  resource.description
+                )
+              : ""
+          }
+        </p>
+
+      </div>
+
+      <button
+        class="primary openRes"
+        data-id="${resource.id}"
+      >
+        Open
+      </button>
+
+    </div>
+  `;
+
+}
+
+
+async function loadResources() {
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from(
+        "resources"
+      )
+      .select("*")
+      .order(
+        "created_at",
+        {
+          ascending:
+            false
+        }
+      );
+
+
+  resources =
+    error
+      ? []
+      : (
+          data ||
+          []
+        );
+
+
+  if (
+    error
+  ) {
+
+    console.error(
+      error
+    );
+
+  }
+
+
+  $("allResources").innerHTML =
+    resources.length
+
+      ? resources
+          .map(
+            resourceHTML
+          )
+          .join("")
+
+      : '<p class="muted">No resources yet.</p>';
+
+
+  $("dashboardResources").innerHTML =
+    resources.length
+
+      ? resources
+          .slice(
+            0,
+            5
+          )
+          .map(
+            resourceHTML
+          )
+          .join("")
+
+      : '<p class="muted">No resources yet.</p>';
+
+
+  document
+    .querySelectorAll(
+      ".openRes"
+    )
+    .forEach(
+      button => {
+
+        button.onclick =
+          () =>
+            openResource(
+              Number(
+                button.dataset.id
+              )
+            );
+
+      }
+    );
+
+}
+
+
+async function openResource(
+  id
+) {
+
+  const resource =
+    resources.find(
+      item =>
+        Number(
+          item.id
+        ) ===
+        id
+    );
+
+
+  if (
+    !resource
+  ) {
+    return;
+  }
+
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "activity"
+      )
+      .insert({
+
+        user_id:
+          currentUser.id,
+
+        resource_id:
+          resource.id,
+
+        resource_title:
+          resource.title,
+
+        action:
+          "opened"
+
+      });
+
+
+  if (
+    error
+  ) {
+
+    console.error(
+      error
+    );
+
+  }
+
+
+  await loadStudentActivity();
+
+
+  if (
+    resource.url
+  ) {
+
+    window.open(
+      resource.url,
+      "_blank",
+      "noopener,noreferrer"
+    );
+
+  } else {
+
+    alert(
+      `${resource.title}\n\n` +
+      `${resource.description || ""}\n\n` +
+      "No external link has been added yet."
+    );
+
+  }
+
+}
+
+
+async function loadStudentActivity() {
+
+  if (
+    !currentUser ||
+    currentProfile?.role !==
+      "student"
+  ) {
+    return;
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from(
+        "activity"
+      )
+      .select("*")
+      .eq(
+        "user_id",
+        currentUser.id
+      );
+
+
+  studentActivity =
+    error
+      ? []
+      : (
+          data ||
+          []
+        );
+
+
+  if (
+    error
+  ) {
+
+    console.error(
+      error
+    );
+
+  }
+
+
+  $("openedCount").textContent =
+    studentActivity.length;
+
+}
+
+
+/* ==========================================
+   DATES / CALENDAR
+   ========================================== */
+
+function parseDate(
+  value
+) {
+
+  if (
+    !value
+  ) {
+    return null;
+  }
+
+
+  const [
+    year,
+    month,
+    day
+  ] =
+    value
+      .split("-")
+      .map(Number);
+
+
+  return new Date(
+    year,
+    month - 1,
+    day
+  );
+
+}
+
+
+function dateHTML(
+  item
+) {
+
+  const date =
+    parseDate(
+      item.event_date
+    );
+
+
+  return `
+    <div class="dateRow">
+
+      <div>
+        📅
+      </div>
+
+      <div class="grow">
+
+        <h3>
+          ${esc(
+            item.title
+          )}
+        </h3>
+
+        <p>
+
+          ${
+            date
+              ? date.toLocaleDateString()
+              : ""
+          }
+
+          ${
+            item.details
+              ? " • " +
+                esc(
+                  item.details
+                )
+              : ""
+          }
+
+        </p>
+
+      </div>
+
+      <span class="badge">
+        ${esc(
+          item.category
+        )}
+      </span>
+
+    </div>
+  `;
+
+}
+
+
+async function loadDates() {
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from(
+        "important_dates"
+      )
+      .select("*")
+      .order(
+        "event_date",
+        {
+          ascending:
+            true
+        }
+      );
+
+
+  importantDates =
+    error
+      ? []
+      : (
+          data ||
+          []
+        );
+
+
+  if (
+    error
+  ) {
+
+    console.error(
+      error
+    );
+
+  }
+
+
+  $("dateCount").textContent =
+    importantDates.length;
+
+
+  const today =
+    new Date();
+
+
+  today.setHours(
+    0,
+    0,
+    0,
+    0
+  );
+
+
+  const upcoming =
+    importantDates
+      .filter(
+        item => {
+
+          const date =
+            parseDate(
+              item.event_date
+            );
+
+
+          return (
+            date &&
+            date >= today
+          );
+
+        }
+      );
+
+
+  $("importantDates").innerHTML =
+    upcoming.length
+
+      ? upcoming
+          .slice(
+            0,
+            6
+          )
+          .map(
+            dateHTML
+          )
+          .join("")
+
+      : '<p class="muted">No upcoming dates.</p>';
+
+
+  $("allDates").innerHTML =
+    importantDates.length
+
+      ? importantDates
+          .map(
+            dateHTML
+          )
+          .join("")
+
+      : '<p class="muted">No dates yet.</p>';
+
+
+  renderCalendar();
+
+}
+
+
+function renderCalendar() {
+
+  $("calendarMonth").textContent =
+    new Date(
+      calYear,
+      calMonth,
+      1
+    )
+    .toLocaleString(
+      "en",
+      {
+        month:
+          "long",
+
+        year:
+          "numeric"
+      }
+    );
+
+
+  $("calendarDays").innerHTML =
+    "";
+
+
+  const first =
+    new Date(
+      calYear,
+      calMonth,
+      1
+    )
+    .getDay();
+
+
+  const days =
+    new Date(
+      calYear,
+      calMonth + 1,
+      0
+    )
+    .getDate();
+
+
+  for (
+    let i = 0;
+    i < first;
+    i++
+  ) {
+
+    const empty =
+      document.createElement(
+        "div"
+      );
+
+
+    empty.className =
+      "day blank";
+
+
+    $("calendarDays")
+      .appendChild(
+        empty
+      );
+
+  }
+
+
+  for (
+    let day = 1;
+    day <= days;
+    day++
+  ) {
+
+    const dateString =
+      `${calYear}-` +
+      `${String(
+        calMonth + 1
+      ).padStart(2, "0")}-` +
+      `${String(
+        day
+      ).padStart(2, "0")}`;
+
+
+    const element =
+      document.createElement(
+        "div"
+      );
+
+
+    const date =
+      new Date(
+        calYear,
+        calMonth,
+        day
+      );
+
+
+    element.className =
+      "day" +
+
+      (
+        importantDates.some(
+          item =>
+            item.event_date ===
+            dateString
+        )
+          ? " event"
+          : ""
+      ) +
+
+      (
+        date.toDateString() ===
+        new Date().toDateString()
+          ? " today"
+          : ""
+      );
+
+
+    element.textContent =
+      day;
+
+
+    $("calendarDays")
+      .appendChild(
+        element
+      );
+
+  }
+
+}
+
+
+$("prevMonth").onclick =
+  () => {
+
+    calMonth--;
+
+
+    if (
+      calMonth < 0
+    ) {
+
+      calMonth =
+        11;
+
+      calYear--;
+
+    }
+
+
+    renderCalendar();
+
+  };
+
+
+$("nextMonth").onclick =
+  () => {
+
+    calMonth++;
+
+
+    if (
+      calMonth > 11
+    ) {
+
+      calMonth =
+        0;
+
+      calYear++;
+
+    }
+
+
+    renderCalendar();
+
+  };
+
+
+/* ==========================================
+   FAQs
+   ========================================== */
+
+async function loadFAQs() {
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from(
+        "faqs"
+      )
+      .select("*")
+      .order(
+        "sort_order",
+        {
+          ascending:
+            true
+        }
+      );
+
+
+  faqs =
+    error
+      ? []
+      : (
+          data ||
+          []
+        );
+
+
+  if (
+    error
+  ) {
+
+    console.error(
+      error
+    );
+
+  }
+
+
+  $("faqList").innerHTML =
+    faqs.length
+
+      ? faqs
+          .map(
+            faq => `
+
+              <details
+                style="
+                  padding:10px 0;
+                  border-bottom:
+                  1px solid var(--line)
+                "
+              >
+
+                <summary
+                  style="
+                    font-size:12px;
+                    font-weight:750;
+                    cursor:pointer
+                  "
+                >
+                  ${esc(
+                    faq.question
+                  )}
+                </summary>
+
+                <p class="muted">
+                  ${esc(
+                    faq.answer
+                  )}
+                </p>
+
+              </details>
+            `
+          )
+          .join("")
+
+      : '<p class="muted">No FAQs yet.</p>';
+
+}
+
+
+/* ==========================================
+   PROJECT BRAINSTORM
+   ========================================== */
+
+$("brainstormBtn").onclick =
+  () => {
+
+    const type =
+      $("ideaType").value;
+
+
+    const tool =
+      $("ideaTool").value;
+
+
+    const prompts = {
+
+      software: [
+
+        "What real problem at school or in the community could your program solve?",
+
+        "What will the program measure, predict, organize or automate?",
+
+        "What measurable result can you test: speed, accuracy, usability or error rate?"
+
+      ],
+
+
+      data: [
+
+        "What pattern or relationship can you test using reliable data?",
+
+        "What variables will you compare?",
+
+        "How will you avoid biased or weak data?"
+
+      ],
+
+
+      engineering: [
+
+        "What need are you solving?",
+
+        "What design criteria must the prototype meet?",
+
+        "How will you test and redesign it?"
+
+      ],
+
+
+      chemistry: [
+
+        "What chemical relationship can you measure safely?",
+
+        "What independent and dependent variables will you use?",
+
+        "Can the experiment be repeated with controls?"
+
+      ],
+
+
+      physics: [
+
+        "What measurable physical or mathematical relationship interests you?",
+
+        "What model or prediction can you test?",
+
+        "How will you collect enough data to support a conclusion?"
+
+      ]
+
+    };
+
+
+    $("ideaOutput").innerHTML =
+      `
+        <b>
+          Using ${esc(tool)}:
+        </b>
+
+        <br>
+
+        ${
+          prompts[type]
+            .map(
+              item =>
+                "• " +
+                item
+            )
+            .join("<br>")
+        }
+
+        <br><br>
+
+        <b>
+          Next:
+        </b>
+
+        check the current WWSEF Exhibitor Manual
+        before committing to the project.
+      `;
+
+  };
+
+
+/* ==========================================
+   QUIZZES
+   ========================================== */
+
+async function loadQuizzes() {
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from(
+        "quizzes"
+      )
+      .select("*")
+      .order(
+        "created_at",
+        {
+          ascending:
+            false
+        }
+      );
+
+
+  quizzes =
+    error
+      ? []
+      : (
+          data ||
+          []
+        );
+
+
+  if (
+    error
+  ) {
+
+    console.error(
+      error
+    );
+
+  }
+
+
+  const published =
+    quizzes
+      .filter(
+        quiz =>
+          quiz.is_published
+      );
+
+
+  $("quizCount").textContent =
+    published.length;
+
+
+  $("quizList").innerHTML =
+    published.length
+
+      ? published
+          .map(
+            quiz => `
+
+              <div class="quizCard">
+
+                <span class="badge">
+                  ${esc(
+                    quiz.category
+                  )}
+                </span>
+
+                <h3>
+                  ${esc(
+                    quiz.title
+                  )}
+                </h3>
+
+                <p>
+                  ${esc(
+                    quiz.description ||
+                    "Practice quiz"
+                  )}
+                </p>
+
+                <button
+                  class="primary takeQuiz"
+                  data-id="${quiz.id}"
+                >
+                  Take Quiz
+                </button>
+
+              </div>
+            `
+          )
+          .join("")
+
+      : '<p class="muted">No published quizzes yet.</p>';
+
+
+  document
+    .querySelectorAll(
+      ".takeQuiz"
+    )
+    .forEach(
+      button => {
+
+        button.onclick =
+          () =>
+            beginQuiz(
+              Number(
+                button.dataset.id
+              )
+            );
+
+      }
+    );
+
+}
+
+
+async function beginQuiz(
+  id
+) {
+
+  activeQuiz =
+    quizzes.find(
+      quiz =>
+        Number(
+          quiz.id
+        ) ===
+        id
+    );
+
+
+  if (
+    !activeQuiz
+  ) {
+    return;
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await db.rpc(
+      "get_quiz_questions",
+      {
+        p_quiz_id:
+          id
+      }
+    );
+
+
+  if (
+    error
+  ) {
+
+    console.error(
+      error
+    );
+
+
+    msg(
+      "quizMsg",
+      "Could not load quiz.",
+      "err"
+    );
+
+    return;
+
+  }
+
+
+  activeQuizQuestions =
+    data ||
+    [];
+
+
+  $("quizListCard").style.display =
+    "none";
+
+
+  $("quizResultCard").style.display =
+    "none";
+
+
+  $("quizTakeCard").style.display =
+    "block";
+
+
+  $("activeQuizTitle").textContent =
+    activeQuiz.title;
+
+
+  $("activeQuizDesc").textContent =
+    activeQuiz.description ||
+    "";
+
+
+  $("quizQuestions").innerHTML =
+    activeQuizQuestions.length
+
+      ? activeQuizQuestions
+          .map(
+            (
+              question,
+              index
+            ) => `
+
+              <div class="question">
+
+                <h3>
+                  ${index + 1}.
+                  ${esc(
+                    question.question_text
+                  )}
+                </h3>
+
+                ${
+                  [
+                    "A",
+                    "B",
+                    "C",
+                    "D"
+                  ]
+                  .map(
+                    letter => `
+
+                      <label class="option">
+
+                        <input
+                          type="radio"
+                          name="q_${question.id}"
+                          value="${letter}"
+                          required
+                        >
+
+                        <span>
+
+                          <b>
+                            ${letter}.
+                          </b>
+
+                          ${esc(
+                            question[
+                              "option_" +
+                              letter.toLowerCase()
+                            ]
+                          )}
+
+                        </span>
+
+                      </label>
+                    `
+                  )
+                  .join("")
+                }
+
+              </div>
+            `
+          )
+          .join("")
+
+      : '<p class="muted">This quiz does not have questions yet.</p>';
+
+
+  window.scrollTo(
+    0,
+    0
+  );
+
+}
+
+
+$("quizForm")
+  .addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+
+      if (
+        !activeQuizQuestions.length
+      ) {
+        return;
+      }
+
+
+      const answers =
+        {};
+
+
+      for (
+        const question of
+        activeQuizQuestions
+      ) {
+
+        const selected =
+          document.querySelector(
+            `input[name="q_${question.id}"]:checked`
+          );
+
+
+        if (
+          !selected
+        ) {
+
+          msg(
+            "quizMsg",
+            "Answer every question first.",
+            "err"
+          );
+
+          return;
+
+        }
+
+
+        answers[
+          String(
+            question.id
+          )
+        ] =
+          selected.value;
+
+      }
+
+
+      const {
+        data,
+        error
+      } =
+        await db.rpc(
+          "grade_quiz",
+          {
+
+            p_quiz_id:
+              activeQuiz.id,
+
+            p_answers:
+              answers
+
+          }
+        );
+
+
+      if (
+        error
+      ) {
+
+        console.error(
+          error
+        );
+
+
+        msg(
+          "quizMsg",
+          "Could not grade quiz.",
+          "err"
+        );
+
+        return;
+
+      }
+
+
+      $("quizTakeCard").style.display =
+        "none";
+
+
+      $("quizResultCard").style.display =
+        "block";
+
+
+      const percent =
+        data.total
+          ? Math.round(
+              data.score /
+              data.total *
+              100
+            )
+          : 0;
+
+
+      $("quizResult").innerHTML =
+        `
+
+          <div
+            class="card"
+            style="background:var(--ps)"
+          >
+
+            <b style="font-size:20px">
+              ${data.score}/${data.total}
+              (${percent}%)
+            </b>
+
+          </div>
+
+        ` +
+
+        (
+          data.results ||
+          []
+        )
+        .map(
+          (
+            result,
+            index
+          ) => `
+
+            <div
+              class="
+                review
+                ${
+                  result.correct
+                    ? "good"
+                    : "bad"
+                }
+              "
+            >
+
+              <b>
+
+                Question ${index + 1}:
+
+                ${
+                  result.correct
+                    ? "Correct ✅"
+                    : "Incorrect ❌"
+                }
+
+              </b>
+
+              <br>
+
+              Your answer:
+              ${esc(
+                result.your_answer ||
+                "—"
+              )}
+
+              • Correct:
+              ${esc(
+                result.correct_option
+              )}
+
+              ${
+                result.explanation
+                  ? `
+                      <br>
+                      <span class="muted">
+                        ${esc(
+                          result.explanation
+                        )}
+                      </span>
+                    `
+                  : ""
+              }
+
+            </div>
+          `
+        )
+        .join("");
+
+
+      await loadQuizAttempts();
+
+    }
+  );
+
+
+function resetQuiz() {
+
+  activeQuiz =
+    null;
+
+
+  activeQuizQuestions =
+    [];
+
+
+  $("quizTakeCard").style.display =
+    "none";
+
+
+  $("quizResultCard").style.display =
+    "none";
+
+
+  $("quizListCard").style.display =
+    "block";
+
+}
+
+
+$("backQuizzes").onclick =
+  resetQuiz;
+
+
+$("closeResult").onclick =
+  resetQuiz;
+
+
+async function loadQuizAttempts() {
+
+  if (
+    !currentUser ||
+    currentProfile?.role !==
+      "student"
+  ) {
+    return;
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from(
+        "quiz_attempts"
+      )
+      .select(
+        "id,quiz_id,score,total_questions,created_at"
+      )
+      .eq(
+        "user_id",
+        currentUser.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending:
+            false
+        }
+      )
+      .limit(
+        10
+      );
+
+
+  if (
+    error
+  ) {
+
+    console.error(
+      error
+    );
+
+
+    $("quizAttempts").innerHTML =
+      '<p class="muted">Could not load attempts.</p>';
+
+    return;
+
+  }
+
+
+  $("quizAttempts").innerHTML =
+    (
+      data ||
+      []
+    )
+    .length
+
+      ? (
+          data ||
+          []
+        )
+        .map(
+          attempt => `
+
+            <div class="attempt">
+
+              <div>
+                🧠
+              </div>
+
+              <div class="grow">
+
+                <h3>
+                  ${esc(
+                    quizzes.find(
+                      quiz =>
+                        Number(
+                          quiz.id
+                        ) ===
+                        Number(
+                          attempt.quiz_id
+                        )
+                    )
+                    ?.title ||
+                    "Quiz"
+                  )}
+                </h3>
+
+                <p>
+                  ${new Date(
+                    attempt.created_at
+                  ).toLocaleString()}
+                </p>
+
+              </div>
+
+              <span class="badge">
+                ${attempt.score}/${attempt.total_questions}
+              </span>
+
+            </div>
+          `
+        )
+        .join("")
+
+      : '<p class="muted">No attempts yet.</p>';
+
+}
+
+
+/* ==========================================
+   GUIDED TUTORIAL
+   ========================================== */
+
+const tourSteps = [
+
+  {
+    i:
+      "👋",
+
+    t:
+      "Welcome",
+
+    x:
+      "This portal keeps Science Club announcements, dates, resources, project ideas and quizzes together."
+  },
+
+  {
+    i:
+      "🔐",
+
+    t:
+      "Random username + password",
+
+    x:
+      "Use a random username instead of your real name. Your password protects your account."
+  },
+
+  {
+    i:
+      "💡",
+
+    t:
+      "Project Lab",
+
+    x:
+      "Use the current WWSEF manual plus coding and engineering idea links before choosing a project."
+  },
+
+  {
+    i:
+      "🧠",
+
+    t:
+      "CCC Quizzes",
+
+    x:
+      "Take club-made chemistry quizzes and get your score immediately."
+  },
+
+  {
+    i:
+      "📚",
+
+    t:
+      "Resources",
+
+    x:
+      "Open shared materials. Resource activity is associated with your random username."
+  },
+
+  {
+    i:
+      "✅",
+
+    t:
+      "Ready",
+
+    x:
+      "Check Calendar and FAQs whenever you need help. You can reopen this tutorial anytime."
+  }
+
+];
+
+
+let tourIndex =
+  0;
+
+
+function openTour() {
+
+  tourIndex =
+    0;
+
+
+  $("tourOverlay")
+    .classList
+    .add(
+      "show"
+    );
+
+
+  renderTour();
+
+}
+
+
+function renderTour() {
+
+  const step =
+    tourSteps[
+      tourIndex
+    ];
+
+
+  $("tourIcon").textContent =
+    step.i;
+
+
+  $("tourTitle").textContent =
+    step.t;
+
+
+  $("tourText").textContent =
+    step.x;
+
+
+  $("tourProgress").textContent =
+    `Step ${tourIndex + 1} of ${tourSteps.length}`;
+
+
+  $("tourBack").style.visibility =
+    tourIndex
+      ? "visible"
+      : "hidden";
+
+
+  $("tourNext").textContent =
+    tourIndex ===
+    tourSteps.length - 1
+      ? "Finish"
+      : "Next";
+
+}
+
+
+function closeTour() {
+
+  $("tourOverlay")
+    .classList
+    .remove(
+      "show"
+    );
+
+
+  localStorage.setItem(
+    "scienceClubTutorialSeen",
+    "1"
+  );
+
+}
+
+
+$("startTour").onclick =
+  openTour;
+
+
+$("tourSkip").onclick =
+  closeTour;
+
+
+$("tourBack").onclick =
+  () => {
+
+    if (
+      tourIndex
+    ) {
+
+      tourIndex--;
+
+      renderTour();
+
+    }
+
+  };
+
+
+$("tourNext").onclick =
+  () => {
+
+    if (
+      tourIndex <
+      tourSteps.length - 1
+    ) {
+
+      tourIndex++;
+
+      renderTour();
+
+    } else {
+
+      closeTour();
+
+    }
+
+  };
+
+
+/* ==========================================
+   ADMIN LOGIN
+   ========================================== */
+
+$("adminButton").onclick =
+  () =>
+    showPage(
+      "adminLogin"
+    );
+
+
+$("cancelAdmin").onclick =
+  () =>
+    showPage(
+      currentProfile
+        ? "dashboard"
+        : "auth"
+    );
+
+
+$("adminLoginForm")
+  .addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
 
 
       const existing =
-        await getSession();
+        (
+          await db.auth
+            .getSession()
+        )
+        .data
+        .session;
 
 
       if (
@@ -3591,17 +4984,27 @@
       } =
         await db.auth
           .signInWithPassword({
-            email,
-            password
+
+            email:
+              $("adminEmail")
+                .value
+                .trim(),
+
+            password:
+              $("adminPassword")
+                .value
+
           });
 
 
-      if (error) {
+      if (
+        error
+      ) {
 
-        showMessage(
-          "loginMessage",
+        msg(
+          "adminLoginMsg",
           "Incorrect admin email or password.",
-          "error"
+          "err"
         );
 
         return;
@@ -3621,7 +5024,7 @@
             "profiles"
           )
           .select(
-            "nickname, role"
+            "nickname,username,role"
           )
           .eq(
             "user_id",
@@ -3632,8 +5035,7 @@
 
       if (
         profileError ||
-        !profile ||
-        profile.role !==
+        profile?.role !==
           "admin"
       ) {
 
@@ -3641,16 +5043,11 @@
           .signOut();
 
 
-        showMessage(
-          "loginMessage",
-          "This account is not an administrator.",
-          "error"
+        msg(
+          "adminLoginMsg",
+          "This account is not an admin.",
+          "err"
         );
-
-
-        await createAnonymousStudent();
-
-        await loadProfile();
 
         return;
 
@@ -3660,13 +5057,12 @@
       currentUser =
         data.user;
 
+
       currentProfile =
         profile;
 
 
-      document.getElementById(
-        "adminPassword"
-      ).value =
+      $("adminPassword").value =
         "";
 
 
@@ -3676,253 +5072,678 @@
   );
 
 
-  async function openAdmin() {
+async function openAdmin() {
 
-    showPage(
-      "admin"
-    );
-
-
-    await Promise.all([
-      loadAdminProfiles(),
-      loadAdminActivity(),
-      loadAnnouncements(),
-      loadResources(),
-      loadDates(),
-      loadFAQs()
-    ]);
+  showPage(
+    "admin"
+  );
 
 
-    renderAdminActivity();
-    updateAdminStats();
-
-  }
-
-
-  async function loadAdminProfiles() {
-
-    const {
-      data,
-      error
-    } =
-      await db
-        .from(
-          "profiles"
-        )
-        .select(
-          "user_id, nickname, role"
-        );
+  await Promise.all([
+    loadAdminProfiles(),
+    loadAdminActivity(),
+    loadAnnouncements(),
+    loadResources(),
+    loadDates(),
+    loadFAQs(),
+    loadAdminQuizzes()
+  ]);
 
 
-    if (error) {
+  renderAdminActivity();
 
-      console.error(
-        error
-      );
-
-      adminProfiles =
-        [];
-
-      return;
-
-    }
+  updateAdminStats();
 
 
-    adminProfiles =
-      data || [];
+  setStatus(
+    "● Connected as administrator"
+  );
 
-  }
-
-
-  async function loadAdminActivity() {
-
-    const {
-      data,
-      error
-    } =
-      await db
-        .from(
-          "activity"
-        )
-        .select(
-          "id, user_id, action, resource_title, created_at"
-        )
-        .order(
-          "created_at",
-          {
-            ascending:
-              false
-          }
-        )
-        .limit(
-          200
-        );
+}
 
 
-    if (error) {
+async function loadAdminProfiles() {
 
-      console.error(
-        error
-      );
-
-      adminActivity =
-        [];
-
-      return;
-
-    }
-
-
-    adminActivity =
-      data || [];
-
-  }
-
-
-  function getNickname(userId) {
-
-    return (
-      adminProfiles.find(
-        profile =>
-          profile.user_id ===
-          userId
+  const {
+    data,
+    error
+  } =
+    await db
+      .from(
+        "profiles"
       )
-      ?.nickname ||
-      "Unknown"
+      .select(
+        "user_id,nickname,username,role"
+      );
+
+
+  adminProfiles =
+    error
+      ? []
+      : (
+          data ||
+          []
+        );
+
+
+  if (
+    error
+  ) {
+
+    console.error(
+      error
     );
 
   }
 
+}
 
-  function renderAdminActivity() {
 
-    const body =
-      document.getElementById(
-        "activityTable"
+async function loadAdminActivity() {
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from(
+        "activity"
+      )
+      .select(
+        "id,user_id,action,resource_title,created_at"
+      )
+      .order(
+        "created_at",
+        {
+          ascending:
+            false
+        }
+      )
+      .limit(
+        200
       );
 
 
-    if (
-      !adminActivity.length
-    ) {
+  adminActivity =
+    error
+      ? []
+      : (
+          data ||
+          []
+        );
 
-      body.innerHTML =
-        `
+
+  if (
+    error
+  ) {
+
+    console.error(
+      error
+    );
+
+  }
+
+}
+
+
+function usernameFor(
+  userId
+) {
+
+  const profile =
+    adminProfiles.find(
+      item =>
+        item.user_id ===
+        userId
+    );
+
+
+  return (
+    profile?.username ||
+    profile?.nickname ||
+    "Unknown"
+  );
+
+}
+
+
+function renderAdminActivity() {
+
+  $("activityTable").innerHTML =
+    adminActivity.length
+
+      ? adminActivity
+          .map(
+            item => `
+
+              <tr>
+
+                <td>
+                  @${esc(
+                    usernameFor(
+                      item.user_id
+                    )
+                  )}
+                </td>
+
+                <td>
+                  ${esc(
+                    item.action
+                  )}
+                </td>
+
+                <td>
+                  ${esc(
+                    item.resource_title ||
+                    ""
+                  )}
+                </td>
+
+                <td>
+                  ${new Date(
+                    item.created_at
+                  ).toLocaleString()}
+                </td>
+
+              </tr>
+            `
+          )
+          .join("")
+
+      : `
           <tr>
             <td colspan="4">
-              <div class="empty">
-                No activity yet.
-              </div>
+              No activity yet.
             </td>
           </tr>
         `;
 
-      return;
-
-    }
+}
 
 
-    body.innerHTML =
-      adminActivity
-        .map(
-          item => `
-            <tr>
+function updateAdminStats() {
 
-              <td>
-                <span class="student-dot"></span>
-                ${escapeHTML(
-                  getNickname(
-                    item.user_id
-                  )
-                )}
-              </td>
-
-              <td>
-                ${escapeHTML(
-                  item.action
-                )}
-              </td>
-
-              <td>
-                ${escapeHTML(
-                  item.resource_title ||
-                  ""
-                )}
-              </td>
-
-              <td>
-                ${new Date(
-                  item.created_at
-                ).toLocaleString()}
-              </td>
-
-            </tr>
-          `
-        )
-        .join("");
-
-  }
+  $("adminStudents").textContent =
+    adminProfiles
+      .filter(
+        profile =>
+          profile.role ===
+          "student"
+      )
+      .length;
 
 
-  function updateAdminStats() {
-
-    document.getElementById(
-      "adminStudentCount"
-    ).textContent =
-      adminProfiles
-        .filter(
-          profile =>
-            profile.role ===
-            "student"
-        )
-        .length;
+  $("adminActivityCount").textContent =
+    adminActivity.length;
 
 
-    document.getElementById(
-      "adminActivityCount"
-    ).textContent =
-      adminActivity.length;
+  $("adminAnnouncements").textContent =
+    announcements.length;
 
 
-    document.getElementById(
-      "adminAnnouncementCount"
-    ).textContent =
-      announcements.length;
+  $("adminDates").textContent =
+    importantDates.length;
 
 
-    document.getElementById(
-      "adminDateCount"
-    ).textContent =
-      importantDates.length;
+  $("adminQuizCount").textContent =
+    adminQuizzes.length;
+
+}
+
+
+/* ==========================================
+   ADMIN QUIZZES
+   ========================================== */
+
+async function loadAdminQuizzes() {
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from(
+        "quizzes"
+      )
+      .select("*")
+      .order(
+        "created_at",
+        {
+          ascending:
+            false
+        }
+      );
+
+
+  adminQuizzes =
+    error
+      ? []
+      : (
+          data ||
+          []
+        );
+
+
+  if (
+    error
+  ) {
+
+    console.error(
+      error
+    );
 
   }
 
 
-  document.getElementById(
-    "announcementForm"
-  ).addEventListener(
+  $("adminQuizList").innerHTML =
+    adminQuizzes.length
+
+      ? adminQuizzes
+          .map(
+            quiz => `
+
+              <div class="dateRow">
+
+                <div class="grow">
+
+                  <h3>
+                    ${esc(
+                      quiz.title
+                    )}
+                  </h3>
+
+                  <p>
+
+                    ${esc(
+                      quiz.category
+                    )}
+
+                    •
+
+                    ${
+                      quiz.is_published
+                        ? "Published"
+                        : "Draft"
+                    }
+
+                  </p>
+
+                </div>
+
+
+                <button
+                  class="secondary toggleQuiz"
+                  data-id="${quiz.id}"
+                  data-pub="${quiz.is_published}"
+                >
+
+                  ${
+                    quiz.is_published
+                      ? "Unpublish"
+                      : "Publish"
+                  }
+
+                </button>
+
+
+                <button
+                  class="danger deleteQuiz"
+                  data-id="${quiz.id}"
+                >
+                  Delete
+                </button>
+
+              </div>
+            `
+          )
+          .join("")
+
+      : '<p class="muted">No quizzes yet.</p>';
+
+
+  $("questionQuiz").innerHTML =
+    '<option value="">Choose quiz</option>' +
+
+    adminQuizzes
+      .map(
+        quiz => `
+          <option value="${quiz.id}">
+            ${esc(
+              quiz.title
+            )}
+          </option>
+        `
+      )
+      .join("");
+
+
+  document
+    .querySelectorAll(
+      ".toggleQuiz"
+    )
+    .forEach(
+      button => {
+
+        button.onclick =
+          () =>
+            toggleQuiz(
+              Number(
+                button.dataset.id
+              ),
+              button.dataset.pub !==
+                "true"
+            );
+
+      }
+    );
+
+
+  document
+    .querySelectorAll(
+      ".deleteQuiz"
+    )
+    .forEach(
+      button => {
+
+        button.onclick =
+          () =>
+            deleteQuiz(
+              Number(
+                button.dataset.id
+              )
+            );
+
+      }
+    );
+
+
+  updateAdminStats();
+
+}
+
+
+$("createQuizForm")
+  .addEventListener(
     "submit",
     async event => {
 
       event.preventDefault();
 
 
-      const title =
-        document
-          .getElementById(
-            "announcementTitle"
+      const {
+        error
+      } =
+        await db
+          .from(
+            "quizzes"
           )
-          .value
-          .trim();
+          .insert({
+
+            title:
+              $("newQuizTitle")
+                .value
+                .trim(),
+
+            description:
+              $("newQuizDesc")
+                .value
+                .trim() ||
+              null,
+
+            category:
+              $("newQuizCat")
+                .value,
+
+            is_published:
+              false,
+
+            created_by:
+              currentUser.id
+
+          });
 
 
-      const message =
-        document
-          .getElementById(
-            "announcementMessage"
+      if (
+        error
+      ) {
+
+        console.error(
+          error
+        );
+
+
+        msg(
+          "adminMsg",
+          "Could not create quiz.",
+          "err"
+        );
+
+        return;
+
+      }
+
+
+      event.target.reset();
+
+
+      await loadAdminQuizzes();
+
+
+      msg(
+        "adminMsg",
+        "Draft quiz created."
+      );
+
+    }
+  );
+
+
+$("addQuestionForm")
+  .addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+
+      const {
+        error
+      } =
+        await db
+          .from(
+            "quiz_questions"
           )
-          .value
-          .trim();
+          .insert({
+
+            quiz_id:
+              Number(
+                $("questionQuiz")
+                  .value
+              ),
+
+            question_text:
+              $("qText")
+                .value
+                .trim(),
+
+            option_a:
+              $("qA")
+                .value
+                .trim(),
+
+            option_b:
+              $("qB")
+                .value
+                .trim(),
+
+            option_c:
+              $("qC")
+                .value
+                .trim(),
+
+            option_d:
+              $("qD")
+                .value
+                .trim(),
+
+            correct_option:
+              $("qCorrect")
+                .value,
+
+            explanation:
+              $("qExplain")
+                .value
+                .trim() ||
+              null
+
+          });
+
+
+      if (
+        error
+      ) {
+
+        console.error(
+          error
+        );
+
+
+        msg(
+          "adminMsg",
+          "Could not add question.",
+          "err"
+        );
+
+        return;
+
+      }
+
+
+      event.target.reset();
+
+
+      msg(
+        "adminMsg",
+        "Question added."
+      );
+
+    }
+  );
+
+
+async function toggleQuiz(
+  id,
+  publish
+) {
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "quizzes"
+      )
+      .update({
+        is_published:
+          publish
+      })
+      .eq(
+        "id",
+        id
+      );
+
+
+  if (
+    error
+  ) {
+
+    msg(
+      "adminMsg",
+      "Could not update quiz.",
+      "err"
+    );
+
+    return;
+
+  }
+
+
+  await loadAdminQuizzes();
+
+
+  msg(
+    "adminMsg",
+    publish
+      ? "Quiz published."
+      : "Quiz unpublished."
+  );
+
+}
+
+
+async function deleteQuiz(
+  id
+) {
+
+  if (
+    !confirm(
+      "Delete this quiz and all its questions?"
+    )
+  ) {
+    return;
+  }
+
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "quizzes"
+      )
+      .delete()
+      .eq(
+        "id",
+        id
+      );
+
+
+  if (
+    error
+  ) {
+
+    msg(
+      "adminMsg",
+      "Could not delete quiz.",
+      "err"
+    );
+
+    return;
+
+  }
+
+
+  await loadAdminQuizzes();
+
+
+  msg(
+    "adminMsg",
+    "Quiz deleted."
+  );
+
+}
+
+
+/* ==========================================
+   ADMIN CONTENT FORMS
+   ========================================== */
+
+$("announcementForm")
+  .addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
 
 
       const {
@@ -3933,24 +5754,31 @@
             "announcements"
           )
           .insert({
-            title,
-            message,
+
+            title:
+              $("annTitle")
+                .value
+                .trim(),
+
+            message:
+              $("annMessage")
+                .value
+                .trim(),
 
             created_by:
               currentUser.id
+
           });
 
 
-      if (error) {
+      if (
+        error
+      ) {
 
-        console.error(
-          error
-        );
-
-        showMessage(
-          "adminMessage",
-          "Could not add announcement.",
-          "error"
+        msg(
+          "adminMsg",
+          "Could not post announcement.",
+          "err"
         );
 
         return;
@@ -3960,62 +5788,28 @@
 
       event.target.reset();
 
+
       await loadAnnouncements();
+
 
       updateAdminStats();
 
 
-      showMessage(
-        "adminMessage",
-        "Announcement posted.",
-        "success"
+      msg(
+        "adminMsg",
+        "Announcement posted."
       );
 
     }
   );
 
 
-  document.getElementById(
-    "dateForm"
-  ).addEventListener(
+$("dateForm")
+  .addEventListener(
     "submit",
     async event => {
 
       event.preventDefault();
-
-
-      const title =
-        document
-          .getElementById(
-            "dateTitle"
-          )
-          .value
-          .trim();
-
-
-      const event_date =
-        document
-          .getElementById(
-            "dateValue"
-          )
-          .value;
-
-
-      const category =
-        document
-          .getElementById(
-            "dateCategory"
-          )
-          .value;
-
-
-      const details =
-        document
-          .getElementById(
-            "dateDetails"
-          )
-          .value
-          .trim();
 
 
       const {
@@ -4026,29 +5820,40 @@
             "important_dates"
           )
           .insert({
-            title,
-            event_date,
-            category,
+
+            title:
+              $("dateTitle")
+                .value
+                .trim(),
+
+            event_date:
+              $("dateValue")
+                .value,
+
+            category:
+              $("dateCat")
+                .value,
 
             details:
-              details ||
+              $("dateDetails")
+                .value
+                .trim() ||
               null,
 
             created_by:
               currentUser.id
+
           });
 
 
-      if (error) {
+      if (
+        error
+      ) {
 
-        console.error(
-          error
-        );
-
-        showMessage(
-          "adminMessage",
+        msg(
+          "adminMsg",
           "Could not add date.",
-          "error"
+          "err"
         );
 
         return;
@@ -4058,63 +5863,28 @@
 
       event.target.reset();
 
+
       await loadDates();
+
 
       updateAdminStats();
 
 
-      showMessage(
-        "adminMessage",
-        "Date added.",
-        "success"
+      msg(
+        "adminMsg",
+        "Date added."
       );
 
     }
   );
 
 
-  document.getElementById(
-    "resourceForm"
-  ).addEventListener(
+$("resourceForm")
+  .addEventListener(
     "submit",
     async event => {
 
       event.preventDefault();
-
-
-      const title =
-        document
-          .getElementById(
-            "resourceTitle"
-          )
-          .value
-          .trim();
-
-
-      const category =
-        document
-          .getElementById(
-            "resourceCategory"
-          )
-          .value;
-
-
-      const description =
-        document
-          .getElementById(
-            "resourceDescription"
-          )
-          .value
-          .trim();
-
-
-      const url =
-        document
-          .getElementById(
-            "resourceURL"
-          )
-          .value
-          .trim();
 
 
       const {
@@ -4125,29 +5895,41 @@
             "resources"
           )
           .insert({
-            title,
-            category,
-            description,
+
+            title:
+              $("resTitle")
+                .value
+                .trim(),
+
+            category:
+              $("resCat")
+                .value,
+
+            description:
+              $("resDesc")
+                .value
+                .trim(),
 
             url:
-              url ||
+              $("resUrl")
+                .value
+                .trim() ||
               null,
 
             created_by:
               currentUser.id
+
           });
 
 
-      if (error) {
+      if (
+        error
+      ) {
 
-        console.error(
-          error
-        );
-
-        showMessage(
-          "adminMessage",
+        msg(
+          "adminMsg",
           "Could not add resource.",
-          "error"
+          "err"
         );
 
         return;
@@ -4157,52 +5939,25 @@
 
       event.target.reset();
 
+
       await loadResources();
 
 
-      showMessage(
-        "adminMessage",
-        "Resource added.",
-        "success"
+      msg(
+        "adminMsg",
+        "Resource added."
       );
 
     }
   );
 
 
-  document.getElementById(
-    "faqForm"
-  ).addEventListener(
+$("faqForm")
+  .addEventListener(
     "submit",
     async event => {
 
       event.preventDefault();
-
-
-      const question =
-        document
-          .getElementById(
-            "faqQuestion"
-          )
-          .value
-          .trim();
-
-
-      const answer =
-        document
-          .getElementById(
-            "faqAnswer"
-          )
-          .value
-          .trim();
-
-
-      const category =
-        document
-          .getElementById(
-            "faqCategory"
-          )
-          .value;
 
 
       const {
@@ -4213,28 +5968,39 @@
             "faqs"
           )
           .insert({
-            question,
-            answer,
-            category,
+
+            question:
+              $("faqQ")
+                .value
+                .trim(),
+
+            answer:
+              $("faqA")
+                .value
+                .trim(),
+
+            category:
+              $("faqCat")
+                .value,
 
             sort_order:
-              faqs.length + 1,
+              faqs.length +
+              1,
 
             created_by:
               currentUser.id
+
           });
 
 
-      if (error) {
+      if (
+        error
+      ) {
 
-        console.error(
-          error
-        );
-
-        showMessage(
-          "adminMessage",
+        msg(
+          "adminMsg",
           "Could not add FAQ.",
-          "error"
+          "err"
         );
 
         return;
@@ -4244,234 +6010,236 @@
 
       event.target.reset();
 
+
       await loadFAQs();
 
 
-      showMessage(
-        "adminMessage",
-        "FAQ added.",
-        "success"
+      msg(
+        "adminMsg",
+        "FAQ added."
       );
 
     }
   );
 
 
-  document.getElementById(
-    "clearActivityButton"
-  ).addEventListener(
-    "click",
-    async () => {
+$("clearActivity").onclick =
+  async () => {
 
-      const confirmed =
-        confirm(
-          "Clear all recorded student activity?"
+    if (
+      !confirm(
+        "Clear all student resource activity?"
+      )
+    ) {
+      return;
+    }
+
+
+    const {
+      error
+    } =
+      await db
+        .from(
+          "activity"
+        )
+        .delete()
+        .gte(
+          "id",
+          0
         );
 
 
-      if (!confirmed) {
-        return;
-      }
+    if (
+      error
+    ) {
+
+      msg(
+        "adminMsg",
+        "Could not clear activity.",
+        "err"
+      );
+
+      return;
+
+    }
 
 
-      const {
-        error
-      } =
-        await db
-          .from(
-            "activity"
-          )
-          .delete()
-          .gte(
-            "id",
-            0
-          );
+    await loadAdminActivity();
 
 
-      if (error) {
-
-        console.error(
-          error
-        );
-
-        showMessage(
-          "adminMessage",
-          "Could not clear activity.",
-          "error"
-        );
-
-        return;
-
-      }
+    renderAdminActivity();
 
 
-      await loadAdminActivity();
-
-      renderAdminActivity();
-
-      updateAdminStats();
+    updateAdminStats();
 
 
-      showMessage(
-        "adminMessage",
-        "Activity cleared.",
-        "success"
+    msg(
+      "adminMsg",
+      "Activity cleared."
+    );
+
+  };
+
+
+$("adminLogout").onclick =
+  async () => {
+
+    await db.auth
+      .signOut();
+
+
+    currentUser =
+      null;
+
+
+    currentProfile =
+      null;
+
+
+    showPage(
+      "auth"
+    );
+
+
+    setStatus(
+      "● Signed out"
+    );
+
+  };
+
+
+/* ==========================================
+   START
+   ========================================== */
+
+async function start() {
+
+  try {
+
+    if (
+      !window.supabase
+    ) {
+
+      throw new Error(
+        "Supabase library failed to load"
       );
 
     }
-  );
 
 
-  document.getElementById(
-    "adminLogoutButton"
-  ).addEventListener(
-    "click",
-    async () => {
+    db =
+      window.supabase
+        .createClient(
+          SUPABASE_URL,
+          SUPABASE_PUBLISHABLE_KEY
+        );
+
+
+    renderCalendar();
+
+
+    const {
+      data
+    } =
+      await db.auth
+        .getSession();
+
+
+    if (
+      data.session?.user
+    ) {
 
       if (
-        db
+        data.session.user
+          .is_anonymous
       ) {
+
+        await db.auth
+          .signOut();
+
+      } else {
+
+        currentUser =
+          data.session.user;
+
+
+        await loadProfile();
+
+
+        if (
+          currentProfile?.role ===
+            "student" &&
+          currentProfile.username
+        ) {
+
+          await enterStudent();
+
+          return;
+
+        }
+
+
+        if (
+          currentProfile?.role ===
+          "admin"
+        ) {
+
+          await openAdmin();
+
+          return;
+
+        }
+
 
         await db.auth
           .signOut();
 
       }
 
-
-      currentUser =
-        null;
-
-      currentProfile =
-        null;
-
-
-      await initializeStudent();
-
-
-      showPage(
-        "dashboard"
-      );
-
-    }
-  );
-
-
-  async function loadSharedData() {
-
-    await Promise.all([
-      loadAnnouncements(),
-      loadResources(),
-      loadDates(),
-      loadFAQs()
-    ]);
-
-  }
-
-
-  async function initializeStudent() {
-
-    const user =
-      await createAnonymousStudent();
-
-
-    if (!user) {
-      return;
     }
 
 
-    await loadProfile();
+    showPage(
+      "auth"
+    );
 
 
-    if (
-      currentProfile?.role ===
-      "admin"
-    ) {
+    setStatus(
+      "● Ready"
+    );
 
-      setConnection(
-        "● Connected as administrator"
-      );
+  } catch (
+    error
+  ) {
 
-      return;
-
-    }
-
-
-    await Promise.all([
-      loadSharedData(),
-      loadStudentActivity()
-    ]);
+    console.error(
+      error
+    );
 
 
-    setConnection(
-      "● Connected to Science Club"
+    setStatus(
+      "● Could not connect",
+      true
+    );
+
+
+    showPage(
+      "auth"
+    );
+
+
+    msg(
+      "authMsg",
+      "Could not connect to Supabase. Check the browser Console.",
+      "err"
     );
 
   }
 
-
-  async function start() {
-
-    renderCalendars();
+}
 
 
-    if (
-      !window.supabase
-    ) {
-
-      setConnection(
-        "● Supabase library failed to load",
-        true
-      );
-
-
-      showMessage(
-        "studentMessage",
-        "Supabase could not load. Refresh the page and check your internet connection.",
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    try {
-
-      db =
-        window.supabase
-          .createClient(
-            SUPABASE_URL,
-            SUPABASE_PUBLISHABLE_KEY
-          );
-
-
-      await initializeStudent();
-
-    } catch (error) {
-
-      console.error(
-        error
-      );
-
-
-      setConnection(
-        "● Could not connect",
-        true
-      );
-
-
-      showMessage(
-        "studentMessage",
-        "Could not connect to Science Club. Open the browser Console for the exact error.",
-        "error"
-      );
-
-    }
-
-  }
-
-
-  start();
+start();
 
 </script>
 
