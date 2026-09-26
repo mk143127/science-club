@@ -1,1295 +1,847 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Science Club Student Portal</title>
 
-  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    *{box-sizing:border-box;margin:0;padding:0}
+
+    :root{
+      --bg:#f6f7fb;
+      --sidebar:#151824;
+      --card:#fff;
+      --text:#1d202b;
+      --muted:#747a89;
+      --border:#e7e9ef;
+      --purple:#675ff2;
+      --purple-dark:#554de0;
+      --purple-soft:#efeeff;
+      --blue:#3b82f6;
+      --blue-soft:#edf5ff;
+      --green:#10b981;
+      --green-soft:#eafaf5;
+      --orange:#f59e0b;
+      --orange-soft:#fff7e7;
+      --red:#ef4444;
+      --red-soft:#fff0f0;
+      --shadow:0 7px 25px rgba(0,0,0,.045);
     }
 
-    :root {
-      --bg: #f6f7fb;
-      --sidebar: #151824;
-      --card: #ffffff;
-      --text: #1d202b;
-      --muted: #747a89;
-      --border: #e7e9ef;
-
-      --purple: #675ff2;
-      --purple-dark: #554de0;
-      --purple-soft: #efeeff;
-
-      --blue: #3b82f6;
-      --blue-soft: #edf5ff;
-
-      --green: #10b981;
-      --green-soft: #eafaf5;
-
-      --orange: #f59e0b;
-      --orange-soft: #fff7e7;
-
-      --red: #ef4444;
-      --red-soft: #fff0f0;
-
-      --shadow:
-        0 7px 25px rgba(0, 0, 0, 0.045);
+    body{
+      min-height:100vh;
+      font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--bg);
+      color:var(--text);
     }
 
-    body {
-      min-height: 100vh;
+    button,input,textarea,select{font:inherit}
+    button{cursor:pointer}
+    input,textarea,select{outline:none}
 
-      font-family:
-        Inter,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-
-      background: var(--bg);
-      color: var(--text);
+    .app{
+      min-height:100vh;
+      display:grid;
+      grid-template-columns:245px 1fr;
     }
 
-    button,
-    input,
-    textarea,
-    select {
-      font: inherit;
+    .sidebar{
+      position:fixed;
+      inset:0 auto 0 0;
+      width:245px;
+      height:100vh;
+      padding:28px 18px;
+      display:flex;
+      flex-direction:column;
+      background:var(--sidebar);
+      color:white;
     }
 
-    button {
-      cursor: pointer;
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:11px;
+      margin-bottom:38px;
     }
 
-    input,
-    textarea,
-    select {
-      outline: none;
+    .brand-icon{
+      width:44px;
+      height:44px;
+      display:grid;
+      place-items:center;
+      border-radius:13px;
+      background:linear-gradient(135deg,#6d66ff,#9166ef);
+      font-size:22px;
     }
 
-    .app {
-      min-height: 100vh;
+    .brand h2{font-size:16px}
+    .brand p{margin-top:3px;color:#949bad;font-size:11px}
 
-      display: grid;
-      grid-template-columns: 245px 1fr;
+    .nav{
+      display:flex;
+      flex-direction:column;
+      gap:7px;
     }
 
-    /* ===========================
-       SIDEBAR
-       =========================== */
-
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-
-      width: 245px;
-      height: 100vh;
-
-      padding: 28px 18px;
-
-      display: flex;
-      flex-direction: column;
-
-      background: var(--sidebar);
-      color: white;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-
-      margin-bottom: 38px;
-    }
-
-    .brand-icon {
-      width: 44px;
-      height: 44px;
-
-      display: grid;
-      place-items: center;
-
-      border-radius: 13px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #6d66ff,
-          #9166ef
-        );
-
-      font-size: 22px;
-    }
-
-    .brand h2 {
-      font-size: 16px;
-    }
-
-    .brand p {
-      margin-top: 3px;
-
-      color: #949bad;
-      font-size: 11px;
-    }
-
-    .nav {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-
-    .nav-button {
-      width: 100%;
-
-      padding: 12px 13px;
-
-      border: none;
-      border-radius: 10px;
-
-      display: flex;
-      align-items: center;
-      gap: 10px;
-
-      background: transparent;
-      color: #aeb4c4;
-
-      text-align: left;
-
-      font-size: 13px;
-      font-weight: 600;
+    .nav-button,
+    .admin-button{
+      width:100%;
+      padding:12px 13px;
+      border:none;
+      border-radius:10px;
+      background:transparent;
+      color:#aeb4c4;
+      text-align:left;
+      font-size:13px;
+      font-weight:600;
     }
 
     .nav-button:hover,
-    .nav-button.active {
-      background:
-        rgba(255, 255, 255, 0.08);
-
-      color: white;
-    }
-
-    .sidebar-bottom {
-      margin-top: auto;
-
-      padding-top: 18px;
-
-      border-top:
-        1px solid rgba(255,255,255,.08);
-    }
-
-    .admin-button {
-      width: 100%;
-
-      padding: 11px;
-
-      border: none;
-      border-radius: 9px;
-
-      background:
-        rgba(255,255,255,.08);
-
-      color: white;
-
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .privacy-note {
-      margin-top: 11px;
-
-      color: #7f8699;
-
-      font-size: 10px;
-      line-height: 1.5;
-    }
-
-    /* ===========================
-       MAIN
-       =========================== */
-
-    main {
-      grid-column: 2;
-
-      width: 100%;
-      max-width: 1500px;
-
-      padding: 30px 34px;
-
-      margin: 0 auto;
-    }
-
-    .page {
-      display: none;
-    }
-
-    .page.active {
-      display: block;
-    }
-
-    /* ===========================
-       CONNECTION
-       =========================== */
-
-    .connection {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-
-      margin-bottom: 15px;
-
-      padding: 6px 10px;
-
-      border-radius: 8px;
-
-      background: var(--green-soft);
-      color: #087d59;
-
-      font-size: 10px;
-      font-weight: 700;
-    }
-
-    .connection.error {
-      background: var(--red-soft);
-      color: #bd2929;
-    }
-
-    /* ===========================
-       HEADER
-       =========================== */
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      gap: 20px;
-
-      margin-bottom: 25px;
-    }
-
-    .topbar h1 {
-      font-size: 27px;
-      letter-spacing: -.6px;
-    }
-
-    .topbar p {
-      margin-top: 5px;
-
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-    }
-
-    .notification-button {
-      position: relative;
-
-      width: 43px;
-      height: 43px;
-
-      border: 1px solid var(--border);
-      border-radius: 11px;
-
-      background: white;
-
-      font-size: 18px;
-    }
-
-    .notification-count {
-      position: absolute;
-
-      top: -5px;
-      right: -4px;
-
-      min-width: 17px;
-      height: 17px;
-
-      display: grid;
-      place-items: center;
-
-      padding: 2px 4px;
-
-      border-radius: 999px;
-
-      background: var(--red);
-      color: white;
-
-      font-size: 9px;
-      font-weight: 800;
-    }
-
-    .profile-box {
-      min-width: 150px;
-
-      padding: 8px 11px;
-
-      display: flex;
-      align-items: center;
-      gap: 9px;
-
-      border: 1px solid var(--border);
-      border-radius: 11px;
-
-      background: white;
-    }
-
-    .avatar {
-      width: 32px;
-      height: 32px;
-
-      display: grid;
-      place-items: center;
-
-      border-radius: 50%;
-
-      background: var(--purple-soft);
-      color: var(--purple);
-
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .profile-name {
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .profile-role {
-      margin-top: 2px;
-
-      color: var(--muted);
-      font-size: 9px;
-    }
-
-    /* ===========================
-       NICKNAME BOX
-       =========================== */
-
-    .nickname-card {
-      margin-bottom: 22px;
-
-      padding: 23px;
-
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      gap: 25px;
-
-      border-radius: 17px;
-
-      background:
-        linear-gradient(
-          120deg,
-          #6861f2,
-          #865ff0
-        );
-
-      color: white;
-    }
-
-    .nickname-card h2 {
-      margin-bottom: 6px;
-
-      font-size: 18px;
-    }
-
-    .nickname-card p {
-      max-width: 630px;
-
-      font-size: 12px;
-      line-height: 1.6;
-
-      opacity: .85;
-    }
-
-    .nickname-form {
-      min-width: 310px;
-
-      display: flex;
-      gap: 7px;
-    }
-
-    .nickname-form input {
-      min-width: 0;
-      flex: 1;
-
-      padding: 11px 12px;
-
-      border: none;
-      border-radius: 9px;
-    }
-
-    .nickname-form button {
-      padding: 10px 14px;
-
-      border: none;
-      border-radius: 9px;
-
-      background: white;
-      color: var(--purple);
-
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    /* ===========================
-       STATS
-       =========================== */
-
-    .stats {
-      margin-bottom: 21px;
-
-      display: grid;
-      grid-template-columns:
-        repeat(4, 1fr);
-
-      gap: 15px;
+    .nav-button.active{
+      background:rgba(255,255,255,.08);
+      color:white;
+    }
+
+    .sidebar-bottom{
+      margin-top:auto;
+      padding-top:18px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+
+    .admin-button{
+      background:rgba(255,255,255,.08);
+      color:white;
+      text-align:center;
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .privacy-note{
+      margin-top:11px;
+      color:#7f8699;
+      font-size:10px;
+      line-height:1.5;
+    }
+
+    main{
+      grid-column:2;
+      width:100%;
+      max-width:1500px;
+      padding:30px 34px;
+      margin:0 auto;
+    }
+
+    .page{display:none}
+    .page.active{display:block}
+
+    .connection{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      margin-bottom:15px;
+      padding:6px 10px;
+      border-radius:8px;
+      background:var(--green-soft);
+      color:#087d59;
+      font-size:10px;
+      font-weight:700;
+    }
+
+    .connection.error{
+      background:var(--red-soft);
+      color:#bd2929;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+      margin-bottom:25px;
+    }
+
+    .topbar h1{
+      font-size:27px;
+      letter-spacing:-.6px;
+    }
+
+    .topbar p{
+      margin-top:5px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:9px;
+    }
+
+    .notification-button{
+      position:relative;
+      width:43px;
+      height:43px;
+      border:1px solid var(--border);
+      border-radius:11px;
+      background:white;
+      font-size:18px;
+    }
+
+    .notification-count{
+      position:absolute;
+      top:-5px;
+      right:-4px;
+      min-width:17px;
+      height:17px;
+      display:grid;
+      place-items:center;
+      padding:2px 4px;
+      border-radius:999px;
+      background:var(--red);
+      color:white;
+      font-size:9px;
+      font-weight:800;
+    }
+
+    .profile-box{
+      min-width:150px;
+      padding:8px 11px;
+      display:flex;
+      align-items:center;
+      gap:9px;
+      border:1px solid var(--border);
+      border-radius:11px;
+      background:white;
     }
 
-    .stat-card {
-      padding: 19px;
-
-      border: 1px solid var(--border);
-      border-radius: 15px;
-
-      background: white;
-
-      box-shadow: var(--shadow);
-    }
-
-    .stat-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .stat-label {
-      color: var(--muted);
-
-      font-size: 11px;
-      font-weight: 600;
-    }
-
-    .stat-icon {
-      width: 34px;
-      height: 34px;
-
-      display: grid;
-      place-items: center;
-
-      border-radius: 9px;
-    }
-
-    .purple-soft {
-      background: var(--purple-soft);
+    .avatar{
+      width:32px;
+      height:32px;
+      display:grid;
+      place-items:center;
+      border-radius:50%;
+      background:var(--purple-soft);
+      color:var(--purple);
+      font-size:12px;
+      font-weight:800;
     }
 
-    .blue-soft {
-      background: var(--blue-soft);
-    }
-
-    .green-soft {
-      background: var(--green-soft);
-    }
+    .profile-name{font-size:12px;font-weight:700}
+    .profile-role{margin-top:2px;color:var(--muted);font-size:9px}
 
-    .orange-soft {
-      background: var(--orange-soft);
+    .nickname-card{
+      margin-bottom:22px;
+      padding:23px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:25px;
+      border-radius:17px;
+      background:linear-gradient(120deg,#6861f2,#865ff0);
+      color:white;
     }
 
-    .stat-number {
-      margin-top: 10px;
-
-      font-size: 25px;
-      font-weight: 800;
+    .nickname-card h2{
+      margin-bottom:6px;
+      font-size:18px;
     }
 
-    .stat-small {
-      font-size: 18px;
+    .nickname-card p{
+      max-width:630px;
+      font-size:12px;
+      line-height:1.6;
+      opacity:.85;
     }
-
-    .stat-detail {
-      margin-top: 4px;
 
-      color: var(--muted);
-
-      font-size: 10px;
+    .nickname-form{
+      min-width:310px;
+      display:flex;
+      gap:7px;
     }
-
-    /* ===========================
-       CARDS
-       =========================== */
 
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns:
-        1.55fr .85fr;
-
-      gap: 20px;
+    .nickname-form input{
+      min-width:0;
+      flex:1;
+      padding:11px 12px;
+      border:none;
+      border-radius:9px;
     }
-
-    .card {
-      margin-bottom: 19px;
-
-      padding: 21px;
 
-      border: 1px solid var(--border);
-      border-radius: 16px;
-
-      background: white;
-
-      box-shadow: var(--shadow);
+    .nickname-form button{
+      padding:10px 14px;
+      border:none;
+      border-radius:9px;
+      background:white;
+      color:var(--purple);
+      font-size:12px;
+      font-weight:800;
     }
-
-    .card-header {
-      margin-bottom: 17px;
-
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
 
-      gap: 10px;
+    .stats{
+      margin-bottom:21px;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:15px;
     }
 
-    .card-header h2 {
-      font-size: 15px;
+    .stat-card{
+      padding:19px;
+      border:1px solid var(--border);
+      border-radius:15px;
+      background:white;
+      box-shadow:var(--shadow);
     }
 
-    .card-header p {
-      margin-top: 3px;
-
-      color: var(--muted);
-
-      font-size: 10px;
+    .stat-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
     }
-
-    /* ===========================
-       ANNOUNCEMENT
-       =========================== */
 
-    .announcement-card {
-      background:
-        linear-gradient(
-          135deg,
-          #171b29,
-          #292d42
-        );
-
-      color: white;
+    .stat-label{
+      color:var(--muted);
+      font-size:11px;
+      font-weight:600;
     }
-
-    .announcement-card h3 {
-      margin-bottom: 8px;
 
-      font-size: 15px;
+    .stat-icon{
+      width:34px;
+      height:34px;
+      display:grid;
+      place-items:center;
+      border-radius:9px;
     }
 
-    .announcement-card p {
-      color: #c0c4d1;
+    .purple-soft{background:var(--purple-soft)}
+    .blue-soft{background:var(--blue-soft)}
+    .green-soft{background:var(--green-soft)}
+    .orange-soft{background:var(--orange-soft)}
 
-      font-size: 12px;
-      line-height: 1.65;
+    .stat-number{
+      margin-top:10px;
+      font-size:25px;
+      font-weight:800;
     }
-
-    .announcement-date {
-      display: block;
-
-      margin-top: 12px;
 
-      color: #858c9f;
+    .stat-small{font-size:18px}
 
-      font-size: 10px;
+    .stat-detail{
+      margin-top:4px;
+      color:var(--muted);
+      font-size:10px;
     }
 
-    /* ===========================
-       RESOURCES
-       =========================== */
-
-    .resource {
-      padding: 14px 0;
-
-      display: grid;
-      grid-template-columns:
-        42px 1fr auto;
-
-      align-items: center;
-
-      gap: 12px;
-
-      border-bottom:
-        1px solid var(--border);
+    .dashboard-grid{
+      display:grid;
+      grid-template-columns:1.55fr .85fr;
+      gap:20px;
     }
 
-    .resource:last-child {
-      border-bottom: none;
+    .card{
+      margin-bottom:19px;
+      padding:21px;
+      border:1px solid var(--border);
+      border-radius:16px;
+      background:white;
+      box-shadow:var(--shadow);
     }
-
-    .resource-icon {
-      width: 40px;
-      height: 40px;
-
-      display: grid;
-      place-items: center;
 
-      border-radius: 10px;
-
-      background: var(--purple-soft);
+    .card-header{
+      margin-bottom:17px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
     }
 
-    .resource h3 {
-      margin-bottom: 4px;
+    .card-header h2{font-size:15px}
 
-      font-size: 12px;
+    .card-header p{
+      margin-top:3px;
+      color:var(--muted);
+      font-size:10px;
     }
 
-    .resource p {
-      color: var(--muted);
-
-      font-size: 10px;
-      line-height: 1.5;
+    .announcement-card{
+      background:linear-gradient(135deg,#171b29,#292d42);
+      color:white;
     }
-
-    .open-resource {
-      padding: 8px 11px;
 
-      border: none;
-      border-radius: 8px;
-
-      background: var(--purple);
-      color: white;
-
-      font-size: 10px;
-      font-weight: 700;
+    .announcement-card h3{
+      margin-bottom:8px;
+      font-size:15px;
     }
 
-    .open-resource:hover {
-      background: var(--purple-dark);
+    .announcement-card p{
+      color:#c0c4d1;
+      font-size:12px;
+      line-height:1.65;
     }
-
-    /* ===========================
-       IMPORTANT DATES
-       =========================== */
-
-    .date-item {
-      padding: 11px 0;
 
-      display: flex;
-      align-items: center;
-
-      gap: 11px;
-
-      border-bottom:
-        1px solid var(--border);
+    .announcement-date{
+      display:block;
+      margin-top:12px;
+      color:#858c9f;
+      font-size:10px;
     }
 
-    .date-item:last-child {
-      border-bottom: none;
+    .resource{
+      padding:14px 0;
+      display:grid;
+      grid-template-columns:42px 1fr auto;
+      align-items:center;
+      gap:12px;
+      border-bottom:1px solid var(--border);
     }
-
-    .date-box {
-      min-width: 47px;
 
-      padding: 7px 5px;
+    .resource:last-child{border-bottom:none}
 
-      border-radius: 9px;
-
-      background: #f4f5f9;
-
-      text-align: center;
+    .resource-icon{
+      width:40px;
+      height:40px;
+      display:grid;
+      place-items:center;
+      border-radius:10px;
+      background:var(--purple-soft);
     }
-
-    .date-month {
-      color: var(--purple);
-
-      font-size: 9px;
-      font-weight: 800;
 
-      text-transform: uppercase;
+    .resource h3{
+      margin-bottom:4px;
+      font-size:12px;
     }
 
-    .date-day {
-      margin-top: 1px;
-
-      font-size: 18px;
-      font-weight: 800;
+    .resource p{
+      color:var(--muted);
+      font-size:10px;
+      line-height:1.5;
     }
 
-    .date-info {
-      min-width: 0;
-      flex: 1;
+    .open-resource{
+      padding:8px 11px;
+      border:none;
+      border-radius:8px;
+      background:var(--purple);
+      color:white;
+      font-size:10px;
+      font-weight:700;
     }
 
-    .date-info h3 {
-      margin-bottom: 3px;
+    .open-resource:hover{background:var(--purple-dark)}
 
-      font-size: 12px;
+    .date-item{
+      padding:11px 0;
+      display:flex;
+      align-items:center;
+      gap:11px;
+      border-bottom:1px solid var(--border);
     }
 
-    .date-info p {
-      color: var(--muted);
+    .date-item:last-child{border-bottom:none}
 
-      font-size: 10px;
-      line-height: 1.4;
+    .date-box{
+      min-width:47px;
+      padding:7px 5px;
+      border-radius:9px;
+      background:#f4f5f9;
+      text-align:center;
     }
-
-    .date-tag {
-      padding: 5px 7px;
-
-      border-radius: 6px;
 
-      background: var(--blue-soft);
-      color: var(--blue);
-
-      font-size: 8px;
-      font-weight: 700;
+    .date-month{
+      color:var(--purple);
+      font-size:9px;
+      font-weight:800;
+      text-transform:uppercase;
     }
-
-    /* ===========================
-       CALENDAR
-       =========================== */
 
-    .calendar-controls {
-      display: flex;
-      align-items: center;
-      gap: 7px;
+    .date-day{
+      margin-top:1px;
+      font-size:18px;
+      font-weight:800;
     }
-
-    .calendar-controls button {
-      width: 30px;
-      height: 30px;
-
-      border: none;
-      border-radius: 7px;
 
-      background: #f1f2f6;
+    .date-info{
+      min-width:0;
+      flex:1;
     }
 
-    .calendar-controls span {
-      min-width: 120px;
-
-      text-align: center;
-
-      font-size: 11px;
-      font-weight: 700;
+    .date-info h3{
+      margin-bottom:3px;
+      font-size:12px;
     }
-
-    .calendar-grid {
-      display: grid;
-      grid-template-columns:
-        repeat(7, 1fr);
 
-      gap: 5px;
+    .date-info p{
+      color:var(--muted);
+      font-size:10px;
+      line-height:1.4;
     }
 
-    .weekday {
-      padding: 7px 0;
-
-      text-align: center;
-
-      color: var(--muted);
-
-      font-size: 9px;
-      font-weight: 700;
+    .date-tag{
+      padding:5px 7px;
+      border-radius:6px;
+      background:var(--blue-soft);
+      color:var(--blue);
+      font-size:8px;
+      font-weight:700;
     }
-
-    .calendar-day {
-      min-height: 57px;
 
-      position: relative;
-
-      padding: 6px;
-
-      border: 1px solid var(--border);
-      border-radius: 8px;
-
-      background: white;
-
-      font-size: 10px;
+    .calendar-controls{
+      display:flex;
+      align-items:center;
+      gap:7px;
     }
 
-    .calendar-day.empty {
-      background: #fafafa;
+    .calendar-controls button{
+      width:30px;
+      height:30px;
+      border:none;
+      border-radius:7px;
+      background:#f1f2f6;
     }
 
-    .calendar-day.today {
-      border-color: var(--purple);
-      background: var(--purple-soft);
+    .calendar-controls span{
+      min-width:120px;
+      text-align:center;
+      font-size:11px;
+      font-weight:700;
     }
-
-    .calendar-day.has-event::after {
-      content: "";
-
-      position: absolute;
-
-      right: 5px;
-      bottom: 5px;
 
-      width: 6px;
-      height: 6px;
-
-      border-radius: 50%;
-
-      background: var(--purple);
+    .calendar-grid{
+      display:grid;
+      grid-template-columns:repeat(7,1fr);
+      gap:5px;
     }
-
-    /* ===========================
-       FAQ
-       =========================== */
 
-    .faq-item {
-      border-bottom:
-        1px solid var(--border);
+    .weekday{
+      padding:7px 0;
+      text-align:center;
+      color:var(--muted);
+      font-size:9px;
+      font-weight:700;
     }
-
-    .faq-question {
-      width: 100%;
-
-      padding: 14px 0;
-
-      border: none;
-      background: transparent;
-
-      display: flex;
-      justify-content: space-between;
 
-      text-align: left;
-
-      font-size: 12px;
-      font-weight: 700;
+    .calendar-day{
+      min-height:57px;
+      position:relative;
+      padding:6px;
+      border:1px solid var(--border);
+      border-radius:8px;
+      background:white;
+      font-size:10px;
     }
-
-    .faq-answer {
-      display: none;
-
-      padding: 0 0 14px;
 
-      color: var(--muted);
+    .calendar-day.empty{background:#fafafa}
 
-      font-size: 11px;
-      line-height: 1.7;
+    .calendar-day.today{
+      border-color:var(--purple);
+      background:var(--purple-soft);
     }
 
-    .faq-item.open .faq-answer {
-      display: block;
+    .calendar-day.has-event::after{
+      content:"";
+      position:absolute;
+      right:5px;
+      bottom:5px;
+      width:6px;
+      height:6px;
+      border-radius:50%;
+      background:var(--purple);
     }
-
-    /* ===========================
-       NOTIFICATIONS
-       =========================== */
-
-    .notifications {
-      display: none;
-
-      position: absolute;
-
-      top: 78px;
-      right: 34px;
 
-      width: 340px;
+    .faq-item{border-bottom:1px solid var(--border)}
 
-      z-index: 50;
-
-      padding: 15px;
-
-      border: 1px solid var(--border);
-      border-radius: 14px;
-
-      background: white;
-
-      box-shadow:
-        0 20px 60px rgba(0,0,0,.14);
+    .faq-question{
+      width:100%;
+      padding:14px 0;
+      border:none;
+      background:transparent;
+      display:flex;
+      justify-content:space-between;
+      text-align:left;
+      font-size:12px;
+      font-weight:700;
     }
 
-    .notifications.show {
-      display: block;
+    .faq-answer{
+      display:none;
+      padding:0 0 14px;
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.7;
     }
 
-    .notifications h3 {
-      margin-bottom: 10px;
+    .faq-item.open .faq-answer{display:block}
 
-      font-size: 14px;
+    .notifications{
+      display:none;
+      position:absolute;
+      top:78px;
+      right:34px;
+      width:340px;
+      z-index:50;
+      padding:15px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:white;
+      box-shadow:0 20px 60px rgba(0,0,0,.14);
     }
-
-    .notification-item {
-      margin-bottom: 7px;
 
-      padding: 11px;
+    .notifications.show{display:block}
 
-      border-radius: 9px;
-
-      background: #f7f8fb;
+    .notifications h3{
+      margin-bottom:10px;
+      font-size:14px;
     }
-
-    .notification-item strong {
-      display: block;
 
-      margin-bottom: 4px;
-
-      font-size: 11px;
+    .notification-item{
+      margin-bottom:7px;
+      padding:11px;
+      border-radius:9px;
+      background:#f7f8fb;
     }
 
-    .notification-item p {
-      color: var(--muted);
-
-      font-size: 10px;
-      line-height: 1.5;
+    .notification-item strong{
+      display:block;
+      margin-bottom:4px;
+      font-size:11px;
     }
-
-    /* ===========================
-       ADMIN
-       =========================== */
 
-    .admin-grid {
-      display: grid;
-      grid-template-columns:
-        1.35fr .65fr;
-
-      gap: 20px;
+    .notification-item p{
+      color:var(--muted);
+      font-size:10px;
+      line-height:1.5;
     }
 
-    .activity-wrapper {
-      overflow-x: auto;
+    .admin-grid{
+      display:grid;
+      grid-template-columns:1.35fr .65fr;
+      gap:20px;
     }
 
-    .activity-table {
-      width: 100%;
+    .activity-wrapper{overflow-x:auto}
 
-      border-collapse: collapse;
+    .activity-table{
+      width:100%;
+      border-collapse:collapse;
     }
-
-    .activity-table th {
-      padding: 10px 8px;
-
-      text-align: left;
-
-      border-bottom:
-        1px solid var(--border);
 
-      color: var(--muted);
-
-      font-size: 9px;
-      text-transform: uppercase;
+    .activity-table th{
+      padding:10px 8px;
+      text-align:left;
+      border-bottom:1px solid var(--border);
+      color:var(--muted);
+      font-size:9px;
+      text-transform:uppercase;
     }
-
-    .activity-table td {
-      padding: 12px 8px;
 
-      border-bottom:
-        1px solid var(--border);
-
-      font-size: 10px;
+    .activity-table td{
+      padding:12px 8px;
+      border-bottom:1px solid var(--border);
+      font-size:10px;
     }
-
-    .student-dot {
-      width: 8px;
-      height: 8px;
 
-      display: inline-block;
-
-      margin-right: 5px;
-
-      border-radius: 50%;
-
-      background: var(--green);
+    .student-dot{
+      width:8px;
+      height:8px;
+      display:inline-block;
+      margin-right:5px;
+      border-radius:50%;
+      background:var(--green);
     }
-
-    .admin-form {
-      display: flex;
-      flex-direction: column;
 
-      gap: 9px;
+    .admin-form{
+      display:flex;
+      flex-direction:column;
+      gap:9px;
     }
 
-    .admin-form label {
-      font-size: 10px;
-      font-weight: 700;
+    .admin-form label{
+      font-size:10px;
+      font-weight:700;
     }
 
     .admin-form input,
     .admin-form textarea,
-    .admin-form select {
-      width: 100%;
-
-      padding: 10px 11px;
-
-      border: 1px solid var(--border);
-      border-radius: 8px;
-
-      background: white;
+    .admin-form select{
+      width:100%;
+      padding:10px 11px;
+      border:1px solid var(--border);
+      border-radius:8px;
+      background:white;
     }
 
-    .admin-form textarea {
-      min-height: 90px;
-
-      resize: vertical;
+    .admin-form textarea{
+      min-height:90px;
+      resize:vertical;
     }
 
-    .primary-button {
-      padding: 10px 13px;
-
-      border: none;
-      border-radius: 8px;
-
-      background: var(--purple);
-      color: white;
-
-      font-size: 11px;
-      font-weight: 700;
+    .primary-button,
+    .secondary-button,
+    .danger-button{
+      padding:10px 13px;
+      border-radius:8px;
+      font-size:11px;
+      font-weight:700;
     }
 
-    .secondary-button {
-      padding: 9px 12px;
-
-      border: 1px solid var(--border);
-      border-radius: 8px;
-
-      background: white;
-
-      font-size: 10px;
-      font-weight: 600;
+    .primary-button{
+      border:none;
+      background:var(--purple);
+      color:white;
     }
 
-    .danger-button {
-      padding: 9px 12px;
-
-      border: none;
-      border-radius: 8px;
-
-      background: var(--red-soft);
-      color: var(--red);
-
-      font-size: 10px;
-      font-weight: 700;
+    .secondary-button{
+      border:1px solid var(--border);
+      background:white;
     }
 
-    /* ===========================
-       LOGIN
-       =========================== */
-
-    .login-box {
-      width: 100%;
-      max-width: 430px;
-
-      margin: 60px auto;
-
-      padding: 28px;
-
-      border: 1px solid var(--border);
-      border-radius: 17px;
-
-      background: white;
-
-      box-shadow: var(--shadow);
+    .danger-button{
+      border:none;
+      background:var(--red-soft);
+      color:var(--red);
     }
 
-    .login-box h2 {
-      margin-bottom: 7px;
-
-      font-size: 20px;
+    .login-box{
+      width:100%;
+      max-width:430px;
+      margin:60px auto;
+      padding:28px;
+      border:1px solid var(--border);
+      border-radius:17px;
+      background:white;
+      box-shadow:var(--shadow);
     }
 
-    .login-box p {
-      margin-bottom: 20px;
-
-      color: var(--muted);
-
-      font-size: 11px;
-      line-height: 1.6;
+    .login-box h2{
+      margin-bottom:7px;
+      font-size:20px;
     }
 
-    .login-box input {
-      width: 100%;
-
-      margin-bottom: 10px;
-
-      padding: 11px 12px;
-
-      border: 1px solid var(--border);
-      border-radius: 9px;
+    .login-box p{
+      margin-bottom:20px;
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.6;
     }
 
-    .login-actions {
-      display: flex;
-      gap: 8px;
+    .login-box input{
+      width:100%;
+      margin-bottom:10px;
+      padding:11px 12px;
+      border:1px solid var(--border);
+      border-radius:9px;
     }
 
-    .login-actions button {
-      flex: 1;
+    .login-actions{
+      display:flex;
+      gap:8px;
     }
 
-    /* ===========================
-       MESSAGES
-       =========================== */
+    .login-actions button{flex:1}
 
-    .empty {
-      padding: 18px 0;
-
-      color: var(--muted);
-
-      text-align: center;
-
-      font-size: 11px;
+    .empty{
+      padding:18px 0;
+      color:var(--muted);
+      text-align:center;
+      font-size:11px;
     }
 
-    .message {
-      display: none;
-
-      margin-bottom: 15px;
-
-      padding: 11px 12px;
-
-      border-radius: 9px;
-
-      font-size: 11px;
+    .message{
+      display:none;
+      margin-bottom:15px;
+      padding:11px 12px;
+      border-radius:9px;
+      font-size:11px;
     }
 
-    .message.show {
-      display: block;
+    .message.show{display:block}
+
+    .message.success{
+      background:var(--green-soft);
+      color:#087d59;
     }
 
-    .message.success {
-      background: var(--green-soft);
-      color: #087d59;
+    .message.error{
+      background:var(--red-soft);
+      color:#b92828;
     }
 
-    .message.error {
-      background: var(--red-soft);
-      color: #b92828;
+    .description{
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.7;
     }
 
-    .description {
-      color: var(--muted);
-
-      font-size: 11px;
-      line-height: 1.7;
+    @media(max-width:1050px){
+      .stats{grid-template-columns:repeat(2,1fr)}
+      .dashboard-grid,.admin-grid{grid-template-columns:1fr}
     }
 
-    /* ===========================
-       RESPONSIVE
-       =========================== */
-
-    @media (max-width: 1050px) {
-      .stats {
-        grid-template-columns:
-          repeat(2, 1fr);
+    @media(max-width:760px){
+      .app{display:block}
+      .sidebar{
+        position:static;
+        width:100%;
+        height:auto;
+        padding:13px;
+        flex-direction:row;
+        align-items:center;
+        overflow-x:auto;
       }
 
-      .dashboard-grid,
-      .admin-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 760px) {
-      .app {
-        display: block;
+      .brand{
+        min-width:175px;
+        margin:0 12px 0 0;
       }
 
-      .sidebar {
-        position: static;
+      .nav{flex-direction:row}
+      .nav-button{white-space:nowrap}
 
-        width: 100%;
-        height: auto;
-
-        padding: 13px;
-
-        flex-direction: row;
-        align-items: center;
-
-        overflow-x: auto;
+      .sidebar-bottom{
+        margin:0 0 0 8px;
+        padding:0;
+        border:none;
       }
 
-      .brand {
-        min-width: 175px;
+      .privacy-note{display:none}
+      main{padding:19px 14px}
+      .topbar{align-items:flex-start}
+      .topbar h1{font-size:22px}
+      .profile-box{display:none}
 
-        margin: 0 12px 0 0;
+      .nickname-card{
+        flex-direction:column;
+        align-items:stretch;
       }
 
-      .nav {
-        flex-direction: row;
+      .nickname-form{min-width:0}
+
+      .stats{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
       }
 
-      .nav-button {
-        white-space: nowrap;
+      .resource{
+        grid-template-columns:40px 1fr;
       }
 
-      .sidebar-bottom {
-        margin: 0 0 0 8px;
-        padding: 0;
-
-        border: none;
+      .resource button{
+        grid-column:2;
+        width:fit-content;
       }
 
-      .privacy-note {
-        display: none;
+      .notifications{
+        width:auto;
+        top:145px;
+        left:14px;
+        right:14px;
       }
 
-      main {
-        padding: 19px 14px;
-      }
-
-      .topbar {
-        align-items: flex-start;
-      }
-
-      .topbar h1 {
-        font-size: 22px;
-      }
-
-      .profile-box {
-        display: none;
-      }
-
-      .nickname-card {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .nickname-form {
-        min-width: 0;
-      }
-
-      .stats {
-        grid-template-columns:
-          1fr 1fr;
-
-        gap: 10px;
-      }
-
-      .resource {
-        grid-template-columns:
-          40px 1fr;
-      }
-
-      .resource button {
-        grid-column: 2;
-
-        width: fit-content;
-      }
-
-      .notifications {
-        width: auto;
-
-        top: 145px;
-        left: 14px;
-        right: 14px;
-      }
-
-      .calendar-day {
-        min-height: 44px;
-        padding: 4px;
+      .calendar-day{
+        min-height:44px;
+        padding:4px;
       }
     }
   </style>
@@ -1299,69 +851,45 @@
 
 <div class="app">
 
-  <!-- SIDEBAR -->
-
   <aside class="sidebar">
 
     <div class="brand">
-
-      <div class="brand-icon">
-        ⚗️
-      </div>
+      <div class="brand-icon">⚗️</div>
 
       <div>
         <h2>Science Club</h2>
         <p>Student Portal</p>
       </div>
-
     </div>
-
 
     <nav class="nav">
 
-      <button
-        class="nav-button active"
-        data-page="dashboard"
-      >
+      <button class="nav-button active" data-page="dashboard">
         ▦ Dashboard
       </button>
 
-      <button
-        class="nav-button"
-        data-page="calendar"
-      >
+      <button class="nav-button" data-page="calendar">
         📅 Calendar
       </button>
 
-      <button
-        class="nav-button"
-        data-page="resources"
-      >
+      <button class="nav-button" data-page="resources">
         📚 Resources
       </button>
 
-      <button
-        class="nav-button"
-        data-page="faq"
-      >
+      <button class="nav-button" data-page="faq">
         ? FAQs
       </button>
 
     </nav>
 
-
     <div class="sidebar-bottom">
 
-      <button
-        id="adminButton"
-        class="admin-button"
-      >
+      <button id="adminButton" class="admin-button">
         ⚙ Admin
       </button>
 
       <div class="privacy-note">
-        Students should use a nickname,
-        initials or another non-identifying name.
+        Students should use a nickname, initials or another non-identifying name.
       </div>
 
     </div>
@@ -1369,87 +897,53 @@
   </aside>
 
 
-  <!-- MAIN -->
-
   <main>
 
-    <div
-      id="connectionStatus"
-      class="connection"
-    >
+    <div id="connectionStatus" class="connection">
       ● Connecting...
     </div>
 
 
-    <!-- ===========================
-         DASHBOARD
-         =========================== -->
-
-    <section
-      id="dashboardPage"
-      class="page active"
-    >
+    <section id="dashboardPage" class="page active">
 
       <header class="topbar">
 
         <div>
-
           <h1>
             Welcome,
-            <span id="welcomeName">
-              Scientist
-            </span>
+            <span id="welcomeName">Scientist</span>
             👋
           </h1>
 
           <p>
-            Keep track of Science Club
-            competitions, projects and deadlines.
+            Keep track of Science Club competitions, projects and deadlines.
           </p>
-
         </div>
-
 
         <div class="top-actions">
 
-          <button
-            id="notificationButton"
-            class="notification-button"
-          >
+          <button id="notificationButton" class="notification-button">
             🔔
 
-            <span
-              id="notificationCount"
-              class="notification-count"
-            >
+            <span id="notificationCount" class="notification-count">
               0
             </span>
-
           </button>
-
 
           <div class="profile-box">
 
-            <div
-              id="avatar"
-              class="avatar"
-            >
+            <div id="avatar" class="avatar">
               S
             </div>
 
             <div>
-
-              <div
-                id="profileName"
-                class="profile-name"
-              >
+              <div id="profileName" class="profile-name">
                 Scientist
               </div>
 
               <div class="profile-role">
                 Science Club Member
               </div>
-
             </div>
 
           </div>
@@ -1459,46 +953,25 @@
       </header>
 
 
-      <div
-        id="notificationsPanel"
-        class="notifications"
-      >
-
-        <h3>
-          Notifications
-        </h3>
-
-        <div id="notificationList">
-        </div>
-
+      <div id="notificationsPanel" class="notifications">
+        <h3>Notifications</h3>
+        <div id="notificationList"></div>
       </div>
 
 
-      <div
-        id="studentMessage"
-        class="message"
-      >
-      </div>
+      <div id="studentMessage" class="message"></div>
 
-
-      <!-- NICKNAME -->
 
       <section class="nickname-card">
 
         <div>
-
-          <h2>
-            Choose your Science Club name 🔬
-          </h2>
+          <h2>Choose your Science Club name 🔬</h2>
 
           <p>
-            Do not enter your real name.
-            Use a nickname, initials or a
+            Do not enter your real name. Use a nickname, initials or a
             science-themed username instead.
           </p>
-
         </div>
-
 
         <div class="nickname-form">
 
@@ -1506,11 +979,9 @@
             id="nicknameInput"
             maxlength="20"
             placeholder="Example: AtomAce"
-          >
+          />
 
-          <button
-            id="saveNicknameButton"
-          >
+          <button id="saveNicknameButton">
             Save
           </button>
 
@@ -1519,30 +990,16 @@
       </section>
 
 
-      <!-- STATS -->
-
       <section class="stats">
 
         <div class="stat-card">
 
           <div class="stat-top">
-
-            <span class="stat-label">
-              Important Dates
-            </span>
-
-            <span
-              class="stat-icon purple-soft"
-            >
-              📅
-            </span>
-
+            <span class="stat-label">Important Dates</span>
+            <span class="stat-icon purple-soft">📅</span>
           </div>
 
-          <div
-            id="dateCount"
-            class="stat-number"
-          >
+          <div id="dateCount" class="stat-number">
             0
           </div>
 
@@ -1556,23 +1013,11 @@
         <div class="stat-card">
 
           <div class="stat-top">
-
-            <span class="stat-label">
-              Resources Opened
-            </span>
-
-            <span
-              class="stat-icon blue-soft"
-            >
-              📖
-            </span>
-
+            <span class="stat-label">Resources Opened</span>
+            <span class="stat-icon blue-soft">📖</span>
           </div>
 
-          <div
-            id="openedCount"
-            class="stat-number"
-          >
+          <div id="openedCount" class="stat-number">
             0
           </div>
 
@@ -1586,22 +1031,11 @@
         <div class="stat-card">
 
           <div class="stat-top">
-
-            <span class="stat-label">
-              CCC
-            </span>
-
-            <span
-              class="stat-icon green-soft"
-            >
-              ⚗️
-            </span>
-
+            <span class="stat-label">CCC</span>
+            <span class="stat-icon green-soft">⚗️</span>
           </div>
 
-          <div
-            class="stat-number stat-small"
-          >
+          <div class="stat-number stat-small">
             Chemistry
           </div>
 
@@ -1615,28 +1049,16 @@
         <div class="stat-card">
 
           <div class="stat-top">
-
-            <span class="stat-label">
-              WWSEF
-            </span>
-
-            <span
-              class="stat-icon orange-soft"
-            >
-              🧪
-            </span>
-
+            <span class="stat-label">WWSEF</span>
+            <span class="stat-icon orange-soft">🧪</span>
           </div>
 
-          <div
-            class="stat-number stat-small"
-          >
+          <div class="stat-number stat-small">
             Science Fair
           </div>
 
           <div class="stat-detail">
-            Waterloo-Wellington Science &
-            Engineering Fair
+            Waterloo-Wellington Science & Engineering Fair
           </div>
 
         </div>
@@ -1648,82 +1070,47 @@
 
         <div>
 
-          <!-- ANNOUNCEMENT -->
-
           <section class="card announcement-card">
 
             <div class="card-header">
-
-              <div>
-                <h2>
-                  📣 Latest Announcement
-                </h2>
-              </div>
-
+              <h2>📣 Latest Announcement</h2>
             </div>
 
             <div id="latestAnnouncement">
-
-              <p>
-                Loading announcement...
-              </p>
-
+              <p>Loading announcement...</p>
             </div>
 
           </section>
 
-
-          <!-- RESOURCES -->
 
           <section class="card">
 
             <div class="card-header">
 
               <div>
-
-                <h2>
-                  Resources & Assignments
-                </h2>
-
-                <p>
-                  CCC, WWSEF and club materials
-                </p>
-
+                <h2>Resources & Assignments</h2>
+                <p>CCC, WWSEF and club materials</p>
               </div>
 
             </div>
 
-
             <div id="dashboardResources">
-
               <div class="empty">
                 Loading resources...
               </div>
-
             </div>
 
           </section>
 
-
-          <!-- CALENDAR -->
 
           <section class="card">
 
             <div class="card-header">
 
               <div>
-
-                <h2>
-                  Club Calendar
-                </h2>
-
-                <p>
-                  Meetings, competitions
-                  and deadlines
-                </p>
-
+                <h2>Club Calendar</h2>
+                <p>Meetings, competitions and deadlines</p>
               </div>
-
 
               <div class="calendar-controls">
 
@@ -1731,8 +1118,7 @@
                   ‹
                 </button>
 
-                <span id="calendarMonth">
-                </span>
+                <span id="calendarMonth"></span>
 
                 <button id="nextMonth">
                   ›
@@ -1744,7 +1130,6 @@
 
 
             <div class="calendar-grid">
-
               <div class="weekday">Sun</div>
               <div class="weekday">Mon</div>
               <div class="weekday">Tue</div>
@@ -1752,15 +1137,9 @@
               <div class="weekday">Thu</div>
               <div class="weekday">Fri</div>
               <div class="weekday">Sat</div>
-
             </div>
 
-
-            <div
-              id="calendarDays"
-              class="calendar-grid"
-            >
-            </div>
+            <div id="calendarDays" class="calendar-grid"></div>
 
           </section>
 
@@ -1769,28 +1148,36 @@
 
         <div>
 
-          <!-- IMPORTANT DATES -->
+          <section class="card">
+
+            <div class="card-header">
+
+              <div>
+                <h2>📌 Important Dates</h2>
+                <p>Upcoming deadlines</p>
+              </div>
+
+            </div>
+
+            <div id="importantDates"></div>
+
+          </section>
+
 
           <section class="card">
 
             <div class="card-header">
 
               <div>
-
-                <h2>
-                  📌 Important Dates
-                </h2>
-
-                <p>
-                  Upcoming deadlines
-                </p>
-
+                <h2>⚗️ CCC</h2>
+                <p>Canadian Chemistry Contest</p>
               </div>
 
             </div>
 
-
-            <div id="importantDates">
+            <div class="description">
+              Find chemistry preparation, practice material,
+              review resources and contest dates here.
             </div>
 
           </section>
@@ -1801,51 +1188,15 @@
             <div class="card-header">
 
               <div>
-
-                <h2>
-                  ⚗️ CCC
-                </h2>
-
-                <p>
-                  Canadian Chemistry Contest
-                </p>
-
+                <h2>🧪 WWSEF</h2>
+                <p>Science Fair</p>
               </div>
 
             </div>
 
             <div class="description">
-              Find chemistry preparation,
-              practice material, review resources
-              and contest dates here.
-            </div>
-
-          </section>
-
-
-          <section class="card">
-
-            <div class="card-header">
-
-              <div>
-
-                <h2>
-                  🧪 WWSEF
-                </h2>
-
-                <p>
-                  Science Fair
-                </p>
-
-              </div>
-
-            </div>
-
-            <div class="description">
-              Track project deadlines,
-              research resources, registration
-              information and presentation
-              preparation.
+              Track project deadlines, research resources,
+              registration information and presentation preparation.
             </div>
 
           </section>
@@ -1857,27 +1208,13 @@
     </section>
 
 
-    <!-- ===========================
-         CALENDAR PAGE
-         =========================== -->
-
-    <section
-      id="calendarPage"
-      class="page"
-    >
+    <section id="calendarPage" class="page">
 
       <header class="topbar">
 
         <div>
-
-          <h1>
-            Science Club Calendar 📅
-          </h1>
-
-          <p>
-            Competitions, meetings and deadlines.
-          </p>
-
+          <h1>Science Club Calendar 📅</h1>
+          <p>Competitions, meetings and deadlines.</p>
         </div>
 
       </header>
@@ -1887,10 +1224,7 @@
 
         <div class="card-header">
 
-          <h2>
-            Full Calendar
-          </h2>
-
+          <h2>Full Calendar</h2>
 
           <div class="calendar-controls">
 
@@ -1898,8 +1232,7 @@
               ‹
             </button>
 
-            <span id="fullCalendarMonth">
-            </span>
+            <span id="fullCalendarMonth"></span>
 
             <button id="fullNextMonth">
               ›
@@ -1911,7 +1244,6 @@
 
 
         <div class="calendar-grid">
-
           <div class="weekday">Sun</div>
           <div class="weekday">Mon</div>
           <div class="weekday">Tue</div>
@@ -1919,15 +1251,9 @@
           <div class="weekday">Thu</div>
           <div class="weekday">Fri</div>
           <div class="weekday">Sat</div>
-
         </div>
 
-
-        <div
-          id="fullCalendarDays"
-          class="calendar-grid"
-        >
-        </div>
+        <div id="fullCalendarDays" class="calendar-grid"></div>
 
       </section>
 
@@ -1935,101 +1261,59 @@
       <section class="card">
 
         <div class="card-header">
-          <h2>
-            All Important Dates
-          </h2>
+          <h2>All Important Dates</h2>
         </div>
 
-        <div id="allImportantDates">
-        </div>
+        <div id="allImportantDates"></div>
 
       </section>
 
     </section>
 
 
-    <!-- ===========================
-         RESOURCES PAGE
-         =========================== -->
-
-    <section
-      id="resourcesPage"
-      class="page"
-    >
+    <section id="resourcesPage" class="page">
 
       <header class="topbar">
 
         <div>
-
-          <h1>
-            Resources & Assignments 📚
-          </h1>
+          <h1>Resources & Assignments 📚</h1>
 
           <p>
-            CCC preparation, WWSEF materials
-            and club assignments.
+            CCC preparation, WWSEF materials and club assignments.
           </p>
-
         </div>
 
       </header>
 
-
       <section class="card">
-
-        <div id="allResources">
-        </div>
-
+        <div id="allResources"></div>
       </section>
 
     </section>
 
 
-    <!-- ===========================
-         FAQ PAGE
-         =========================== -->
-
-    <section
-      id="faqPage"
-      class="page"
-    >
+    <section id="faqPage" class="page">
 
       <header class="topbar">
 
         <div>
-
-          <h1>
-            Frequently Asked Questions
-          </h1>
+          <h1>Frequently Asked Questions</h1>
 
           <p>
-            CCC, WWSEF and Science Club
-            information.
+            CCC, WWSEF and Science Club information.
           </p>
-
         </div>
 
       </header>
 
-
       <section class="card">
-
-        <div id="faqList">
-        </div>
-
+        <div id="faqList"></div>
       </section>
 
     </section>
 
 
-    <!-- ===========================
-         ADMIN LOGIN
-         =========================== -->
-
-    <section
-      id="adminLoginPage"
-      class="page"
-    >
+    <section id="adminLoginPage" class="page">
 
       <div class="login-box">
 
@@ -2039,17 +1323,11 @@
 
         <p>
           This area is for club leadership.
-          Students do not need an email address
-          or password to use the portal.
+          Students do not need an email address or password
+          to use the portal.
         </p>
 
-
-        <div
-          id="loginMessage"
-          class="message"
-        >
-        </div>
-
+        <div id="loginMessage" class="message"></div>
 
         <form id="adminLoginForm">
 
@@ -2058,15 +1336,14 @@
             type="email"
             required
             placeholder="Admin email"
-          >
+          />
 
           <input
             id="adminPassword"
             type="password"
             required
             placeholder="Admin password"
-          >
-
+          />
 
           <div class="login-actions">
 
@@ -2094,30 +1371,17 @@
     </section>
 
 
-    <!-- ===========================
-         ADMIN DASHBOARD
-         =========================== -->
-
-    <section
-      id="adminPage"
-      class="page"
-    >
+    <section id="adminPage" class="page">
 
       <header class="topbar">
 
         <div>
-
-          <h1>
-            Club Activity Dashboard
-          </h1>
+          <h1>Club Activity Dashboard</h1>
 
           <p>
-            Manage portal content and view
-            student activity.
+            Manage portal content and view student activity.
           </p>
-
         </div>
-
 
         <button
           id="adminLogoutButton"
@@ -2129,11 +1393,7 @@
       </header>
 
 
-      <div
-        id="adminMessage"
-        class="message"
-      >
-      </div>
+      <div id="adminMessage" class="message"></div>
 
 
       <section class="stats">
@@ -2144,10 +1404,7 @@
             Student Nicknames
           </div>
 
-          <div
-            id="adminStudentCount"
-            class="stat-number"
-          >
+          <div id="adminStudentCount" class="stat-number">
             0
           </div>
 
@@ -2160,10 +1417,7 @@
             Resource Opens
           </div>
 
-          <div
-            id="adminActivityCount"
-            class="stat-number"
-          >
+          <div id="adminActivityCount" class="stat-number">
             0
           </div>
 
@@ -2176,10 +1430,7 @@
             Announcements
           </div>
 
-          <div
-            id="adminAnnouncementCount"
-            class="stat-number"
-          >
+          <div id="adminAnnouncementCount" class="stat-number">
             0
           </div>
 
@@ -2192,10 +1443,7 @@
             Important Dates
           </div>
 
-          <div
-            id="adminDateCount"
-            class="stat-number"
-          >
+          <div id="adminDateCount" class="stat-number">
             0
           </div>
 
@@ -2213,17 +1461,9 @@
             <div class="card-header">
 
               <div>
-
-                <h2>
-                  Recent Student Activity
-                </h2>
-
-                <p>
-                  Nicknames only
-                </p>
-
+                <h2>Recent Student Activity</h2>
+                <p>Nicknames only</p>
               </div>
-
 
               <button
                 id="clearActivityButton"
@@ -2240,18 +1480,15 @@
               <table class="activity-table">
 
                 <thead>
-
                   <tr>
                     <th>Student</th>
                     <th>Action</th>
                     <th>Resource</th>
                     <th>Time</th>
                   </tr>
-
                 </thead>
 
-                <tbody id="activityTable">
-                </tbody>
+                <tbody id="activityTable"></tbody>
 
               </table>
 
@@ -2264,43 +1501,32 @@
 
         <div>
 
-          <!-- ADD ANNOUNCEMENT -->
-
           <section class="card">
 
             <div class="card-header">
-              <h2>
-                Add Announcement
-              </h2>
+              <h2>Add Announcement</h2>
             </div>
-
 
             <form
               id="announcementForm"
               class="admin-form"
             >
 
-              <label>
-                Title
-              </label>
+              <label>Title</label>
 
               <input
                 id="announcementTitle"
                 required
                 placeholder="CCC Prep Meeting"
-              >
+              />
 
-
-              <label>
-                Message
-              </label>
+              <label>Message</label>
 
               <textarea
                 id="announcementMessage"
                 required
                 placeholder="Write the announcement..."
               ></textarea>
-
 
               <button
                 class="primary-button"
@@ -2314,82 +1540,49 @@
           </section>
 
 
-          <!-- ADD DATE -->
-
           <section class="card">
 
             <div class="card-header">
-              <h2>
-                Add Important Date
-              </h2>
+              <h2>Add Important Date</h2>
             </div>
-
 
             <form
               id="dateForm"
               class="admin-form"
             >
 
-              <label>
-                Event Name
-              </label>
+              <label>Event Name</label>
 
               <input
                 id="dateTitle"
                 required
                 placeholder="CCC Contest"
-              >
+              />
 
-
-              <label>
-                Date
-              </label>
+              <label>Date</label>
 
               <input
                 id="dateValue"
                 type="date"
                 required
-              >
+              />
 
-
-              <label>
-                Category
-              </label>
+              <label>Category</label>
 
               <select id="dateCategory">
-
-                <option value="CCC">
-                  CCC
-                </option>
-
-                <option value="WWSEF">
-                  WWSEF
-                </option>
-
-                <option value="Meeting">
-                  Meeting
-                </option>
-
-                <option value="Deadline">
-                  Deadline
-                </option>
-
-                <option value="Other">
-                  Other
-                </option>
-
+                <option>CCC</option>
+                <option>WWSEF</option>
+                <option>Meeting</option>
+                <option>Deadline</option>
+                <option>Other</option>
               </select>
 
-
-              <label>
-                Details
-              </label>
+              <label>Details</label>
 
               <input
                 id="dateDetails"
                 placeholder="Optional details"
-              >
-
+              />
 
               <button
                 class="primary-button"
@@ -2403,75 +1596,48 @@
           </section>
 
 
-          <!-- ADD RESOURCE -->
-
           <section class="card">
 
             <div class="card-header">
-              <h2>
-                Add Resource / Assignment
-              </h2>
+              <h2>Add Resource / Assignment</h2>
             </div>
-
 
             <form
               id="resourceForm"
               class="admin-form"
             >
 
-              <label>
-                Resource Name
-              </label>
+              <label>Resource Name</label>
 
               <input
                 id="resourceTitle"
                 required
                 placeholder="Stoichiometry Practice"
-              >
+              />
 
-
-              <label>
-                Category
-              </label>
+              <label>Category</label>
 
               <select id="resourceCategory">
-
-                <option value="CCC">
-                  CCC
-                </option>
-
-                <option value="WWSEF">
-                  WWSEF
-                </option>
-
-                <option value="Science Club">
-                  Science Club
-                </option>
-
+                <option>CCC</option>
+                <option>WWSEF</option>
+                <option>Science Club</option>
               </select>
 
-
-              <label>
-                Description
-              </label>
+              <label>Description</label>
 
               <input
                 id="resourceDescription"
                 required
                 placeholder="Short description"
-              >
+              />
 
-
-              <label>
-                Link
-              </label>
+              <label>Link</label>
 
               <input
                 id="resourceURL"
                 type="url"
                 placeholder="https://..."
-              >
-
+              />
 
               <button
                 class="primary-button"
@@ -2485,36 +1651,26 @@
           </section>
 
 
-          <!-- ADD FAQ -->
-
           <section class="card">
 
             <div class="card-header">
-              <h2>
-                Add FAQ
-              </h2>
+              <h2>Add FAQ</h2>
             </div>
-
 
             <form
               id="faqForm"
               class="admin-form"
             >
 
-              <label>
-                Question
-              </label>
+              <label>Question</label>
 
               <input
                 id="faqQuestion"
                 required
                 placeholder="What should I bring?"
-              >
+              />
 
-
-              <label>
-                Answer
-              </label>
+              <label>Answer</label>
 
               <textarea
                 id="faqAnswer"
@@ -2522,31 +1678,14 @@
                 placeholder="Write the answer..."
               ></textarea>
 
-
-              <label>
-                Category
-              </label>
+              <label>Category</label>
 
               <select id="faqCategory">
-
-                <option value="General">
-                  General
-                </option>
-
-                <option value="CCC">
-                  CCC
-                </option>
-
-                <option value="WWSEF">
-                  WWSEF
-                </option>
-
-                <option value="Privacy">
-                  Privacy
-                </option>
-
+                <option>General</option>
+                <option>CCC</option>
+                <option>WWSEF</option>
+                <option>Privacy</option>
               </select>
-
 
               <button
                 class="primary-button"
@@ -2572,32 +1711,14 @@
 
 <script>
 
-  /* ======================================================
-     IMPORTANT:
-     PASTE YOUR SUPABASE INFORMATION HERE
-     ====================================================== */
-
   const SUPABASE_URL =
-    "https://xmegalhjfsjvqykexyll.supabase.co";  
+    "https://xmegalhjfsjvqykexyll.supabase.co";
 
   const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_yUAUZxQ2o3eQXdDQverBSw_Lq5NRBaO";
 
 
-  /* ======================================================
-     SUPABASE
-     ====================================================== */
-
-  const db =
-    window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_PUBLISHABLE_KEY
-    );
-
-
-  /* ======================================================
-     STATE
-     ====================================================== */
+  let db = null;
 
   let currentUser = null;
   let currentProfile = null;
@@ -2608,21 +1729,17 @@
   let faqs = [];
 
   let studentActivity = [];
-
   let adminActivity = [];
   let adminProfiles = [];
 
 
-  const now =
-    new Date();
-
+  const now = new Date();
 
   let dashboardYear =
     now.getFullYear();
 
   let dashboardMonth =
     now.getMonth();
-
 
   let fullYear =
     dashboardYear;
@@ -2631,18 +1748,49 @@
     dashboardMonth;
 
 
-  /* ======================================================
-     HELPERS
-     ====================================================== */
+  const pages = {
+
+    dashboard:
+      document.getElementById(
+        "dashboardPage"
+      ),
+
+    calendar:
+      document.getElementById(
+        "calendarPage"
+      ),
+
+    resources:
+      document.getElementById(
+        "resourcesPage"
+      ),
+
+    faq:
+      document.getElementById(
+        "faqPage"
+      ),
+
+    adminLogin:
+      document.getElementById(
+        "adminLoginPage"
+      ),
+
+    admin:
+      document.getElementById(
+        "adminPage"
+      )
+
+  };
+
 
   function escapeHTML(value) {
 
     return String(value ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#039;");
 
   }
 
@@ -2655,6 +1803,10 @@
 
     const box =
       document.getElementById(id);
+
+    if (!box) {
+      return;
+    }
 
     box.textContent =
       text;
@@ -2698,14 +1850,11 @@
   }
 
 
-  function parseDateOnly(
-    value
-  ) {
+  function parseDateOnly(value) {
 
     if (!value) {
       return null;
     }
-
 
     const [
       year,
@@ -2716,7 +1865,6 @@
         .split("-")
         .map(Number);
 
-
     return new Date(
       year,
       month - 1,
@@ -2724,45 +1872,6 @@
     );
 
   }
-
-
-  /* ======================================================
-     PAGE NAVIGATION
-     ====================================================== */
-
-  const pages = {
-
-    dashboard:
-      document.getElementById(
-        "dashboardPage"
-      ),
-
-    calendar:
-      document.getElementById(
-        "calendarPage"
-      ),
-
-    resources:
-      document.getElementById(
-        "resourcesPage"
-      ),
-
-    faq:
-      document.getElementById(
-        "faqPage"
-      ),
-
-    adminLogin:
-      document.getElementById(
-        "adminLoginPage"
-      ),
-
-    admin:
-      document.getElementById(
-        "adminPage"
-      )
-
-  };
 
 
   function showPage(name) {
@@ -2780,7 +1889,8 @@
 
 
     pages[name]
-      .classList.add(
+      ?.classList
+      .add(
         "active"
       );
 
@@ -2845,22 +1955,25 @@
     );
 
 
-  /* ======================================================
-     AUTH
-     ====================================================== */
-
   async function getSession() {
+
+    if (!db) {
+      return null;
+    }
 
     const {
       data,
       error
     } =
-      await db.auth.getSession();
+      await db.auth
+        .getSession();
 
 
     if (error) {
 
-      console.error(error);
+      console.error(
+        error
+      );
 
       return null;
 
@@ -2873,6 +1986,11 @@
 
 
   async function createAnonymousStudent() {
+
+    if (!db) {
+      return null;
+    }
+
 
     const session =
       await getSession();
@@ -2900,20 +2018,20 @@
 
     if (error) {
 
-      console.error(error);
+      console.error(
+        error
+      );
 
       setConnection(
         "● Connection failed",
         true
       );
 
-
       showMessage(
         "studentMessage",
         "Could not create the student session. Make sure Anonymous Sign-ins are enabled in Supabase.",
         "error"
       );
-
 
       return null;
 
@@ -2923,19 +2041,17 @@
     currentUser =
       data.user;
 
-
     return currentUser;
 
   }
 
 
-  /* ======================================================
-     PROFILE
-     ====================================================== */
-
   async function loadProfile() {
 
-    if (!currentUser) {
+    if (
+      !currentUser ||
+      !db
+    ) {
       return;
     }
 
@@ -2945,7 +2061,9 @@
       error
     } =
       await db
-        .from("profiles")
+        .from(
+          "profiles"
+        )
         .select(
           "nickname, role"
         )
@@ -2958,7 +2076,9 @@
 
     if (error) {
 
-      console.error(error);
+      console.error(
+        error
+      );
 
       return;
 
@@ -2967,7 +2087,6 @@
 
     currentProfile =
       data;
-
 
     updateProfileDisplay();
 
@@ -2998,7 +2117,8 @@
     ).textContent =
       nickname
         .charAt(0)
-        .toUpperCase();
+        .toUpperCase() ||
+      "S";
 
   }
 
@@ -3051,12 +2171,30 @@
     }
 
 
+    if (
+      currentProfile?.role ===
+      "admin"
+    ) {
+
+      showMessage(
+        "studentMessage",
+        "Admin accounts cannot be changed into student profiles.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
     const {
       data,
       error
     } =
       await db
-        .from("profiles")
+        .from(
+          "profiles"
+        )
         .upsert(
           {
             user_id:
@@ -3079,15 +2217,15 @@
 
     if (error) {
 
-      console.error(error);
-
+      console.error(
+        error
+      );
 
       showMessage(
         "studentMessage",
         "Could not save your nickname.",
         "error"
       );
-
 
       return;
 
@@ -3097,13 +2235,13 @@
     currentProfile =
       data;
 
-
     updateProfileDisplay();
 
 
     document.getElementById(
       "nicknameInput"
-    ).value = "";
+    ).value =
+      "";
 
 
     showMessage(
@@ -3123,163 +2261,145 @@
   );
 
 
-  document.getElementById(
-    "nicknameInput"
-  ).addEventListener(
-    "keydown",
-    event => {
-
-      if (
-        event.key === "Enter"
-      ) {
-
-        saveNickname();
-
-      }
-
-    }
-  );
-
-
-  /* ======================================================
-     ANNOUNCEMENTS
-     ====================================================== */
-
   async function loadAnnouncements() {
+
+    if (!db) {
+      return;
+    }
+
 
     const {
       data,
       error
     } =
       await db
-        .from("announcements")
+        .from(
+          "announcements"
+        )
         .select("*")
         .order(
           "created_at",
           {
-            ascending: false
+            ascending:
+              false
           }
         );
 
 
     if (error) {
 
-      console.error(error);
+      console.error(
+        error
+      );
 
-      announcements = [];
+      announcements =
+        [];
 
-      return;
+    } else {
+
+      announcements =
+        data || [];
 
     }
 
 
-    announcements =
-      data || [];
-
-
-    renderAnnouncement();
-
+    renderAnnouncements();
     renderNotifications();
 
   }
 
 
-  function renderAnnouncement() {
+  function renderAnnouncements() {
 
-    const container =
+    const box =
       document.getElementById(
         "latestAnnouncement"
       );
 
 
     if (
-      announcements.length === 0
+      !announcements.length
     ) {
 
-      container.innerHTML = `
-        <p>
-          No announcements have
-          been posted yet.
-        </p>
-      `;
+      box.innerHTML =
+        "<p>No announcements yet.</p>";
 
       return;
 
     }
 
 
-    const item =
+    const announcement =
       announcements[0];
 
+    const date =
+      new Date(
+        announcement.created_at
+      );
 
-    container.innerHTML = `
 
-      <h3>
-        ${escapeHTML(
-          item.title
-        )}
-      </h3>
+    box.innerHTML =
+      `
+        <h3>
+          ${escapeHTML(
+            announcement.title
+          )}
+        </h3>
 
-      <p>
-        ${escapeHTML(
-          item.message
-        )}
-      </p>
+        <p>
+          ${escapeHTML(
+            announcement.message
+          )}
+        </p>
 
-      <span class="announcement-date">
-
-        ${
-          item.created_at
-            ? escapeHTML(
-                new Date(
-                  item.created_at
-                )
-                .toLocaleString()
-              )
-            : ""
-        }
-
-      </span>
-
-    `;
+        <span class="announcement-date">
+          ${date.toLocaleString()}
+        </span>
+      `;
 
   }
 
 
-  /* ======================================================
-     RESOURCES
-     ====================================================== */
-
   async function loadResources() {
+
+    if (!db) {
+      return;
+    }
+
 
     const {
       data,
       error
     } =
       await db
-        .from("resources")
+        .from(
+          "resources"
+        )
         .select("*")
         .order(
           "created_at",
           {
-            ascending: false
+            ascending:
+              false
           }
         );
 
 
     if (error) {
 
-      console.error(error);
+      console.error(
+        error
+      );
 
-      resources = [];
+      resources =
+        [];
 
-      return;
+    } else {
+
+      resources =
+        data || [];
 
     }
-
-
-    resources =
-      data || [];
 
 
     renderResources();
@@ -3287,80 +2407,74 @@
   }
 
 
-  function resourceIcon(
-    category
-  ) {
+  function resourceHTML(resource) {
+
+    let icon =
+      "📘";
+
 
     if (
-      category === "CCC"
+      resource.category ===
+      "CCC"
     ) {
-      return "⚗️";
+
+      icon =
+        "⚗️";
+
     }
 
 
     if (
-      category === "WWSEF"
+      resource.category ===
+      "WWSEF"
     ) {
-      return "🧪";
+
+      icon =
+        "🧪";
+
     }
 
-
-    return "📚";
-
-  }
-
-
-  function resourceHTML(
-    item
-  ) {
 
     return `
-
       <div class="resource">
 
         <div class="resource-icon">
-
-          ${resourceIcon(
-            item.category
-          )}
-
+          ${icon}
         </div>
-
 
         <div>
 
           <h3>
             ${escapeHTML(
-              item.title
+              resource.title
             )}
           </h3>
 
           <p>
-
             ${escapeHTML(
-              item.category
+              resource.category
             )}
 
-            ·
-
-            ${escapeHTML(
-              item.description || ""
-            )}
-
+            ${
+              resource.description
+                ? " • " +
+                  escapeHTML(
+                    resource.description
+                  )
+                : ""
+            }
           </p>
 
         </div>
 
-
         <button
           class="open-resource"
-          data-resource="${item.id}"
+          data-resource="${resource.id}"
         >
           Open
         </button>
 
       </div>
-
     `;
 
   }
@@ -3371,26 +2485,30 @@
     const html =
       resources.length
         ? resources
-            .map(resourceHTML)
+            .map(
+              resourceHTML
+            )
             .join("")
-        : `
-            <div class="empty">
-              No resources have
-              been added yet.
-            </div>
-          `;
-
-
-    document.getElementById(
-      "dashboardResources"
-    ).innerHTML =
-      html;
+        : '<div class="empty">No resources yet.</div>';
 
 
     document.getElementById(
       "allResources"
     ).innerHTML =
       html;
+
+
+    document.getElementById(
+      "dashboardResources"
+    ).innerHTML =
+      resources.length
+        ? resources
+            .slice(0,5)
+            .map(
+              resourceHTML
+            )
+            .join("")
+        : '<div class="empty">No resources yet.</div>';
 
 
     document
@@ -3419,9 +2537,7 @@
   }
 
 
-  async function openResource(
-    id
-  ) {
+  async function openResource(id) {
 
     const resource =
       resources.find(
@@ -3451,43 +2567,51 @@
         "error"
       );
 
-
       return;
 
     }
 
 
-    const {
-      error
-    } =
-      await db
-        .from("activity")
-        .insert({
-          user_id:
-            currentUser.id,
+    if (
+      db &&
+      currentUser
+    ) {
 
-          resource_id:
-            resource.id,
-
-          resource_title:
-            resource.title,
-
-          action:
-            "opened"
-        });
-
-
-    if (error) {
-
-      console.error(
-        "Activity tracking error:",
+      const {
         error
-      );
+      } =
+        await db
+          .from(
+            "activity"
+          )
+          .insert({
+            user_id:
+              currentUser.id,
+
+            resource_id:
+              resource.id,
+
+            resource_title:
+              resource.title,
+
+            action:
+              "opened"
+          });
+
+
+      if (error) {
+
+        console.error(
+          "Activity tracking error:",
+          error
+        );
+
+      }
+
+
+      await loadStudentActivity();
 
     }
-
-
-    await loadStudentActivity();
 
 
     if (
@@ -3513,13 +2637,10 @@
   }
 
 
-  /* ======================================================
-     STUDENT ACTIVITY
-     ====================================================== */
-
   async function loadStudentActivity() {
 
     if (
+      !db ||
       !currentUser ||
       currentProfile?.role ===
         "admin"
@@ -3533,7 +2654,9 @@
       error
     } =
       await db
-        .from("activity")
+        .from(
+          "activity"
+        )
         .select("*")
         .eq(
           "user_id",
@@ -3543,17 +2666,19 @@
 
     if (error) {
 
-      console.error(error);
+      console.error(
+        error
+      );
 
-      studentActivity = [];
+      studentActivity =
+        [];
 
-      return;
+    } else {
+
+      studentActivity =
+        data || [];
 
     }
-
-
-    studentActivity =
-      data || [];
 
 
     document.getElementById(
@@ -3564,11 +2689,12 @@
   }
 
 
-  /* ======================================================
-     IMPORTANT DATES
-     ====================================================== */
-
   async function loadDates() {
+
+    if (!db) {
+      return;
+    }
+
 
     const {
       data,
@@ -3582,24 +2708,27 @@
         .order(
           "event_date",
           {
-            ascending: true
+            ascending:
+              true
           }
         );
 
 
     if (error) {
 
-      console.error(error);
+      console.error(
+        error
+      );
 
-      importantDates = [];
+      importantDates =
+        [];
 
-      return;
+    } else {
+
+      importantDates =
+        data || [];
 
     }
-
-
-    importantDates =
-      data || [];
 
 
     document.getElementById(
@@ -3609,17 +2738,13 @@
 
 
     renderDates();
-
     renderCalendars();
-
     renderNotifications();
 
   }
 
 
-  function dateHTML(
-    item
-  ) {
+  function dateHTML(item) {
 
     const date =
       parseDateOnly(
@@ -3633,13 +2758,11 @@
 
 
     return `
-
       <div class="date-item">
 
         <div class="date-box">
 
           <div class="date-month">
-
             ${date.toLocaleString(
               "en",
               {
@@ -3647,7 +2770,6 @@
                   "short"
               }
             )}
-
           </div>
 
           <div class="date-day">
@@ -3655,7 +2777,6 @@
           </div>
 
         </div>
-
 
         <div class="date-info">
 
@@ -3666,36 +2787,12 @@
           </h3>
 
           <p>
-
-            ${date.toLocaleDateString(
-              "en-CA",
-              {
-                weekday:
-                  "long",
-
-                year:
-                  "numeric",
-
-                month:
-                  "long",
-
-                day:
-                  "numeric"
-              }
+            ${escapeHTML(
+              item.details || ""
             )}
-
-            ${
-              item.details
-                ? ` · ${escapeHTML(
-                    item.details
-                  )}`
-                : ""
-            }
-
           </p>
 
         </div>
-
 
         <span class="date-tag">
           ${escapeHTML(
@@ -3704,13 +2801,28 @@
         </span>
 
       </div>
-
     `;
 
   }
 
 
   function renderDates() {
+
+    const all =
+      importantDates.length
+        ? importantDates
+            .map(
+              dateHTML
+            )
+            .join("")
+        : '<div class="empty">No important dates yet.</div>';
+
+
+    document.getElementById(
+      "allImportantDates"
+    ).innerHTML =
+      all;
+
 
     const today =
       new Date();
@@ -3724,21 +2836,26 @@
 
 
     const upcoming =
-      importantDates.filter(
-        item => {
+      importantDates
+        .filter(
+          item => {
 
-          const date =
-            parseDateOnly(
-              item.event_date
+            const date =
+              parseDateOnly(
+                item.event_date
+              );
+
+            return (
+              date &&
+              date >= today
             );
 
-          return (
-            date &&
-            date >= today
-          );
-
-        }
-      );
+          }
+        )
+        .slice(
+          0,
+          6
+        );
 
 
     document.getElementById(
@@ -3746,70 +2863,39 @@
     ).innerHTML =
       upcoming.length
         ? upcoming
-            .slice(0, 7)
-            .map(dateHTML)
+            .map(
+              dateHTML
+            )
             .join("")
-        : `
-            <div class="empty">
-              No upcoming dates yet.
-            </div>
-          `;
-
-
-    document.getElementById(
-      "allImportantDates"
-    ).innerHTML =
-      importantDates.length
-        ? importantDates
-            .map(dateHTML)
-            .join("")
-        : `
-            <div class="empty">
-              No dates have been
-              added yet.
-            </div>
-          `;
+        : '<div class="empty">No upcoming dates.</div>';
 
   }
 
 
-  /* ======================================================
-     CALENDAR
-     ====================================================== */
-
-  function eventNamesForDate(
-    value
-  ) {
-
-    return importantDates
-      .filter(
-        item =>
-          item.event_date ===
-          value
-      )
-      .map(
-        item =>
-          item.title
-      )
-      .join(", ");
-
-  }
-
-
-  function drawCalendar(
+  function renderCalendar(
     year,
     month,
-    titleElement,
-    daysElement
+    targetId,
+    labelId
   ) {
 
-    titleElement.textContent =
+    const target =
+      document.getElementById(
+        targetId
+      );
+
+    const label =
+      document.getElementById(
+        labelId
+      );
+
+
+    label.textContent =
       new Date(
         year,
         month,
         1
-      )
-      .toLocaleString(
+      ).toLocaleString(
         "en",
         {
           month:
@@ -3821,6 +2907,10 @@
       );
 
 
+    target.innerHTML =
+      "";
+
+
     const first =
       new Date(
         year,
@@ -3829,15 +2919,12 @@
       ).getDay();
 
 
-    const total =
+    const days =
       new Date(
         year,
         month + 1,
         0
       ).getDate();
-
-
-    let html = "";
 
 
     for (
@@ -3846,110 +2933,125 @@
       i++
     ) {
 
-      html += `
-        <div
-          class="calendar-day empty"
-        >
-        </div>
-      `;
+      const empty =
+        document.createElement(
+          "div"
+        );
+
+      empty.className =
+        "calendar-day empty";
+
+      target.appendChild(
+        empty
+      );
 
     }
 
 
     for (
       let day = 1;
-      day <= total;
+      day <= days;
       day++
     ) {
 
-      const key =
-        `${year}-` +
-        `${String(
-          month + 1
-        ).padStart(2, "0")}-` +
-        `${String(day)
-          .padStart(2, "0")}`;
-
-
-      const events =
-        eventNamesForDate(
-          key
+      const date =
+        new Date(
+          year,
+          month,
+          day
         );
 
 
-      const isToday =
-        year ===
-          now.getFullYear() &&
-        month ===
-          now.getMonth() &&
-        day ===
-          now.getDate();
+      const dateString =
+        `${year}-` +
+        `${String(
+          month + 1
+        ).padStart(2,"0")}-` +
+        `${String(
+          day
+        ).padStart(2,"0")}`;
 
 
-      html += `
+      const hasEvent =
+        importantDates.some(
+          item =>
+            item.event_date ===
+            dateString
+        );
 
-        <div
-          class="
-            calendar-day
-            ${
-              isToday
-                ? "today"
-                : ""
-            }
-            ${
-              events
-                ? "has-event"
-                : ""
-            }
-          "
 
-          title="${escapeHTML(
-            events
-          )}"
-        >
+      const today =
+        new Date();
 
-          ${day}
 
-        </div>
+      const element =
+        document.createElement(
+          "div"
+        );
 
-      `;
+
+      element.className =
+        "calendar-day" +
+        (
+          hasEvent
+            ? " has-event"
+            : ""
+        ) +
+        (
+          date.toDateString() ===
+          today.toDateString()
+            ? " today"
+            : ""
+        );
+
+
+      element.textContent =
+        day;
+
+
+      if (
+        hasEvent
+      ) {
+
+        element.title =
+          importantDates
+            .filter(
+              item =>
+                item.event_date ===
+                dateString
+            )
+            .map(
+              item =>
+                item.title
+            )
+            .join(", ");
+
+      }
+
+
+      target.appendChild(
+        element
+      );
 
     }
-
-
-    daysElement.innerHTML =
-      html;
 
   }
 
 
   function renderCalendars() {
 
-    drawCalendar(
+    renderCalendar(
       dashboardYear,
       dashboardMonth,
-
-      document.getElementById(
-        "calendarMonth"
-      ),
-
-      document.getElementById(
-        "calendarDays"
-      )
+      "calendarDays",
+      "calendarMonth"
     );
 
-
-    drawCalendar(
+    renderCalendar(
       fullYear,
       fullMonth,
-
-      document.getElementById(
-        "fullCalendarMonth"
-      ),
-
-      document.getElementById(
-        "fullCalendarDays"
-      )
+      "fullCalendarDays",
+      "fullCalendarMonth"
     );
 
   }
@@ -3963,16 +3065,16 @@
 
       dashboardMonth--;
 
-
       if (
         dashboardMonth < 0
       ) {
 
-        dashboardMonth = 11;
+        dashboardMonth =
+          11;
+
         dashboardYear--;
 
       }
-
 
       renderCalendars();
 
@@ -3988,16 +3090,16 @@
 
       dashboardMonth++;
 
-
       if (
         dashboardMonth > 11
       ) {
 
-        dashboardMonth = 0;
+        dashboardMonth =
+          0;
+
         dashboardYear++;
 
       }
-
 
       renderCalendars();
 
@@ -4013,16 +3115,16 @@
 
       fullMonth--;
 
-
       if (
         fullMonth < 0
       ) {
 
-        fullMonth = 11;
+        fullMonth =
+          11;
+
         fullYear--;
 
       }
-
 
       renderCalendars();
 
@@ -4038,16 +3140,16 @@
 
       fullMonth++;
 
-
       if (
         fullMonth > 11
       ) {
 
-        fullMonth = 0;
+        fullMonth =
+          0;
+
         fullYear++;
 
       }
-
 
       renderCalendars();
 
@@ -4055,40 +3157,53 @@
   );
 
 
-  /* ======================================================
-     FAQ
-     ====================================================== */
-
   async function loadFAQs() {
+
+    if (!db) {
+      return;
+    }
+
 
     const {
       data,
       error
     } =
       await db
-        .from("faqs")
+        .from(
+          "faqs"
+        )
         .select("*")
         .order(
           "sort_order",
           {
-            ascending: true
+            ascending:
+              true
+          }
+        )
+        .order(
+          "created_at",
+          {
+            ascending:
+              true
           }
         );
 
 
     if (error) {
 
-      console.error(error);
+      console.error(
+        error
+      );
 
-      faqs = [];
+      faqs =
+        [];
 
-      return;
+    } else {
+
+      faqs =
+        data || [];
 
     }
-
-
-    faqs =
-      data || [];
 
 
     renderFAQs();
@@ -4098,68 +3213,62 @@
 
   function renderFAQs() {
 
-    const container =
+    const box =
       document.getElementById(
         "faqList"
       );
 
 
     if (
-      faqs.length === 0
+      !faqs.length
     ) {
 
-      container.innerHTML = `
-        <div class="empty">
-          No FAQs have been added yet.
-        </div>
-      `;
+      box.innerHTML =
+        '<div class="empty">No FAQs yet.</div>';
 
       return;
 
     }
 
 
-    container.innerHTML =
-      faqs.map(
-        faq => `
+    box.innerHTML =
+      faqs
+        .map(
+          (faq,index) => `
+            <div class="faq-item">
 
-          <div class="faq-item">
+              <button
+                class="faq-question"
+                data-faq="${index}"
+              >
 
-            <button
-              class="faq-question"
-            >
+                <span>
+                  ${escapeHTML(
+                    faq.question
+                  )}
+                </span>
 
-              <span>
+                <span>
+                  +
+                </span>
+
+              </button>
+
+              <div class="faq-answer">
                 ${escapeHTML(
-                  faq.question
+                  faq.answer
                 )}
-              </span>
-
-              <span>
-                +
-              </span>
-
-            </button>
-
-
-            <div class="faq-answer">
-
-              ${escapeHTML(
-                faq.answer
-              )}
+              </div>
 
             </div>
-
-          </div>
-
-        `
-      )
-      .join("");
+          `
+        )
+        .join("");
 
 
-    container
+    box
       .querySelectorAll(
-        ".faq-question"
+        "[data-faq]"
       )
       .forEach(
         button => {
@@ -4168,23 +3277,14 @@
             "click",
             () => {
 
-              const item =
-                button.parentElement;
-
-
-              item.classList.toggle(
-                "open"
-              );
-
-
               button
-                .lastElementChild
-                .textContent =
-                  item.classList.contains(
-                    "open"
-                  )
-                    ? "−"
-                    : "+";
+                .closest(
+                  ".faq-item"
+                )
+                .classList
+                .toggle(
+                  "open"
+                );
 
             }
           );
@@ -4195,47 +3295,74 @@
   }
 
 
-  /* ======================================================
-     NOTIFICATIONS
-     ====================================================== */
-
   function renderNotifications() {
 
     const list =
-      document.getElementById(
-        "notificationList"
-      );
-
-
-    const notifications = [];
+      [];
 
 
     announcements
-      .slice(0, 3)
+      .slice(
+        0,
+        3
+      )
       .forEach(
-        item => {
+        announcement => {
 
-          notifications.push({
+          list.push({
             title:
-              `📣 ${item.title}`,
+              "📣 " +
+              announcement.title,
+
             text:
-              item.message
+              announcement.message
           });
 
         }
       );
 
 
+    const today =
+      new Date();
+
+    today.setHours(
+      0,
+      0,
+      0,
+      0
+    );
+
+
     importantDates
-      .slice(0, 3)
+      .filter(
+        item => {
+
+          const date =
+            parseDateOnly(
+              item.event_date
+            );
+
+          return (
+            date &&
+            date >= today
+          );
+
+        }
+      )
+      .slice(
+        0,
+        3
+      )
       .forEach(
         item => {
 
-          notifications.push({
+          list.push({
             title:
-              `📅 ${item.title}`,
+              "📅 " +
+              item.title,
+
             text:
-              `${item.category} · ${item.event_date}`
+              `${item.event_date} • ${item.category}`
           });
 
         }
@@ -4245,41 +3372,35 @@
     document.getElementById(
       "notificationCount"
     ).textContent =
-      notifications.length;
+      list.length;
 
 
-    list.innerHTML =
-      notifications.length
-        ? notifications
+    document.getElementById(
+      "notificationList"
+    ).innerHTML =
+      list.length
+        ? list
             .map(
-              item => `
-
-                <div
-                  class="notification-item"
-                >
+              notification => `
+                <div class="notification-item">
 
                   <strong>
                     ${escapeHTML(
-                      item.title
+                      notification.title
                     )}
                   </strong>
 
                   <p>
                     ${escapeHTML(
-                      item.text
+                      notification.text
                     )}
                   </p>
 
                 </div>
-
               `
             )
             .join("")
-        : `
-            <div class="empty">
-              No notifications.
-            </div>
-          `;
+        : '<div class="empty">No notifications.</div>';
 
   }
 
@@ -4296,21 +3417,20 @@
     );
 
 
-  notificationButton
-    .addEventListener(
-      "click",
-      event => {
+  notificationButton.addEventListener(
+    "click",
+    event => {
 
-        event.stopPropagation();
+      event.stopPropagation();
 
+      notificationPanel
+        .classList
+        .toggle(
+          "show"
+        );
 
-        notificationPanel
-          .classList.toggle(
-            "show"
-          );
-
-      }
-    );
+    }
+  );
 
 
   document.addEventListener(
@@ -4327,7 +3447,8 @@
       ) {
 
         notificationPanel
-          .classList.remove(
+          .classList
+          .remove(
             "show"
           );
 
@@ -4336,10 +3457,6 @@
     }
   );
 
-
-  /* ======================================================
-     ADMIN BUTTON
-     ====================================================== */
 
   document.getElementById(
     "adminButton"
@@ -4352,14 +3469,17 @@
 
 
       if (
-        session?.user
+        session?.user &&
+        db
       ) {
 
         const {
           data
         } =
           await db
-            .from("profiles")
+            .from(
+              "profiles"
+            )
             .select(
               "nickname, role"
             )
@@ -4380,7 +3500,6 @@
 
           currentProfile =
             data;
-
 
           await openAdmin();
 
@@ -4413,10 +3532,6 @@
   );
 
 
-  /* ======================================================
-     ADMIN LOGIN
-     ====================================================== */
-
   document.getElementById(
     "adminLoginForm"
   ).addEventListener(
@@ -4426,28 +3541,46 @@
       event.preventDefault();
 
 
+      if (!db) {
+
+        showMessage(
+          "loginMessage",
+          "Supabase is not connected.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
       const email =
-        document.getElementById(
-          "adminEmail"
-        )
-        .value
-        .trim();
+        document
+          .getElementById(
+            "adminEmail"
+          )
+          .value
+          .trim();
 
 
       const password =
-        document.getElementById(
-          "adminPassword"
-        )
-        .value;
+        document
+          .getElementById(
+            "adminPassword"
+          )
+          .value;
 
 
       const existing =
         await getSession();
 
 
-      if (existing) {
+      if (
+        existing
+      ) {
 
-        await db.auth.signOut();
+        await db.auth
+          .signOut();
 
       }
 
@@ -4477,11 +3610,16 @@
 
 
       const {
-        data: profile,
-        error: profileError
+        data:
+          profile,
+
+        error:
+          profileError
       } =
         await db
-          .from("profiles")
+          .from(
+            "profiles"
+          )
           .select(
             "nickname, role"
           )
@@ -4499,7 +3637,8 @@
           "admin"
       ) {
 
-        await db.auth.signOut();
+        await db.auth
+          .signOut();
 
 
         showMessage(
@@ -4513,17 +3652,11 @@
 
         await loadProfile();
 
-
         return;
 
       }
 
-const SUPABASE_URL =
-  "https://xmegalhjfsjvqykexyll.supabase.co"; 
 
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_yUAUZxQ2o3eQXdDQverBSw_Lq5NRBaO"; 
-      
       currentUser =
         data.user;
 
@@ -4533,7 +3666,8 @@ const SUPABASE_PUBLISHABLE_KEY =
 
       document.getElementById(
         "adminPassword"
-      ).value = "";
+      ).value =
+        "";
 
 
       await openAdmin();
@@ -4541,10 +3675,6 @@ const SUPABASE_PUBLISHABLE_KEY =
     }
   );
 
-
-  /* ======================================================
-     OPEN ADMIN
-     ====================================================== */
 
   async function openAdmin() {
 
@@ -4564,15 +3694,10 @@ const SUPABASE_PUBLISHABLE_KEY =
 
 
     renderAdminActivity();
-
     updateAdminStats();
 
   }
 
-
-  /* ======================================================
-     ADMIN PROFILES
-     ====================================================== */
 
   async function loadAdminProfiles() {
 
@@ -4581,7 +3706,9 @@ const SUPABASE_PUBLISHABLE_KEY =
       error
     } =
       await db
-        .from("profiles")
+        .from(
+          "profiles"
+        )
         .select(
           "user_id, nickname, role"
         );
@@ -4589,9 +3716,12 @@ const SUPABASE_PUBLISHABLE_KEY =
 
     if (error) {
 
-      console.error(error);
+      console.error(
+        error
+      );
 
-      adminProfiles = [];
+      adminProfiles =
+        [];
 
       return;
 
@@ -4604,10 +3734,6 @@ const SUPABASE_PUBLISHABLE_KEY =
   }
 
 
-  /* ======================================================
-     ADMIN ACTIVITY
-     ====================================================== */
-
   async function loadAdminActivity() {
 
     const {
@@ -4615,24 +3741,32 @@ const SUPABASE_PUBLISHABLE_KEY =
       error
     } =
       await db
-        .from("activity")
+        .from(
+          "activity"
+        )
         .select(
           "id, user_id, action, resource_title, created_at"
         )
         .order(
           "created_at",
           {
-            ascending: false
+            ascending:
+              false
           }
         )
-        .limit(200);
+        .limit(
+          200
+        );
 
 
     if (error) {
 
-      console.error(error);
+      console.error(
+        error
+      );
 
-      adminActivity = [];
+      adminActivity =
+        [];
 
       return;
 
@@ -4645,20 +3779,15 @@ const SUPABASE_PUBLISHABLE_KEY =
   }
 
 
-  function getNickname(
-    userId
-  ) {
-
-    const profile =
-      adminProfiles.find(
-        item =>
-          item.user_id ===
-          userId
-      );
-
+  function getNickname(userId) {
 
     return (
-      profile?.nickname ||
+      adminProfiles.find(
+        profile =>
+          profile.user_id ===
+          userId
+      )
+      ?.nickname ||
       "Unknown"
     );
 
@@ -4674,24 +3803,19 @@ const SUPABASE_PUBLISHABLE_KEY =
 
 
     if (
-      adminActivity.length === 0
+      !adminActivity.length
     ) {
 
-      body.innerHTML = `
-
-        <tr>
-
-          <td colspan="4">
-
-            <div class="empty">
-              No activity yet.
-            </div>
-
-          </td>
-
-        </tr>
-
-      `;
+      body.innerHTML =
+        `
+          <tr>
+            <td colspan="4">
+              <div class="empty">
+                No activity yet.
+              </div>
+            </td>
+          </tr>
+        `;
 
       return;
 
@@ -4699,56 +3823,43 @@ const SUPABASE_PUBLISHABLE_KEY =
 
 
     body.innerHTML =
-      adminActivity.map(
-        item => `
+      adminActivity
+        .map(
+          item => `
+            <tr>
 
-          <tr>
+              <td>
+                <span class="student-dot"></span>
+                ${escapeHTML(
+                  getNickname(
+                    item.user_id
+                  )
+                )}
+              </td>
 
-            <td>
+              <td>
+                ${escapeHTML(
+                  item.action
+                )}
+              </td>
 
-              <span class="student-dot">
-              </span>
+              <td>
+                ${escapeHTML(
+                  item.resource_title ||
+                  ""
+                )}
+              </td>
 
-              ${escapeHTML(
-                getNickname(
-                  item.user_id
-                )
-              )}
+              <td>
+                ${new Date(
+                  item.created_at
+                ).toLocaleString()}
+              </td>
 
-            </td>
-
-            <td>
-              ${escapeHTML(
-                item.action
-              )}
-            </td>
-
-            <td>
-              ${escapeHTML(
-                item.resource_title || ""
-              )}
-            </td>
-
-            <td>
-
-              ${
-                item.created_at
-                  ? escapeHTML(
-                      new Date(
-                        item.created_at
-                      )
-                      .toLocaleString()
-                    )
-                  : ""
-              }
-
-            </td>
-
-          </tr>
-
-        `
-      )
-      .join("");
+            </tr>
+          `
+        )
+        .join("");
 
   }
 
@@ -4758,11 +3869,13 @@ const SUPABASE_PUBLISHABLE_KEY =
     document.getElementById(
       "adminStudentCount"
     ).textContent =
-      adminProfiles.filter(
-        profile =>
-          profile.role ===
-          "student"
-      ).length;
+      adminProfiles
+        .filter(
+          profile =>
+            profile.role ===
+            "student"
+        )
+        .length;
 
 
     document.getElementById(
@@ -4785,10 +3898,6 @@ const SUPABASE_PUBLISHABLE_KEY =
   }
 
 
-  /* ======================================================
-     ADMIN ADD ANNOUNCEMENT
-     ====================================================== */
-
   document.getElementById(
     "announcementForm"
   ).addEventListener(
@@ -4799,29 +3908,34 @@ const SUPABASE_PUBLISHABLE_KEY =
 
 
       const title =
-        document.getElementById(
-          "announcementTitle"
-        )
-        .value
-        .trim();
+        document
+          .getElementById(
+            "announcementTitle"
+          )
+          .value
+          .trim();
 
 
       const message =
-        document.getElementById(
-          "announcementMessage"
-        )
-        .value
-        .trim();
+        document
+          .getElementById(
+            "announcementMessage"
+          )
+          .value
+          .trim();
 
 
       const {
         error
       } =
         await db
-          .from("announcements")
+          .from(
+            "announcements"
+          )
           .insert({
             title,
             message,
+
             created_by:
               currentUser.id
           });
@@ -4829,15 +3943,15 @@ const SUPABASE_PUBLISHABLE_KEY =
 
       if (error) {
 
-        console.error(error);
-
+        console.error(
+          error
+        );
 
         showMessage(
           "adminMessage",
-          "Could not post announcement.",
+          "Could not add announcement.",
           "error"
         );
-
 
         return;
 
@@ -4846,9 +3960,7 @@ const SUPABASE_PUBLISHABLE_KEY =
 
       event.target.reset();
 
-
       await loadAnnouncements();
-
 
       updateAdminStats();
 
@@ -4863,10 +3975,6 @@ const SUPABASE_PUBLISHABLE_KEY =
   );
 
 
-  /* ======================================================
-     ADMIN ADD DATE
-     ====================================================== */
-
   document.getElementById(
     "dateForm"
   ).addEventListener(
@@ -4877,33 +3985,37 @@ const SUPABASE_PUBLISHABLE_KEY =
 
 
       const title =
-        document.getElementById(
-          "dateTitle"
-        )
-        .value
-        .trim();
+        document
+          .getElementById(
+            "dateTitle"
+          )
+          .value
+          .trim();
 
 
-      const date =
-        document.getElementById(
-          "dateValue"
-        )
-        .value;
+      const event_date =
+        document
+          .getElementById(
+            "dateValue"
+          )
+          .value;
 
 
       const category =
-        document.getElementById(
-          "dateCategory"
-        )
-        .value;
+        document
+          .getElementById(
+            "dateCategory"
+          )
+          .value;
 
 
       const details =
-        document.getElementById(
-          "dateDetails"
-        )
-        .value
-        .trim();
+        document
+          .getElementById(
+            "dateDetails"
+          )
+          .value
+          .trim();
 
 
       const {
@@ -4915,13 +4027,12 @@ const SUPABASE_PUBLISHABLE_KEY =
           )
           .insert({
             title,
-
-            event_date:
-              date,
-
+            event_date,
             category,
 
-            details,
+            details:
+              details ||
+              null,
 
             created_by:
               currentUser.id
@@ -4930,15 +4041,15 @@ const SUPABASE_PUBLISHABLE_KEY =
 
       if (error) {
 
-        console.error(error);
-
+        console.error(
+          error
+        );
 
         showMessage(
           "adminMessage",
           "Could not add date.",
           "error"
         );
-
 
         return;
 
@@ -4947,26 +4058,20 @@ const SUPABASE_PUBLISHABLE_KEY =
 
       event.target.reset();
 
-
       await loadDates();
-
 
       updateAdminStats();
 
 
       showMessage(
         "adminMessage",
-        "Important date added.",
+        "Date added.",
         "success"
       );
 
     }
   );
 
-
-  /* ======================================================
-     ADMIN ADD RESOURCE
-     ====================================================== */
 
   document.getElementById(
     "resourceForm"
@@ -4978,48 +4083,55 @@ const SUPABASE_PUBLISHABLE_KEY =
 
 
       const title =
-        document.getElementById(
-          "resourceTitle"
-        )
-        .value
-        .trim();
+        document
+          .getElementById(
+            "resourceTitle"
+          )
+          .value
+          .trim();
 
 
       const category =
-        document.getElementById(
-          "resourceCategory"
-        )
-        .value;
+        document
+          .getElementById(
+            "resourceCategory"
+          )
+          .value;
 
 
       const description =
-        document.getElementById(
-          "resourceDescription"
-        )
-        .value
-        .trim();
+        document
+          .getElementById(
+            "resourceDescription"
+          )
+          .value
+          .trim();
 
 
       const url =
-        document.getElementById(
-          "resourceURL"
-        )
-        .value
-        .trim();
+        document
+          .getElementById(
+            "resourceURL"
+          )
+          .value
+          .trim();
 
 
       const {
         error
       } =
         await db
-          .from("resources")
+          .from(
+            "resources"
+          )
           .insert({
             title,
             category,
             description,
 
             url:
-              url || null,
+              url ||
+              null,
 
             created_by:
               currentUser.id
@@ -5028,8 +4140,9 @@ const SUPABASE_PUBLISHABLE_KEY =
 
       if (error) {
 
-        console.error(error);
-
+        console.error(
+          error
+        );
 
         showMessage(
           "adminMessage",
@@ -5037,14 +4150,12 @@ const SUPABASE_PUBLISHABLE_KEY =
           "error"
         );
 
-
         return;
 
       }
 
 
       event.target.reset();
-
 
       await loadResources();
 
@@ -5059,10 +4170,6 @@ const SUPABASE_PUBLISHABLE_KEY =
   );
 
 
-  /* ======================================================
-     ADMIN ADD FAQ
-     ====================================================== */
-
   document.getElementById(
     "faqForm"
   ).addEventListener(
@@ -5073,33 +4180,38 @@ const SUPABASE_PUBLISHABLE_KEY =
 
 
       const question =
-        document.getElementById(
-          "faqQuestion"
-        )
-        .value
-        .trim();
+        document
+          .getElementById(
+            "faqQuestion"
+          )
+          .value
+          .trim();
 
 
       const answer =
-        document.getElementById(
-          "faqAnswer"
-        )
-        .value
-        .trim();
+        document
+          .getElementById(
+            "faqAnswer"
+          )
+          .value
+          .trim();
 
 
       const category =
-        document.getElementById(
-          "faqCategory"
-        )
-        .value;
+        document
+          .getElementById(
+            "faqCategory"
+          )
+          .value;
 
 
       const {
         error
       } =
         await db
-          .from("faqs")
+          .from(
+            "faqs"
+          )
           .insert({
             question,
             answer,
@@ -5115,8 +4227,9 @@ const SUPABASE_PUBLISHABLE_KEY =
 
       if (error) {
 
-        console.error(error);
-
+        console.error(
+          error
+        );
 
         showMessage(
           "adminMessage",
@@ -5124,14 +4237,12 @@ const SUPABASE_PUBLISHABLE_KEY =
           "error"
         );
 
-
         return;
 
       }
 
 
       event.target.reset();
-
 
       await loadFAQs();
 
@@ -5146,23 +4257,19 @@ const SUPABASE_PUBLISHABLE_KEY =
   );
 
 
-  /* ======================================================
-     CLEAR ACTIVITY
-     ====================================================== */
-
   document.getElementById(
     "clearActivityButton"
   ).addEventListener(
     "click",
     async () => {
 
-      const yes =
+      const confirmed =
         confirm(
           "Clear all recorded student activity?"
         );
 
 
-      if (!yes) {
+      if (!confirmed) {
         return;
       }
 
@@ -5171,7 +4278,9 @@ const SUPABASE_PUBLISHABLE_KEY =
         error
       } =
         await db
-          .from("activity")
+          .from(
+            "activity"
+          )
           .delete()
           .gte(
             "id",
@@ -5181,8 +4290,9 @@ const SUPABASE_PUBLISHABLE_KEY =
 
       if (error) {
 
-        console.error(error);
-
+        console.error(
+          error
+        );
 
         showMessage(
           "adminMessage",
@@ -5190,14 +4300,12 @@ const SUPABASE_PUBLISHABLE_KEY =
           "error"
         );
 
-
         return;
 
       }
 
 
       await loadAdminActivity();
-
 
       renderAdminActivity();
 
@@ -5214,21 +4322,27 @@ const SUPABASE_PUBLISHABLE_KEY =
   );
 
 
-  /* ======================================================
-     ADMIN LOGOUT
-     ====================================================== */
-
   document.getElementById(
     "adminLogoutButton"
   ).addEventListener(
     "click",
     async () => {
 
-      await db.auth.signOut();
+      if (
+        db
+      ) {
+
+        await db.auth
+          .signOut();
+
+      }
 
 
-      currentUser = null;
-      currentProfile = null;
+      currentUser =
+        null;
+
+      currentProfile =
+        null;
 
 
       await initializeStudent();
@@ -5241,10 +4355,6 @@ const SUPABASE_PUBLISHABLE_KEY =
     }
   );
 
-
-  /* ======================================================
-     INITIALIZE
-     ====================================================== */
 
   async function loadSharedData() {
 
@@ -5301,50 +4411,60 @@ const SUPABASE_PUBLISHABLE_KEY =
 
   async function start() {
 
-    const validUrl =
-      SUPABASE_URL.startsWith("https://") &&
-      SUPABASE_URL.endsWith(".supabase.co");
+    renderCalendars();
 
-    const validKey =
-      SUPABASE_PUBLISHABLE_KEY.startsWith("sb_publishable_");
 
-    if (!validUrl || !validKey) {
+    if (
+      !window.supabase
+    ) {
 
       setConnection(
-        "● Supabase configuration error",
+        "● Supabase library failed to load",
         true
       );
 
+
       showMessage(
         "studentMessage",
-        "The Supabase URL or publishable key is not configured correctly.",
+        "Supabase could not load. Refresh the page and check your internet connection.",
         "error"
       );
 
-      renderCalendars();
       return;
+
     }
 
+
     try {
+
+      db =
+        window.supabase
+          .createClient(
+            SUPABASE_URL,
+            SUPABASE_PUBLISHABLE_KEY
+          );
+
 
       await initializeStudent();
 
     } catch (error) {
 
-      console.error(error);
+      console.error(
+        error
+      );
+
 
       setConnection(
         "● Could not connect",
         true
       );
 
+
       showMessage(
         "studentMessage",
-        "The website loaded, but it could not connect to Supabase. Check the browser console for details.",
+        "Could not connect to Science Club. Open the browser Console for the exact error.",
         "error"
       );
-
-      renderCalendars();
 
     }
 
