@@ -9418,3 +9418,1789 @@ start();
 
 </body>
 </html>
+<!-- ==========================================
+     CODEHS-STYLE MODULE PARTS
+     ========================================== -->
+
+<style>
+
+.module-part-progress {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 5px 0 18px;
+}
+
+.module-part-button {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+
+  border: 1px solid #cbd5dc;
+  border-radius: 6px;
+
+  background: white;
+  color: #52636f;
+
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.module-part-button.current {
+  background: #17324a;
+  border-color: #17324a;
+  color: white;
+}
+
+.module-part-button.complete {
+  background: #edf7f3;
+  border-color: #b9d9ce;
+  color: #2f6659;
+}
+
+.module-part-button.locked {
+  background: #f2f4f5;
+  border-color: #e0e5e8;
+  color: #9ba6ad;
+  cursor: not-allowed;
+}
+
+
+.module-part-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 11px 13px;
+  margin-bottom: 15px;
+
+  border: 1px solid #dbe2e8;
+  border-radius: 5px;
+
+  background: #f8fafb;
+
+  font-size: 11px;
+  color: #667482;
+}
+
+
+.module-part-card {
+  border: 1px solid #dbe2e8;
+  border-radius: 7px;
+  background: white;
+  padding: 20px;
+}
+
+
+.module-part-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  align-items: flex-start;
+
+  margin-bottom: 15px;
+}
+
+
+.module-part-header h3 {
+  margin: 0;
+  color: #17324a;
+}
+
+
+.module-part-type {
+  padding: 5px 8px;
+
+  border: 1px solid #d9e6eb;
+  border-radius: 4px;
+
+  background: #edf4f7;
+  color: #275f75;
+
+  font-size: 9px;
+  font-weight: bold;
+}
+
+
+.module-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 18px;
+  padding-top: 18px;
+
+  border-top: 1px solid #dbe2e8;
+}
+
+
+.module-navigation-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.module-locked-message {
+  padding: 8px 10px;
+
+  border: 1px solid #eadfbf;
+  border-radius: 4px;
+
+  background: #fff9e8;
+  color: #79683f;
+
+  font-size: 10px;
+}
+
+
+.module-navigation button {
+  padding: 10px 15px;
+
+  border-radius: 5px;
+
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
+.module-navigation button:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+
+
+.module-complete-screen {
+  text-align: center;
+  padding: 45px 20px;
+}
+
+
+.module-complete-screen h2 {
+  color: #17324a;
+  font-size: 27px;
+  margin-bottom: 8px;
+}
+
+
+.module-complete-screen p {
+  color: #667482;
+}
+
+
+.module-video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+
+  margin: 15px 0;
+
+  border: 0;
+  border-radius: 7px;
+
+  background: black;
+}
+
+
+.module-interactive {
+  width: 100%;
+  min-height: 430px;
+
+  border: 1px solid #dbe2e8;
+  border-radius: 7px;
+
+  margin-top: 15px;
+}
+
+</style>
+
+
+<!-- ==========================================
+     MODULE PLAYER
+     ========================================== -->
+
+<div id="modulePartPlayer">
+
+  <div
+    id="modulePartProgress"
+    class="module-part-progress"
+  ></div>
+
+
+  <div class="module-part-info">
+
+    <span id="modulePartNumber">
+      Part 1 of 1
+    </span>
+
+    <span id="modulePartStatus">
+      Complete this part to continue.
+    </span>
+
+  </div>
+
+
+  <div id="modulePartContent"></div>
+
+
+  <div
+    id="modulePartNavigation"
+    class="module-navigation"
+  >
+
+    <button
+      id="modulePrevious"
+      class="secondary"
+      type="button"
+    >
+      ← Previous
+    </button>
+
+
+    <div class="module-navigation-right">
+
+      <span
+        id="modulePartLocked"
+        class="module-locked-message"
+      >
+        Complete this part to unlock the next one.
+      </span>
+
+
+      <button
+        id="moduleContinue"
+        class="primary"
+        type="button"
+        disabled
+      >
+        Continue →
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/*
+  activeModuleActivities
+  = activities belonging to the currently opened module.
+
+  activeModuleProgress
+  = student's saved progress.
+
+  These already exist in your portal.
+*/
+
+let currentModulePart = 0;
+
+
+/* ------------------------------------------
+   FIND SAVED PROGRESS FOR AN ACTIVITY
+   ------------------------------------------ */
+
+function getPartProgress(
+  activityId
+) {
+
+  return activeModuleProgress.find(
+    item =>
+      Number(
+        item.activity_id
+      ) ===
+      Number(
+        activityId
+      )
+  );
+
+}
+
+
+/* ------------------------------------------
+   CHECK WHETHER A PART IS UNLOCKED
+   ------------------------------------------ */
+
+function partIsUnlocked(
+  partIndex
+) {
+
+  if (
+    partIndex === 0
+  ) {
+
+    return true;
+
+  }
+
+
+  /*
+    Every activity before this one
+    must already be complete.
+  */
+
+  return activeModuleActivities
+    .slice(
+      0,
+      partIndex
+    )
+    .every(
+      activity => {
+
+        return !!getPartProgress(
+          activity.id
+        )?.is_complete;
+
+      }
+    );
+
+}
+
+
+/* ------------------------------------------
+   DISPLAY TOP PART BUTTONS
+   ------------------------------------------ */
+
+function renderModulePartProgress() {
+
+  const holder =
+    document.getElementById(
+      "modulePartProgress"
+    );
+
+
+  holder.innerHTML =
+    activeModuleActivities
+      .map(
+        (
+          activity,
+          index
+        ) => {
+
+          const complete =
+            !!getPartProgress(
+              activity.id
+            )?.is_complete;
+
+
+          const unlocked =
+            partIsUnlocked(
+              index
+            );
+
+
+          let className =
+            "module-part-button";
+
+
+          if (
+            index ===
+            currentModulePart
+          ) {
+
+            className +=
+              " current";
+
+          } else if (
+            complete
+          ) {
+
+            className +=
+              " complete";
+
+          } else if (
+            !unlocked
+          ) {
+
+            className +=
+              " locked";
+
+          }
+
+
+          return `
+            <button
+              type="button"
+
+              class="${className}"
+
+              data-part="${index}"
+
+              ${
+                unlocked
+                  ? ""
+                  : "disabled"
+              }
+
+              title="Part ${index + 1}: ${escapeModuleText(
+                activity.title
+              )}"
+            >
+
+              ${
+                complete
+                  ? "✓"
+                  : index + 1
+              }
+
+            </button>
+          `;
+
+        }
+      )
+      .join("");
+
+
+  holder
+    .querySelectorAll(
+      ".module-part-button:not(:disabled)"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            currentModulePart =
+              Number(
+                button.dataset.part
+              );
+
+
+            renderCurrentModulePart();
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+/* ------------------------------------------
+   BASIC SAFE TEXT
+   ------------------------------------------ */
+
+function escapeModuleText(
+  value
+) {
+
+  return String(
+    value ?? ""
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+/* ------------------------------------------
+   ACTIVITY TYPE LABEL
+   ------------------------------------------ */
+
+function modulePartType(
+  type
+) {
+
+  const labels = {
+
+    lesson:
+      "LESSON",
+
+    video:
+      "VIDEO",
+
+    interactive:
+      "INTERACTIVE",
+
+    mcq:
+      "PRACTICE",
+
+    short_answer:
+      "SHORT ANSWER",
+
+    checklist:
+      "TASK",
+
+    resource:
+      "RESOURCE"
+
+  };
+
+
+  return (
+    labels[type] ||
+    type.toUpperCase()
+  );
+
+}
+
+
+/* ------------------------------------------
+   YOUTUBE URL → EMBED
+   ------------------------------------------ */
+
+function moduleYouTubeEmbed(
+  url
+) {
+
+  if (
+    !url
+  ) {
+
+    return "";
+
+  }
+
+
+  try {
+
+    const parsed =
+      new URL(
+        url
+      );
+
+
+    let id =
+      "";
+
+
+    if (
+      parsed.hostname.includes(
+        "youtu.be"
+      )
+    ) {
+
+      id =
+        parsed.pathname
+          .split("/")
+          .filter(Boolean)[0] ||
+        "";
+
+    }
+
+
+    if (
+      parsed.hostname.includes(
+        "youtube.com"
+      )
+    ) {
+
+      if (
+        parsed.pathname ===
+        "/watch"
+      ) {
+
+        id =
+          parsed.searchParams.get(
+            "v"
+          ) ||
+          "";
+
+      }
+
+
+      if (
+        parsed.pathname.startsWith(
+          "/shorts/"
+        )
+      ) {
+
+        id =
+          parsed.pathname
+            .split("/")[2] ||
+          "";
+
+      }
+
+    }
+
+
+    if (
+      !id
+    ) {
+
+      return "";
+
+    }
+
+
+    return (
+      "https://www.youtube-nocookie.com/embed/" +
+      encodeURIComponent(
+        id
+      )
+    );
+
+  } catch (
+    error
+  ) {
+
+    return "";
+
+  }
+
+}
+
+
+/* ------------------------------------------
+   SHOW ONE PART ONLY
+   ------------------------------------------ */
+
+function renderCurrentModulePart() {
+
+  if (
+    !activeModuleActivities.length
+  ) {
+
+    document
+      .getElementById(
+        "modulePartContent"
+      )
+      .innerHTML =
+        `
+          <p>
+            This module does not have any parts yet.
+          </p>
+        `;
+
+
+    return;
+
+  }
+
+
+  currentModulePart =
+    Math.max(
+      0,
+      Math.min(
+        currentModulePart,
+        activeModuleActivities.length - 1
+      )
+    );
+
+
+  const activity =
+    activeModuleActivities[
+      currentModulePart
+    ];
+
+
+  const progress =
+    getPartProgress(
+      activity.id
+    );
+
+
+  const complete =
+    !!progress
+      ?.is_complete;
+
+
+  document
+    .getElementById(
+      "modulePartNumber"
+    )
+    .textContent =
+      `Part ${currentModulePart + 1} of ${activeModuleActivities.length}`;
+
+
+  document
+    .getElementById(
+      "modulePartStatus"
+    )
+    .textContent =
+      complete
+        ? "Completed — next part unlocked."
+        : "Complete this part to continue.";
+
+
+  let activityHTML =
+    "";
+
+
+  /* =========================
+     LESSON
+     ========================= */
+
+  if (
+    activity.activity_type ===
+    "lesson"
+  ) {
+
+    activityHTML =
+      `
+        <div>
+          ${escapeModuleText(
+            activity.instructions ||
+            ""
+          )}
+        </div>
+
+        <button
+          class="primary"
+          id="completeCurrentPart"
+          style="margin-top:15px"
+        >
+
+          ${
+            complete
+              ? "Completed ✓"
+              : "Mark Part Complete"
+          }
+
+        </button>
+      `;
+
+  }
+
+
+  /* =========================
+     VIDEO
+     ========================= */
+
+  if (
+    activity.activity_type ===
+    "video"
+  ) {
+
+    const video =
+      moduleYouTubeEmbed(
+        activity.resource_url
+      );
+
+
+    activityHTML =
+      `
+        <p>
+          ${escapeModuleText(
+            activity.instructions ||
+            ""
+          )}
+        </p>
+
+
+        ${
+          video
+            ? `
+                <iframe
+                  class="module-video"
+                  src="${video}"
+                  allowfullscreen
+                ></iframe>
+              `
+            : `
+                <p>
+                  Video unavailable.
+                </p>
+              `
+        }
+
+
+        <button
+          class="primary"
+          id="completeCurrentPart"
+        >
+
+          ${
+            complete
+              ? "Video Completed ✓"
+              : "I Finished the Video"
+          }
+
+        </button>
+      `;
+
+  }
+
+
+  /* =========================
+     INTERACTIVE ANIMATION
+     ========================= */
+
+  if (
+    activity.activity_type ===
+    "interactive"
+  ) {
+
+    activityHTML =
+      `
+        <p>
+          ${escapeModuleText(
+            activity.instructions ||
+            ""
+          )}
+        </p>
+
+
+        <iframe
+          id="currentInteractiveFrame"
+          class="module-interactive"
+          sandbox="allow-scripts"
+        ></iframe>
+
+
+        <button
+          class="primary"
+          id="completeCurrentPart"
+          style="margin-top:12px"
+        >
+
+          ${
+            complete
+              ? "Activity Completed ✓"
+              : "Mark Activity Complete"
+          }
+
+        </button>
+      `;
+
+  }
+
+
+  /* =========================
+     MULTIPLE CHOICE
+     ========================= */
+
+  if (
+    activity.activity_type ===
+    "mcq"
+  ) {
+
+    activityHTML =
+      `
+        <p>
+          ${escapeModuleText(
+            activity.instructions ||
+            ""
+          )}
+        </p>
+
+
+        ${
+          [
+            "A",
+            "B",
+            "C",
+            "D"
+          ]
+          .map(
+            letter => `
+
+              <label class="activityOption">
+
+                <input
+                  type="radio"
+                  name="currentModuleAnswer"
+                  value="${letter}"
+                >
+
+                <span>
+
+                  <b>
+                    ${letter}.
+                  </b>
+
+                  ${escapeModuleText(
+                    activity[
+                      "option_" +
+                      letter.toLowerCase()
+                    ] ||
+                    ""
+                  )}
+
+                </span>
+
+              </label>
+            `
+          )
+          .join("")
+        }
+
+
+        <button
+          class="primary"
+          id="checkCurrentPart"
+          style="margin-top:10px"
+        >
+          Check Answer
+        </button>
+
+
+        <div
+          id="currentPartFeedback"
+          class="activityFeedback"
+        ></div>
+      `;
+
+  }
+
+
+  /* =========================
+     SHORT ANSWER
+     ========================= */
+
+  if (
+    activity.activity_type ===
+    "short_answer"
+  ) {
+
+    activityHTML =
+      `
+        <p>
+          ${escapeModuleText(
+            activity.instructions ||
+            ""
+          )}
+        </p>
+
+
+        <textarea
+          id="currentShortAnswer"
+          style="
+            width:100%;
+            min-height:120px;
+            margin:12px 0;
+            padding:10px;
+          "
+          placeholder="Write your answer..."
+        ></textarea>
+
+
+        <button
+          id="submitCurrentShortAnswer"
+          class="primary"
+        >
+          Submit Answer
+        </button>
+
+
+        <div
+          id="currentPartFeedback"
+          class="activityFeedback"
+        ></div>
+      `;
+
+  }
+
+
+  /* =========================
+     CHECKLIST
+     ========================= */
+
+  if (
+    activity.activity_type ===
+    "checklist"
+  ) {
+
+    activityHTML =
+      `
+        <p>
+          ${escapeModuleText(
+            activity.instructions ||
+            ""
+          )}
+        </p>
+
+
+        <label class="activityOption">
+
+          <input
+            id="currentChecklist"
+            type="checkbox"
+            ${
+              complete
+                ? "checked"
+                : ""
+            }
+          >
+
+          I completed this task.
+
+        </label>
+
+
+        <button
+          class="primary"
+          id="completeCurrentPart"
+        >
+          Save Completion
+        </button>
+      `;
+
+  }
+
+
+  /* =========================
+     RESOURCE
+     ========================= */
+
+  if (
+    activity.activity_type ===
+    "resource"
+  ) {
+
+    activityHTML =
+      `
+        <p>
+          ${escapeModuleText(
+            activity.instructions ||
+            ""
+          )}
+        </p>
+
+
+        ${
+          activity.resource_url
+            ? `
+                <button
+                  id="openCurrentResource"
+                  class="secondary"
+                  type="button"
+                >
+                  Open Resource ↗
+                </button>
+              `
+            : ""
+        }
+
+
+        <button
+          class="primary"
+          id="completeCurrentPart"
+        >
+          ${
+            complete
+              ? "Completed ✓"
+              : "Mark Part Complete"
+          }
+        </button>
+      `;
+
+  }
+
+
+  document
+    .getElementById(
+      "modulePartContent"
+    )
+    .innerHTML =
+      `
+        <div class="module-part-card">
+
+          <div class="module-part-header">
+
+            <h3>
+              ${currentModulePart + 1}.
+              ${escapeModuleText(
+                activity.title
+              )}
+            </h3>
+
+            <span class="module-part-type">
+              ${modulePartType(
+                activity.activity_type
+              )}
+            </span>
+
+          </div>
+
+          ${activityHTML}
+
+        </div>
+      `;
+
+
+  /*
+    INTERACTIVE ACTIVITY
+  */
+
+  if (
+    activity.activity_type ===
+    "interactive"
+  ) {
+
+    const frame =
+      document.getElementById(
+        "currentInteractiveFrame"
+      );
+
+
+    if (
+      frame
+    ) {
+
+      frame.srcdoc =
+        buildInteractiveDocument(
+          activity.interactive_code ||
+          ""
+        );
+
+    }
+
+  }
+
+
+  /*
+    RESOURCE BUTTON
+  */
+
+  const resourceButton =
+    document.getElementById(
+      "openCurrentResource"
+    );
+
+
+  if (
+    resourceButton
+  ) {
+
+    resourceButton.onclick =
+      () => {
+
+        window.open(
+          activity.resource_url,
+          "_blank",
+          "noopener,noreferrer"
+        );
+
+      };
+
+  }
+
+
+  /*
+    SIMPLE COMPLETION
+  */
+
+  const completeButton =
+    document.getElementById(
+      "completeCurrentPart"
+    );
+
+
+  if (
+    completeButton
+  ) {
+
+    completeButton.onclick =
+      async () => {
+
+        if (
+          activity.activity_type ===
+            "checklist" &&
+          !document
+            .getElementById(
+              "currentChecklist"
+            )
+            ?.checked
+        ) {
+
+          alert(
+            "Complete the task first."
+          );
+
+          return;
+
+        }
+
+
+        await completeModulePart(
+          activity.id,
+          {
+            completed:
+              true
+          }
+        );
+
+      };
+
+  }
+
+
+  /*
+    MCQ
+  */
+
+  const checkButton =
+    document.getElementById(
+      "checkCurrentPart"
+    );
+
+
+  if (
+    checkButton
+  ) {
+
+    checkButton.onclick =
+      async () => {
+
+        const answer =
+          document.querySelector(
+            'input[name="currentModuleAnswer"]:checked'
+          );
+
+
+        if (
+          !answer
+        ) {
+
+          alert(
+            "Choose an answer first."
+          );
+
+          return;
+
+        }
+
+
+        await completeModulePart(
+          activity.id,
+          {
+            answer:
+              answer.value
+          }
+        );
+
+      };
+
+  }
+
+
+  /*
+    SHORT ANSWER
+  */
+
+  const shortButton =
+    document.getElementById(
+      "submitCurrentShortAnswer"
+    );
+
+
+  if (
+    shortButton
+  ) {
+
+    shortButton.onclick =
+      async () => {
+
+        const text =
+          document
+            .getElementById(
+              "currentShortAnswer"
+            )
+            .value
+            .trim();
+
+
+        if (
+          !text
+        ) {
+
+          alert(
+            "Write your answer first."
+          );
+
+          return;
+
+        }
+
+
+        await completeModulePart(
+          activity.id,
+          {
+            text
+          }
+        );
+
+      };
+
+  }
+
+
+  updateModulePartControls();
+
+  renderModulePartProgress();
+
+}
+
+
+/* ------------------------------------------
+   SAVE COMPLETION TO SUPABASE
+   ------------------------------------------ */
+
+async function completeModulePart(
+  activityId,
+  response
+) {
+
+  const {
+    data,
+    error
+  } =
+    await db.rpc(
+      "submit_module_activity",
+      {
+
+        p_activity_id:
+          activityId,
+
+        p_response:
+          response
+
+      }
+    );
+
+
+  if (
+    error
+  ) {
+
+    console.error(
+      error
+    );
+
+
+    alert(
+      "Could not save this part."
+    );
+
+    return;
+
+  }
+
+
+  /*
+    Reload progress
+  */
+
+  const {
+    data:
+      newProgress,
+
+    error:
+      progressError
+  } =
+    await db
+      .from(
+        "module_progress"
+      )
+      .select(
+        "activity_id,response,is_complete,score,max_score,updated_at"
+      )
+      .eq(
+        "user_id",
+        currentUser.id
+      )
+      .eq(
+        "module_id",
+        activeModule.id
+      );
+
+
+  if (
+    progressError
+  ) {
+
+    console.error(
+      progressError
+    );
+
+    return;
+
+  }
+
+
+  activeModuleProgress =
+    newProgress ||
+    [];
+
+
+  /*
+    MCQ feedback
+  */
+
+  if (
+    data?.activity_type ===
+    "mcq"
+  ) {
+
+    if (
+      data.correct
+    ) {
+
+      alert(
+        "Correct! The next part is now unlocked."
+      );
+
+    } else {
+
+      alert(
+        "Not quite. Review the explanation and try again."
+      );
+
+    }
+
+  }
+
+
+  renderCurrentModulePart();
+
+}
+
+
+/* ------------------------------------------
+   PREVIOUS / CONTINUE BUTTONS
+   ------------------------------------------ */
+
+function updateModulePartControls() {
+
+  const activity =
+    activeModuleActivities[
+      currentModulePart
+    ];
+
+
+  const complete =
+    !!getPartProgress(
+      activity.id
+    )?.is_complete;
+
+
+  const previous =
+    document.getElementById(
+      "modulePrevious"
+    );
+
+
+  const next =
+    document.getElementById(
+      "moduleContinue"
+    );
+
+
+  const lockMessage =
+    document.getElementById(
+      "modulePartLocked"
+    );
+
+
+  previous.disabled =
+    currentModulePart ===
+    0;
+
+
+  next.disabled =
+    !complete;
+
+
+  lockMessage.style.display =
+    complete
+      ? "none"
+      : "inline-block";
+
+
+  if (
+    currentModulePart ===
+    activeModuleActivities.length - 1
+  ) {
+
+    next.textContent =
+      "Finish Module";
+
+  } else {
+
+    next.textContent =
+      "Continue →";
+
+  }
+
+}
+
+
+document
+  .getElementById(
+    "modulePrevious"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      if (
+        currentModulePart >
+        0
+      ) {
+
+        currentModulePart--;
+
+        renderCurrentModulePart();
+
+      }
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "moduleContinue"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      const current =
+        activeModuleActivities[
+          currentModulePart
+        ];
+
+
+      if (
+        !getPartProgress(
+          current.id
+        )
+        ?.is_complete
+      ) {
+
+        return;
+
+      }
+
+
+      /*
+        LAST PART
+      */
+
+      if (
+        currentModulePart ===
+        activeModuleActivities.length - 1
+      ) {
+
+        showModuleFinished();
+
+        return;
+
+      }
+
+
+      /*
+        NEXT PART
+      */
+
+      currentModulePart++;
+
+      renderCurrentModulePart();
+
+    }
+  );
+
+
+/* ------------------------------------------
+   FINISHED SCREEN
+   ------------------------------------------ */
+
+function showModuleFinished() {
+
+  document
+    .getElementById(
+      "modulePartProgress"
+    )
+    .innerHTML =
+      activeModuleActivities
+        .map(
+          () => `
+
+            <button
+              class="
+                module-part-button
+                complete
+              "
+            >
+              ✓
+            </button>
+          `
+        )
+        .join("");
+
+
+  document
+    .getElementById(
+      "modulePartContent"
+    )
+    .innerHTML =
+      `
+        <div class="module-complete-screen">
+
+          <h2>
+            Module Complete
+          </h2>
+
+          <p>
+            You completed every part of
+            <b>
+              ${escapeModuleText(
+                activeModule.title
+              )}
+            </b>.
+          </p>
+
+        </div>
+      `;
+
+
+  document
+    .getElementById(
+      "modulePartNumber"
+    )
+    .textContent =
+      `${activeModuleActivities.length} of ${activeModuleActivities.length} parts complete`;
+
+
+  document
+    .getElementById(
+      "modulePartStatus"
+    )
+    .textContent =
+      "Module completed";
+
+
+  document
+    .getElementById(
+      "modulePartNavigation"
+    )
+    .style.display =
+      "none";
+
+}
+
+
+/* ------------------------------------------
+   OPEN MODULE
+   ------------------------------------------ */
+
+async function openModuleInParts(
+  module
+) {
+
+  activeModule =
+    module;
+
+
+  const {
+    data:
+      activities,
+
+    error:
+      activityError
+  } =
+    await db.rpc(
+      "get_module_activities",
+      {
+        p_module_id:
+          module.id
+      }
+    );
+
+
+  if (
+    activityError
+  ) {
+
+    console.error(
+      activityError
+    );
+
+    return;
+
+  }
+
+
+  const {
+    data:
+      progress
+  } =
+    await db
+      .from(
+        "module_progress"
+      )
+      .select(
+        "activity_id,response,is_complete,score,max_score,updated_at"
+      )
+      .eq(
+        "user_id",
+        currentUser.id
+      )
+      .eq(
+        "module_id",
+        module.id
+      );
+
+
+  activeModuleActivities =
+    activities ||
+    [];
+
+
+  activeModuleProgress =
+    progress ||
+    [];
+
+
+  /*
+    Automatically start on
+    the first unfinished part.
+  */
+
+  const unfinished =
+    activeModuleActivities
+      .findIndex(
+        activity =>
+          !getPartProgress(
+            activity.id
+          )
+          ?.is_complete
+      );
+
+
+  currentModulePart =
+    unfinished === -1
+      ? 0
+      : unfinished;
+
+
+  document
+    .getElementById(
+      "modulePartNavigation"
+    )
+    .style.display =
+      "flex";
+
+
+  renderCurrentModulePart();
+
+}
+
+</script>
