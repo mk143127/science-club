@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Science Club Student Portal</title>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -183,7 +185,7 @@
       border-radius: 15px;
       padding: 20px;
       margin-bottom: 18px;
-      box-shadow: 0 7px 24px rgba(0, 0, 0, .04);
+      box-shadow: 0 7px 24px rgba(0, 0, 0, 0.04);
     }
 
     .card h2 {
@@ -327,7 +329,7 @@
 
     .grid2 {
       display: grid;
-      grid-template-columns: 1.35fr .85fr;
+      grid-template-columns: 1.35fr 0.85fr;
       gap: 18px;
     }
 
@@ -345,7 +347,7 @@
 
     .nickBanner p {
       font-size: 11px;
-      opacity: .88;
+      opacity: 0.88;
       margin: 5px 0 0;
     }
 
@@ -453,7 +455,8 @@
 
     .linkCards,
     .quizGrid,
-    .tutorialGrid {
+    .tutorialGrid,
+    .moduleGrid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
       gap: 13px;
@@ -461,7 +464,8 @@
 
     .linkCard,
     .quizCard,
-    .tutorialStep {
+    .tutorialStep,
+    .moduleCard {
       border: 1px solid var(--line);
       border-radius: 13px;
       padding: 16px;
@@ -470,14 +474,16 @@
 
     .linkCard h3,
     .quizCard h3,
-    .tutorialStep h3 {
+    .tutorialStep h3,
+    .moduleCard h3 {
       font-size: 13px;
       margin: 0 0 7px;
     }
 
     .linkCard p,
     .quizCard p,
-    .tutorialStep p {
+    .tutorialStep p,
+    .moduleCard p {
       font-size: 10px;
       color: var(--muted);
       line-height: 1.6;
@@ -562,6 +568,155 @@
       margin-bottom: 10px;
     }
 
+    .moduleProgress {
+      height: 8px;
+      background: #eceef4;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+
+    .moduleProgress > div {
+      height: 100%;
+      background: var(--p);
+      width: 0;
+    }
+
+    .activityCard {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 17px;
+      margin-bottom: 12px;
+      background: #fff;
+    }
+
+    .activityCard.complete {
+      border-color: #b9e8d8;
+      background: #f8fffc;
+    }
+
+    .activityHead {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 9px;
+    }
+
+    .activityHead h3 {
+      font-size: 13px;
+      margin: 0;
+    }
+
+    .activityType {
+      font-size: 9px;
+      font-weight: 800;
+      padding: 5px 7px;
+      border-radius: 7px;
+      background: var(--ps);
+      color: var(--p);
+      white-space: nowrap;
+    }
+
+    .activityBody {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    .activityOptions {
+      display: grid;
+      gap: 7px;
+      margin: 12px 0;
+    }
+
+    .activityOption {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 9px;
+      font-size: 11px;
+    }
+
+    .activityFeedback {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 9px;
+      font-size: 11px;
+      display: none;
+      white-space: pre-wrap;
+    }
+
+    .activityFeedback.show {
+      display: block;
+    }
+
+    .activityFeedback.good {
+      background: var(--gs);
+      color: #087655;
+    }
+
+    .activityFeedback.bad {
+      background: var(--rs);
+      color: #b5282d;
+    }
+
+    .activityFeedback.neutral {
+      background: var(--ps);
+      color: #4238b4;
+    }
+
+    .moduleAdminItem {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 13px;
+      margin-bottom: 10px;
+      background: #fff;
+    }
+
+    .moduleAdminItem h3 {
+      font-size: 12px;
+      margin: 0 0 5px;
+    }
+
+    .moduleAdminMeta {
+      font-size: 10px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .moduleActivityAdmin {
+      margin-top: 8px;
+      padding: 9px;
+      border-radius: 9px;
+      background: #f7f8fb;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .moduleActivityAdmin .grow {
+      min-width: 0;
+    }
+
+    .moduleActivityAdmin b {
+      font-size: 10px;
+    }
+
+    .moduleActivityAdmin span {
+      font-size: 9px;
+      color: var(--muted);
+    }
+
+    .fieldHint {
+      font-size: 9px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
     .overlay {
       display: none;
       position: fixed;
@@ -624,7 +779,7 @@
 
     .adminGrid {
       display: grid;
-      grid-template-columns: 1.2fr .8fr;
+      grid-template-columns: 1.2fr 0.8fr;
       gap: 18px;
     }
 
@@ -712,21 +867,18 @@
       <button class="navBtn" data-page="calendar">📅 Calendar</button>
       <button class="navBtn" data-page="resources">📚 Resources</button>
       <button class="navBtn" data-page="projects">💡 Project Lab</button>
+      <button class="navBtn" data-page="modules">🧪 CCC Modules</button>
       <button class="navBtn" data-page="quizzes">🧠 CCC Quizzes</button>
       <button class="navBtn" data-page="tutorial">✨ Tutorial</button>
       <button class="navBtn" data-page="faq">? FAQs</button>
     </nav>
 
     <div class="sideBottom">
-
-      <button id="adminButton" class="adminBtn">
-        ⚙ Admin
-      </button>
+      <button id="adminButton" class="adminBtn">⚙ Admin</button>
 
       <div class="tiny">
         Use a random username. Do not use your full real name.
       </div>
-
     </div>
 
   </aside>
@@ -739,7 +891,7 @@
     </div>
 
 
-    <!-- STUDENT LOGIN -->
+    <!-- STUDENT SIGN IN -->
 
     <section id="authPage" class="page active">
 
@@ -757,6 +909,7 @@
           </p>
 
           <div id="authMsg" class="msg"></div>
+
 
           <div class="authTabs">
 
@@ -867,7 +1020,7 @@
 
           <p>
             Science Club competitions, projects,
-            quizzes and deadlines in one place.
+            modules, quizzes and deadlines in one place.
           </p>
 
         </div>
@@ -898,11 +1051,13 @@
           </b>
 
           <p>
-            Your random username is used for activity
-            and quiz history. Do not use your real name.
+            Your random username is used for activity,
+            module progress and quiz history.
+            Do not use your real name.
           </p>
 
         </div>
+
 
         <div>
           <b id="profileUsername">
@@ -923,6 +1078,11 @@
         <div class="stat">
           <small>Resources Opened</small>
           <strong id="openedCount">0</strong>
+        </div>
+
+        <div class="stat">
+          <small>Published Modules</small>
+          <strong id="moduleCount">0</strong>
         </div>
 
         <div class="stat">
@@ -1017,6 +1177,28 @@
           <section class="card">
 
             <h2>
+              🧪 CCC Learning Modules
+            </h2>
+
+            <p class="muted">
+              Work through lesson notes, practice questions,
+              short responses, checklists and resources built
+              by your club leaders.
+            </p>
+
+            <button
+              class="primary jump"
+              data-jump="modules"
+            >
+              Open Modules
+            </button>
+
+          </section>
+
+
+          <section class="card">
+
+            <h2>
               🧠 CCC Practice
             </h2>
 
@@ -1050,7 +1232,6 @@
       <header class="top">
 
         <div>
-
           <h1>
             Science Club Calendar 📅
           </h1>
@@ -1058,7 +1239,6 @@
           <p>
             Meetings, competitions and deadlines.
           </p>
-
         </div>
 
       </header>
@@ -1074,6 +1254,7 @@
           <h2>
             Calendar
           </h2>
+
 
           <div class="calControls">
 
@@ -1201,16 +1382,40 @@
           need, test or measurable outcome.
         </p>
 
+
         <div class="pillRow">
 
-          <span class="pill">Engineering</span>
-          <span class="pill">Software / Apps</span>
-          <span class="pill">Robotics</span>
-          <span class="pill">Life Science</span>
-          <span class="pill">Chemistry</span>
-          <span class="pill">Physics</span>
-          <span class="pill">Mathematics</span>
-          <span class="pill">Data Studies</span>
+          <span class="pill">
+            Engineering
+          </span>
+
+          <span class="pill">
+            Software / Apps
+          </span>
+
+          <span class="pill">
+            Robotics
+          </span>
+
+          <span class="pill">
+            Life Science
+          </span>
+
+          <span class="pill">
+            Chemistry
+          </span>
+
+          <span class="pill">
+            Physics
+          </span>
+
+          <span class="pill">
+            Mathematics
+          </span>
+
+          <span class="pill">
+            Data Studies
+          </span>
 
         </div>
 
@@ -1296,8 +1501,8 @@
             </h3>
 
             <p>
-              Browse software, data, simulation and
-              computing project ideas.
+              Browse software, data, simulation
+              and computing project ideas.
             </p>
 
             <button
@@ -1449,6 +1654,126 @@
         >
           Pick your options and click the button.
         </div>
+
+      </section>
+
+    </section>
+
+
+    <!-- CCC MODULES -->
+
+    <section
+      id="modulesPage"
+      class="page"
+    >
+
+      <header class="top">
+
+        <div>
+
+          <h1>
+            CCC Learning Modules 🧪
+          </h1>
+
+          <p>
+            Work through contest topics and activities
+            created by Science Club leadership.
+          </p>
+
+        </div>
+
+      </header>
+
+
+      <div
+        id="moduleMsg"
+        class="msg"
+      ></div>
+
+
+      <section
+        id="moduleListCard"
+        class="card"
+      >
+
+        <div
+          class="top"
+          style="margin-bottom:10px"
+        >
+
+          <div>
+
+            <h2>
+              Published Modules
+            </h2>
+
+            <p class="muted">
+              Choose a module to begin.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="moduleList"
+          class="moduleGrid"
+        ></div>
+
+      </section>
+
+
+      <section
+        id="modulePlayerCard"
+        class="card"
+        style="display:none"
+      >
+
+        <div
+          class="top"
+          style="margin-bottom:10px"
+        >
+
+          <div>
+
+            <h2 id="activeModuleTitle">
+              Module
+            </h2>
+
+            <p
+              id="activeModuleDesc"
+              class="muted"
+            ></p>
+
+          </div>
+
+
+          <button
+            id="backModules"
+            class="secondary"
+          >
+            ← Back to Modules
+          </button>
+
+        </div>
+
+
+        <div class="moduleProgress">
+          <div id="moduleProgressBar"></div>
+        </div>
+
+
+        <p
+          id="moduleProgressText"
+          class="muted"
+          style="margin-bottom:14px"
+        >
+          0% complete
+        </p>
+
+
+        <div id="moduleActivities"></div>
 
       </section>
 
@@ -1631,111 +1956,69 @@
       <div class="tutorialGrid">
 
         <div class="tutorialStep">
-
-          <div class="num">
-            1
-          </div>
-
-          <h3>
-            Create a random username
-          </h3>
-
+          <div class="num">1</div>
+          <h3>Create a random username</h3>
           <p>
             Use something like AtomAce47, not your real name.
             Add a password so only you can use that account.
           </p>
-
         </div>
 
-
         <div class="tutorialStep">
-
-          <div class="num">
-            2
-          </div>
-
-          <h3>
-            Check the Dashboard
-          </h3>
-
+          <div class="num">2</div>
+          <h3>Check the Dashboard</h3>
           <p>
             See announcements, upcoming dates,
-            your resource activity and quiz count.
+            your resource activity, modules and quiz count.
           </p>
-
         </div>
 
-
         <div class="tutorialStep">
-
-          <div class="num">
-            3
-          </div>
-
-          <h3>
-            Open Resources
-          </h3>
-
+          <div class="num">3</div>
+          <h3>Open Resources</h3>
           <p>
             Use CCC, WWSEF and general club materials.
             Resource opens are associated with your random username.
           </p>
-
         </div>
 
-
         <div class="tutorialStep">
-
-          <div class="num">
-            4
-          </div>
-
-          <h3>
-            Use Project Lab
-          </h3>
-
+          <div class="num">4</div>
+          <h3>Use Project Lab</h3>
           <p>
             Check current WWSEF parameters,
             browse project idea websites and use the
             brainstorm helper before choosing a project.
           </p>
-
         </div>
 
+        <div class="tutorialStep">
+          <div class="num">5</div>
+          <h3>Complete CCC Modules</h3>
+          <p>
+            Open CCC Modules for lesson notes,
+            practice questions, short answers,
+            checklists and resource activities.
+            Your progress is saved.
+          </p>
+        </div>
 
         <div class="tutorialStep">
-
-          <div class="num">
-            5
-          </div>
-
-          <h3>
-            Take CCC Quizzes
-          </h3>
-
+          <div class="num">6</div>
+          <h3>Take CCC Quizzes</h3>
           <p>
             Choose a quiz, answer every question and submit.
             Your result and explanations appear immediately.
           </p>
-
         </div>
 
-
         <div class="tutorialStep">
-
-          <div class="num">
-            6
-          </div>
-
-          <h3>
-            Check Calendar + FAQs
-          </h3>
-
+          <div class="num">7</div>
+          <h3>Check Calendar + FAQs</h3>
           <p>
-            Use the Calendar for dates and FAQs for common questions.
-            Admins can update portal content.
+            Use the Calendar for dates and FAQs
+            for common questions.
           </p>
-
         </div>
 
       </div>
@@ -1863,7 +2146,8 @@
           </h1>
 
           <p>
-            Manage content, quizzes and student activity.
+            Manage content, CCC modules,
+            quizzes and student activity.
           </p>
 
         </div>
@@ -1905,6 +2189,11 @@
         <div class="stat">
           <small>Dates</small>
           <strong id="adminDates">0</strong>
+        </div>
+
+        <div class="stat">
+          <small>Modules</small>
+          <strong id="adminModuleCount">0</strong>
         </div>
 
         <div class="stat">
@@ -1967,6 +2256,22 @@
           <section class="card">
 
             <h2>
+              CCC Module Manager
+            </h2>
+
+            <p class="muted">
+              Publish, unpublish, inspect
+              or delete modules and activities.
+            </p>
+
+            <div id="adminModuleList"></div>
+
+          </section>
+
+
+          <section class="card">
+
+            <h2>
               CCC Quiz Manager
             </h2>
 
@@ -1979,26 +2284,28 @@
 
         <div>
 
+          <!-- CREATE MODULE -->
+
           <section class="card">
 
             <h2>
-              Create Quiz
+              Create CCC Module
             </h2>
 
 
             <form
-              id="createQuizForm"
+              id="createModuleForm"
               class="form"
             >
 
               <label>
-                Title
+                Module title
               </label>
 
               <input
-                id="newQuizTitle"
+                id="newModuleTitle"
                 required
-                placeholder="Stoichiometry Practice"
+                placeholder="Module 1: Atomic Structure"
               >
 
 
@@ -2006,25 +2313,190 @@
                 Description
               </label>
 
-              <textarea id="newQuizDesc"></textarea>
+              <textarea
+                id="newModuleDesc"
+                placeholder="What students will learn and practise..."
+              ></textarea>
 
 
               <label>
                 Category
               </label>
 
-              <select id="newQuizCat">
+              <select id="newModuleCat">
+                <option>CCC</option>
+                <option>Science Club</option>
+              </select>
 
-                <option>
-                  CCC
-                </option>
 
-                <option>
-                  Science Club
+              <label>
+                Module order
+              </label>
+
+              <input
+                id="newModuleOrder"
+                type="number"
+                min="0"
+                value="1"
+              >
+
+
+              <button class="primary">
+                Create Draft Module
+              </button>
+
+            </form>
+
+          </section>
+
+
+          <!-- ADD MODULE ACTIVITY -->
+
+          <section class="card">
+
+            <h2>
+              Add Module Activity
+            </h2>
+
+
+            <form
+              id="addModuleActivityForm"
+              class="form"
+            >
+
+              <label>
+                Module
+              </label>
+
+              <select
+                id="activityModule"
+                required
+              >
+
+                <option value="">
+                  Choose module
                 </option>
 
               </select>
 
+
+              <label>
+                Activity type
+              </label>
+
+              <select id="activityType">
+
+                <option value="lesson">
+                  Lesson / Notes
+                </option>
+
+                <option value="mcq">
+                  Multiple Choice Practice
+                </option>
+
+                <option value="short_answer">
+                  Short Answer / Reflection
+                </option>
+
+                <option value="checklist">
+                  Checklist / Task
+                </option>
+
+                <option value="resource">
+                  Resource / Link
+                </option>
+
+              </select>
+
+
+              <label>
+                Activity title
+              </label>
+
+              <input
+                id="activityTitle"
+                required
+                placeholder="Electron Configuration Review"
+              >
+
+
+              <label>
+                Instructions / content
+              </label>
+
+              <textarea
+                id="activityInstructions"
+                placeholder="Explain the concept, give instructions, or write the activity prompt..."
+              ></textarea>
+
+
+              <div id="activityDynamicFields"></div>
+
+
+              <label>
+                Points
+              </label>
+
+              <input
+                id="activityPoints"
+                type="number"
+                min="0"
+                value="1"
+              >
+
+
+              <label>
+                Activity order
+              </label>
+
+              <input
+                id="activityOrder"
+                type="number"
+                min="0"
+                value="1"
+              >
+
+
+              <button class="primary">
+                Add Activity
+              </button>
+
+            </form>
+
+          </section>
+
+
+          <!-- QUIZ CREATOR -->
+
+          <section class="card">
+
+            <h2>
+              Create Quiz
+            </h2>
+
+            <form
+              id="createQuizForm"
+              class="form"
+            >
+
+              <label>Title</label>
+
+              <input
+                id="newQuizTitle"
+                required
+                placeholder="Stoichiometry Practice"
+              >
+
+              <label>Description</label>
+
+              <textarea id="newQuizDesc"></textarea>
+
+              <label>Category</label>
+
+              <select id="newQuizCat">
+                <option>CCC</option>
+                <option>Science Club</option>
+              </select>
 
               <button class="primary">
                 Create Draft Quiz
@@ -2041,29 +2513,26 @@
               Add Question
             </h2>
 
-
             <form
               id="addQuestionForm"
               class="form"
             >
 
-              <label>
-                Quiz
-              </label>
+              <label>Quiz</label>
 
               <select
                 id="questionQuiz"
                 required
               >
+
                 <option value="">
                   Choose quiz
                 </option>
+
               </select>
 
 
-              <label>
-                Question
-              </label>
+              <label>Question</label>
 
               <textarea
                 id="qText"
@@ -2071,44 +2540,17 @@
               ></textarea>
 
 
-              <label>
-                A
-              </label>
+              <label>A</label>
+              <input id="qA" required>
 
-              <input
-                id="qA"
-                required
-              >
+              <label>B</label>
+              <input id="qB" required>
 
+              <label>C</label>
+              <input id="qC" required>
 
-              <label>
-                B
-              </label>
-
-              <input
-                id="qB"
-                required
-              >
-
-
-              <label>
-                C
-              </label>
-
-              <input
-                id="qC"
-                required
-              >
-
-
-              <label>
-                D
-              </label>
-
-              <input
-                id="qD"
-                required
-              >
+              <label>D</label>
+              <input id="qD" required>
 
 
               <label>
@@ -2145,7 +2587,6 @@
               Add Announcement
             </h2>
 
-
             <form
               id="announcementForm"
               class="form"
@@ -2177,7 +2618,6 @@
             <h2>
               Add Important Date
             </h2>
-
 
             <form
               id="dateForm"
@@ -2224,7 +2664,6 @@
               Add Resource
             </h2>
 
-
             <form
               id="resourceForm"
               class="form"
@@ -2268,7 +2707,6 @@
             <h2>
               Add FAQ
             </h2>
-
 
             <form
               id="faqForm"
@@ -2314,7 +2752,7 @@
 </div>
 
 
-<!-- GUIDED TUTORIAL -->
+<!-- GUIDED TOUR -->
 
 <div
   id="tourOverlay"
@@ -2336,7 +2774,6 @@
       id="tourText"
       class="muted"
     ></p>
-
 
     <div class="tourActions">
 
@@ -2366,7 +2803,6 @@
       </div>
 
     </div>
-
 
     <p
       id="tourProgress"
@@ -2420,6 +2856,9 @@ let faqs =
 let quizzes =
   [];
 
+let modules =
+  [];
+
 let studentActivity =
   [];
 
@@ -2433,11 +2872,27 @@ let adminActivity =
 let adminQuizzes =
   [];
 
+let adminModules =
+  [];
+
+let adminModuleActivities =
+  [];
+
 
 let activeQuiz =
   null;
 
 let activeQuizQuestions =
+  [];
+
+
+let activeModule =
+  null;
+
+let activeModuleActivities =
+  [];
+
+let activeModuleProgress =
   [];
 
 
@@ -2464,6 +2919,9 @@ const pages = {
 
   projects:
     $("projectsPage"),
+
+  modules:
+    $("modulesPage"),
 
   quizzes:
     $("quizzesPage"),
@@ -2503,7 +2961,9 @@ function msg(
     $(id);
 
 
-  if (!element) {
+  if (
+    !element
+  ) {
     return;
   }
 
@@ -2517,10 +2977,13 @@ function msg(
 
 
   setTimeout(
-    () =>
+    () => {
+
       element.classList.remove(
         "show"
-      ),
+      );
+
+    },
     4500
   );
 
@@ -2553,10 +3016,13 @@ function showPage(
   Object
     .values(pages)
     .forEach(
-      page =>
+      page => {
+
         page.classList.remove(
           "active"
-        )
+        );
+
+      }
     );
 
 
@@ -2572,12 +3038,15 @@ function showPage(
       ".navBtn"
     )
     .forEach(
-      button =>
+      button => {
+
         button.classList.toggle(
           "active",
           button.dataset.page ===
             name
-        )
+        );
+
+      }
     );
 
 
@@ -2674,7 +3143,7 @@ function randomName() {
 
 
 /* ==========================================
-   STUDENT USERNAME + PASSWORD AUTH
+   STUDENT AUTH
    ========================================== */
 
 function setAuthMode(
@@ -3067,13 +3536,23 @@ async function enterStudent() {
 
 
   await Promise.all([
+
     loadAnnouncements(),
+
     loadResources(),
+
     loadDates(),
+
     loadFAQs(),
+
+    loadModules(),
+
     loadQuizzes(),
+
     loadStudentActivity(),
+
     loadQuizAttempts()
+
   ]);
 
 
@@ -3543,7 +4022,7 @@ async function loadStudentActivity() {
 
 
 /* ==========================================
-   DATES / CALENDAR
+   DATES
    ========================================== */
 
 function parseDate(
@@ -3921,7 +4400,7 @@ $("nextMonth").onclick =
 
 
 /* ==========================================
-   FAQs
+   FAQ
    ========================================== */
 
 async function loadFAQs() {
@@ -3974,8 +4453,7 @@ async function loadFAQs() {
               <details
                 style="
                   padding:10px 0;
-                  border-bottom:
-                  1px solid var(--line)
+                  border-bottom:1px solid var(--line)
                 "
               >
 
@@ -3986,15 +4464,19 @@ async function loadFAQs() {
                     cursor:pointer
                   "
                 >
+
                   ${esc(
                     faq.question
                   )}
+
                 </summary>
 
                 <p class="muted">
+
                   ${esc(
                     faq.answer
                   )}
+
                 </p>
 
               </details>
@@ -4113,6 +4595,2073 @@ $("brainstormBtn").onclick =
 
 
 /* ==========================================
+   CCC LEARNING MODULES
+   ========================================== */
+
+async function loadModules() {
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from(
+        "contest_modules"
+      )
+      .select("*")
+      .order(
+        "sort_order",
+        {
+          ascending:
+            true
+        }
+      )
+      .order(
+        "created_at",
+        {
+          ascending:
+            true
+        }
+      );
+
+
+  modules =
+    error
+      ? []
+      : (
+          data ||
+          []
+        );
+
+
+  if (
+    error
+  ) {
+
+    console.error(
+      error
+    );
+
+
+    $("moduleList").innerHTML =
+      '<p class="muted">Could not load modules. Make sure the module SQL has been run.</p>';
+
+    return;
+
+  }
+
+
+  $("moduleCount").textContent =
+    modules
+      .filter(
+        module =>
+          module.is_published
+      )
+      .length;
+
+
+  renderModuleList();
+
+}
+
+
+function renderModuleList() {
+
+  const published =
+    modules.filter(
+      module =>
+        module.is_published
+    );
+
+
+  $("moduleList").innerHTML =
+    published.length
+
+      ? published
+          .map(
+            module => `
+
+              <div class="moduleCard">
+
+                <span class="badge">
+                  ${esc(
+                    module.category
+                  )}
+                </span>
+
+                <h3>
+                  ${esc(
+                    module.title
+                  )}
+                </h3>
+
+                <p>
+                  ${esc(
+                    module.description ||
+                    "Contest preparation module"
+                  )}
+                </p>
+
+                <button
+                  class="primary openModule"
+                  data-id="${module.id}"
+                >
+                  Open Module
+                </button>
+
+              </div>
+            `
+          )
+          .join("")
+
+      : '<p class="muted">No published modules yet.</p>';
+
+
+  document
+    .querySelectorAll(
+      ".openModule"
+    )
+    .forEach(
+      button => {
+
+        button.onclick =
+          () =>
+            beginModule(
+              Number(
+                button.dataset.id
+              )
+            );
+
+      }
+    );
+
+}
+
+
+async function beginModule(
+  id
+) {
+
+  activeModule =
+    modules.find(
+      module =>
+        Number(
+          module.id
+        ) ===
+        Number(
+          id
+        )
+    );
+
+
+  if (
+    !activeModule
+  ) {
+    return;
+  }
+
+
+  const [
+    activityResult,
+    progressResult
+  ] =
+    await Promise.all([
+
+      db.rpc(
+        "get_module_activities",
+        {
+          p_module_id:
+            id
+        }
+      ),
+
+      db
+        .from(
+          "module_progress"
+        )
+        .select(
+          "activity_id,response,is_complete,score,max_score,updated_at"
+        )
+        .eq(
+          "user_id",
+          currentUser.id
+        )
+        .eq(
+          "module_id",
+          id
+        )
+
+    ]);
+
+
+  if (
+    activityResult.error
+  ) {
+
+    console.error(
+      activityResult.error
+    );
+
+
+    msg(
+      "moduleMsg",
+      "Could not load this module. Make sure the module SQL setup has been run.",
+      "err"
+    );
+
+    return;
+
+  }
+
+
+  if (
+    progressResult.error
+  ) {
+
+    console.error(
+      progressResult.error
+    );
+
+  }
+
+
+  activeModuleActivities =
+    activityResult.data ||
+    [];
+
+
+  activeModuleProgress =
+    progressResult.data ||
+    [];
+
+
+  $("moduleListCard").style.display =
+    "none";
+
+
+  $("modulePlayerCard").style.display =
+    "block";
+
+
+  $("activeModuleTitle").textContent =
+    activeModule.title;
+
+
+  $("activeModuleDesc").textContent =
+    activeModule.description ||
+    "";
+
+
+  renderModuleActivities();
+
+
+  window.scrollTo(
+    0,
+    0
+  );
+
+}
+
+
+function progressForActivity(
+  id
+) {
+
+  return activeModuleProgress.find(
+    progress =>
+      Number(
+        progress.activity_id
+      ) ===
+      Number(
+        id
+      )
+  );
+
+}
+
+
+function moduleActivityTypeLabel(
+  type
+) {
+
+  const labels = {
+
+    lesson:
+      "LESSON",
+
+    mcq:
+      "PRACTICE",
+
+    short_answer:
+      "SHORT ANSWER",
+
+    checklist:
+      "TASK",
+
+    resource:
+      "RESOURCE"
+
+  };
+
+
+  return (
+    labels[type] ||
+    type.toUpperCase()
+  );
+
+}
+
+
+function renderModuleActivities() {
+
+  if (
+    !activeModuleActivities.length
+  ) {
+
+    $("moduleActivities").innerHTML =
+      '<p class="muted">This module does not have activities yet.</p>';
+
+
+    updateModuleProgressBar();
+
+    return;
+
+  }
+
+
+  $("moduleActivities").innerHTML =
+    activeModuleActivities
+      .map(
+        (
+          activity,
+          index
+        ) => {
+
+          const progress =
+            progressForActivity(
+              activity.id
+            );
+
+
+          const complete =
+            !!progress
+              ?.is_complete;
+
+
+          let body =
+            "";
+
+
+          if (
+            activity.activity_type ===
+            "lesson"
+          ) {
+
+            body =
+              `
+                <div class="activityBody">
+                  ${esc(
+                    activity.instructions ||
+                    ""
+                  )}
+                </div>
+
+                <button
+                  class="primary moduleCompleteBtn"
+                  data-id="${activity.id}"
+                  data-kind="lesson"
+                  style="margin-top:12px"
+                >
+                  ${
+                    complete
+                      ? "Completed ✓"
+                      : "Mark Complete"
+                  }
+                </button>
+              `;
+
+          }
+
+
+          if (
+            activity.activity_type ===
+            "checklist"
+          ) {
+
+            body =
+              `
+                <div class="activityBody">
+                  ${esc(
+                    activity.instructions ||
+                    ""
+                  )}
+                </div>
+
+                <label
+                  class="activityOption"
+                  style="margin-top:12px"
+                >
+
+                  <input
+                    type="checkbox"
+                    id="check_${activity.id}"
+                    ${
+                      complete
+                        ? "checked"
+                        : ""
+                    }
+                  >
+
+                  <span>
+                    I completed this task.
+                  </span>
+
+                </label>
+
+                <button
+                  class="primary moduleCompleteBtn"
+                  data-id="${activity.id}"
+                  data-kind="checklist"
+                >
+                  ${
+                    complete
+                      ? "Completed ✓"
+                      : "Save Completion"
+                  }
+                </button>
+              `;
+
+          }
+
+
+          if (
+            activity.activity_type ===
+            "resource"
+          ) {
+
+            body =
+              `
+                <div class="activityBody">
+                  ${esc(
+                    activity.instructions ||
+                    ""
+                  )}
+                </div>
+
+                <div
+                  style="
+                    display:flex;
+                    gap:7px;
+                    flex-wrap:wrap;
+                    margin-top:12px
+                  "
+                >
+
+                  ${
+                    activity.resource_url
+                      ? `
+                          <button
+                            class="secondary moduleResourceBtn"
+                            type="button"
+                            data-url="${esc(
+                              activity.resource_url
+                            )}"
+                          >
+                            Open Resource ↗
+                          </button>
+                        `
+                      : ""
+                  }
+
+                  <button
+                    class="primary moduleCompleteBtn"
+                    data-id="${activity.id}"
+                    data-kind="resource"
+                  >
+                    ${
+                      complete
+                        ? "Completed ✓"
+                        : "Mark Complete"
+                    }
+                  </button>
+
+                </div>
+              `;
+
+          }
+
+
+          if (
+            activity.activity_type ===
+            "mcq"
+          ) {
+
+            const oldAnswer =
+              progress
+                ?.response
+                ?.answer ||
+              "";
+
+
+            body =
+              `
+                <div class="activityBody">
+                  ${esc(
+                    activity.instructions ||
+                    ""
+                  )}
+                </div>
+
+                <div class="activityOptions">
+
+                  ${
+                    [
+                      "A",
+                      "B",
+                      "C",
+                      "D"
+                    ]
+                    .map(
+                      letter => `
+
+                        <label class="activityOption">
+
+                          <input
+                            type="radio"
+                            name="module_q_${activity.id}"
+                            value="${letter}"
+                            ${
+                              oldAnswer ===
+                              letter
+                                ? "checked"
+                                : ""
+                            }
+                          >
+
+                          <span>
+
+                            <b>
+                              ${letter}.
+                            </b>
+
+                            ${esc(
+                              activity[
+                                "option_" +
+                                letter.toLowerCase()
+                              ] ||
+                              ""
+                            )}
+
+                          </span>
+
+                        </label>
+                      `
+                    )
+                    .join("")
+                  }
+
+                </div>
+
+                <button
+                  class="primary moduleSubmitBtn"
+                  data-id="${activity.id}"
+                  data-kind="mcq"
+                >
+                  ${
+                    complete
+                      ? "Try Again"
+                      : "Check Answer"
+                  }
+                </button>
+
+                <div
+                  id="activityFeedback_${activity.id}"
+                  class="activityFeedback"
+                ></div>
+              `;
+
+          }
+
+
+          if (
+            activity.activity_type ===
+            "short_answer"
+          ) {
+
+            const oldText =
+              progress
+                ?.response
+                ?.text ||
+              "";
+
+
+            body =
+              `
+                <div class="activityBody">
+                  ${esc(
+                    activity.instructions ||
+                    ""
+                  )}
+                </div>
+
+                <textarea
+                  id="short_${activity.id}"
+                  style="
+                    width:100%;
+                    min-height:100px;
+                    margin:12px 0;
+                    border:1px solid var(--line);
+                    border-radius:9px;
+                    padding:10px
+                  "
+                  placeholder="Write your response here..."
+                >${esc(oldText)}</textarea>
+
+                <button
+                  class="primary moduleSubmitBtn"
+                  data-id="${activity.id}"
+                  data-kind="short_answer"
+                >
+                  ${
+                    complete
+                      ? "Update Response"
+                      : "Submit Response"
+                  }
+                </button>
+
+                <div
+                  id="activityFeedback_${activity.id}"
+                  class="activityFeedback"
+                ></div>
+              `;
+
+          }
+
+
+          return `
+            <div
+              class="
+                activityCard
+                ${
+                  complete
+                    ? "complete"
+                    : ""
+                }
+              "
+            >
+
+              <div class="activityHead">
+
+                <h3>
+                  ${index + 1}.
+                  ${esc(
+                    activity.title
+                  )}
+                </h3>
+
+                <span class="activityType">
+                  ${moduleActivityTypeLabel(
+                    activity.activity_type
+                  )}
+                </span>
+
+              </div>
+
+              ${body}
+
+            </div>
+          `;
+
+        }
+      )
+      .join("");
+
+
+  document
+    .querySelectorAll(
+      ".moduleResourceBtn"
+    )
+    .forEach(
+      button => {
+
+        button.onclick =
+          () =>
+            window.open(
+              button.dataset.url,
+              "_blank",
+              "noopener,noreferrer"
+            );
+
+      }
+    );
+
+
+  document
+    .querySelectorAll(
+      ".moduleCompleteBtn"
+    )
+    .forEach(
+      button => {
+
+        button.onclick =
+          () =>
+            completeSimpleModuleActivity(
+              Number(
+                button.dataset.id
+              ),
+              button.dataset.kind
+            );
+
+      }
+    );
+
+
+  document
+    .querySelectorAll(
+      ".moduleSubmitBtn"
+    )
+    .forEach(
+      button => {
+
+        button.onclick =
+          () =>
+            submitModuleActivity(
+              Number(
+                button.dataset.id
+              ),
+              button.dataset.kind
+            );
+
+      }
+    );
+
+
+  updateModuleProgressBar();
+
+}
+
+
+function updateModuleProgressBar() {
+
+  const total =
+    activeModuleActivities.length;
+
+
+  const complete =
+    activeModuleActivities
+      .filter(
+        activity =>
+          progressForActivity(
+            activity.id
+          )
+          ?.is_complete
+      )
+      .length;
+
+
+  const percent =
+    total
+      ? Math.round(
+          complete /
+          total *
+          100
+        )
+      : 0;
+
+
+  $("moduleProgressBar").style.width =
+    percent +
+    "%";
+
+
+  $("moduleProgressText").textContent =
+    `${complete} of ${total} activities complete • ${percent}%`;
+
+}
+
+
+async function completeSimpleModuleActivity(
+  activityId,
+  kind
+) {
+
+  if (
+    kind ===
+      "checklist" &&
+    !$(
+      "check_" +
+      activityId
+    )
+    ?.checked
+  ) {
+
+    msg(
+      "moduleMsg",
+      "Check the box first, then save completion.",
+      "err"
+    );
+
+    return;
+
+  }
+
+
+  await sendModuleActivity(
+    activityId,
+    {
+      completed:
+        true
+    }
+  );
+
+}
+
+
+async function submitModuleActivity(
+  activityId,
+  kind
+) {
+
+  let response =
+    {};
+
+
+  if (
+    kind ===
+    "mcq"
+  ) {
+
+    const selected =
+      document.querySelector(
+        `input[name="module_q_${activityId}"]:checked`
+      );
+
+
+    if (
+      !selected
+    ) {
+
+      msg(
+        "moduleMsg",
+        "Choose an answer first.",
+        "err"
+      );
+
+      return;
+
+    }
+
+
+    response = {
+      answer:
+        selected.value
+    };
+
+  }
+
+
+  if (
+    kind ===
+    "short_answer"
+  ) {
+
+    const text =
+      $(
+        "short_" +
+        activityId
+      )
+      .value
+      .trim();
+
+
+    if (
+      !text
+    ) {
+
+      msg(
+        "moduleMsg",
+        "Write a response first.",
+        "err"
+      );
+
+      return;
+
+    }
+
+
+    response = {
+      text
+    };
+
+  }
+
+
+  await sendModuleActivity(
+    activityId,
+    response
+  );
+
+}
+
+
+async function sendModuleActivity(
+  activityId,
+  response
+) {
+
+  const {
+    data,
+    error
+  } =
+    await db.rpc(
+      "submit_module_activity",
+      {
+
+        p_activity_id:
+          activityId,
+
+        p_response:
+          response
+
+      }
+    );
+
+
+  if (
+    error
+  ) {
+
+    console.error(
+      error
+    );
+
+
+    msg(
+      "moduleMsg",
+      "Could not save this activity.",
+      "err"
+    );
+
+    return;
+
+  }
+
+
+  const result =
+    data ||
+    {};
+
+
+  const {
+    data:
+      progress,
+
+    error:
+      progressError
+  } =
+    await db
+      .from(
+        "module_progress"
+      )
+      .select(
+        "activity_id,response,is_complete,score,max_score,updated_at"
+      )
+      .eq(
+        "user_id",
+        currentUser.id
+      )
+      .eq(
+        "module_id",
+        activeModule.id
+      );
+
+
+  if (
+    progressError
+  ) {
+
+    console.error(
+      progressError
+    );
+
+  }
+
+
+  activeModuleProgress =
+    progress ||
+    [];
+
+
+  renderModuleActivities();
+
+
+  const feedback =
+    $(
+      "activityFeedback_" +
+      activityId
+    );
+
+
+  if (
+    feedback &&
+    (
+      result.activity_type ===
+        "mcq" ||
+      result.activity_type ===
+        "short_answer"
+    )
+  ) {
+
+    let text =
+      "";
+
+    let type =
+      "neutral";
+
+
+    if (
+      result.activity_type ===
+      "mcq"
+    ) {
+
+      text =
+        result.correct
+          ? "Correct ✅"
+          : `Not quite. Correct answer: ${result.correct_option || ""}`;
+
+
+      type =
+        result.correct
+          ? "good"
+          : "bad";
+
+
+      if (
+        result.explanation
+      ) {
+
+        text +=
+          `\n${result.explanation}`;
+
+      }
+
+    } else {
+
+      text =
+        "Response saved ✅";
+
+
+      if (
+        result.model_answer
+      ) {
+
+        text +=
+          `\nSuggested answer: ${result.model_answer}`;
+
+      }
+
+
+      if (
+        result.explanation
+      ) {
+
+        text +=
+          `\n${result.explanation}`;
+
+      }
+
+    }
+
+
+    feedback.textContent =
+      text;
+
+
+    feedback.className =
+      `activityFeedback show ${type}`;
+
+  }
+
+}
+
+
+function resetModuleView() {
+
+  activeModule =
+    null;
+
+
+  activeModuleActivities =
+    [];
+
+
+  activeModuleProgress =
+    [];
+
+
+  $("modulePlayerCard").style.display =
+    "none";
+
+
+  $("moduleListCard").style.display =
+    "block";
+
+}
+
+
+$("backModules").onclick =
+  resetModuleView;
+
+
+/* ==========================================
+   ADMIN MODULE BUILDER
+   ========================================== */
+
+function renderActivityDynamicFields() {
+
+  const type =
+    $("activityType").value;
+
+
+  if (
+    type ===
+    "mcq"
+  ) {
+
+    $("activityDynamicFields").innerHTML =
+      `
+        <label>
+          Option A
+        </label>
+
+        <input
+          id="moduleOptionA"
+          required
+        >
+
+        <label>
+          Option B
+        </label>
+
+        <input
+          id="moduleOptionB"
+          required
+        >
+
+        <label>
+          Option C
+        </label>
+
+        <input
+          id="moduleOptionC"
+          required
+        >
+
+        <label>
+          Option D
+        </label>
+
+        <input
+          id="moduleOptionD"
+          required
+        >
+
+        <label>
+          Correct answer
+        </label>
+
+        <select id="moduleCorrect">
+          <option>A</option>
+          <option>B</option>
+          <option>C</option>
+          <option>D</option>
+        </select>
+
+        <label>
+          Explanation shown after answering
+        </label>
+
+        <textarea
+          id="moduleExplanation"
+          placeholder="Explain why the answer is correct..."
+        ></textarea>
+      `;
+
+    return;
+
+  }
+
+
+  if (
+    type ===
+    "short_answer"
+  ) {
+
+    $("activityDynamicFields").innerHTML =
+      `
+        <label>
+          Suggested / model answer
+        </label>
+
+        <textarea
+          id="moduleModelAnswer"
+          placeholder="Students see this only after submitting their response."
+        ></textarea>
+
+        <label>
+          Feedback / explanation
+        </label>
+
+        <textarea
+          id="moduleExplanation"
+          placeholder="Optional extra feedback..."
+        ></textarea>
+      `;
+
+    return;
+
+  }
+
+
+  if (
+    type ===
+    "resource"
+  ) {
+
+    $("activityDynamicFields").innerHTML =
+      `
+        <label>
+          Resource URL
+        </label>
+
+        <input
+          id="moduleResourceUrl"
+          type="url"
+          placeholder="https://..."
+        >
+
+        <p class="fieldHint">
+          Students can open the link and then mark
+          the activity complete.
+        </p>
+      `;
+
+    return;
+
+  }
+
+
+  $("activityDynamicFields").innerHTML =
+    type ===
+      "lesson"
+
+      ? `
+          <p class="fieldHint">
+            Use the Instructions/content box for lesson notes,
+            worked examples, formula review or contest strategy.
+          </p>
+        `
+
+      : `
+          <p class="fieldHint">
+            Use the Instructions/content box to describe
+            the task students need to complete.
+          </p>
+        `;
+
+}
+
+
+$("activityType").onchange =
+  renderActivityDynamicFields;
+
+
+renderActivityDynamicFields();
+
+
+async function loadAdminModules() {
+
+  const [
+    moduleResult,
+    activityResult
+  ] =
+    await Promise.all([
+
+      db
+        .from(
+          "contest_modules"
+        )
+        .select("*")
+        .order(
+          "sort_order",
+          {
+            ascending:
+              true
+          }
+        )
+        .order(
+          "created_at",
+          {
+            ascending:
+              true
+          }
+        ),
+
+      db
+        .from(
+          "module_activities"
+        )
+        .select("*")
+        .order(
+          "sort_order",
+          {
+            ascending:
+              true
+          }
+        )
+        .order(
+          "created_at",
+          {
+            ascending:
+              true
+          }
+        )
+
+    ]);
+
+
+  adminModules =
+    moduleResult.error
+      ? []
+      : (
+          moduleResult.data ||
+          []
+        );
+
+
+  adminModuleActivities =
+    activityResult.error
+      ? []
+      : (
+          activityResult.data ||
+          []
+        );
+
+
+  if (
+    moduleResult.error
+  ) {
+
+    console.error(
+      moduleResult.error
+    );
+
+  }
+
+
+  if (
+    activityResult.error
+  ) {
+
+    console.error(
+      activityResult.error
+    );
+
+  }
+
+
+  $("activityModule").innerHTML =
+    '<option value="">Choose module</option>' +
+
+    adminModules
+      .map(
+        module => `
+
+          <option value="${module.id}">
+            ${esc(
+              module.title
+            )}
+          </option>
+        `
+      )
+      .join("");
+
+
+  renderAdminModules();
+
+
+  updateAdminStats();
+
+}
+
+
+function renderAdminModules() {
+
+  $("adminModuleList").innerHTML =
+    adminModules.length
+
+      ? adminModules
+          .map(
+            module => {
+
+              const activities =
+                adminModuleActivities
+                  .filter(
+                    activity =>
+                      Number(
+                        activity.module_id
+                      ) ===
+                      Number(
+                        module.id
+                      )
+                  );
+
+
+              return `
+
+                <div class="moduleAdminItem">
+
+                  <h3>
+                    ${esc(
+                      module.title
+                    )}
+                  </h3>
+
+                  <div class="moduleAdminMeta">
+
+                    ${esc(
+                      module.category
+                    )}
+
+                    •
+
+                    ${
+                      module.is_published
+                        ? "Published"
+                        : "Draft"
+                    }
+
+                    •
+
+                    ${activities.length}
+                    activities
+
+                  </div>
+
+
+                  <div
+                    style="
+                      display:flex;
+                      gap:7px;
+                      flex-wrap:wrap
+                    "
+                  >
+
+                    <button
+                      class="secondary toggleModule"
+                      data-id="${module.id}"
+                      data-pub="${module.is_published}"
+                    >
+                      ${
+                        module.is_published
+                          ? "Unpublish"
+                          : "Publish"
+                      }
+                    </button>
+
+                    <button
+                      class="danger deleteModule"
+                      data-id="${module.id}"
+                    >
+                      Delete Module
+                    </button>
+
+                  </div>
+
+
+                  ${
+                    activities.length
+
+                      ? activities
+                          .map(
+                            activity => `
+
+                              <div class="moduleActivityAdmin">
+
+                                <div class="grow">
+
+                                  <b>
+                                    ${esc(
+                                      activity.title
+                                    )}
+                                  </b>
+
+                                  <br>
+
+                                  <span>
+
+                                    ${moduleActivityTypeLabel(
+                                      activity.activity_type
+                                    )}
+
+                                    •
+
+                                    order
+                                    ${activity.sort_order}
+
+                                  </span>
+
+                                </div>
+
+                                <button
+                                  class="danger deleteModuleActivity"
+                                  data-id="${activity.id}"
+                                >
+                                  Delete
+                                </button>
+
+                              </div>
+                            `
+                          )
+                          .join("")
+
+                      : `
+                          <p
+                            class="muted"
+                            style="margin-top:8px"
+                          >
+                            No activities yet.
+                          </p>
+                        `
+                  }
+
+                </div>
+              `;
+
+            }
+          )
+          .join("")
+
+      : '<p class="muted">No modules yet.</p>';
+
+
+  document
+    .querySelectorAll(
+      ".toggleModule"
+    )
+    .forEach(
+      button => {
+
+        button.onclick =
+          () =>
+            toggleModule(
+              Number(
+                button.dataset.id
+              ),
+              button.dataset.pub !==
+                "true"
+            );
+
+      }
+    );
+
+
+  document
+    .querySelectorAll(
+      ".deleteModule"
+    )
+    .forEach(
+      button => {
+
+        button.onclick =
+          () =>
+            deleteModule(
+              Number(
+                button.dataset.id
+              )
+            );
+
+      }
+    );
+
+
+  document
+    .querySelectorAll(
+      ".deleteModuleActivity"
+    )
+    .forEach(
+      button => {
+
+        button.onclick =
+          () =>
+            deleteModuleActivity(
+              Number(
+                button.dataset.id
+              )
+            );
+
+      }
+    );
+
+}
+
+
+$("createModuleForm")
+  .addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+
+      const {
+        error
+      } =
+        await db
+          .from(
+            "contest_modules"
+          )
+          .insert({
+
+            title:
+              $("newModuleTitle")
+                .value
+                .trim(),
+
+            description:
+              $("newModuleDesc")
+                .value
+                .trim() ||
+              null,
+
+            category:
+              $("newModuleCat")
+                .value,
+
+            sort_order:
+              Number(
+                $("newModuleOrder")
+                  .value
+              ) ||
+              0,
+
+            is_published:
+              false,
+
+            created_by:
+              currentUser.id
+
+          });
+
+
+      if (
+        error
+      ) {
+
+        console.error(
+          error
+        );
+
+
+        msg(
+          "adminMsg",
+          "Could not create module.",
+          "err"
+        );
+
+        return;
+
+      }
+
+
+      event.target.reset();
+
+
+      $("newModuleOrder").value =
+        "1";
+
+
+      await loadAdminModules();
+
+
+      msg(
+        "adminMsg",
+        "Draft module created."
+      );
+
+    }
+  );
+
+
+$("addModuleActivityForm")
+  .addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+
+      const type =
+        $("activityType").value;
+
+
+      const payload = {
+
+        module_id:
+          Number(
+            $("activityModule")
+              .value
+          ),
+
+        activity_type:
+          type,
+
+        title:
+          $("activityTitle")
+            .value
+            .trim(),
+
+        instructions:
+          $("activityInstructions")
+            .value
+            .trim() ||
+          null,
+
+        points:
+          Number(
+            $("activityPoints")
+              .value
+          ) ||
+          0,
+
+        sort_order:
+          Number(
+            $("activityOrder")
+              .value
+          ) ||
+          0
+
+      };
+
+
+      if (
+        type ===
+        "mcq"
+      ) {
+
+        payload.option_a =
+          $("moduleOptionA")
+            .value
+            .trim();
+
+
+        payload.option_b =
+          $("moduleOptionB")
+            .value
+            .trim();
+
+
+        payload.option_c =
+          $("moduleOptionC")
+            .value
+            .trim();
+
+
+        payload.option_d =
+          $("moduleOptionD")
+            .value
+            .trim();
+
+
+        payload.correct_option =
+          $("moduleCorrect")
+            .value;
+
+
+        payload.explanation =
+          $("moduleExplanation")
+            .value
+            .trim() ||
+          null;
+
+      }
+
+
+      if (
+        type ===
+        "short_answer"
+      ) {
+
+        payload.model_answer =
+          $("moduleModelAnswer")
+            .value
+            .trim() ||
+          null;
+
+
+        payload.explanation =
+          $("moduleExplanation")
+            .value
+            .trim() ||
+          null;
+
+      }
+
+
+      if (
+        type ===
+        "resource"
+      ) {
+
+        payload.resource_url =
+          $("moduleResourceUrl")
+            .value
+            .trim() ||
+          null;
+
+      }
+
+
+      const {
+        error
+      } =
+        await db
+          .from(
+            "module_activities"
+          )
+          .insert(
+            payload
+          );
+
+
+      if (
+        error
+      ) {
+
+        console.error(
+          error
+        );
+
+
+        msg(
+          "adminMsg",
+          "Could not add module activity.",
+          "err"
+        );
+
+        return;
+
+      }
+
+
+      const selectedModule =
+        payload.module_id;
+
+
+      event.target.reset();
+
+
+      $("activityPoints").value =
+        "1";
+
+
+      $("activityOrder").value =
+        "1";
+
+
+      renderActivityDynamicFields();
+
+
+      await loadAdminModules();
+
+
+      $("activityModule").value =
+        String(
+          selectedModule
+        );
+
+
+      msg(
+        "adminMsg",
+        "Module activity added."
+      );
+
+    }
+  );
+
+
+async function toggleModule(
+  id,
+  publish
+) {
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "contest_modules"
+      )
+      .update({
+        is_published:
+          publish
+      })
+      .eq(
+        "id",
+        id
+      );
+
+
+  if (
+    error
+  ) {
+
+    console.error(
+      error
+    );
+
+
+    msg(
+      "adminMsg",
+      "Could not update module.",
+      "err"
+    );
+
+    return;
+
+  }
+
+
+  await loadAdminModules();
+
+
+  msg(
+    "adminMsg",
+    publish
+      ? "Module published."
+      : "Module unpublished."
+  );
+
+}
+
+
+async function deleteModule(
+  id
+) {
+
+  if (
+    !confirm(
+      "Delete this module, all its activities and student progress?"
+    )
+  ) {
+    return;
+  }
+
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "contest_modules"
+      )
+      .delete()
+      .eq(
+        "id",
+        id
+      );
+
+
+  if (
+    error
+  ) {
+
+    console.error(
+      error
+    );
+
+
+    msg(
+      "adminMsg",
+      "Could not delete module.",
+      "err"
+    );
+
+    return;
+
+  }
+
+
+  await loadAdminModules();
+
+
+  msg(
+    "adminMsg",
+    "Module deleted."
+  );
+
+}
+
+
+async function deleteModuleActivity(
+  id
+) {
+
+  if (
+    !confirm(
+      "Delete this activity?"
+    )
+  ) {
+    return;
+  }
+
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "module_activities"
+      )
+      .delete()
+      .eq(
+        "id",
+        id
+      );
+
+
+  if (
+    error
+  ) {
+
+    console.error(
+      error
+    );
+
+
+    msg(
+      "adminMsg",
+      "Could not delete activity.",
+      "err"
+    );
+
+    return;
+
+  }
+
+
+  await loadAdminModules();
+
+
+  msg(
+    "adminMsg",
+    "Activity deleted."
+  );
+
+}
+
+
+/* ==========================================
    QUIZZES
    ========================================== */
 
@@ -4157,11 +6706,10 @@ async function loadQuizzes() {
 
 
   const published =
-    quizzes
-      .filter(
-        quiz =>
-          quiz.is_published
-      );
+    quizzes.filter(
+      quiz =>
+        quiz.is_published
+    );
 
 
   $("quizCount").textContent =
@@ -4507,8 +7055,10 @@ $("quizForm")
           >
 
             <b style="font-size:20px">
+
               ${data.score}/${data.total}
               (${percent}%)
+
             </b>
 
           </div>
@@ -4565,6 +7115,7 @@ $("quizForm")
                 result.explanation
                   ? `
                       <br>
+
                       <span class="muted">
                         ${esc(
                           result.explanation
@@ -4696,6 +7247,7 @@ async function loadQuizAttempts() {
               <div class="grow">
 
                 <h3>
+
                   ${esc(
                     quizzes.find(
                       quiz =>
@@ -4709,6 +7261,7 @@ async function loadQuizAttempts() {
                     ?.title ||
                     "Quiz"
                   )}
+
                 </h3>
 
                 <p>
@@ -4734,7 +7287,7 @@ async function loadQuizAttempts() {
 
 
 /* ==========================================
-   GUIDED TUTORIAL
+   TUTORIAL
    ========================================== */
 
 const tourSteps = [
@@ -4747,7 +7300,7 @@ const tourSteps = [
       "Welcome",
 
     x:
-      "This portal keeps Science Club announcements, dates, resources, project ideas and quizzes together."
+      "This portal keeps Science Club announcements, dates, resources, project ideas, modules and quizzes together."
   },
 
   {
@@ -4770,6 +7323,17 @@ const tourSteps = [
 
     x:
       "Use the current WWSEF manual plus coding and engineering idea links before choosing a project."
+  },
+
+  {
+    i:
+      "🧪",
+
+    t:
+      "CCC Modules",
+
+    x:
+      "Work through lesson notes, practice questions, short answers, checklists and resources. Your progress is saved."
   },
 
   {
@@ -4932,7 +7496,7 @@ $("tourNext").onclick =
 
 
 /* ==========================================
-   ADMIN LOGIN
+   ADMIN AUTH
    ========================================== */
 
 $("adminButton").onclick =
@@ -5080,17 +7644,28 @@ async function openAdmin() {
 
 
   await Promise.all([
+
     loadAdminProfiles(),
+
     loadAdminActivity(),
+
     loadAnnouncements(),
+
     loadResources(),
+
     loadDates(),
+
     loadFAQs(),
+
+    loadAdminModules(),
+
     loadAdminQuizzes()
+
   ]);
 
 
   renderAdminActivity();
+
 
   updateAdminStats();
 
@@ -5252,9 +7827,11 @@ function renderAdminActivity() {
 
       : `
           <tr>
+
             <td colspan="4">
               No activity yet.
             </td>
+
           </tr>
         `;
 
@@ -5283,6 +7860,10 @@ function updateAdminStats() {
 
   $("adminDates").textContent =
     importantDates.length;
+
+
+  $("adminModuleCount").textContent =
+    adminModules.length;
 
 
   $("adminQuizCount").textContent =
@@ -5407,6 +7988,7 @@ async function loadAdminQuizzes() {
     adminQuizzes
       .map(
         quiz => `
+
           <option value="${quiz.id}">
             ${esc(
               quiz.title
@@ -5735,7 +8317,7 @@ async function deleteQuiz(
 
 
 /* ==========================================
-   ADMIN CONTENT FORMS
+   ADMIN CONTENT
    ========================================== */
 
 $("announcementForm")
