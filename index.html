@@ -2243,4 +2243,10857 @@ async function start(){
 start();
   </script>
  </body>
+ <!-- =========================================================
+     SCIENCE CLUB 2.0 ADD-ON
+     Paste this entire block immediately BEFORE </body>
+     in your EXISTING WORKING index.html file.
+     ========================================================= -->
+
+<style>
+/* =========================================================
+   SCIENCE CLUB 2.0 STYLES
+   ========================================================= */
+
+.sc2-nav-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  margin-left: 5px;
+  border-radius: 9px;
+  background: #fff;
+  color: var(--nav);
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.sc2-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 13px;
+}
+
+.sc2-card {
+  padding: 17px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.sc2-card h3 {
+  margin: 0 0 8px;
+  color: #263f51;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 15px;
+}
+
+.sc2-big {
+  color: var(--nav);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.sc2-progress {
+  height: 9px;
+  margin: 8px 0;
+  overflow: hidden;
+  border-radius: 99px;
+  background: #e9eef1;
+}
+
+.sc2-progress > div {
+  width: 0;
+  height: 100%;
+  background: var(--good);
+  transition: width .25s ease;
+}
+
+.sc2-badges {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 11px;
+}
+
+.sc2-badge-card {
+  padding: 15px;
+  border: 1px solid #cfe1d9;
+  border-radius: 6px;
+  background: #f8fcfa;
+}
+
+.sc2-badge-card.locked {
+  opacity: .48;
+  filter: grayscale(1);
+  border-color: var(--line);
+  background: #f7f7f7;
+}
+
+.sc2-badge-icon {
+  margin-bottom: 8px;
+  font-size: 24px;
+}
+
+.sc2-notification {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px;
+  margin-bottom: 9px;
+  border: 1px solid var(--line);
+  border-left: 4px solid #9aabb7;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.sc2-notification.unread {
+  border-left-color: var(--primary);
+  background: #f7fbfd;
+}
+
+.sc2-notification-dot {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 8px;
+  margin-top: 5px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+.sc2-notification:not(.unread) .sc2-notification-dot {
+  background: #cbd4da;
+}
+
+.sc2-meta {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.sc2-actions {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-top: 9px;
+}
+
+.sc2-controls {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr .7fr auto;
+  gap: 8px;
+  align-items: end;
+}
+
+.sc2-flashcard {
+  display: grid;
+  place-items: center;
+  min-height: 280px;
+  padding: 30px;
+  border: 1px solid #cbd6dd;
+  border-radius: 8px;
+  background: #fff;
+  text-align: center;
+  cursor: pointer;
+}
+
+.sc2-flash-label {
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .6px;
+}
+
+.sc2-flash-text {
+  color: var(--nav);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 23px;
+  line-height: 1.45;
+}
+
+.sc2-daily-option {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  padding: 11px;
+  margin: 8px 0;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+}
+
+.sc2-feedback {
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: 5px;
+}
+
+.sc2-feedback.good {
+  color: #315f52;
+  background: var(--good-soft);
+}
+
+.sc2-feedback.bad {
+  color: #8d3030;
+  background: var(--danger-soft);
+}
+
+.sc2-project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.sc2-project-card {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.sc2-project-card h3 {
+  margin: 8px 0 6px;
+  color: #263f51;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 15px;
+}
+
+.sc2-workspace {
+  display: grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 16px;
+}
+
+.sc2-milestone {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.sc2-milestone.done .sc2-milestone-title {
+  color: #829089;
+  text-decoration: line-through;
+}
+
+.sc2-milestone-title {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.sc2-countdown {
+  padding: 13px;
+  margin-bottom: 12px;
+  border: 1px solid #d5e4ea;
+  border-radius: 5px;
+  background: var(--primary-soft);
+}
+
+.sc2-countdown strong {
+  color: var(--nav);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 22px;
+}
+
+.sc2-notebook {
+  padding: 13px;
+  margin-bottom: 9px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: #fff;
+}
+
+.sc2-notebook-body {
+  margin-top: 7px;
+  color: #52616c;
+  font-size: 10px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+
+.sc2-advisor-feedback {
+  padding: 10px 12px;
+  margin-bottom: 9px;
+  border-left: 3px solid var(--primary);
+  background: #f7fafb;
+}
+
+.sc2-team {
+  display: inline-block;
+  padding: 5px 7px;
+  border: 1px solid #d8e0e5;
+  border-radius: 3px;
+  background: #eef2f5;
+  color: #50616d;
+  font-size: 9px;
+}
+
+.sc2-periodic-wrap {
+  overflow: auto;
+  padding-bottom: 8px;
+}
+
+.sc2-periodic {
+  display: grid;
+  grid-template-columns: repeat(18, 62px);
+  grid-auto-rows: 72px;
+  gap: 4px;
+  min-width: 1184px;
+}
+
+.sc2-element {
+  position: relative;
+  padding: 5px;
+  border: 1px solid #cdd7dd;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  transition: transform .12s, border-color .12s;
+}
+
+.sc2-element:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+}
+
+.sc2-element .z {
+  color: var(--muted);
+  font-size: 8px;
+}
+
+.sc2-element .sym {
+  color: var(--nav);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.sc2-element .ename {
+  margin-top: 4px;
+  overflow: hidden;
+  font-size: 7px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.sc2-element.nonmetal {
+  background: #f2f8f5;
+}
+
+.sc2-element.noble {
+  background: #f5f1f8;
+}
+
+.sc2-element.alkali {
+  background: #fff5ec;
+}
+
+.sc2-element.alkaline {
+  background: #fff9e8;
+}
+
+.sc2-element.metalloid {
+  background: #f2f5ea;
+}
+
+.sc2-element.halogen {
+  background: #eef7fb;
+}
+
+.sc2-element.transition {
+  background: #f5f6f7;
+}
+
+.sc2-element.post {
+  background: #f1f4f6;
+}
+
+.sc2-element.lanthanide,
+.sc2-element.actinide {
+  background: #f8f2ee;
+}
+
+.sc2-element.unknown {
+  background: #f4f4f4;
+}
+
+.sc2-fblock {
+  display: grid;
+  grid-template-columns: repeat(15, 62px);
+  gap: 4px;
+  min-width: 990px;
+  margin-top: 16px;
+}
+
+.sc2-element-detail {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 20px;
+  align-items: center;
+}
+
+.sc2-element-hero {
+  padding: 17px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #f8fafb;
+  text-align: center;
+}
+
+.sc2-element-hero .sym {
+  color: var(--nav);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 48px;
+  font-weight: 700;
+}
+
+.sc2-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 8px;
+}
+
+.sc2-fact {
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #f7f9fa;
+}
+
+.sc2-fact small {
+  display: block;
+  color: var(--muted);
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+.sc2-fact b {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.sc2-tools {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 13px;
+}
+
+.sc2-tool {
+  padding: 17px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.sc2-tool h3 {
+  margin: 0 0 7px;
+  color: #263f51;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 15px;
+}
+
+.sc2-tool-result {
+  padding: 10px;
+  margin-top: 10px;
+  border-left: 3px solid var(--primary);
+  border-radius: 3px;
+  background: #f5f9fb;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.sc2-inline {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.sc2-admin-section {
+  margin-top: 18px;
+}
+
+.sc2-admin-list {
+  max-height: 350px;
+  overflow: auto;
+}
+
+.sc2-admin-item {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.sc2-admin-item h4 {
+  margin: 0 0 4px;
+  font-size: 11px;
+}
+
+.sc2-admin-item p {
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.45;
+}
+
+@media (max-width: 950px) {
+  .sc2-workspace,
+  .sc2-controls,
+  .sc2-element-detail {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .sc2-inline {
+    grid-template-columns: 1fr;
+  }
+
+  .sc2-flash-text {
+    font-size: 19px;
+  }
+}
+</style>
+
+<script>
+/* =========================================================
+   SCIENCE CLUB 2.0
+   Student Experience + WWSEF + Notifications
+   ========================================================= */
+
+const SC2 = {
+  notifications: [],
+  notificationReads: [],
+
+  practiceSet: [],
+
+  flashDecks: [],
+  flashcards: [],
+  activeDeck: null,
+  activeCards: [],
+  activeCardIndex: 0,
+  showingBack: false,
+
+  dailyChallenge: null,
+  dailyAnswer: null,
+
+  projects: [],
+  teams: [],
+  activeProject: null,
+  milestones: [],
+  notebook: [],
+  feedback: [],
+
+  admin: {
+    practice: [],
+    decks: [],
+    cards: [],
+    daily: [],
+    projects: [],
+    teams: [],
+    members: [],
+    notifications: []
+  }
+};
+
+
+function sc2DateString(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+
+function sc2DaysUntil(dateString) {
+  if (!dateString) {
+    return null;
+  }
+
+  const target = parseDate(dateString);
+
+  if (!target) {
+    return null;
+  }
+
+  const today = new Date();
+
+  today.setHours(0, 0, 0, 0);
+
+  return Math.ceil(
+    (target - today) / 86400000
+  );
+}
+
+
+function sc2PrettyDateTime(value) {
+  if (!value) {
+    return "";
+  }
+
+  return new Date(value).toLocaleString();
+}
+
+
+/* =========================================================
+   INSTALL NEW PAGES + NEW SIDEBAR BUTTONS
+   ========================================================= */
+
+function sc2InstallUI() {
+  if (
+    document.getElementById(
+      "sc2QuestionBankPage"
+    )
+  ) {
+    return;
+  }
+
+
+  const nav =
+    document.querySelector(".nav");
+
+
+  const tutorialButton =
+    [...nav.querySelectorAll(".navBtn")]
+      .find(
+        button =>
+          button.dataset.page ===
+          "tutorial"
+      );
+
+
+  const navHTML = `
+    <button
+      class="navBtn sc2Nav"
+      data-page="sc2QuestionBank"
+    >
+      Question Bank
+    </button>
+
+    <button
+      class="navBtn sc2Nav"
+      data-page="sc2Flashcards"
+    >
+      Flashcards
+    </button>
+
+    <button
+      class="navBtn sc2Nav"
+      data-page="sc2Daily"
+    >
+      Daily Challenge
+    </button>
+
+    <button
+      class="navBtn sc2Nav"
+      data-page="sc2ChemTools"
+    >
+      Chemistry Tools
+    </button>
+
+    <button
+      class="navBtn sc2Nav"
+      data-page="sc2Periodic"
+    >
+      Periodic Table
+    </button>
+
+    <button
+      class="navBtn sc2Nav"
+      data-page="sc2Progress"
+    >
+      My Progress
+    </button>
+
+    <button
+      class="navBtn sc2Nav"
+      data-page="sc2WWSEF"
+    >
+      WWSEF Workspace
+    </button>
+
+    <button
+      class="navBtn sc2Nav"
+      data-page="sc2Notifications"
+    >
+      Notifications
+
+      <span
+        class="sc2-nav-count"
+        id="sc2NotificationCount"
+      >
+        0
+      </span>
+    </button>
+  `;
+
+
+  if (tutorialButton) {
+    tutorialButton.insertAdjacentHTML(
+      "beforebegin",
+      navHTML
+    );
+  } else {
+    nav.insertAdjacentHTML(
+      "beforeend",
+      navHTML
+    );
+  }
+
+
+  const main =
+    document.querySelector("main");
+
+
+  main.insertAdjacentHTML(
+    "beforeend",
+    `
+    <!-- ===============================================
+         QUESTION BANK
+         =============================================== -->
+
+    <section
+      class="page"
+      id="sc2QuestionBankPage"
+    >
+      <header class="top">
+        <div>
+          <h1>
+            CCC Question Bank
+          </h1>
+
+          <p>
+            Create a random practice set
+            by topic and difficulty.
+          </p>
+        </div>
+      </header>
+
+
+      <div
+        class="msg"
+        id="sc2PracticeMsg"
+      >
+      </div>
+
+
+      <section class="card">
+
+        <div class="sc2-controls">
+
+          <div>
+            <label class="muted">
+              Topic
+            </label>
+
+            <select
+              id="sc2PracticeCategory"
+            >
+              <option value="">
+                All Topics
+              </option>
+
+              <option>
+                General Chemistry
+              </option>
+
+              <option>
+                Atomic Structure
+              </option>
+
+              <option>
+                Stoichiometry
+              </option>
+
+              <option>
+                Periodicity
+              </option>
+
+              <option>
+                Bonding
+              </option>
+
+              <option>
+                Acids & Bases
+              </option>
+
+              <option>
+                Organic Chemistry
+              </option>
+
+              <option>
+                Thermochemistry
+              </option>
+
+              <option>
+                Equilibrium
+              </option>
+
+              <option>
+                Electrochemistry
+              </option>
+            </select>
+          </div>
+
+
+          <div>
+            <label class="muted">
+              Difficulty
+            </label>
+
+            <select
+              id="sc2PracticeDifficulty"
+            >
+              <option value="">
+                All Levels
+              </option>
+
+              <option>
+                Easy
+              </option>
+
+              <option>
+                Medium
+              </option>
+
+              <option>
+                Hard
+              </option>
+            </select>
+          </div>
+
+
+          <div>
+            <label class="muted">
+              Questions
+            </label>
+
+            <select
+              id="sc2PracticeLimit"
+            >
+              <option>
+                5
+              </option>
+
+              <option selected>
+                10
+              </option>
+
+              <option>
+                15
+              </option>
+
+              <option>
+                20
+              </option>
+            </select>
+          </div>
+
+
+          <button
+            class="primary"
+            id="sc2StartPractice"
+            type="button"
+          >
+            Start Practice
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <section
+        class="card"
+        id="sc2PracticeCard"
+        style="display:none"
+      >
+
+        <div
+          class="top"
+          style="margin-bottom:10px"
+        >
+          <div>
+            <h2>
+              Practice Set
+            </h2>
+
+            <p
+              class="muted"
+              id="sc2PracticeMeta"
+            >
+            </p>
+          </div>
+
+
+          <button
+            class="secondary"
+            id="sc2NewPractice"
+            type="button"
+          >
+            New Set
+          </button>
+        </div>
+
+
+        <form
+          id="sc2PracticeForm"
+        >
+          <div
+            id="sc2PracticeQuestions"
+          >
+          </div>
+
+
+          <button
+            class="primary"
+            type="submit"
+          >
+            Check Answers
+          </button>
+        </form>
+
+
+        <div
+          id="sc2PracticeResults"
+          style="margin-top:14px"
+        >
+        </div>
+
+      </section>
+
+    </section>
+
+
+    <!-- ===============================================
+         FLASHCARDS
+         =============================================== -->
+
+    <section
+      class="page"
+      id="sc2FlashcardsPage"
+    >
+      <header class="top">
+        <div>
+          <h1>
+            CCC Flashcards
+          </h1>
+
+          <p>
+            Review chemistry concepts
+            one card at a time.
+          </p>
+        </div>
+      </header>
+
+
+      <div
+        class="msg"
+        id="sc2FlashMsg"
+      >
+      </div>
+
+
+      <section
+        class="card"
+        id="sc2DeckListCard"
+      >
+        <h2>
+          Flashcard Decks
+        </h2>
+
+        <div
+          class="sc2-grid"
+          id="sc2DeckList"
+        >
+        </div>
+      </section>
+
+
+      <section
+        class="card"
+        id="sc2StudyCard"
+        style="display:none"
+      >
+
+        <div
+          class="top"
+          style="margin-bottom:12px"
+        >
+          <div>
+            <h2 id="sc2StudyTitle">
+              Deck
+            </h2>
+
+            <p
+              class="muted"
+              id="sc2StudyMeta"
+            >
+            </p>
+          </div>
+
+
+          <button
+            class="secondary"
+            id="sc2BackDecks"
+            type="button"
+          >
+            ← Back to Decks
+          </button>
+        </div>
+
+
+        <div
+          class="sc2-flashcard"
+          id="sc2FlashcardBox"
+          tabindex="0"
+        >
+          <div>
+            <div
+              class="sc2-flash-label"
+              id="sc2FlashLabel"
+            >
+              QUESTION
+            </div>
+
+            <div
+              class="sc2-flash-text"
+              id="sc2FlashText"
+            >
+              Choose a deck to begin.
+            </div>
+          </div>
+        </div>
+
+
+        <div
+          class="sc2-actions"
+          style="justify-content:center"
+        >
+
+          <button
+            class="secondary"
+            id="sc2FlashPrev"
+            type="button"
+          >
+            ← Previous
+          </button>
+
+
+          <button
+            class="secondary"
+            id="sc2FlashFlip"
+            type="button"
+          >
+            Flip Card
+          </button>
+
+
+          <button
+            class="danger"
+            id="sc2FlashAgain"
+            type="button"
+          >
+            Again
+          </button>
+
+
+          <button
+            class="primary"
+            id="sc2FlashGotIt"
+            type="button"
+          >
+            Got It
+          </button>
+
+
+          <button
+            class="secondary"
+            id="sc2FlashNext"
+            type="button"
+          >
+            Next →
+          </button>
+
+        </div>
+
+      </section>
+
+    </section>
+
+
+    <!-- ===============================================
+         DAILY CHALLENGE
+         =============================================== -->
+
+    <section
+      class="page"
+      id="sc2DailyPage"
+    >
+      <header class="top">
+        <div>
+          <h1>
+            Daily Chemistry Challenge
+          </h1>
+
+          <p>
+            One quick chemistry question
+            for today.
+          </p>
+        </div>
+      </header>
+
+
+      <div
+        class="msg"
+        id="sc2DailyMsg"
+      >
+      </div>
+
+
+      <section
+        class="card"
+        id="sc2DailyContent"
+      >
+        <p class="muted">
+          Loading today's challenge…
+        </p>
+      </section>
+
+    </section>
+
+
+    <!-- ===============================================
+         CHEMISTRY TOOLS
+         =============================================== -->
+
+    <section
+      class="page"
+      id="sc2ChemToolsPage"
+    >
+
+      <header class="top">
+        <div>
+          <h1>
+            Chemistry Tools
+          </h1>
+
+          <p>
+            Quick calculators and
+            chemistry practice tools.
+          </p>
+        </div>
+      </header>
+
+
+      <div class="sc2-tools">
+
+
+        <section class="sc2-tool">
+
+          <h3>
+            Molar Mass Calculator
+          </h3>
+
+          <p class="muted">
+            Try H2SO4, Ca(OH)2
+            or C6H12O6.
+          </p>
+
+
+          <form
+            class="form"
+            id="sc2MolarForm"
+          >
+
+            <input
+              id="sc2MolarFormula"
+              placeholder="Ca(OH)2"
+              required
+            >
+
+
+            <button class="primary">
+              Calculate
+            </button>
+
+          </form>
+
+
+          <div
+            class="sc2-tool-result"
+            id="sc2MolarResult"
+          >
+            Enter a formula.
+          </div>
+
+        </section>
+
+
+        <section class="sc2-tool">
+
+          <h3>
+            Mass ↔ Moles
+          </h3>
+
+
+          <form
+            class="form"
+            id="sc2MolesForm"
+          >
+
+            <input
+              id="sc2MolesFormula"
+              placeholder="NaCl"
+              required
+            >
+
+
+            <select
+              id="sc2MolesMode"
+            >
+              <option
+                value="massToMoles"
+              >
+                Mass (g) → Moles
+              </option>
+
+              <option
+                value="molesToMass"
+              >
+                Moles → Mass (g)
+              </option>
+            </select>
+
+
+            <input
+              id="sc2MolesValue"
+              type="number"
+              step="any"
+              placeholder="Value"
+              required
+            >
+
+
+            <button class="primary">
+              Convert
+            </button>
+
+          </form>
+
+
+          <div
+            class="sc2-tool-result"
+            id="sc2MolesResult"
+          >
+            Enter your values.
+          </div>
+
+        </section>
+
+
+        <section class="sc2-tool">
+
+          <h3>
+            Percent Composition
+          </h3>
+
+
+          <form
+            class="form"
+            id="sc2CompositionForm"
+          >
+
+            <input
+              id="sc2CompositionFormula"
+              placeholder="H2O"
+              required
+            >
+
+
+            <button class="primary">
+              Calculate
+            </button>
+
+          </form>
+
+
+          <div
+            class="sc2-tool-result"
+            id="sc2CompositionResult"
+          >
+            Enter a formula.
+          </div>
+
+        </section>
+
+
+        <section class="sc2-tool">
+
+          <h3>
+            Dilution Calculator
+          </h3>
+
+
+          <p class="muted">
+            Uses C1V1 = C2V2.
+          </p>
+
+
+          <form
+            class="form"
+            id="sc2DilutionForm"
+          >
+
+            <select
+              id="sc2DilutionUnknown"
+            >
+              <option value="c1">
+                Find C1
+              </option>
+
+              <option value="v1">
+                Find V1
+              </option>
+
+              <option value="c2">
+                Find C2
+              </option>
+
+              <option
+                value="v2"
+                selected
+              >
+                Find V2
+              </option>
+            </select>
+
+
+            <div class="sc2-inline">
+
+              <input
+                id="sc2C1"
+                type="number"
+                step="any"
+                placeholder="C1"
+              >
+
+              <input
+                id="sc2V1"
+                type="number"
+                step="any"
+                placeholder="V1"
+              >
+
+              <input
+                id="sc2C2"
+                type="number"
+                step="any"
+                placeholder="C2"
+              >
+
+              <input
+                id="sc2V2"
+                type="number"
+                step="any"
+                placeholder="V2"
+              >
+
+            </div>
+
+
+            <button class="primary">
+              Calculate
+            </button>
+
+          </form>
+
+
+          <div
+            class="sc2-tool-result"
+            id="sc2DilutionResult"
+          >
+            Enter the other three values.
+          </div>
+
+        </section>
+
+
+        <section class="sc2-tool">
+
+          <h3>
+            Unit Converter
+          </h3>
+
+
+          <form
+            class="form"
+            id="sc2UnitForm"
+          >
+
+            <select
+              id="sc2UnitMode"
+            >
+              <option value="gkg">
+                g → kg
+              </option>
+
+              <option value="kgg">
+                kg → g
+              </option>
+
+              <option value="mlL">
+                mL → L
+              </option>
+
+              <option value="Lml">
+                L → mL
+              </option>
+
+              <option value="kPaatm">
+                kPa → atm
+              </option>
+
+              <option value="atmkPa">
+                atm → kPa
+              </option>
+
+              <option value="cK">
+                °C → K
+              </option>
+
+              <option value="Kc">
+                K → °C
+              </option>
+            </select>
+
+
+            <input
+              id="sc2UnitValue"
+              type="number"
+              step="any"
+              placeholder="Value"
+              required
+            >
+
+
+            <button class="primary">
+              Convert
+            </button>
+
+          </form>
+
+
+          <div
+            class="sc2-tool-result"
+            id="sc2UnitResult"
+          >
+            Enter a value.
+          </div>
+
+        </section>
+
+
+        <section class="sc2-tool">
+
+          <h3>
+            Significant Figures
+          </h3>
+
+
+          <form
+            class="form"
+            id="sc2SigForm"
+          >
+
+            <input
+              id="sc2SigValue"
+              placeholder="0.004050"
+              required
+            >
+
+
+            <button class="primary">
+              Count
+            </button>
+
+          </form>
+
+
+          <div
+            class="sc2-tool-result"
+            id="sc2SigResult"
+          >
+            Enter a number.
+          </div>
+
+        </section>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===============================================
+         PERIODIC TABLE
+         =============================================== -->
+
+    <section
+      class="page"
+      id="sc2PeriodicPage"
+    >
+
+      <header class="top">
+        <div>
+          <h1>
+            Interactive Periodic Table
+          </h1>
+
+          <p>
+            Click an element to view
+            its information.
+          </p>
+        </div>
+      </header>
+
+
+      <section class="card">
+
+        <div class="sc2-periodic-wrap">
+
+          <div
+            class="sc2-periodic"
+            id="sc2PeriodicTable"
+          >
+          </div>
+
+
+          <div
+            class="sc2-fblock"
+            id="sc2FBlock"
+          >
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <section class="card">
+
+        <h2>
+          Element Details
+        </h2>
+
+
+        <div
+          id="sc2ElementDetails"
+          class="muted"
+        >
+          Select an element.
+        </div>
+
+      </section>
+
+    </section>
+
+
+    <!-- ===============================================
+         PROGRESS
+         =============================================== -->
+
+    <section
+      class="page"
+      id="sc2ProgressPage"
+    >
+
+      <header class="top">
+        <div>
+          <h1>
+            My Progress & Achievements
+          </h1>
+
+          <p>
+            Your progress is connected
+            only to your random Science Club account.
+          </p>
+        </div>
+      </header>
+
+
+      <div class="sc2-grid">
+
+
+        <div class="sc2-card">
+
+          <h3>
+            Overall Learning Progress
+          </h3>
+
+
+          <div
+            class="sc2-big"
+            id="sc2OverallPct"
+          >
+            0%
+          </div>
+
+
+          <div class="sc2-progress">
+            <div
+              id="sc2OverallBar"
+            >
+            </div>
+          </div>
+
+
+          <p
+            class="muted"
+            id="sc2OverallText"
+          >
+            Loading…
+          </p>
+
+        </div>
+
+
+        <div class="sc2-card">
+
+          <h3>
+            Modules Completed
+          </h3>
+
+
+          <div
+            class="sc2-big"
+            id="sc2ModulesDone"
+          >
+            0 / 0
+          </div>
+
+        </div>
+
+
+        <div class="sc2-card">
+
+          <h3>
+            Quiz Average
+          </h3>
+
+
+          <div
+            class="sc2-big"
+            id="sc2QuizAverage"
+          >
+            —
+          </div>
+
+        </div>
+
+
+        <div class="sc2-card">
+
+          <h3>
+            WWSEF Progress
+          </h3>
+
+
+          <div
+            class="sc2-big"
+            id="sc2ProjectPct"
+          >
+            —
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <section
+        class="card"
+        style="margin-top:18px"
+      >
+
+        <h2>
+          Achievements
+        </h2>
+
+
+        <div
+          class="sc2-badges"
+          id="sc2Badges"
+        >
+        </div>
+
+      </section>
+
+    </section>
+
+
+    <!-- ===============================================
+         WWSEF
+         =============================================== -->
+
+    <section
+      class="page"
+      id="sc2WWSEFPage"
+    >
+
+      <header class="top">
+        <div>
+          <h1>
+            WWSEF Workspace
+          </h1>
+
+          <p>
+            Track projects, milestones,
+            lab notes and advisor feedback.
+          </p>
+        </div>
+      </header>
+
+
+      <div
+        class="msg"
+        id="sc2WWSEFMsg"
+      >
+      </div>
+
+
+      <section
+        class="card"
+        id="sc2ProjectListCard"
+      >
+
+        <h2>
+          My Projects
+        </h2>
+
+
+        <div
+          class="sc2-project-grid"
+          id="sc2ProjectList"
+        >
+        </div>
+
+      </section>
+
+
+      <section
+        class="card"
+        id="sc2CreateProjectCard"
+      >
+
+        <h2>
+          Create a Personal WWSEF Project
+        </h2>
+
+
+        <form
+          class="form"
+          id="sc2ProjectForm"
+        >
+
+          <label>
+            Project title
+          </label>
+
+
+          <input
+            id="sc2ProjectTitle"
+            required
+          >
+
+
+          <label>
+            Project field
+          </label>
+
+
+          <select
+            id="sc2ProjectField"
+          >
+            <option>
+              Computer Science
+            </option>
+
+            <option>
+              Engineering
+            </option>
+
+            <option>
+              Chemistry
+            </option>
+
+            <option>
+              Physics
+            </option>
+
+            <option>
+              Life Science
+            </option>
+
+            <option>
+              Mathematics
+            </option>
+
+            <option>
+              Environmental Science
+            </option>
+
+            <option>
+              General Science
+            </option>
+          </select>
+
+
+          <label>
+            Description
+          </label>
+
+
+          <textarea
+            id="sc2ProjectDescription"
+          >
+          </textarea>
+
+
+          <label>
+            Target date
+          </label>
+
+
+          <input
+            id="sc2ProjectTarget"
+            type="date"
+          >
+
+
+          <button class="primary">
+            Create Project
+          </button>
+
+        </form>
+
+      </section>
+
+
+      <section
+        class="card"
+        id="sc2WorkspaceCard"
+        style="display:none"
+      >
+
+        <div
+          class="top"
+          style="margin-bottom:12px"
+        >
+
+          <div>
+            <h2 id="sc2WorkspaceTitle">
+              Project
+            </h2>
+
+            <p
+              class="muted"
+              id="sc2WorkspaceMeta"
+            >
+            </p>
+          </div>
+
+
+          <button
+            class="secondary"
+            id="sc2BackProjects"
+            type="button"
+          >
+            ← Back to Projects
+          </button>
+
+        </div>
+
+
+        <div
+          class="sc2-countdown"
+          id="sc2Countdown"
+        >
+          No upcoming milestone yet.
+        </div>
+
+
+        <div class="sc2-progress">
+          <div
+            id="sc2ProjectProgressBar"
+          >
+          </div>
+        </div>
+
+
+        <p
+          class="muted"
+          id="sc2ProjectProgressText"
+        >
+          0% complete
+        </p>
+
+
+        <div class="sc2-workspace">
+
+
+          <div>
+
+            <section class="card">
+
+              <h2>
+                Project Details
+              </h2>
+
+
+              <form
+                class="form"
+                id="sc2ProjectDetailsForm"
+              >
+
+                <label>
+                  Title
+                </label>
+
+
+                <input
+                  id="sc2EditTitle"
+                  required
+                >
+
+
+                <label>
+                  Field
+                </label>
+
+
+                <select
+                  id="sc2EditField"
+                >
+                  <option>
+                    Computer Science
+                  </option>
+
+                  <option>
+                    Engineering
+                  </option>
+
+                  <option>
+                    Chemistry
+                  </option>
+
+                  <option>
+                    Physics
+                  </option>
+
+                  <option>
+                    Life Science
+                  </option>
+
+                  <option>
+                    Mathematics
+                  </option>
+
+                  <option>
+                    Environmental Science
+                  </option>
+
+                  <option>
+                    General Science
+                  </option>
+                </select>
+
+
+                <label>
+                  Status
+                </label>
+
+
+                <select
+                  id="sc2EditStatus"
+                >
+                  <option>
+                    Idea
+                  </option>
+
+                  <option>
+                    Research
+                  </option>
+
+                  <option>
+                    Experiment Design
+                  </option>
+
+                  <option>
+                    Data Collection
+                  </option>
+
+                  <option>
+                    Analysis
+                  </option>
+
+                  <option>
+                    Abstract
+                  </option>
+
+                  <option>
+                    Display Board
+                  </option>
+
+                  <option>
+                    Complete
+                  </option>
+                </select>
+
+
+                <label>
+                  Description
+                </label>
+
+
+                <textarea
+                  id="sc2EditDescription"
+                >
+                </textarea>
+
+
+                <label>
+                  Research question
+                </label>
+
+
+                <textarea
+                  id="sc2EditQuestion"
+                >
+                </textarea>
+
+
+                <label>
+                  Hypothesis / expected outcome
+                </label>
+
+
+                <textarea
+                  id="sc2EditHypothesis"
+                >
+                </textarea>
+
+
+                <label>
+                  Next step
+                </label>
+
+
+                <input
+                  id="sc2EditNextStep"
+                >
+
+
+                <label>
+                  Target date
+                </label>
+
+
+                <input
+                  id="sc2EditTarget"
+                  type="date"
+                >
+
+
+                <button class="primary">
+                  Save Project Details
+                </button>
+
+
+                <button
+                  class="danger"
+                  id="sc2DeleteProject"
+                  type="button"
+                >
+                  Delete Personal Project
+                </button>
+
+              </form>
+
+            </section>
+
+
+            <section class="card">
+
+              <h2>
+                Project Milestones
+              </h2>
+
+
+              <div
+                id="sc2Milestones"
+              >
+              </div>
+
+
+              <form
+                class="form"
+                id="sc2MilestoneForm"
+                style="margin-top:13px"
+              >
+
+                <input
+                  id="sc2MilestoneTitle"
+                  required
+                  placeholder="Milestone title"
+                >
+
+
+                <div class="sc2-inline">
+
+                  <input
+                    id="sc2MilestoneDue"
+                    type="date"
+                  >
+
+
+                  <input
+                    id="sc2MilestoneOrder"
+                    type="number"
+                    min="0"
+                    value="1"
+                    placeholder="Order"
+                  >
+
+                </div>
+
+
+                <textarea
+                  id="sc2MilestoneDetails"
+                  placeholder="Optional notes"
+                >
+                </textarea>
+
+
+                <button class="secondary">
+                  Add Milestone
+                </button>
+
+              </form>
+
+            </section>
+
+          </div>
+
+
+          <div>
+
+            <section class="card">
+
+              <h2>
+                Team
+              </h2>
+
+
+              <div
+                id="sc2TeamInfo"
+                class="muted"
+              >
+                Personal project
+              </div>
+
+            </section>
+
+
+            <section class="card">
+
+              <h2>
+                Advisor Feedback
+              </h2>
+
+
+              <div
+                id="sc2ProjectFeedback"
+              >
+              </div>
+
+            </section>
+
+
+            <section class="card">
+
+              <h2>
+                Digital Lab Notebook
+              </h2>
+
+
+              <form
+                class="form"
+                id="sc2NotebookForm"
+              >
+
+                <label>
+                  Date
+                </label>
+
+
+                <input
+                  id="sc2NotebookDate"
+                  type="date"
+                  required
+                >
+
+
+                <label>
+                  Entry title
+                </label>
+
+
+                <input
+                  id="sc2NotebookTitle"
+                  required
+                >
+
+
+                <label>
+                  What happened?
+                </label>
+
+
+                <textarea
+                  id="sc2NotebookBody"
+                  required
+                >
+                </textarea>
+
+
+                <button class="primary">
+                  Add Notebook Entry
+                </button>
+
+              </form>
+
+
+              <div
+                id="sc2NotebookList"
+                style="margin-top:14px"
+              >
+              </div>
+
+            </section>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </section>
+
+
+    <!-- ===============================================
+         NOTIFICATIONS
+         =============================================== -->
+
+    <section
+      class="page"
+      id="sc2NotificationsPage"
+    >
+
+      <header class="top">
+
+        <div>
+          <h1>
+            Notifications
+          </h1>
+
+          <p>
+            Science Club updates,
+            deadlines and project feedback.
+          </p>
+        </div>
+
+
+        <button
+          class="secondary"
+          id="sc2MarkAllRead"
+          type="button"
+        >
+          Mark All Read
+        </button>
+
+      </header>
+
+
+      <div
+        class="msg"
+        id="sc2NotificationMsg"
+      >
+      </div>
+
+
+      <section class="card">
+
+        <div
+          id="sc2NotificationList"
+        >
+        </div>
+
+      </section>
+
+    </section>
+    `
+  );
+
+
+  pages.sc2QuestionBank =
+    document.getElementById(
+      "sc2QuestionBankPage"
+    );
+
+
+  pages.sc2Flashcards =
+    document.getElementById(
+      "sc2FlashcardsPage"
+    );
+
+
+  pages.sc2Daily =
+    document.getElementById(
+      "sc2DailyPage"
+    );
+
+
+  pages.sc2ChemTools =
+    document.getElementById(
+      "sc2ChemToolsPage"
+    );
+
+
+  pages.sc2Periodic =
+    document.getElementById(
+      "sc2PeriodicPage"
+    );
+
+
+  pages.sc2Progress =
+    document.getElementById(
+      "sc2ProgressPage"
+    );
+
+
+  pages.sc2WWSEF =
+    document.getElementById(
+      "sc2WWSEFPage"
+    );
+
+
+  pages.sc2Notifications =
+    document.getElementById(
+      "sc2NotificationsPage"
+    );
+
+
+  document
+    .querySelectorAll(".sc2Nav")
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          async () => {
+
+            if (!currentProfile) {
+              showPage("auth");
+              return;
+            }
+
+
+            showPage(
+              button.dataset.page
+            );
+
+
+            if (
+              button.dataset.page ===
+              "sc2Progress"
+            ) {
+              await sc2LoadProgress();
+            }
+
+
+            if (
+              button.dataset.page ===
+              "sc2WWSEF"
+            ) {
+              await sc2LoadProjects();
+            }
+
+
+            if (
+              button.dataset.page ===
+              "sc2Notifications"
+            ) {
+              await sc2LoadNotifications();
+            }
+
+          }
+        );
+
+      }
+    );
+
+
+  sc2WireStudentUI();
+
+  sc2RenderPeriodicTable();
+
+  sc2WireChemTools();
+
+  sc2InstallAdminUI();
+}
+
+
+/* =========================================================
+   STUDENT BUTTONS
+   ========================================================= */
+
+function sc2WireStudentUI() {
+
+  document
+    .getElementById(
+      "sc2StartPractice"
+    )
+    .addEventListener(
+      "click",
+      sc2StartPractice
+    );
+
+
+  document
+    .getElementById(
+      "sc2NewPractice"
+    )
+    .addEventListener(
+      "click",
+      () => {
+
+        SC2.practiceSet = [];
+
+        document
+          .getElementById(
+            "sc2PracticeCard"
+          )
+          .style.display =
+          "none";
+
+      }
+    );
+
+
+  document
+    .getElementById(
+      "sc2PracticeForm"
+    )
+    .addEventListener(
+      "submit",
+      sc2GradePractice
+    );
+
+
+  document
+    .getElementById(
+      "sc2FlashcardBox"
+    )
+    .addEventListener(
+      "click",
+      sc2FlipCard
+    );
+
+
+  document
+    .getElementById(
+      "sc2FlashFlip"
+    )
+    .addEventListener(
+      "click",
+      sc2FlipCard
+    );
+
+
+  document
+    .getElementById(
+      "sc2FlashPrev"
+    )
+    .addEventListener(
+      "click",
+      () =>
+        sc2MoveCard(-1)
+    );
+
+
+  document
+    .getElementById(
+      "sc2FlashNext"
+    )
+    .addEventListener(
+      "click",
+      () =>
+        sc2MoveCard(1)
+    );
+
+
+  document
+    .getElementById(
+      "sc2FlashAgain"
+    )
+    .addEventListener(
+      "click",
+      () =>
+        sc2RateCard("again")
+    );
+
+
+  document
+    .getElementById(
+      "sc2FlashGotIt"
+    )
+    .addEventListener(
+      "click",
+      () =>
+        sc2RateCard("got")
+    );
+
+
+  document
+    .getElementById(
+      "sc2BackDecks"
+    )
+    .addEventListener(
+      "click",
+      () => {
+
+        document
+          .getElementById(
+            "sc2StudyCard"
+          )
+          .style.display =
+          "none";
+
+
+        document
+          .getElementById(
+            "sc2DeckListCard"
+          )
+          .style.display =
+          "block";
+
+      }
+    );
+
+
+  document
+    .getElementById(
+      "sc2ProjectForm"
+    )
+    .addEventListener(
+      "submit",
+      sc2CreateProject
+    );
+
+
+  document
+    .getElementById(
+      "sc2ProjectDetailsForm"
+    )
+    .addEventListener(
+      "submit",
+      sc2SaveProject
+    );
+
+
+  document
+    .getElementById(
+      "sc2DeleteProject"
+    )
+    .addEventListener(
+      "click",
+      sc2DeleteProject
+    );
+
+
+  document
+    .getElementById(
+      "sc2MilestoneForm"
+    )
+    .addEventListener(
+      "submit",
+      sc2AddMilestone
+    );
+
+
+  document
+    .getElementById(
+      "sc2NotebookForm"
+    )
+    .addEventListener(
+      "submit",
+      sc2AddNotebookEntry
+    );
+
+
+  document
+    .getElementById(
+      "sc2BackProjects"
+    )
+    .addEventListener(
+      "click",
+      sc2CloseProject
+    );
+
+
+  document
+    .getElementById(
+      "sc2MarkAllRead"
+    )
+    .addEventListener(
+      "click",
+      sc2MarkAllRead
+    );
+}
+
+
+/* =========================================================
+   QUESTION BANK
+   ========================================================= */
+
+async function sc2StartPractice() {
+
+  const category =
+    document
+      .getElementById(
+        "sc2PracticeCategory"
+      )
+      .value || null;
+
+
+  const difficulty =
+    document
+      .getElementById(
+        "sc2PracticeDifficulty"
+      )
+      .value || null;
+
+
+  const limit =
+    Number(
+      document
+        .getElementById(
+          "sc2PracticeLimit"
+        )
+        .value
+    ) || 10;
+
+
+  const {
+    data,
+    error
+  } =
+    await db.rpc(
+      "get_practice_questions",
+      {
+        p_category:
+          category,
+
+        p_difficulty:
+          difficulty,
+
+        p_limit:
+          limit
+      }
+    );
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "sc2PracticeMsg",
+      "Could not load practice questions.",
+      "err"
+    );
+
+    return;
+
+  }
+
+
+  SC2.practiceSet =
+    data || [];
+
+
+  if (
+    !SC2.practiceSet.length
+  ) {
+
+    msg(
+      "sc2PracticeMsg",
+      "No published questions match those filters yet.",
+      "err"
+    );
+
+    return;
+
+  }
+
+
+  document
+    .getElementById(
+      "sc2PracticeCard"
+    )
+    .style.display =
+    "block";
+
+
+  document
+    .getElementById(
+      "sc2PracticeMeta"
+    )
+    .textContent =
+    `${SC2.practiceSet.length} question${
+      SC2.practiceSet.length === 1
+        ? ""
+        : "s"
+    }`;
+
+
+  document
+    .getElementById(
+      "sc2PracticeQuestions"
+    )
+    .innerHTML =
+    SC2.practiceSet
+      .map(
+        (question, index) => `
+
+          <div class="question">
+
+            <h3>
+              ${index + 1}.
+              ${esc(
+                question.question_text
+              )}
+            </h3>
+
+
+            ${[
+              "A",
+              "B",
+              "C",
+              "D"
+            ]
+              .map(
+                letter => `
+
+                  <label
+                    class="option"
+                  >
+
+                    <input
+                      type="radio"
+                      name="sc2_practice_${question.id}"
+                      value="${letter}"
+                      required
+                    >
+
+
+                    <span>
+                      <b>
+                        ${letter}.
+                      </b>
+
+                      ${esc(
+                        question[
+                          "option_" +
+                          letter.toLowerCase()
+                        ]
+                      )}
+                    </span>
+
+                  </label>
+                `
+              )
+              .join("")}
+
+          </div>
+        `
+      )
+      .join("");
+
+
+  document
+    .getElementById(
+      "sc2PracticeResults"
+    )
+    .innerHTML =
+    "";
+}
+
+
+async function sc2GradePractice(
+  event
+) {
+
+  event.preventDefault();
+
+
+  if (
+    !SC2.practiceSet.length
+  ) {
+    return;
+  }
+
+
+  const answers = {};
+
+
+  for (
+    const question
+    of SC2.practiceSet
+  ) {
+
+    const selected =
+      document.querySelector(
+        `input[name="sc2_practice_${question.id}"]:checked`
+      );
+
+
+    if (!selected) {
+
+      msg(
+        "sc2PracticeMsg",
+        "Answer every question first.",
+        "err"
+      );
+
+      return;
+
+    }
+
+
+    answers[
+      String(question.id)
+    ] =
+      selected.value;
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await db.rpc(
+      "grade_practice_questions",
+      {
+        p_question_ids:
+          SC2.practiceSet
+            .map(
+              question =>
+                question.id
+            ),
+
+        p_answers:
+          answers
+      }
+    );
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "sc2PracticeMsg",
+      "Could not grade this practice set.",
+      "err"
+    );
+
+    return;
+  }
+
+
+  const percentage =
+    data.total
+      ? Math.round(
+          data.score /
+          data.total *
+          100
+        )
+      : 0;
+
+
+  document
+    .getElementById(
+      "sc2PracticeResults"
+    )
+    .innerHTML = `
+
+      <div
+        class="sc2-feedback ${
+          percentage >= 70
+            ? "good"
+            : "bad"
+        }"
+      >
+        <b>
+          ${data.score}/${data.total}
+          (${percentage}%)
+        </b>
+      </div>
+
+
+      ${
+        (data.results || [])
+          .map(
+            (result, index) => `
+
+              <div
+                class="review ${
+                  result.correct
+                    ? "good"
+                    : "bad"
+                }"
+              >
+
+                <b>
+                  Question ${index + 1}:
+                  ${
+                    result.correct
+                      ? "Correct"
+                      : "Incorrect"
+                  }
+                </b>
+
+                <br>
+
+                Your answer:
+                ${esc(
+                  result.your_answer ||
+                  "—"
+                )}
+
+                • Correct:
+                ${esc(
+                  result.correct_option
+                )}
+
+                ${
+                  result.explanation
+                    ? `
+                      <br>
+
+                      <span class="muted">
+                        ${esc(
+                          result.explanation
+                        )}
+                      </span>
+                    `
+                    : ""
+                }
+
+              </div>
+            `
+          )
+          .join("")
+      }
+    `;
+}
+
+
+/* =========================================================
+   FLASHCARDS
+   ========================================================= */
+
+async function sc2LoadFlashcards() {
+
+  if (
+    !currentUser ||
+    currentProfile?.role !==
+      "student"
+  ) {
+    return;
+  }
+
+
+  const [
+    deckResult,
+    cardResult
+  ] =
+    await Promise.all([
+
+      db
+        .from(
+          "flashcard_decks"
+        )
+        .select("*")
+        .order(
+          "sort_order",
+          {
+            ascending:
+              true
+          }
+        ),
+
+      db
+        .from(
+          "flashcards"
+        )
+        .select("*")
+        .order(
+          "sort_order",
+          {
+            ascending:
+              true
+          }
+        )
+
+    ]);
+
+
+  if (
+    deckResult.error
+  ) {
+    console.error(
+      deckResult.error
+    );
+  }
+
+
+  if (
+    cardResult.error
+  ) {
+    console.error(
+      cardResult.error
+    );
+  }
+
+
+  SC2.flashDecks =
+    deckResult.data || [];
+
+
+  SC2.flashcards =
+    cardResult.data || [];
+
+
+  sc2RenderDecks();
+}
+
+
+function sc2RenderDecks() {
+
+  const list =
+    document.getElementById(
+      "sc2DeckList"
+    );
+
+
+  list.innerHTML =
+    SC2.flashDecks.length
+
+      ? SC2.flashDecks
+          .map(
+            deck => {
+
+              const count =
+                SC2.flashcards
+                  .filter(
+                    card =>
+                      Number(
+                        card.deck_id
+                      ) ===
+                      Number(
+                        deck.id
+                      )
+                  )
+                  .length;
+
+
+              return `
+
+                <div class="sc2-card">
+
+                  <span class="badge">
+                    ${esc(
+                      deck.category
+                    )}
+                  </span>
+
+
+                  <h3>
+                    ${esc(
+                      deck.title
+                    )}
+                  </h3>
+
+
+                  <p class="muted">
+                    ${esc(
+                      deck.description ||
+                      "Review deck"
+                    )}
+
+                    <br>
+
+                    ${count}
+                    card${
+                      count === 1
+                        ? ""
+                        : "s"
+                    }
+                  </p>
+
+
+                  <button
+                    class="primary sc2OpenDeck"
+                    data-id="${deck.id}"
+                  >
+                    Study Deck
+                  </button>
+
+                </div>
+              `;
+            }
+          )
+          .join("")
+
+      : `
+        <p class="muted">
+          No published flashcard
+          decks yet.
+        </p>
+      `;
+
+
+  document
+    .querySelectorAll(
+      ".sc2OpenDeck"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            sc2OpenDeck(
+              Number(
+                button.dataset.id
+              )
+            )
+        );
+
+      }
+    );
+}
+
+
+function sc2OpenDeck(id) {
+
+  SC2.activeDeck =
+    SC2.flashDecks
+      .find(
+        deck =>
+          Number(deck.id) ===
+          Number(id)
+      );
+
+
+  SC2.activeCards =
+    SC2.flashcards
+      .filter(
+        card =>
+          Number(
+            card.deck_id
+          ) ===
+          Number(id)
+      );
+
+
+  SC2.activeCardIndex = 0;
+
+  SC2.showingBack = false;
+
+
+  if (!SC2.activeDeck) {
+    return;
+  }
+
+
+  document
+    .getElementById(
+      "sc2DeckListCard"
+    )
+    .style.display =
+    "none";
+
+
+  document
+    .getElementById(
+      "sc2StudyCard"
+    )
+    .style.display =
+    "block";
+
+
+  document
+    .getElementById(
+      "sc2StudyTitle"
+    )
+    .textContent =
+    SC2.activeDeck.title;
+
+
+  sc2RenderCard();
+}
+
+
+function sc2FlashKey() {
+
+  return (
+    "scienceClubFlash:" +
+    (
+      currentUser?.id ||
+      "anonymous"
+    ) +
+    ":" +
+    (
+      SC2.activeDeck?.id ||
+      0
+    )
+  );
+}
+
+
+function sc2RenderCard() {
+
+  if (
+    !SC2.activeCards.length
+  ) {
+
+    document
+      .getElementById(
+        "sc2FlashText"
+      )
+      .textContent =
+      "This deck has no cards yet.";
+
+
+    document
+      .getElementById(
+        "sc2StudyMeta"
+      )
+      .textContent =
+      "0 cards";
+
+
+    return;
+  }
+
+
+  const card =
+    SC2.activeCards[
+      SC2.activeCardIndex
+    ];
+
+
+  document
+    .getElementById(
+      "sc2FlashLabel"
+    )
+    .textContent =
+    SC2.showingBack
+      ? "ANSWER"
+      : "QUESTION";
+
+
+  document
+    .getElementById(
+      "sc2FlashText"
+    )
+    .textContent =
+    SC2.showingBack
+      ? card.back_text
+      : card.front_text;
+
+
+  let stats = {
+    got: 0,
+    again: 0
+  };
+
+
+  try {
+
+    stats =
+      JSON.parse(
+        localStorage.getItem(
+          sc2FlashKey()
+        )
+      ) ||
+      stats;
+
+  } catch (_) {
+  }
+
+
+  document
+    .getElementById(
+      "sc2StudyMeta"
+    )
+    .textContent =
+
+    `Card ${
+      SC2.activeCardIndex + 1
+    } of ${
+      SC2.activeCards.length
+    } • Got It ${
+      stats.got || 0
+    } • Again ${
+      stats.again || 0
+    }`;
+
+
+  document
+    .getElementById(
+      "sc2FlashPrev"
+    )
+    .disabled =
+    SC2.activeCardIndex === 0;
+
+
+  document
+    .getElementById(
+      "sc2FlashNext"
+    )
+    .disabled =
+    SC2.activeCardIndex ===
+    SC2.activeCards.length - 1;
+}
+
+
+function sc2FlipCard() {
+
+  SC2.showingBack =
+    !SC2.showingBack;
+
+
+  sc2RenderCard();
+}
+
+
+function sc2MoveCard(
+  direction
+) {
+
+  const next =
+    SC2.activeCardIndex +
+    direction;
+
+
+  if (
+    next < 0 ||
+    next >=
+      SC2.activeCards.length
+  ) {
+    return;
+  }
+
+
+  SC2.activeCardIndex =
+    next;
+
+
+  SC2.showingBack =
+    false;
+
+
+  sc2RenderCard();
+}
+
+
+function sc2RateCard(
+  kind
+) {
+
+  let stats = {
+    got: 0,
+    again: 0
+  };
+
+
+  try {
+
+    stats =
+      JSON.parse(
+        localStorage.getItem(
+          sc2FlashKey()
+        )
+      ) ||
+      stats;
+
+  } catch (_) {
+  }
+
+
+  stats[kind] =
+    (stats[kind] || 0) +
+    1;
+
+
+  localStorage.setItem(
+    sc2FlashKey(),
+    JSON.stringify(stats)
+  );
+
+
+  if (
+    SC2.activeCardIndex <
+    SC2.activeCards.length -
+    1
+  ) {
+
+    SC2.activeCardIndex++;
+
+    SC2.showingBack =
+      false;
+  }
+
+
+  sc2RenderCard();
+}
+
+
+/* =========================================================
+   DAILY CHALLENGE
+   ========================================================= */
+
+async function sc2LoadDailyChallenge() {
+
+  if (
+    !currentUser ||
+    currentProfile?.role !==
+      "student"
+  ) {
+    return;
+  }
+
+
+  const [
+    challengeResult,
+    answerResult
+  ] =
+    await Promise.all([
+
+      db.rpc(
+        "get_daily_challenge",
+        {
+          p_date:
+            sc2DateString()
+        }
+      ),
+
+      db
+        .from(
+          "daily_challenge_answers"
+        )
+        .select(
+          "challenge_id,answer,is_correct,answered_at"
+        )
+        .eq(
+          "user_id",
+          currentUser.id
+        )
+
+    ]);
+
+
+  if (
+    challengeResult.error
+  ) {
+    console.error(
+      challengeResult.error
+    );
+  }
+
+
+  if (
+    answerResult.error
+  ) {
+    console.error(
+      answerResult.error
+    );
+  }
+
+
+  SC2.dailyChallenge =
+    (
+      challengeResult.data ||
+      []
+    )[0] ||
+    null;
+
+
+  SC2.dailyAnswer =
+    SC2.dailyChallenge
+      ? (
+          answerResult.data ||
+          []
+        )
+          .find(
+            answer =>
+              Number(
+                answer.challenge_id
+              ) ===
+              Number(
+                SC2.dailyChallenge.id
+              )
+          )
+      : null;
+
+
+  sc2RenderDaily();
+}
+
+
+function sc2RenderDaily() {
+
+  const box =
+    document.getElementById(
+      "sc2DailyContent"
+    );
+
+
+  if (
+    !SC2.dailyChallenge
+  ) {
+
+    box.innerHTML = `
+      <p class="muted">
+        There is no published
+        challenge for today yet.
+      </p>
+    `;
+
+    return;
+  }
+
+
+  const question =
+    SC2.dailyChallenge;
+
+
+  box.innerHTML = `
+
+    <h2>
+      ${esc(
+        question.question_text
+      )}
+    </h2>
+
+
+    <form
+      id="sc2DailyForm"
+    >
+
+      ${[
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+        .map(
+          letter => `
+
+            <label
+              class="sc2-daily-option"
+            >
+
+              <input
+                type="radio"
+                name="sc2DailyAnswer"
+                value="${letter}"
+                ${
+                  SC2.dailyAnswer
+                    ?.answer ===
+                  letter
+                    ? "checked"
+                    : ""
+                }
+                required
+              >
+
+
+              <span>
+                <b>
+                  ${letter}.
+                </b>
+
+                ${esc(
+                  question[
+                    "option_" +
+                    letter.toLowerCase()
+                  ]
+                )}
+              </span>
+
+            </label>
+          `
+        )
+        .join("")}
+
+
+      <button
+        class="primary"
+        type="submit"
+      >
+        ${
+          SC2.dailyAnswer
+            ? "Check Again"
+            : "Submit Answer"
+        }
+      </button>
+
+    </form>
+
+
+    <div
+      id="sc2DailyFeedback"
+    >
+    </div>
+  `;
+
+
+  document
+    .getElementById(
+      "sc2DailyForm"
+    )
+    .addEventListener(
+      "submit",
+      sc2SubmitDaily
+    );
+
+
+  if (
+    SC2.dailyAnswer
+  ) {
+
+    const feedback =
+      document.getElementById(
+        "sc2DailyFeedback"
+      );
+
+
+    feedback.className =
+      "sc2-feedback " +
+      (
+        SC2.dailyAnswer
+          .is_correct
+          ? "good"
+          : "bad"
+      );
+
+
+    feedback.textContent =
+      SC2.dailyAnswer
+        .is_correct
+        ? "Your latest answer was correct."
+        : "Your latest answer was not correct. You can try again.";
+  }
+}
+
+
+async function sc2SubmitDaily(
+  event
+) {
+
+  event.preventDefault();
+
+
+  const selected =
+    document.querySelector(
+      'input[name="sc2DailyAnswer"]:checked'
+    );
+
+
+  if (
+    !selected ||
+    !SC2.dailyChallenge
+  ) {
+    return;
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await db.rpc(
+      "submit_daily_challenge",
+      {
+        p_challenge_id:
+          SC2.dailyChallenge.id,
+
+        p_answer:
+          selected.value
+      }
+    );
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "sc2DailyMsg",
+      "Could not submit your answer.",
+      "err"
+    );
+
+    return;
+  }
+
+
+  SC2.dailyAnswer = {
+
+    challenge_id:
+      SC2.dailyChallenge.id,
+
+    answer:
+      selected.value,
+
+    is_correct:
+      !!data.correct
+
+  };
+
+
+  const feedback =
+    document.getElementById(
+      "sc2DailyFeedback"
+    );
+
+
+  feedback.className =
+    "sc2-feedback " +
+    (
+      data.correct
+        ? "good"
+        : "bad"
+    );
+
+
+  feedback.innerHTML = `
+
+    <b>
+      ${
+        data.correct
+          ? "Correct!"
+          : "Not quite."
+      }
+    </b>
+
+    Correct answer:
+    ${esc(
+      data.correct_option
+    )}
+
+    ${
+      data.explanation
+        ? `
+          <br>
+          ${esc(
+            data.explanation
+          )}
+        `
+        : ""
+    }
+  `;
+
+
+  await sc2LoadProgress();
+}
+
+
+/* =========================================================
+   NOTIFICATIONS
+   ========================================================= */
+
+async function sc2LoadNotifications() {
+
+  if (
+    !currentUser ||
+    currentProfile?.role !==
+      "student"
+  ) {
+    return;
+  }
+
+
+  const [
+    notificationResult,
+    readResult
+  ] =
+    await Promise.all([
+
+      db
+        .from(
+          "notifications"
+        )
+        .select("*")
+        .order(
+          "created_at",
+          {
+            ascending:
+              false
+          }
+        ),
+
+      db
+        .from(
+          "notification_reads"
+        )
+        .select(
+          "notification_id,read_at"
+        )
+        .eq(
+          "user_id",
+          currentUser.id
+        )
+
+    ]);
+
+
+  if (
+    notificationResult.error
+  ) {
+    console.error(
+      notificationResult.error
+    );
+  }
+
+
+  if (
+    readResult.error
+  ) {
+    console.error(
+      readResult.error
+    );
+  }
+
+
+  SC2.notifications =
+    notificationResult.data ||
+    [];
+
+
+  SC2.notificationReads =
+    readResult.data ||
+    [];
+
+
+  sc2RenderNotifications();
+}
+
+
+function sc2IsRead(id) {
+
+  return (
+    SC2.notificationReads
+      .some(
+        read =>
+          Number(
+            read.notification_id
+          ) ===
+          Number(id)
+      )
+  );
+}
+
+
+function sc2RenderNotifications() {
+
+  const unread =
+    SC2.notifications
+      .filter(
+        notification =>
+          !sc2IsRead(
+            notification.id
+          )
+      )
+      .length;
+
+
+  document
+    .getElementById(
+      "sc2NotificationCount"
+    )
+    .textContent =
+    unread;
+
+
+  const list =
+    document.getElementById(
+      "sc2NotificationList"
+    );
+
+
+  list.innerHTML =
+    SC2.notifications.length
+
+      ? SC2.notifications
+          .map(
+            notification => `
+
+              <div
+                class="sc2-notification ${
+                  sc2IsRead(
+                    notification.id
+                  )
+                    ? ""
+                    : "unread"
+                }"
+              >
+
+                <div
+                  class="sc2-notification-dot"
+                >
+                </div>
+
+
+                <div class="grow">
+
+                  <h3
+                    style="
+                      margin:0 0 4px;
+                      font-size:12px
+                    "
+                  >
+                    ${esc(
+                      notification.title
+                    )}
+                  </h3>
+
+
+                  <p
+                    class="muted"
+                    style="margin:0"
+                  >
+                    ${esc(
+                      notification.message
+                    )}
+                  </p>
+
+
+                  <div
+                    class="sc2-meta"
+                  >
+                    ${esc(
+                      notification.category
+                    )}
+
+                    •
+
+                    ${sc2PrettyDateTime(
+                      notification.created_at
+                    )}
+                  </div>
+
+
+                  <div
+                    class="sc2-actions"
+                  >
+
+                    ${
+                      !sc2IsRead(
+                        notification.id
+                      )
+                        ? `
+                          <button
+                            class="secondary sc2MarkRead"
+                            data-id="${notification.id}"
+                            type="button"
+                          >
+                            Mark Read
+                          </button>
+                        `
+                        : ""
+                    }
+
+
+                    ${
+                      notification.link_page
+                        ? `
+                          <button
+                            class="primary sc2OpenNotification"
+                            data-id="${notification.id}"
+                            data-page="${esc(
+                              notification.link_page
+                            )}"
+                            type="button"
+                          >
+                            Open
+                          </button>
+                        `
+                        : ""
+                    }
+
+                  </div>
+
+                </div>
+
+              </div>
+            `
+          )
+          .join("")
+
+      : `
+        <p class="muted">
+          No notifications yet.
+        </p>
+      `;
+
+
+  document
+    .querySelectorAll(
+      ".sc2MarkRead"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            sc2MarkRead(
+              Number(
+                button.dataset.id
+              )
+            )
+        );
+
+      }
+    );
+
+
+  document
+    .querySelectorAll(
+      ".sc2OpenNotification"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          async () => {
+
+            await sc2MarkRead(
+              Number(
+                button.dataset.id
+              )
+            );
+
+
+            const page =
+              button.dataset.page;
+
+
+            if (
+              pages[page]
+            ) {
+              showPage(page);
+              return;
+            }
+
+
+            if (
+              page === "wwsef"
+            ) {
+              showPage(
+                "sc2WWSEF"
+              );
+            }
+
+
+            if (
+              page ===
+              "questionbank"
+            ) {
+              showPage(
+                "sc2QuestionBank"
+              );
+            }
+
+
+            if (
+              page ===
+              "flashcards"
+            ) {
+              showPage(
+                "sc2Flashcards"
+              );
+            }
+
+
+            if (
+              page ===
+              "daily"
+            ) {
+              showPage(
+                "sc2Daily"
+              );
+            }
+
+          }
+        );
+
+      }
+    );
+}
+
+
+async function sc2MarkRead(
+  id
+) {
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "notification_reads"
+      )
+      .upsert(
+        {
+          notification_id:
+            id,
+
+          user_id:
+            currentUser.id
+        },
+        {
+          onConflict:
+            "notification_id,user_id"
+        }
+      );
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "sc2NotificationMsg",
+      "Could not update notification.",
+      "err"
+    );
+
+    return;
+  }
+
+
+  await sc2LoadNotifications();
+}
+
+
+async function sc2MarkAllRead() {
+
+  const unread =
+    SC2.notifications
+      .filter(
+        notification =>
+          !sc2IsRead(
+            notification.id
+          )
+      );
+
+
+  if (!unread.length) {
+
+    msg(
+      "sc2NotificationMsg",
+      "Everything is already marked read."
+    );
+
+    return;
+  }
+
+
+  const rows =
+    unread.map(
+      notification => ({
+        notification_id:
+          notification.id,
+
+        user_id:
+          currentUser.id
+      })
+    );
+
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "notification_reads"
+      )
+      .upsert(
+        rows,
+        {
+          onConflict:
+            "notification_id,user_id"
+        }
+      );
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "sc2NotificationMsg",
+      "Could not mark notifications read.",
+      "err"
+    );
+
+    return;
+  }
+
+
+  await sc2LoadNotifications();
+}
+
+
+/* =========================================================
+   WWSEF PROJECTS
+   ========================================================= */
+
+async function sc2LoadProjects() {
+
+  if (
+    !currentUser ||
+    currentProfile?.role !==
+      "student"
+  ) {
+    return;
+  }
+
+
+  const [
+    projectResult,
+    teamResult
+  ] =
+    await Promise.all([
+
+      db
+        .from(
+          "wwsef_projects"
+        )
+        .select("*")
+        .order(
+          "updated_at",
+          {
+            ascending:
+              false
+          }
+        ),
+
+      db
+        .from(
+          "project_teams"
+        )
+        .select("*")
+        .order(
+          "name",
+          {
+            ascending:
+              true
+          }
+        )
+
+    ]);
+
+
+  if (
+    projectResult.error
+  ) {
+    console.error(
+      projectResult.error
+    );
+  }
+
+
+  if (
+    teamResult.error
+  ) {
+    console.error(
+      teamResult.error
+    );
+  }
+
+
+  SC2.projects =
+    projectResult.data ||
+    [];
+
+
+  SC2.teams =
+    teamResult.data ||
+    [];
+
+
+  sc2RenderProjects();
+}
+
+
+function sc2RenderProjects() {
+
+  const list =
+    document.getElementById(
+      "sc2ProjectList"
+    );
+
+
+  list.innerHTML =
+    SC2.projects.length
+
+      ? SC2.projects
+          .map(
+            project => {
+
+              const team =
+                SC2.teams
+                  .find(
+                    item =>
+                      Number(
+                        item.id
+                      ) ===
+                      Number(
+                        project.team_id
+                      )
+                  );
+
+
+              return `
+
+                <div
+                  class="sc2-project-card"
+                >
+
+                  <span class="badge">
+                    ${esc(
+                      project.status
+                    )}
+                  </span>
+
+
+                  ${
+                    team
+                      ? `
+                        <span class="sc2-team">
+                          ${esc(
+                            team.name
+                          )}
+                        </span>
+                      `
+                      : ""
+                  }
+
+
+                  <h3>
+                    ${esc(
+                      project.title
+                    )}
+                  </h3>
+
+
+                  <p class="muted">
+
+                    ${esc(
+                      project.project_field
+                    )}
+
+                    ${
+                      project.next_step
+                        ? `
+                          <br>
+
+                          <b>
+                            Next:
+                          </b>
+
+                          ${esc(
+                            project.next_step
+                          )}
+                        `
+                        : ""
+                    }
+
+                  </p>
+
+
+                  <button
+                    class="primary sc2OpenProject"
+                    data-id="${project.id}"
+                  >
+                    Open Workspace
+                  </button>
+
+                </div>
+              `;
+            }
+          )
+          .join("")
+
+      : `
+        <p class="muted">
+          No projects yet.
+          Create a personal project below,
+          or ask an admin to add you
+          to a team.
+        </p>
+      `;
+
+
+  document
+    .querySelectorAll(
+      ".sc2OpenProject"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            sc2OpenProject(
+              Number(
+                button.dataset.id
+              )
+            )
+        );
+
+      }
+    );
+}
+
+
+async function sc2CreateProject(
+  event
+) {
+
+  event.preventDefault();
+
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from(
+        "wwsef_projects"
+      )
+      .insert({
+        owner_user_id:
+          currentUser.id,
+
+        title:
+          document
+            .getElementById(
+              "sc2ProjectTitle"
+            )
+            .value
+            .trim(),
+
+        project_field:
+          document
+            .getElementById(
+              "sc2ProjectField"
+            )
+            .value,
+
+        description:
+          document
+            .getElementById(
+              "sc2ProjectDescription"
+            )
+            .value
+            .trim() ||
+          null,
+
+        target_date:
+          document
+            .getElementById(
+              "sc2ProjectTarget"
+            )
+            .value ||
+          null
+      })
+      .select()
+      .single();
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "sc2WWSEFMsg",
+      "Could not create project.",
+      "err"
+    );
+
+    return;
+  }
+
+
+  event.target.reset();
+
+
+  await sc2LoadProjects();
+
+  await sc2LoadProgress();
+
+
+  msg(
+    "sc2WWSEFMsg",
+    "Project created."
+  );
+
+
+  if (data) {
+    await sc2OpenProject(
+      data.id
+    );
+  }
+}
+
+
+async function sc2OpenProject(
+  id
+) {
+
+  SC2.activeProject =
+    SC2.projects
+      .find(
+        project =>
+          Number(
+            project.id
+          ) ===
+          Number(id)
+      );
+
+
+  if (!SC2.activeProject) {
+    return;
+  }
+
+
+  const [
+    milestoneResult,
+    notebookResult,
+    feedbackResult
+  ] =
+    await Promise.all([
+
+      db
+        .from(
+          "wwsef_milestones"
+        )
+        .select("*")
+        .eq(
+          "project_id",
+          id
+        )
+        .order(
+          "sort_order",
+          {
+            ascending:
+              true
+          }
+        )
+        .order(
+          "due_date",
+          {
+            ascending:
+              true
+          }
+        ),
+
+      db
+        .from(
+          "lab_notebook_entries"
+        )
+        .select("*")
+        .eq(
+          "project_id",
+          id
+        )
+        .order(
+          "entry_date",
+          {
+            ascending:
+              false
+          }
+        )
+        .order(
+          "created_at",
+          {
+            ascending:
+              false
+          }
+        ),
+
+      db
+        .from(
+          "project_feedback"
+        )
+        .select("*")
+        .eq(
+          "project_id",
+          id
+        )
+        .order(
+          "created_at",
+          {
+            ascending:
+              false
+          }
+        )
+
+    ]);
+
+
+  if (
+    milestoneResult.error
+  ) {
+    console.error(
+      milestoneResult.error
+    );
+  }
+
+
+  if (
+    notebookResult.error
+  ) {
+    console.error(
+      notebookResult.error
+    );
+  }
+
+
+  if (
+    feedbackResult.error
+  ) {
+    console.error(
+      feedbackResult.error
+    );
+  }
+
+
+  SC2.milestones =
+    milestoneResult.data ||
+    [];
+
+
+  SC2.notebook =
+    notebookResult.data ||
+    [];
+
+
+  SC2.feedback =
+    feedbackResult.data ||
+    [];
+
+
+  document
+    .getElementById(
+      "sc2ProjectListCard"
+    )
+    .style.display =
+    "none";
+
+
+  document
+    .getElementById(
+      "sc2CreateProjectCard"
+    )
+    .style.display =
+    "none";
+
+
+  document
+    .getElementById(
+      "sc2WorkspaceCard"
+    )
+    .style.display =
+    "block";
+
+
+  const project =
+    SC2.activeProject;
+
+
+  const team =
+    SC2.teams
+      .find(
+        item =>
+          Number(
+            item.id
+          ) ===
+          Number(
+            project.team_id
+          )
+      );
+
+
+  document
+    .getElementById(
+      "sc2WorkspaceTitle"
+    )
+    .textContent =
+    project.title;
+
+
+  document
+    .getElementById(
+      "sc2WorkspaceMeta"
+    )
+    .textContent =
+    (
+      project.project_field +
+      " • " +
+      project.status +
+      (
+        team
+          ? " • " + team.name
+          : " • Personal project"
+      )
+    );
+
+
+  document
+    .getElementById(
+      "sc2EditTitle"
+    )
+    .value =
+    project.title || "";
+
+
+  document
+    .getElementById(
+      "sc2EditField"
+    )
+    .value =
+    project.project_field ||
+    "General Science";
+
+
+  document
+    .getElementById(
+      "sc2EditStatus"
+    )
+    .value =
+    project.status ||
+    "Idea";
+
+
+  document
+    .getElementById(
+      "sc2EditDescription"
+    )
+    .value =
+    project.description ||
+    "";
+
+
+  document
+    .getElementById(
+      "sc2EditQuestion"
+    )
+    .value =
+    project.research_question ||
+    "";
+
+
+  document
+    .getElementById(
+      "sc2EditHypothesis"
+    )
+    .value =
+    project.hypothesis ||
+    "";
+
+
+  document
+    .getElementById(
+      "sc2EditNextStep"
+    )
+    .value =
+    project.next_step ||
+    "";
+
+
+  document
+    .getElementById(
+      "sc2EditTarget"
+    )
+    .value =
+    project.target_date ||
+    "";
+
+
+  document
+    .getElementById(
+      "sc2DeleteProject"
+    )
+    .style.display =
+    project.owner_user_id ===
+      currentUser.id
+      ? "inline-block"
+      : "none";
+
+
+  document
+    .getElementById(
+      "sc2TeamInfo"
+    )
+    .innerHTML =
+
+    team
+      ? `
+        <span class="sc2-team">
+          Team project
+        </span>
+
+        <p>
+          ${esc(
+            team.name
+          )}
+        </p>
+      `
+      : `
+        <span class="sc2-team">
+          Personal project
+        </span>
+      `;
+
+
+  document
+    .getElementById(
+      "sc2NotebookDate"
+    )
+    .value =
+    sc2DateString();
+
+
+  sc2RenderMilestones();
+
+  sc2RenderNotebook();
+
+  sc2RenderFeedback();
+}
+
+
+function sc2CloseProject() {
+
+  SC2.activeProject =
+    null;
+
+
+  document
+    .getElementById(
+      "sc2WorkspaceCard"
+    )
+    .style.display =
+    "none";
+
+
+  document
+    .getElementById(
+      "sc2ProjectListCard"
+    )
+    .style.display =
+    "block";
+
+
+  document
+    .getElementById(
+      "sc2CreateProjectCard"
+    )
+    .style.display =
+    "block";
+}
+
+
+async function sc2SaveProject(
+  event
+) {
+
+  event.preventDefault();
+
+
+  if (
+    !SC2.activeProject
+  ) {
+    return;
+  }
+
+
+  const patch = {
+
+    title:
+      document
+        .getElementById(
+          "sc2EditTitle"
+        )
+        .value
+        .trim(),
+
+    project_field:
+      document
+        .getElementById(
+          "sc2EditField"
+        )
+        .value,
+
+    status:
+      document
+        .getElementById(
+          "sc2EditStatus"
+        )
+        .value,
+
+    description:
+      document
+        .getElementById(
+          "sc2EditDescription"
+        )
+        .value
+        .trim() ||
+      null,
+
+    research_question:
+      document
+        .getElementById(
+          "sc2EditQuestion"
+        )
+        .value
+        .trim() ||
+      null,
+
+    hypothesis:
+      document
+        .getElementById(
+          "sc2EditHypothesis"
+        )
+        .value
+        .trim() ||
+      null,
+
+    next_step:
+      document
+        .getElementById(
+          "sc2EditNextStep"
+        )
+        .value
+        .trim() ||
+      null,
+
+    target_date:
+      document
+        .getElementById(
+          "sc2EditTarget"
+        )
+        .value ||
+      null
+  };
+
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "wwsef_projects"
+      )
+      .update(
+        patch
+      )
+      .eq(
+        "id",
+        SC2.activeProject.id
+      );
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "sc2WWSEFMsg",
+      "Could not save project details.",
+      "err"
+    );
+
+    return;
+  }
+
+
+  await sc2LoadProjects();
+
+
+  SC2.activeProject =
+    SC2.projects
+      .find(
+        project =>
+          Number(
+            project.id
+          ) ===
+          Number(
+            SC2.activeProject.id
+          )
+      );
+
+
+  document
+    .getElementById(
+      "sc2WorkspaceTitle"
+    )
+    .textContent =
+    SC2.activeProject.title;
+
+
+  msg(
+    "sc2WWSEFMsg",
+    "Project details saved."
+  );
+
+
+  await sc2LoadProgress();
+}
+
+
+async function sc2DeleteProject() {
+
+  if (
+    !SC2.activeProject ||
+    SC2.activeProject
+      .owner_user_id !==
+      currentUser.id
+  ) {
+    return;
+  }
+
+
+  if (
+    !confirm(
+      "Delete this personal project, including its milestones and lab notebook?"
+    )
+  ) {
+    return;
+  }
+
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "wwsef_projects"
+      )
+      .delete()
+      .eq(
+        "id",
+        SC2.activeProject.id
+      );
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "sc2WWSEFMsg",
+      "Could not delete project.",
+      "err"
+    );
+
+    return;
+  }
+
+
+  sc2CloseProject();
+
+  await sc2LoadProjects();
+
+  await sc2LoadProgress();
+}
+
+
+async function sc2AddMilestone(
+  event
+) {
+
+  event.preventDefault();
+
+
+  if (
+    !SC2.activeProject
+  ) {
+    return;
+  }
+
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "wwsef_milestones"
+      )
+      .insert({
+
+        project_id:
+          SC2.activeProject.id,
+
+        title:
+          document
+            .getElementById(
+              "sc2MilestoneTitle"
+            )
+            .value
+            .trim(),
+
+        details:
+          document
+            .getElementById(
+              "sc2MilestoneDetails"
+            )
+            .value
+            .trim() ||
+          null,
+
+        due_date:
+          document
+            .getElementById(
+              "sc2MilestoneDue"
+            )
+            .value ||
+          null,
+
+        sort_order:
+          Number(
+            document
+              .getElementById(
+                "sc2MilestoneOrder"
+              )
+              .value
+          ) || 0,
+
+        created_by:
+          currentUser.id
+      });
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "sc2WWSEFMsg",
+      "Could not add milestone.",
+      "err"
+    );
+
+    return;
+  }
+
+
+  event.target.reset();
+
+
+  document
+    .getElementById(
+      "sc2MilestoneOrder"
+    )
+    .value =
+    "1";
+
+
+  await sc2RefreshMilestones();
+}
+
+
+async function sc2RefreshMilestones() {
+
+  if (
+    !SC2.activeProject
+  ) {
+    return;
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from(
+        "wwsef_milestones"
+      )
+      .select("*")
+      .eq(
+        "project_id",
+        SC2.activeProject.id
+      )
+      .order(
+        "sort_order",
+        {
+          ascending:
+            true
+        }
+      )
+      .order(
+        "due_date",
+        {
+          ascending:
+            true
+        }
+      );
+
+
+  if (error) {
+
+    console.error(error);
+
+    return;
+  }
+
+
+  SC2.milestones =
+    data || [];
+
+
+  sc2RenderMilestones();
+
+
+  await sc2LoadProgress();
+}
+
+
+function sc2RenderMilestones() {
+
+  const list =
+    document.getElementById(
+      "sc2Milestones"
+    );
+
+
+  list.innerHTML =
+    SC2.milestones.length
+
+      ? SC2.milestones
+          .map(
+            milestone => `
+
+              <div
+                class="sc2-milestone ${
+                  milestone.is_complete
+                    ? "done"
+                    : ""
+                }"
+              >
+
+                <input
+                  class="sc2MilestoneToggle"
+                  data-id="${milestone.id}"
+                  type="checkbox"
+                  ${
+                    milestone.is_complete
+                      ? "checked"
+                      : ""
+                  }
+                >
+
+
+                <div class="grow">
+
+                  <div
+                    class="sc2-milestone-title"
+                  >
+                    ${esc(
+                      milestone.title
+                    )}
+                  </div>
+
+
+                  <div
+                    class="sc2-meta"
+                  >
+
+                    ${
+                      milestone.due_date
+                        ? "Due " +
+                          parseDate(
+                            milestone.due_date
+                          )
+                            .toLocaleDateString()
+                        : "No due date"
+                    }
+
+                    ${
+                      milestone.details
+                        ? " • " +
+                          esc(
+                            milestone.details
+                          )
+                        : ""
+                    }
+
+                  </div>
+
+                </div>
+
+
+                <button
+                  class="danger sc2DeleteMilestone"
+                  data-id="${milestone.id}"
+                  type="button"
+                >
+                  Delete
+                </button>
+
+              </div>
+            `
+          )
+          .join("")
+
+      : `
+        <p class="muted">
+          No milestones yet.
+        </p>
+      `;
+
+
+  document
+    .querySelectorAll(
+      ".sc2MilestoneToggle"
+    )
+    .forEach(
+      checkbox => {
+
+        checkbox.addEventListener(
+          "change",
+          () =>
+            sc2ToggleMilestone(
+              Number(
+                checkbox.dataset.id
+              ),
+              checkbox.checked
+            )
+        );
+
+      }
+    );
+
+
+  document
+    .querySelectorAll(
+      ".sc2DeleteMilestone"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            sc2DeleteMilestone(
+              Number(
+                button.dataset.id
+              )
+            )
+        );
+
+      }
+    );
+
+
+  const total =
+    SC2.milestones.length;
+
+
+  const completed =
+    SC2.milestones
+      .filter(
+        milestone =>
+          milestone.is_complete
+      )
+      .length;
+
+
+  const percentage =
+    total
+      ? Math.round(
+          completed /
+          total *
+          100
+        )
+      : 0;
+
+
+  document
+    .getElementById(
+      "sc2ProjectProgressBar"
+    )
+    .style.width =
+    percentage + "%";
+
+
+  document
+    .getElementById(
+      "sc2ProjectProgressText"
+    )
+    .textContent =
+    `${completed} of ${total} milestones complete • ${percentage}%`;
+
+
+  const next =
+    SC2.milestones
+      .filter(
+        milestone =>
+          !milestone.is_complete &&
+          milestone.due_date
+      )
+      .sort(
+        (a, b) =>
+          a.due_date
+            .localeCompare(
+              b.due_date
+            )
+      )[0];
+
+
+  const date =
+    next?.due_date ||
+    SC2.activeProject
+      ?.target_date;
+
+
+  const days =
+    sc2DaysUntil(date);
+
+
+  const countdown =
+    document.getElementById(
+      "sc2Countdown"
+    );
+
+
+  if (next) {
+
+    countdown.innerHTML = `
+
+      <strong>
+        ${
+          days < 0
+            ? Math.abs(days) +
+              " days overdue"
+            : days +
+              " days"
+        }
+      </strong>
+
+      <br>
+
+      <span class="muted">
+        Next milestone:
+        ${esc(
+          next.title
+        )}
+
+        •
+
+        ${parseDate(
+          next.due_date
+        ).toLocaleDateString()}
+      </span>
+    `;
+
+  } else if (date) {
+
+    countdown.innerHTML = `
+
+      <strong>
+        ${
+          days < 0
+            ? Math.abs(days) +
+              " days past"
+            : days +
+              " days"
+        }
+      </strong>
+
+      <br>
+
+      <span class="muted">
+        Until project target date
+        •
+
+        ${parseDate(
+          date
+        ).toLocaleDateString()}
+      </span>
+    `;
+
+  } else {
+
+    countdown.textContent =
+      "Add a milestone due date to start the countdown.";
+  }
+}
+
+
+async function sc2ToggleMilestone(
+  id,
+  complete
+) {
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "wwsef_milestones"
+      )
+      .update({
+
+        is_complete:
+          complete,
+
+        completed_at:
+          complete
+            ? new Date()
+                .toISOString()
+            : null
+      })
+      .eq(
+        "id",
+        id
+      );
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "sc2WWSEFMsg",
+      "Could not update milestone.",
+      "err"
+    );
+
+    return;
+  }
+
+
+  await sc2RefreshMilestones();
+}
+
+
+async function sc2DeleteMilestone(
+  id
+) {
+
+  if (
+    !confirm(
+      "Delete this milestone?"
+    )
+  ) {
+    return;
+  }
+
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "wwsef_milestones"
+      )
+      .delete()
+      .eq(
+        "id",
+        id
+      );
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "sc2WWSEFMsg",
+      "Could not delete milestone.",
+      "err"
+    );
+
+    return;
+  }
+
+
+  await sc2RefreshMilestones();
+}
+
+
+async function sc2AddNotebookEntry(
+  event
+) {
+
+  event.preventDefault();
+
+
+  if (
+    !SC2.activeProject
+  ) {
+    return;
+  }
+
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "lab_notebook_entries"
+      )
+      .insert({
+
+        project_id:
+          SC2.activeProject.id,
+
+        user_id:
+          currentUser.id,
+
+        entry_date:
+          document
+            .getElementById(
+              "sc2NotebookDate"
+            )
+            .value,
+
+        title:
+          document
+            .getElementById(
+              "sc2NotebookTitle"
+            )
+            .value
+            .trim(),
+
+        body:
+          document
+            .getElementById(
+              "sc2NotebookBody"
+            )
+            .value
+            .trim()
+
+      });
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "sc2WWSEFMsg",
+      "Could not save notebook entry.",
+      "err"
+    );
+
+    return;
+  }
+
+
+  document
+    .getElementById(
+      "sc2NotebookTitle"
+    )
+    .value =
+    "";
+
+
+  document
+    .getElementById(
+      "sc2NotebookBody"
+    )
+    .value =
+    "";
+
+
+  document
+    .getElementById(
+      "sc2NotebookDate"
+    )
+    .value =
+    sc2DateString();
+
+
+  await sc2RefreshNotebook();
+}
+
+
+async function sc2RefreshNotebook() {
+
+  if (
+    !SC2.activeProject
+  ) {
+    return;
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from(
+        "lab_notebook_entries"
+      )
+      .select("*")
+      .eq(
+        "project_id",
+        SC2.activeProject.id
+      )
+      .order(
+        "entry_date",
+        {
+          ascending:
+            false
+        }
+      )
+      .order(
+        "created_at",
+        {
+          ascending:
+            false
+        }
+      );
+
+
+  if (error) {
+
+    console.error(error);
+
+    return;
+  }
+
+
+  SC2.notebook =
+    data || [];
+
+
+  sc2RenderNotebook();
+
+
+  await sc2LoadProgress();
+}
+
+
+function sc2RenderNotebook() {
+
+  const list =
+    document.getElementById(
+      "sc2NotebookList"
+    );
+
+
+  list.innerHTML =
+    SC2.notebook.length
+
+      ? SC2.notebook
+          .map(
+            entry => `
+
+              <div class="sc2-notebook">
+
+                <b>
+                  ${esc(
+                    entry.title
+                  )}
+                </b>
+
+
+                <div class="sc2-meta">
+                  ${
+                    parseDate(
+                      entry.entry_date
+                    )
+                      ?.toLocaleDateString() ||
+                    ""
+                  }
+                </div>
+
+
+                <div
+                  class="sc2-notebook-body"
+                >
+                  ${esc(
+                    entry.body
+                  )}
+                </div>
+
+
+                ${
+                  entry.user_id ===
+                  currentUser.id
+                    ? `
+                      <button
+                        class="danger sc2DeleteNotebook"
+                        data-id="${entry.id}"
+                        type="button"
+                        style="margin-top:8px"
+                      >
+                        Delete Entry
+                      </button>
+                    `
+                    : ""
+                }
+
+              </div>
+            `
+          )
+          .join("")
+
+      : `
+        <p class="muted">
+          No notebook entries yet.
+        </p>
+      `;
+
+
+  document
+    .querySelectorAll(
+      ".sc2DeleteNotebook"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            sc2DeleteNotebookEntry(
+              Number(
+                button.dataset.id
+              )
+            )
+        );
+
+      }
+    );
+}
+
+
+async function sc2DeleteNotebookEntry(
+  id
+) {
+
+  if (
+    !confirm(
+      "Delete this notebook entry?"
+    )
+  ) {
+    return;
+  }
+
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "lab_notebook_entries"
+      )
+      .delete()
+      .eq(
+        "id",
+        id
+      );
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "sc2WWSEFMsg",
+      "Could not delete notebook entry.",
+      "err"
+    );
+
+    return;
+  }
+
+
+  await sc2RefreshNotebook();
+}
+
+
+function sc2RenderFeedback() {
+
+  document
+    .getElementById(
+      "sc2ProjectFeedback"
+    )
+    .innerHTML =
+
+    SC2.feedback.length
+
+      ? SC2.feedback
+          .map(
+            item => `
+
+              <div
+                class="sc2-advisor-feedback"
+              >
+
+                <p
+                  style="
+                    margin:0;
+                    font-size:10px;
+                    line-height:1.6
+                  "
+                >
+                  ${esc(
+                    item.message
+                  )}
+                </p>
+
+
+                <div
+                  class="sc2-meta"
+                >
+                  ${sc2PrettyDateTime(
+                    item.created_at
+                  )}
+                </div>
+
+              </div>
+            `
+          )
+          .join("")
+
+      : `
+        <p class="muted">
+          No advisor feedback yet.
+        </p>
+      `;
+}
+
+
+/* =========================================================
+   PROGRESS + ACHIEVEMENTS
+   ========================================================= */
+
+async function sc2LoadProgress() {
+
+  if (
+    !currentUser ||
+    currentProfile?.role !==
+      "student"
+  ) {
+    return;
+  }
+
+
+  const publishedModules =
+    (modules || [])
+      .filter(
+        module =>
+          module.is_published
+      );
+
+
+  const activityCalls =
+    await Promise.all(
+      publishedModules
+        .map(
+          module =>
+            db.rpc(
+              "get_module_activities",
+              {
+                p_module_id:
+                  module.id
+              }
+            )
+        )
+    );
+
+
+  const allActivities = [];
+
+
+  activityCalls
+    .forEach(
+      (result, index) => {
+
+        if (
+          result.error
+        ) {
+
+          console.error(
+            result.error
+          );
+
+          return;
+        }
+
+
+        (
+          result.data ||
+          []
+        )
+          .forEach(
+            activity => {
+
+              allActivities.push({
+                ...activity,
+
+                module_id:
+                  publishedModules[
+                    index
+                  ].id
+              });
+
+            }
+          );
+
+      }
+    );
+
+
+  const [
+    progressResult,
+    quizResult,
+    dailyResult,
+    notebookResult,
+    milestoneResult
+  ] =
+    await Promise.all([
+
+      db
+        .from(
+          "module_progress"
+        )
+        .select(
+          "module_id,activity_id,is_complete"
+        )
+        .eq(
+          "user_id",
+          currentUser.id
+        ),
+
+      db
+        .from(
+          "quiz_attempts"
+        )
+        .select(
+          "score,total_questions"
+        )
+        .eq(
+          "user_id",
+          currentUser.id
+        ),
+
+      db
+        .from(
+          "daily_challenge_answers"
+        )
+        .select(
+          "is_correct"
+        )
+        .eq(
+          "user_id",
+          currentUser.id
+        ),
+
+      db
+        .from(
+          "lab_notebook_entries"
+        )
+        .select("id"),
+
+      db
+        .from(
+          "wwsef_milestones"
+        )
+        .select(
+          "id,is_complete"
+        )
+
+    ]);
+
+
+  const progress =
+    progressResult.data ||
+    [];
+
+
+  const attempts =
+    quizResult.data ||
+    [];
+
+
+  const daily =
+    dailyResult.data ||
+    [];
+
+
+  const notebook =
+    notebookResult.data ||
+    [];
+
+
+  const milestones =
+    milestoneResult.data ||
+    [];
+
+
+  const completedActivities =
+    allActivities
+      .filter(
+        activity =>
+          progress.some(
+            row =>
+              Number(
+                row.activity_id
+              ) ===
+              Number(
+                activity.id
+              ) &&
+              row.is_complete
+          )
+      )
+      .length;
+
+
+  const modulePercentage =
+    allActivities.length
+      ? Math.round(
+          completedActivities /
+          allActivities.length *
+          100
+        )
+      : 0;
+
+
+  let modulesDone = 0;
+
+
+  for (
+    const module
+    of publishedModules
+  ) {
+
+    const activities =
+      allActivities
+        .filter(
+          activity =>
+            Number(
+              activity.module_id
+            ) ===
+            Number(
+              module.id
+            )
+        );
+
+
+    if (
+      activities.length &&
+      activities.every(
+        activity =>
+          progress.some(
+            row =>
+              Number(
+                row.activity_id
+              ) ===
+              Number(
+                activity.id
+              ) &&
+              row.is_complete
+          )
+      )
+    ) {
+      modulesDone++;
+    }
+  }
+
+
+  const quizAverage =
+    attempts.length
+      ? Math.round(
+
+          attempts.reduce(
+            (
+              total,
+              attempt
+            ) =>
+              total +
+              (
+                attempt.total_questions
+                  ? (
+                      100 *
+                      attempt.score /
+                      attempt.total_questions
+                    )
+                  : 0
+              ),
+            0
+          ) /
+
+          attempts.length
+        )
+      : null;
+
+
+  if (
+    !SC2.projects.length
+  ) {
+    await sc2LoadProjects();
+  }
+
+
+  let projectPercentage =
+    null;
+
+
+  if (
+    SC2.projects.length
+  ) {
+
+    const {
+      data
+    } =
+      await db
+        .from(
+          "wwsef_milestones"
+        )
+        .select(
+          "is_complete"
+        )
+        .eq(
+          "project_id",
+          SC2.projects[0].id
+        );
+
+
+    const rows =
+      data || [];
+
+
+    projectPercentage =
+      rows.length
+        ? Math.round(
+            rows.filter(
+              row =>
+                row.is_complete
+            ).length /
+            rows.length *
+            100
+          )
+        : 0;
+  }
+
+
+  const perfectQuiz =
+    attempts.some(
+      attempt =>
+        attempt.total_questions >
+          0 &&
+        attempt.score ===
+          attempt.total_questions
+    );
+
+
+  const badges = [
+
+    {
+      icon:
+        "🔬",
+
+      name:
+        "Science Club Starter",
+
+      description:
+        "Open your first shared resource.",
+
+      unlocked:
+        (studentActivity || [])
+          .length >=
+        1
+    },
+
+    {
+      icon:
+        "📘",
+
+      name:
+        "Module Explorer",
+
+      description:
+        "Complete your first CCC module.",
+
+      unlocked:
+        modulesDone >=
+        1
+    },
+
+    {
+      icon:
+        "🧪",
+
+      name:
+        "CCC Learner",
+
+      description:
+        "Complete three CCC modules.",
+
+      unlocked:
+        modulesDone >=
+        3
+    },
+
+    {
+      icon:
+        "🎯",
+
+      name:
+        "Perfect Reaction",
+
+      description:
+        "Earn 100% on a CCC quiz.",
+
+      unlocked:
+        perfectQuiz
+    },
+
+    {
+      icon:
+        "🧠",
+
+      name:
+        "Daily Solver",
+
+      description:
+        "Answer a Daily Challenge correctly.",
+
+      unlocked:
+        daily.some(
+          row =>
+            row.is_correct
+        )
+    },
+
+    {
+      icon:
+        "🚀",
+
+      name:
+        "WWSEF Researcher",
+
+      description:
+        "Create or join a WWSEF project.",
+
+      unlocked:
+        SC2.projects.length >=
+        1
+    },
+
+    {
+      icon:
+        "📓",
+
+      name:
+        "Lab Notetaker",
+
+      description:
+        "Add a digital lab notebook entry.",
+
+      unlocked:
+        notebook.length >=
+        1
+    },
+
+    {
+      icon:
+        "✅",
+
+      name:
+        "Milestone Maker",
+
+      description:
+        "Complete a WWSEF milestone.",
+
+      unlocked:
+        milestones.some(
+          row =>
+            row.is_complete
+        )
+    },
+
+    {
+      icon:
+        "📚",
+
+      name:
+        "Resource Researcher",
+
+      description:
+        "Open five Science Club resources.",
+
+      unlocked:
+        (studentActivity || [])
+          .length >=
+        5
+    }
+
+  ];
+
+
+  const parts = [];
+
+
+  if (
+    allActivities.length
+  ) {
+    parts.push(
+      modulePercentage
+    );
+  }
+
+
+  if (
+    quizAverage !== null
+  ) {
+    parts.push(
+      quizAverage
+    );
+  }
+
+
+  if (
+    projectPercentage !==
+      null
+  ) {
+    parts.push(
+      projectPercentage
+    );
+  }
+
+
+  const overall =
+    parts.length
+      ? Math.round(
+          parts.reduce(
+            (a, b) =>
+              a + b,
+            0
+          ) /
+          parts.length
+        )
+      : 0;
+
+
+  document
+    .getElementById(
+      "sc2OverallPct"
+    )
+    .textContent =
+    overall + "%";
+
+
+  document
+    .getElementById(
+      "sc2OverallBar"
+    )
+    .style.width =
+    overall + "%";
+
+
+  document
+    .getElementById(
+      "sc2OverallText"
+    )
+    .textContent =
+    "Based on modules" +
+    (
+      quizAverage !== null
+        ? ", quizzes"
+        : ""
+    ) +
+    (
+      projectPercentage !==
+        null
+        ? " and WWSEF milestones"
+        : ""
+    ) +
+    ".";
+
+
+  document
+    .getElementById(
+      "sc2ModulesDone"
+    )
+    .textContent =
+    `${modulesDone} / ${publishedModules.length}`;
+
+
+  document
+    .getElementById(
+      "sc2QuizAverage"
+    )
+    .textContent =
+    quizAverage === null
+      ? "—"
+      : quizAverage + "%";
+
+
+  document
+    .getElementById(
+      "sc2ProjectPct"
+    )
+    .textContent =
+    projectPercentage === null
+      ? "—"
+      : projectPercentage +
+        "%";
+
+
+  document
+    .getElementById(
+      "sc2Badges"
+    )
+    .innerHTML =
+    badges
+      .map(
+        badge => `
+
+          <div
+            class="sc2-badge-card ${
+              badge.unlocked
+                ? ""
+                : "locked"
+            }"
+          >
+
+            <div
+              class="sc2-badge-icon"
+            >
+              ${badge.icon}
+            </div>
+
+
+            <b>
+              ${esc(
+                badge.name
+              )}
+
+              ${
+                badge.unlocked
+                  ? "✓"
+                  : ""
+              }
+            </b>
+
+
+            <p class="muted">
+              ${esc(
+                badge.description
+              )}
+            </p>
+
+          </div>
+        `
+      )
+      .join("");
+}
+
+
+/* =========================================================
+   PERIODIC TABLE DATA
+   ========================================================= */
+
+const SC2_ELEMENTS = [
+
+  [1,"H","Hydrogen",1.008,1,1,"nonmetal"],
+  [2,"He","Helium",4.0026,18,1,"noble"],
+
+  [3,"Li","Lithium",6.94,1,2,"alkali"],
+  [4,"Be","Beryllium",9.0122,2,2,"alkaline"],
+  [5,"B","Boron",10.81,13,2,"metalloid"],
+  [6,"C","Carbon",12.011,14,2,"nonmetal"],
+  [7,"N","Nitrogen",14.007,15,2,"nonmetal"],
+  [8,"O","Oxygen",15.999,16,2,"nonmetal"],
+  [9,"F","Fluorine",18.998,17,2,"halogen"],
+  [10,"Ne","Neon",20.18,18,2,"noble"],
+
+  [11,"Na","Sodium",22.99,1,3,"alkali"],
+  [12,"Mg","Magnesium",24.305,2,3,"alkaline"],
+  [13,"Al","Aluminum",26.982,13,3,"post"],
+  [14,"Si","Silicon",28.085,14,3,"metalloid"],
+  [15,"P","Phosphorus",30.974,15,3,"nonmetal"],
+  [16,"S","Sulfur",32.06,16,3,"nonmetal"],
+  [17,"Cl","Chlorine",35.45,17,3,"halogen"],
+  [18,"Ar","Argon",39.948,18,3,"noble"],
+
+  [19,"K","Potassium",39.098,1,4,"alkali"],
+  [20,"Ca","Calcium",40.078,2,4,"alkaline"],
+  [21,"Sc","Scandium",44.956,3,4,"transition"],
+  [22,"Ti","Titanium",47.867,4,4,"transition"],
+  [23,"V","Vanadium",50.942,5,4,"transition"],
+  [24,"Cr","Chromium",51.996,6,4,"transition"],
+  [25,"Mn","Manganese",54.938,7,4,"transition"],
+  [26,"Fe","Iron",55.845,8,4,"transition"],
+  [27,"Co","Cobalt",58.933,9,4,"transition"],
+  [28,"Ni","Nickel",58.693,10,4,"transition"],
+  [29,"Cu","Copper",63.546,11,4,"transition"],
+  [30,"Zn","Zinc",65.38,12,4,"transition"],
+  [31,"Ga","Gallium",69.723,13,4,"post"],
+  [32,"Ge","Germanium",72.63,14,4,"metalloid"],
+  [33,"As","Arsenic",74.922,15,4,"metalloid"],
+  [34,"Se","Selenium",78.971,16,4,"nonmetal"],
+  [35,"Br","Bromine",79.904,17,4,"halogen"],
+  [36,"Kr","Krypton",83.798,18,4,"noble"],
+
+  [37,"Rb","Rubidium",85.468,1,5,"alkali"],
+  [38,"Sr","Strontium",87.62,2,5,"alkaline"],
+  [39,"Y","Yttrium",88.906,3,5,"transition"],
+  [40,"Zr","Zirconium",91.224,4,5,"transition"],
+  [41,"Nb","Niobium",92.906,5,5,"transition"],
+  [42,"Mo","Molybdenum",95.95,6,5,"transition"],
+  [43,"Tc","Technetium",98,7,5,"transition"],
+  [44,"Ru","Ruthenium",101.07,8,5,"transition"],
+  [45,"Rh","Rhodium",102.91,9,5,"transition"],
+  [46,"Pd","Palladium",106.42,10,5,"transition"],
+  [47,"Ag","Silver",107.87,11,5,"transition"],
+  [48,"Cd","Cadmium",112.41,12,5,"transition"],
+  [49,"In","Indium",114.82,13,5,"post"],
+  [50,"Sn","Tin",118.71,14,5,"post"],
+  [51,"Sb","Antimony",121.76,15,5,"metalloid"],
+  [52,"Te","Tellurium",127.6,16,5,"metalloid"],
+  [53,"I","Iodine",126.9,17,5,"halogen"],
+  [54,"Xe","Xenon",131.29,18,5,"noble"],
+
+  [55,"Cs","Cesium",132.91,1,6,"alkali"],
+  [56,"Ba","Barium",137.33,2,6,"alkaline"],
+  [57,"La","Lanthanum",138.91,3,6,"lanthanide"],
+  [58,"Ce","Cerium",140.12,null,6,"lanthanide"],
+  [59,"Pr","Praseodymium",140.91,null,6,"lanthanide"],
+  [60,"Nd","Neodymium",144.24,null,6,"lanthanide"],
+  [61,"Pm","Promethium",145,null,6,"lanthanide"],
+  [62,"Sm","Samarium",150.36,null,6,"lanthanide"],
+  [63,"Eu","Europium",151.96,null,6,"lanthanide"],
+  [64,"Gd","Gadolinium",157.25,null,6,"lanthanide"],
+  [65,"Tb","Terbium",158.93,null,6,"lanthanide"],
+  [66,"Dy","Dysprosium",162.5,null,6,"lanthanide"],
+  [67,"Ho","Holmium",164.93,null,6,"lanthanide"],
+  [68,"Er","Erbium",167.26,null,6,"lanthanide"],
+  [69,"Tm","Thulium",168.93,null,6,"lanthanide"],
+  [70,"Yb","Ytterbium",173.05,null,6,"lanthanide"],
+  [71,"Lu","Lutetium",174.97,null,6,"lanthanide"],
+
+  [72,"Hf","Hafnium",178.49,4,6,"transition"],
+  [73,"Ta","Tantalum",180.95,5,6,"transition"],
+  [74,"W","Tungsten",183.84,6,6,"transition"],
+  [75,"Re","Rhenium",186.21,7,6,"transition"],
+  [76,"Os","Osmium",190.23,8,6,"transition"],
+  [77,"Ir","Iridium",192.22,9,6,"transition"],
+  [78,"Pt","Platinum",195.08,10,6,"transition"],
+  [79,"Au","Gold",196.97,11,6,"transition"],
+  [80,"Hg","Mercury",200.59,12,6,"transition"],
+  [81,"Tl","Thallium",204.38,13,6,"post"],
+  [82,"Pb","Lead",207.2,14,6,"post"],
+  [83,"Bi","Bismuth",208.98,15,6,"post"],
+  [84,"Po","Polonium",209,16,6,"post"],
+  [85,"At","Astatine",210,17,6,"halogen"],
+  [86,"Rn","Radon",222,18,6,"noble"],
+
+  [87,"Fr","Francium",223,1,7,"alkali"],
+  [88,"Ra","Radium",226,2,7,"alkaline"],
+  [89,"Ac","Actinium",227,3,7,"actinide"],
+  [90,"Th","Thorium",232.04,null,7,"actinide"],
+  [91,"Pa","Protactinium",231.04,null,7,"actinide"],
+  [92,"U","Uranium",238.03,null,7,"actinide"],
+  [93,"Np","Neptunium",237,null,7,"actinide"],
+  [94,"Pu","Plutonium",244,null,7,"actinide"],
+  [95,"Am","Americium",243,null,7,"actinide"],
+  [96,"Cm","Curium",247,null,7,"actinide"],
+  [97,"Bk","Berkelium",247,null,7,"actinide"],
+  [98,"Cf","Californium",251,null,7,"actinide"],
+  [99,"Es","Einsteinium",252,null,7,"actinide"],
+  [100,"Fm","Fermium",257,null,7,"actinide"],
+  [101,"Md","Mendelevium",258,null,7,"actinide"],
+  [102,"No","Nobelium",259,null,7,"actinide"],
+  [103,"Lr","Lawrencium",266,null,7,"actinide"],
+
+  [104,"Rf","Rutherfordium",267,4,7,"transition"],
+  [105,"Db","Dubnium",268,5,7,"transition"],
+  [106,"Sg","Seaborgium",269,6,7,"transition"],
+  [107,"Bh","Bohrium",270,7,7,"transition"],
+  [108,"Hs","Hassium",269,8,7,"transition"],
+  [109,"Mt","Meitnerium",278,9,7,"unknown"],
+  [110,"Ds","Darmstadtium",281,10,7,"unknown"],
+  [111,"Rg","Roentgenium",282,11,7,"unknown"],
+  [112,"Cn","Copernicium",285,12,7,"transition"],
+  [113,"Nh","Nihonium",286,13,7,"unknown"],
+  [114,"Fl","Flerovium",289,14,7,"unknown"],
+  [115,"Mc","Moscovium",290,15,7,"unknown"],
+  [116,"Lv","Livermorium",293,16,7,"unknown"],
+  [117,"Ts","Tennessine",294,17,7,"halogen"],
+  [118,"Og","Oganesson",294,18,7,"noble"]
+
+].map(
+  row => ({
+
+    z:
+      row[0],
+
+    symbol:
+      row[1],
+
+    name:
+      row[2],
+
+    mass:
+      row[3],
+
+    group:
+      row[4],
+
+    period:
+      row[5],
+
+    category:
+      row[6]
+
+  })
+);
+
+
+const SC2_ATOMIC_MASS =
+  Object.fromEntries(
+    SC2_ELEMENTS.map(
+      element => [
+        element.symbol,
+        element.mass
+      ]
+    )
+  );
+
+
+function sc2ElementHTML(
+  element,
+  style = ""
+) {
+
+  return `
+
+    <button
+      type="button"
+      class="sc2-element ${element.category}"
+      data-z="${element.z}"
+      style="${style}"
+    >
+
+      <div class="z">
+        ${element.z}
+      </div>
+
+      <div class="sym">
+        ${element.symbol}
+      </div>
+
+      <div class="ename">
+        ${element.name}
+      </div>
+
+    </button>
+  `;
+}
+
+
+function sc2RenderPeriodicTable() {
+
+  const mainElements =
+    SC2_ELEMENTS
+      .filter(
+        element =>
+          !(
+            element.z >= 58 &&
+            element.z <= 71
+          ) &&
+          !(
+            element.z >= 90 &&
+            element.z <= 103
+          )
+      );
+
+
+  document
+    .getElementById(
+      "sc2PeriodicTable"
+    )
+    .innerHTML =
+    mainElements
+      .map(
+        element =>
+          sc2ElementHTML(
+            element,
+            `grid-column:${element.group};grid-row:${element.period}`
+          )
+      )
+      .join("");
+
+
+  document
+    .getElementById(
+      "sc2FBlock"
+    )
+    .innerHTML =
+
+    `
+      <div
+        style="
+          display:grid;
+          place-items:center;
+          font-size:9px;
+          color:var(--muted)
+        "
+      >
+        Lanthanides
+      </div>
+    ` +
+
+    SC2_ELEMENTS
+      .filter(
+        element =>
+          element.z >= 58 &&
+          element.z <= 71
+      )
+      .map(
+        element =>
+          sc2ElementHTML(
+            element
+          )
+      )
+      .join("") +
+
+    `
+      <div
+        style="
+          display:grid;
+          place-items:center;
+          font-size:9px;
+          color:var(--muted)
+        "
+      >
+        Actinides
+      </div>
+    ` +
+
+    SC2_ELEMENTS
+      .filter(
+        element =>
+          element.z >= 90 &&
+          element.z <= 103
+      )
+      .map(
+        element =>
+          sc2ElementHTML(
+            element
+          )
+      )
+      .join("");
+
+
+  document
+    .querySelectorAll(
+      ".sc2-element"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            sc2ShowElement(
+              Number(
+                button.dataset.z
+              )
+            )
+        );
+
+      }
+    );
+}
+
+
+function sc2ShowElement(
+  atomicNumber
+) {
+
+  const element =
+    SC2_ELEMENTS
+      .find(
+        item =>
+          item.z ===
+          atomicNumber
+      );
+
+
+  if (!element) {
+    return;
+  }
+
+
+  const categoryNames = {
+
+    nonmetal:
+      "Nonmetal",
+
+    noble:
+      "Noble gas",
+
+    alkali:
+      "Alkali metal",
+
+    alkaline:
+      "Alkaline-earth metal",
+
+    metalloid:
+      "Metalloid",
+
+    halogen:
+      "Halogen",
+
+    transition:
+      "Transition metal",
+
+    post:
+      "Post-transition metal",
+
+    lanthanide:
+      "Lanthanide",
+
+    actinide:
+      "Actinide",
+
+    unknown:
+      "Other / predicted"
+
+  };
+
+
+  document
+    .getElementById(
+      "sc2ElementDetails"
+    )
+    .innerHTML = `
+
+      <div
+        class="sc2-element-detail"
+      >
+
+        <div
+          class="sc2-element-hero"
+        >
+
+          <div class="sym">
+            ${element.symbol}
+          </div>
+
+
+          <b>
+            ${esc(
+              element.name
+            )}
+          </b>
+
+        </div>
+
+
+        <div
+          class="sc2-facts"
+        >
+
+          <div class="sc2-fact">
+            <small>
+              Atomic Number
+            </small>
+
+            <b>
+              ${element.z}
+            </b>
+          </div>
+
+
+          <div class="sc2-fact">
+            <small>
+              Atomic Mass
+            </small>
+
+            <b>
+              ${element.mass}
+            </b>
+          </div>
+
+
+          <div class="sc2-fact">
+            <small>
+              Group
+            </small>
+
+            <b>
+              ${
+                element.group ||
+                "f-block"
+              }
+            </b>
+          </div>
+
+
+          <div class="sc2-fact">
+            <small>
+              Period
+            </small>
+
+            <b>
+              ${element.period}
+            </b>
+          </div>
+
+
+          <div class="sc2-fact">
+            <small>
+              Category
+            </small>
+
+            <b>
+              ${
+                categoryNames[
+                  element.category
+                ] ||
+                element.category
+              }
+            </b>
+          </div>
+
+        </div>
+
+      </div>
+    `;
+}
+
+
+/* =========================================================
+   CHEMISTRY CALCULATORS
+   ========================================================= */
+
+function sc2ParseFormula(
+  formula
+) {
+
+  formula =
+    String(
+      formula || ""
+    )
+      .replace(
+        /\s+/g,
+        ""
+      );
+
+
+  if (!formula) {
+    throw new Error(
+      "Enter a formula."
+    );
+  }
+
+
+  let index = 0;
+
+
+  function parseNumber() {
+
+    const match =
+      formula
+        .slice(index)
+        .match(
+          /^(\d+(?:\.\d+)?)/
+        );
+
+
+    if (!match) {
+      return 1;
+    }
+
+
+    index +=
+      match[1].length;
+
+
+    return Number(
+      match[1]
+    );
+  }
+
+
+  function parseSection(
+    stopCharacter
+  ) {
+
+    const counts = {};
+
+
+    while (
+      index <
+      formula.length
+    ) {
+
+      if (
+        stopCharacter &&
+        formula[index] ===
+          stopCharacter
+      ) {
+
+        index++;
+
+        return counts;
+      }
+
+
+      if (
+        formula[index] ===
+        "("
+      ) {
+
+        index++;
+
+
+        const inner =
+          parseSection(
+            ")"
+          );
+
+
+        const multiplier =
+          parseNumber();
+
+
+        for (
+          const [
+            symbol,
+            count
+          ]
+          of Object.entries(
+            inner
+          )
+        ) {
+
+          counts[symbol] =
+            (
+              counts[symbol] ||
+              0
+            ) +
+            count *
+            multiplier;
+        }
+
+
+        continue;
+      }
+
+
+      const match =
+        formula
+          .slice(index)
+          .match(
+            /^([A-Z][a-z]?)/
+          );
+
+
+      if (!match) {
+
+        throw new Error(
+          `Could not read the formula near "${formula.slice(index)}".`
+        );
+      }
+
+
+      const symbol =
+        match[1];
+
+
+      if (
+        !(
+          symbol in
+          SC2_ATOMIC_MASS
+        )
+      ) {
+
+        throw new Error(
+          `Unknown element symbol: ${symbol}`
+        );
+      }
+
+
+      index +=
+        symbol.length;
+
+
+      const count =
+        parseNumber();
+
+
+      counts[symbol] =
+        (
+          counts[symbol] ||
+          0
+        ) +
+        count;
+    }
+
+
+    if (stopCharacter) {
+
+      throw new Error(
+        "Missing closing parenthesis."
+      );
+    }
+
+
+    return counts;
+  }
+
+
+  return parseSection(
+    null
+  );
+}
+
+
+function sc2FormulaMass(
+  formula
+) {
+
+  const counts =
+    sc2ParseFormula(
+      formula
+    );
+
+
+  const mass =
+    Object.entries(
+      counts
+    )
+      .reduce(
+        (
+          total,
+          [
+            symbol,
+            count
+          ]
+        ) =>
+          total +
+          (
+            SC2_ATOMIC_MASS[
+              symbol
+            ] *
+            count
+          ),
+        0
+      );
+
+
+  return {
+    counts,
+    mass
+  };
+}
+
+
+function sc2WireChemTools() {
+
+  document
+    .getElementById(
+      "sc2MolarForm"
+    )
+    .addEventListener(
+      "submit",
+      event => {
+
+        event.preventDefault();
+
+
+        try {
+
+          const result =
+            sc2FormulaMass(
+              document
+                .getElementById(
+                  "sc2MolarFormula"
+                )
+                .value
+            );
+
+
+          document
+            .getElementById(
+              "sc2MolarResult"
+            )
+            .innerHTML =
+
+            `Molar mass =
+             <b>
+               ${result.mass.toFixed(3)}
+               g/mol
+             </b>
+             <br>` +
+
+            Object.entries(
+              result.counts
+            )
+              .map(
+                ([
+                  symbol,
+                  count
+                ]) =>
+                  `${symbol}: ${count}`
+              )
+              .join(" • ");
+
+
+        } catch (error) {
+
+          document
+            .getElementById(
+              "sc2MolarResult"
+            )
+            .textContent =
+            error.message;
+        }
+
+      }
+    );
+
+
+  document
+    .getElementById(
+      "sc2MolesForm"
+    )
+    .addEventListener(
+      "submit",
+      event => {
+
+        event.preventDefault();
+
+
+        try {
+
+          const molarMass =
+            sc2FormulaMass(
+              document
+                .getElementById(
+                  "sc2MolesFormula"
+                )
+                .value
+            ).mass;
+
+
+          const value =
+            Number(
+              document
+                .getElementById(
+                  "sc2MolesValue"
+                )
+                .value
+            );
+
+
+          const mode =
+            document
+              .getElementById(
+                "sc2MolesMode"
+              )
+              .value;
+
+
+          if (
+            !Number.isFinite(
+              value
+            )
+          ) {
+
+            throw new Error(
+              "Enter a valid number."
+            );
+          }
+
+
+          document
+            .getElementById(
+              "sc2MolesResult"
+            )
+            .innerHTML =
+
+            mode ===
+            "massToMoles"
+
+              ? `
+                <b>
+                  ${
+                    (
+                      value /
+                      molarMass
+                    )
+                      .toPrecision(6)
+                  }
+                  mol
+                </b>
+              `
+
+              : `
+                <b>
+                  ${
+                    (
+                      value *
+                      molarMass
+                    )
+                      .toPrecision(6)
+                  }
+                  g
+                </b>
+              `;
+
+
+        } catch (error) {
+
+          document
+            .getElementById(
+              "sc2MolesResult"
+            )
+            .textContent =
+            error.message;
+        }
+
+      }
+    );
+
+
+  document
+    .getElementById(
+      "sc2CompositionForm"
+    )
+    .addEventListener(
+      "submit",
+      event => {
+
+        event.preventDefault();
+
+
+        try {
+
+          const result =
+            sc2FormulaMass(
+              document
+                .getElementById(
+                  "sc2CompositionFormula"
+                )
+                .value
+            );
+
+
+          document
+            .getElementById(
+              "sc2CompositionResult"
+            )
+            .innerHTML =
+
+            Object.entries(
+              result.counts
+            )
+              .map(
+                ([
+                  symbol,
+                  count
+                ]) => {
+
+                  const percentage =
+                    (
+                      100 *
+                      SC2_ATOMIC_MASS[
+                        symbol
+                      ] *
+                      count /
+                      result.mass
+                    )
+                      .toFixed(2);
+
+
+                  return (
+                    `${symbol}: ` +
+                    `<b>${percentage}%</b>`
+                  );
+                }
+              )
+              .join("<br>") +
+
+            `<br>
+             Total molar mass:
+             ${result.mass.toFixed(3)}
+             g/mol`;
+
+
+        } catch (error) {
+
+          document
+            .getElementById(
+              "sc2CompositionResult"
+            )
+            .textContent =
+            error.message;
+        }
+
+      }
+    );
+
+
+  document
+    .getElementById(
+      "sc2DilutionForm"
+    )
+    .addEventListener(
+      "submit",
+      event => {
+
+        event.preventDefault();
+
+
+        const unknown =
+          document
+            .getElementById(
+              "sc2DilutionUnknown"
+            )
+            .value;
+
+
+        const values = {
+
+          c1:
+            Number(
+              document
+                .getElementById(
+                  "sc2C1"
+                )
+                .value
+            ),
+
+          v1:
+            Number(
+              document
+                .getElementById(
+                  "sc2V1"
+                )
+                .value
+            ),
+
+          c2:
+            Number(
+              document
+                .getElementById(
+                  "sc2C2"
+                )
+                .value
+            ),
+
+          v2:
+            Number(
+              document
+                .getElementById(
+                  "sc2V2"
+                )
+                .value
+            )
+
+        };
+
+
+        const required =
+          Object.keys(
+            values
+          )
+            .filter(
+              key =>
+                key !== unknown
+            );
+
+
+        if (
+          required.some(
+            key =>
+              !Number.isFinite(
+                values[key]
+              ) ||
+              values[key] === 0
+          )
+        ) {
+
+          document
+            .getElementById(
+              "sc2DilutionResult"
+            )
+            .textContent =
+            "Enter non-zero values for the other three fields.";
+
+          return;
+        }
+
+
+        let answer;
+
+
+        if (
+          unknown === "c1"
+        ) {
+
+          answer =
+            values.c2 *
+            values.v2 /
+            values.v1;
+        }
+
+
+        if (
+          unknown === "v1"
+        ) {
+
+          answer =
+            values.c2 *
+            values.v2 /
+            values.c1;
+        }
+
+
+        if (
+          unknown === "c2"
+        ) {
+
+          answer =
+            values.c1 *
+            values.v1 /
+            values.v2;
+        }
+
+
+        if (
+          unknown === "v2"
+        ) {
+
+          answer =
+            values.c1 *
+            values.v1 /
+            values.c2;
+        }
+
+
+        document
+          .getElementById(
+            "sc2DilutionResult"
+          )
+          .innerHTML =
+
+          `${unknown.toUpperCase()}
+           =
+           <b>
+             ${answer.toPrecision(6)}
+           </b>`;
+
+      }
+    );
+
+
+  document
+    .getElementById(
+      "sc2UnitForm"
+    )
+    .addEventListener(
+      "submit",
+      event => {
+
+        event.preventDefault();
+
+
+        const value =
+          Number(
+            document
+              .getElementById(
+                "sc2UnitValue"
+              )
+              .value
+          );
+
+
+        const mode =
+          document
+            .getElementById(
+              "sc2UnitMode"
+            )
+            .value;
+
+
+        if (
+          !Number.isFinite(
+            value
+          )
+        ) {
+          return;
+        }
+
+
+        const conversions = {
+
+          gkg:
+            [
+              value / 1000,
+              "kg"
+            ],
+
+          kgg:
+            [
+              value * 1000,
+              "g"
+            ],
+
+          mlL:
+            [
+              value / 1000,
+              "L"
+            ],
+
+          Lml:
+            [
+              value * 1000,
+              "mL"
+            ],
+
+          kPaatm:
+            [
+              value / 101.325,
+              "atm"
+            ],
+
+          atmkPa:
+            [
+              value * 101.325,
+              "kPa"
+            ],
+
+          cK:
+            [
+              value + 273.15,
+              "K"
+            ],
+
+          Kc:
+            [
+              value - 273.15,
+              "°C"
+            ]
+        };
+
+
+        const result =
+          conversions[
+            mode
+          ];
+
+
+        document
+          .getElementById(
+            "sc2UnitResult"
+          )
+          .innerHTML =
+
+          `<b>
+             ${result[0].toPrecision(7)}
+             ${result[1]}
+           </b>`;
+
+      }
+    );
+
+
+  document
+    .getElementById(
+      "sc2SigForm"
+    )
+    .addEventListener(
+      "submit",
+      event => {
+
+        event.preventDefault();
+
+
+        try {
+
+          let value =
+            document
+              .getElementById(
+                "sc2SigValue"
+              )
+              .value
+              .trim()
+              .replace(
+                /^[+-]/,
+                ""
+              );
+
+
+          if (
+            !/^((\d+\.?\d*)|(\.\d+))([eE][+-]?\d+)?$/
+              .test(value)
+          ) {
+
+            throw new Error(
+              "Enter a valid written number."
+            );
+          }
+
+
+          value =
+            value.split(
+              /[eE]/
+            )[0];
+
+
+          let count;
+
+
+          if (
+            value.includes(".")
+          ) {
+
+            const digits =
+              value
+                .replace(
+                  ".",
+                  ""
+                )
+                .replace(
+                  /^0+/,
+                  ""
+                );
+
+
+            count =
+              digits.length ||
+              1;
+
+          } else {
+
+            const digits =
+              value
+                .replace(
+                  /^0+/,
+                  ""
+                )
+                .replace(
+                  /0+$/,
+                  ""
+                );
+
+
+            count =
+              digits.length ||
+              1;
+          }
+
+
+          document
+            .getElementById(
+              "sc2SigResult"
+            )
+            .innerHTML =
+
+            `<b>
+               ${count}
+             </b>
+             significant figure${
+               count === 1
+                 ? ""
+                 : "s"
+             }.`;
+
+        } catch (error) {
+
+          document
+            .getElementById(
+              "sc2SigResult"
+            )
+            .textContent =
+            error.message;
+        }
+
+      }
+    );
+}
+
+
+/* =========================================================
+   ADMIN INTERFACE
+   ========================================================= */
+
+function sc2InstallAdminUI() {
+
+  const adminPage =
+    document.getElementById(
+      "adminPage"
+    );
+
+
+  if (
+    !adminPage ||
+    document.getElementById(
+      "sc2AdminTools"
+    )
+  ) {
+    return;
+  }
+
+
+  adminPage.insertAdjacentHTML(
+    "beforeend",
+    `
+
+    <section
+      class="card sc2-admin-section"
+      id="sc2AdminTools"
+    >
+
+      <h2>
+        Science Club 2.0 Manager
+      </h2>
+
+
+      <p class="muted">
+        Manage the Question Bank,
+        Flashcards, Daily Challenge,
+        WWSEF teams, project feedback
+        and notifications.
+      </p>
+
+
+      <div class="adminGrid">
+
+
+        <div>
+
+          <section class="card">
+
+            <h2>
+              Question Bank
+            </h2>
+
+
+            <div
+              class="sc2-admin-list"
+              id="sc2AdminPracticeList"
+            >
+            </div>
+
+          </section>
+
+
+          <section class="card">
+
+            <h2>
+              Flashcard Decks
+            </h2>
+
+
+            <div
+              class="sc2-admin-list"
+              id="sc2AdminDeckList"
+            >
+            </div>
+
+          </section>
+
+
+          <section class="card">
+
+            <h2>
+              Daily Challenges
+            </h2>
+
+
+            <div
+              class="sc2-admin-list"
+              id="sc2AdminDailyList"
+            >
+            </div>
+
+          </section>
+
+
+          <section class="card">
+
+            <h2>
+              WWSEF Teams & Projects
+            </h2>
+
+
+            <div
+              class="sc2-admin-list"
+              id="sc2AdminTeamList"
+            >
+            </div>
+
+
+            <div
+              class="sc2-admin-list"
+              id="sc2AdminProjectList"
+              style="margin-top:12px"
+            >
+            </div>
+
+          </section>
+
+
+          <section class="card">
+
+            <h2>
+              Notifications
+            </h2>
+
+
+            <div
+              class="sc2-admin-list"
+              id="sc2AdminNotificationList"
+            >
+            </div>
+
+          </section>
+
+        </div>
+
+
+        <div>
+
+          <section class="card">
+
+            <h2>
+              Add Question Bank Question
+            </h2>
+
+
+            <form
+              class="form"
+              id="sc2AdminPracticeForm"
+            >
+
+              <input
+                id="sc2AdminPracticeCategory"
+                value="General Chemistry"
+                placeholder="Topic"
+                required
+              >
+
+
+              <select
+                id="sc2AdminPracticeDifficulty"
+              >
+                <option>
+                  Easy
+                </option>
+
+                <option selected>
+                  Medium
+                </option>
+
+                <option>
+                  Hard
+                </option>
+              </select>
+
+
+              <textarea
+                id="sc2AdminPracticeText"
+                placeholder="Question"
+                required
+              >
+              </textarea>
+
+
+              <input
+                id="sc2AdminPracticeA"
+                placeholder="Option A"
+                required
+              >
+
+
+              <input
+                id="sc2AdminPracticeB"
+                placeholder="Option B"
+                required
+              >
+
+
+              <input
+                id="sc2AdminPracticeC"
+                placeholder="Option C"
+                required
+              >
+
+
+              <input
+                id="sc2AdminPracticeD"
+                placeholder="Option D"
+                required
+              >
+
+
+              <select
+                id="sc2AdminPracticeCorrect"
+              >
+                <option>
+                  A
+                </option>
+
+                <option>
+                  B
+                </option>
+
+                <option>
+                  C
+                </option>
+
+                <option>
+                  D
+                </option>
+              </select>
+
+
+              <textarea
+                id="sc2AdminPracticeExplanation"
+                placeholder="Explanation"
+              >
+              </textarea>
+
+
+              <label>
+                <input
+                  id="sc2AdminPracticePublished"
+                  type="checkbox"
+                >
+                Publish immediately
+              </label>
+
+
+              <button class="primary">
+                Add Question
+              </button>
+
+            </form>
+
+          </section>
+
+
+          <section class="card">
+
+            <h2>
+              Create Flashcard Deck
+            </h2>
+
+
+            <form
+              class="form"
+              id="sc2AdminDeckForm"
+            >
+
+              <input
+                id="sc2AdminDeckTitle"
+                placeholder="Deck title"
+                required
+              >
+
+
+              <textarea
+                id="sc2AdminDeckDescription"
+                placeholder="Description"
+              >
+              </textarea>
+
+
+              <input
+                id="sc2AdminDeckCategory"
+                value="CCC"
+                placeholder="Category"
+              >
+
+
+              <label>
+                <input
+                  id="sc2AdminDeckPublished"
+                  type="checkbox"
+                >
+                Publish immediately
+              </label>
+
+
+              <button class="primary">
+                Create Deck
+              </button>
+
+            </form>
+
+          </section>
+
+
+          <section class="card">
+
+            <h2>
+              Add Flashcard
+            </h2>
+
+
+            <form
+              class="form"
+              id="sc2AdminCardForm"
+            >
+
+              <select
+                id="sc2AdminCardDeck"
+                required
+              >
+                <option value="">
+                  Choose deck
+                </option>
+              </select>
+
+
+              <textarea
+                id="sc2AdminCardFront"
+                placeholder="Front"
+                required
+              >
+              </textarea>
+
+
+              <textarea
+                id="sc2AdminCardBack"
+                placeholder="Back"
+                required
+              >
+              </textarea>
+
+
+              <button class="primary">
+                Add Flashcard
+              </button>
+
+            </form>
+
+          </section>
+
+
+          <section class="card">
+
+            <h2>
+              Create Daily Challenge
+            </h2>
+
+
+            <form
+              class="form"
+              id="sc2AdminDailyForm"
+            >
+
+              <input
+                id="sc2AdminDailyDate"
+                type="date"
+                required
+              >
+
+
+              <textarea
+                id="sc2AdminDailyText"
+                placeholder="Question"
+                required
+              >
+              </textarea>
+
+
+              <input
+                id="sc2AdminDailyA"
+                placeholder="Option A"
+                required
+              >
+
+
+              <input
+                id="sc2AdminDailyB"
+                placeholder="Option B"
+                required
+              >
+
+
+              <input
+                id="sc2AdminDailyC"
+                placeholder="Option C"
+                required
+              >
+
+
+              <input
+                id="sc2AdminDailyD"
+                placeholder="Option D"
+                required
+              >
+
+
+              <select
+                id="sc2AdminDailyCorrect"
+              >
+                <option>
+                  A
+                </option>
+
+                <option>
+                  B
+                </option>
+
+                <option>
+                  C
+                </option>
+
+                <option>
+                  D
+                </option>
+              </select>
+
+
+              <textarea
+                id="sc2AdminDailyExplanation"
+                placeholder="Explanation"
+              >
+              </textarea>
+
+
+              <label>
+                <input
+                  id="sc2AdminDailyPublished"
+                  type="checkbox"
+                  checked
+                >
+                Publish
+              </label>
+
+
+              <button class="primary">
+                Save Challenge
+              </button>
+
+            </form>
+
+          </section>
+
+
+          <section class="card">
+
+            <h2>
+              Create Project Team
+            </h2>
+
+
+            <form
+              class="form"
+              id="sc2AdminTeamForm"
+            >
+
+              <input
+                id="sc2AdminTeamName"
+                placeholder="Team name"
+                required
+              >
+
+
+              <button class="primary">
+                Create Team
+              </button>
+
+            </form>
+
+          </section>
+
+
+          <section class="card">
+
+            <h2>
+              Add Student to Team
+            </h2>
+
+
+            <form
+              class="form"
+              id="sc2AdminMemberForm"
+            >
+
+              <select
+                id="sc2AdminMemberTeam"
+                required
+              >
+                <option value="">
+                  Choose team
+                </option>
+              </select>
+
+
+              <select
+                id="sc2AdminMemberStudent"
+                required
+              >
+                <option value="">
+                  Choose student
+                </option>
+              </select>
+
+
+              <button class="primary">
+                Add Student
+              </button>
+
+            </form>
+
+          </section>
+
+
+          <section class="card">
+
+            <h2>
+              Create Team Project
+            </h2>
+
+
+            <form
+              class="form"
+              id="sc2AdminTeamProjectForm"
+            >
+
+              <select
+                id="sc2AdminProjectTeam"
+                required
+              >
+                <option value="">
+                  Choose team
+                </option>
+              </select>
+
+
+              <input
+                id="sc2AdminTeamProjectTitle"
+                placeholder="Project title"
+                required
+              >
+
+
+              <input
+                id="sc2AdminTeamProjectField"
+                value="General Science"
+                placeholder="Field"
+              >
+
+
+              <textarea
+                id="sc2AdminTeamProjectDescription"
+                placeholder="Description"
+              >
+              </textarea>
+
+
+              <input
+                id="sc2AdminTeamProjectTarget"
+                type="date"
+              >
+
+
+              <button class="primary">
+                Create Team Project
+              </button>
+
+            </form>
+
+          </section>
+
+
+          <section class="card">
+
+            <h2>
+              Send Project Feedback
+            </h2>
+
+
+            <form
+              class="form"
+              id="sc2AdminFeedbackForm"
+            >
+
+              <select
+                id="sc2AdminFeedbackProject"
+                required
+              >
+                <option value="">
+                  Choose project
+                </option>
+              </select>
+
+
+              <textarea
+                id="sc2AdminFeedbackMessage"
+                placeholder="Feedback"
+                required
+              >
+              </textarea>
+
+
+              <button class="primary">
+                Send Feedback
+              </button>
+
+            </form>
+
+          </section>
+
+
+          <section class="card">
+
+            <h2>
+              Send Notification
+            </h2>
+
+
+            <form
+              class="form"
+              id="sc2AdminNotificationForm"
+            >
+
+              <input
+                id="sc2AdminNotificationTitle"
+                placeholder="Title"
+                required
+              >
+
+
+              <textarea
+                id="sc2AdminNotificationMessage"
+                placeholder="Message"
+                required
+              >
+              </textarea>
+
+
+              <select
+                id="sc2AdminNotificationCategory"
+              >
+                <option>
+                  General
+                </option>
+
+                <option>
+                  CCC
+                </option>
+
+                <option>
+                  WWSEF
+                </option>
+
+                <option>
+                  Deadline
+                </option>
+
+                <option>
+                  Feedback
+                </option>
+              </select>
+
+
+              <select
+                id="sc2AdminNotificationTarget"
+              >
+                <option value="">
+                  All students
+                </option>
+              </select>
+
+
+              <select
+                id="sc2AdminNotificationPage"
+              >
+                <option value="">
+                  No link
+                </option>
+
+                <option value="dashboard">
+                  Dashboard
+                </option>
+
+                <option value="modules">
+                  CCC Modules
+                </option>
+
+                <option value="quizzes">
+                  CCC Quizzes
+                </option>
+
+                <option value="sc2QuestionBank">
+                  Question Bank
+                </option>
+
+                <option value="sc2Flashcards">
+                  Flashcards
+                </option>
+
+                <option value="sc2Daily">
+                  Daily Challenge
+                </option>
+
+                <option value="sc2WWSEF">
+                  WWSEF Workspace
+                </option>
+
+                <option value="calendar">
+                  Calendar
+                </option>
+
+                <option value="resources">
+                  Resources
+                </option>
+              </select>
+
+
+              <button class="primary">
+                Send Notification
+              </button>
+
+            </form>
+
+          </section>
+
+        </div>
+
+      </div>
+
+    </section>
+    `
+  );
+
+
+  document
+    .getElementById(
+      "sc2AdminDailyDate"
+    )
+    .value =
+    sc2DateString();
+
+
+  document
+    .getElementById(
+      "sc2AdminPracticeForm"
+    )
+    .addEventListener(
+      "submit",
+      sc2AdminAddPractice
+    );
+
+
+  document
+    .getElementById(
+      "sc2AdminDeckForm"
+    )
+    .addEventListener(
+      "submit",
+      sc2AdminCreateDeck
+    );
+
+
+  document
+    .getElementById(
+      "sc2AdminCardForm"
+    )
+    .addEventListener(
+      "submit",
+      sc2AdminAddCard
+    );
+
+
+  document
+    .getElementById(
+      "sc2AdminDailyForm"
+    )
+    .addEventListener(
+      "submit",
+      sc2AdminSaveDaily
+    );
+
+
+  document
+    .getElementById(
+      "sc2AdminTeamForm"
+    )
+    .addEventListener(
+      "submit",
+      sc2AdminCreateTeam
+    );
+
+
+  document
+    .getElementById(
+      "sc2AdminMemberForm"
+    )
+    .addEventListener(
+      "submit",
+      sc2AdminAddMember
+    );
+
+
+  document
+    .getElementById(
+      "sc2AdminTeamProjectForm"
+    )
+    .addEventListener(
+      "submit",
+      sc2AdminCreateTeamProject
+    );
+
+
+  document
+    .getElementById(
+      "sc2AdminFeedbackForm"
+    )
+    .addEventListener(
+      "submit",
+      sc2AdminSendFeedback
+    );
+
+
+  document
+    .getElementById(
+      "sc2AdminNotificationForm"
+    )
+    .addEventListener(
+      "submit",
+      sc2AdminSendNotification
+    );
+}
+
+
+/* =========================================================
+   ADMIN LOAD
+   ========================================================= */
+
+async function sc2LoadAdmin() {
+
+  if (
+    !currentUser ||
+    currentProfile?.role !==
+      "admin"
+  ) {
+    return;
+  }
+
+
+  const [
+    practiceResult,
+    deckResult,
+    cardResult,
+    dailyResult,
+    projectResult,
+    teamResult,
+    memberResult,
+    notificationResult
+  ] =
+    await Promise.all([
+
+      db
+        .from(
+          "practice_questions"
+        )
+        .select("*")
+        .order(
+          "created_at",
+          {
+            ascending:
+              false
+          }
+        ),
+
+      db
+        .from(
+          "flashcard_decks"
+        )
+        .select("*")
+        .order(
+          "created_at",
+          {
+            ascending:
+              false
+          }
+        ),
+
+      db
+        .from(
+          "flashcards"
+        )
+        .select("*")
+        .order(
+          "created_at",
+          {
+            ascending:
+              false
+          }
+        ),
+
+      db
+        .from(
+          "daily_challenges"
+        )
+        .select("*")
+        .order(
+          "challenge_date",
+          {
+            ascending:
+              false
+          }
+        ),
+
+      db
+        .from(
+          "wwsef_projects"
+        )
+        .select("*")
+        .order(
+          "updated_at",
+          {
+            ascending:
+              false
+          }
+        ),
+
+      db
+        .from(
+          "project_teams"
+        )
+        .select("*")
+        .order(
+          "name",
+          {
+            ascending:
+              true
+          }
+        ),
+
+      db
+        .from(
+          "project_team_members"
+        )
+        .select("*")
+        .order(
+          "joined_at",
+          {
+            ascending:
+              true
+          }
+        ),
+
+      db
+        .from(
+          "notifications"
+        )
+        .select("*")
+        .order(
+          "created_at",
+          {
+            ascending:
+              false
+          }
+        )
+
+    ]);
+
+
+  const results = [
+    practiceResult,
+    deckResult,
+    cardResult,
+    dailyResult,
+    projectResult,
+    teamResult,
+    memberResult,
+    notificationResult
+  ];
+
+
+  results.forEach(
+    result => {
+
+      if (
+        result.error
+      ) {
+        console.error(
+          result.error
+        );
+      }
+
+    }
+  );
+
+
+  SC2.admin.practice =
+    practiceResult.data ||
+    [];
+
+
+  SC2.admin.decks =
+    deckResult.data ||
+    [];
+
+
+  SC2.admin.cards =
+    cardResult.data ||
+    [];
+
+
+  SC2.admin.daily =
+    dailyResult.data ||
+    [];
+
+
+  SC2.admin.projects =
+    projectResult.data ||
+    [];
+
+
+  SC2.admin.teams =
+    teamResult.data ||
+    [];
+
+
+  SC2.admin.members =
+    memberResult.data ||
+    [];
+
+
+  SC2.admin.notifications =
+    notificationResult.data ||
+    [];
+
+
+  sc2RenderAdmin();
+}
+
+
+function sc2AdminUsername(
+  id
+) {
+
+  const profile =
+    (adminProfiles || [])
+      .find(
+        item =>
+          item.user_id ===
+          id
+      );
+
+
+  return (
+    profile?.username ||
+    profile?.nickname ||
+    "Unknown"
+  );
+}
+
+
+function sc2RenderAdmin() {
+
+  document
+    .getElementById(
+      "sc2AdminPracticeList"
+    )
+    .innerHTML =
+
+    SC2.admin.practice.length
+
+      ? SC2.admin.practice
+          .map(
+            question => `
+
+              <div
+                class="sc2-admin-item"
+              >
+
+                <h4>
+                  ${esc(
+                    question.question_text
+                  )}
+                </h4>
+
+
+                <p>
+                  ${esc(
+                    question.category
+                  )}
+
+                  •
+
+                  ${esc(
+                    question.difficulty
+                  )}
+
+                  •
+
+                  Answer
+                  ${question.correct_option}
+
+                  •
+
+                  ${
+                    question.is_published
+                      ? "Published"
+                      : "Draft"
+                  }
+                </p>
+
+
+                <button
+                  class="secondary sc2TogglePractice"
+                  data-id="${question.id}"
+                  data-pub="${question.is_published}"
+                >
+                  ${
+                    question.is_published
+                      ? "Unpublish"
+                      : "Publish"
+                  }
+                </button>
+
+
+                <button
+                  class="danger sc2DeletePractice"
+                  data-id="${question.id}"
+                >
+                  Delete
+                </button>
+
+              </div>
+            `
+          )
+          .join("")
+
+      : `
+        <p class="muted">
+          No practice questions yet.
+        </p>
+      `;
+
+
+  document
+    .getElementById(
+      "sc2AdminDeckList"
+    )
+    .innerHTML =
+
+    SC2.admin.decks.length
+
+      ? SC2.admin.decks
+          .map(
+            deck => {
+
+              const count =
+                SC2.admin.cards
+                  .filter(
+                    card =>
+                      Number(
+                        card.deck_id
+                      ) ===
+                      Number(
+                        deck.id
+                      )
+                  )
+                  .length;
+
+
+              return `
+
+                <div
+                  class="sc2-admin-item"
+                >
+
+                  <h4>
+                    ${esc(
+                      deck.title
+                    )}
+                  </h4>
+
+
+                  <p>
+                    ${count}
+                    cards
+
+                    •
+
+                    ${
+                      deck.is_published
+                        ? "Published"
+                        : "Draft"
+                    }
+                  </p>
+
+
+                  <button
+                    class="secondary sc2ToggleDeck"
+                    data-id="${deck.id}"
+                    data-pub="${deck.is_published}"
+                  >
+                    ${
+                      deck.is_published
+                        ? "Unpublish"
+                        : "Publish"
+                    }
+                  </button>
+
+
+                  <button
+                    class="danger sc2DeleteDeck"
+                    data-id="${deck.id}"
+                  >
+                    Delete Deck
+                  </button>
+
+                </div>
+              `;
+            }
+          )
+          .join("")
+
+      : `
+        <p class="muted">
+          No flashcard decks yet.
+        </p>
+      `;
+
+
+  document
+    .getElementById(
+      "sc2AdminDailyList"
+    )
+    .innerHTML =
+
+    SC2.admin.daily.length
+
+      ? SC2.admin.daily
+          .map(
+            challenge => `
+
+              <div
+                class="sc2-admin-item"
+              >
+
+                <h4>
+                  ${esc(
+                    challenge.question_text
+                  )}
+                </h4>
+
+
+                <p>
+                  ${challenge.challenge_date}
+
+                  •
+
+                  ${
+                    challenge.is_published
+                      ? "Published"
+                      : "Draft"
+                  }
+                </p>
+
+
+                <button
+                  class="secondary sc2ToggleDaily"
+                  data-id="${challenge.id}"
+                  data-pub="${challenge.is_published}"
+                >
+                  ${
+                    challenge.is_published
+                      ? "Unpublish"
+                      : "Publish"
+                  }
+                </button>
+
+
+                <button
+                  class="danger sc2DeleteDaily"
+                  data-id="${challenge.id}"
+                >
+                  Delete
+                </button>
+
+              </div>
+            `
+          )
+          .join("")
+
+      : `
+        <p class="muted">
+          No daily challenges yet.
+        </p>
+      `;
+
+
+  document
+    .getElementById(
+      "sc2AdminTeamList"
+    )
+    .innerHTML =
+
+    SC2.admin.teams.length
+
+      ? SC2.admin.teams
+          .map(
+            team => {
+
+              const members =
+                SC2.admin.members
+                  .filter(
+                    member =>
+                      Number(
+                        member.team_id
+                      ) ===
+                      Number(
+                        team.id
+                      )
+                  );
+
+
+              return `
+
+                <div
+                  class="sc2-admin-item"
+                >
+
+                  <h4>
+                    ${esc(
+                      team.name
+                    )}
+                  </h4>
+
+
+                  <p>
+                    ${
+                      members.length
+                        ? members
+                            .map(
+                              member =>
+                                "@" +
+                                esc(
+                                  sc2AdminUsername(
+                                    member.user_id
+                                  )
+                                )
+                            )
+                            .join(", ")
+                        : "No students assigned"
+                    }
+                  </p>
+
+                </div>
+              `;
+            }
+          )
+          .join("")
+
+      : `
+        <p class="muted">
+          No teams yet.
+        </p>
+      `;
+
+
+  document
+    .getElementById(
+      "sc2AdminProjectList"
+    )
+    .innerHTML =
+
+    SC2.admin.projects.length
+
+      ? SC2.admin.projects
+          .map(
+            project => {
+
+              const team =
+                SC2.admin.teams
+                  .find(
+                    item =>
+                      Number(
+                        item.id
+                      ) ===
+                      Number(
+                        project.team_id
+                      )
+                  );
+
+
+              return `
+
+                <div
+                  class="sc2-admin-item"
+                >
+
+                  <h4>
+                    ${esc(
+                      project.title
+                    )}
+                  </h4>
+
+
+                  <p>
+                    ${
+                      team
+                        ? "Team: " +
+                          esc(
+                            team.name
+                          )
+                        : "Student: @" +
+                          esc(
+                            sc2AdminUsername(
+                              project.owner_user_id
+                            )
+                          )
+                    }
+
+                    •
+
+                    ${esc(
+                      project.status
+                    )}
+                  </p>
+
+                </div>
+              `;
+            }
+          )
+          .join("")
+
+      : `
+        <p class="muted">
+          No WWSEF projects yet.
+        </p>
+      `;
+
+
+  document
+    .getElementById(
+      "sc2AdminNotificationList"
+    )
+    .innerHTML =
+
+    SC2.admin.notifications.length
+
+      ? SC2.admin.notifications
+          .map(
+            notification => `
+
+              <div
+                class="sc2-admin-item"
+              >
+
+                <h4>
+                  ${esc(
+                    notification.title
+                  )}
+                </h4>
+
+
+                <p>
+                  ${
+                    notification.target_user_id
+                      ? "@" +
+                        esc(
+                          sc2AdminUsername(
+                            notification.target_user_id
+                          )
+                        )
+                      : "All students"
+                  }
+
+                  •
+
+                  ${esc(
+                    notification.category
+                  )}
+                </p>
+
+
+                <button
+                  class="danger sc2DeleteNotification"
+                  data-id="${notification.id}"
+                >
+                  Delete
+                </button>
+
+              </div>
+            `
+          )
+          .join("")
+
+      : `
+        <p class="muted">
+          No notifications yet.
+        </p>
+      `;
+
+
+  document
+    .getElementById(
+      "sc2AdminCardDeck"
+    )
+    .innerHTML =
+
+    `
+      <option value="">
+        Choose deck
+      </option>
+    ` +
+
+    SC2.admin.decks
+      .map(
+        deck => `
+          <option
+            value="${deck.id}"
+          >
+            ${esc(
+              deck.title
+            )}
+          </option>
+        `
+      )
+      .join("");
+
+
+  const teamOptions =
+
+    `
+      <option value="">
+        Choose team
+      </option>
+    ` +
+
+    SC2.admin.teams
+      .map(
+        team => `
+          <option
+            value="${team.id}"
+          >
+            ${esc(
+              team.name
+            )}
+          </option>
+        `
+      )
+      .join("");
+
+
+  document
+    .getElementById(
+      "sc2AdminMemberTeam"
+    )
+    .innerHTML =
+    teamOptions;
+
+
+  document
+    .getElementById(
+      "sc2AdminProjectTeam"
+    )
+    .innerHTML =
+    teamOptions;
+
+
+  document
+    .getElementById(
+      "sc2AdminFeedbackProject"
+    )
+    .innerHTML =
+
+    `
+      <option value="">
+        Choose project
+      </option>
+    ` +
+
+    SC2.admin.projects
+      .map(
+        project => `
+          <option
+            value="${project.id}"
+          >
+            ${esc(
+              project.title
+            )}
+          </option>
+        `
+      )
+      .join("");
+
+
+  const students =
+    (adminProfiles || [])
+      .filter(
+        profile =>
+          profile.role ===
+          "student"
+      );
+
+
+  const studentOptions =
+    students
+      .map(
+        profile => `
+
+          <option
+            value="${profile.user_id}"
+          >
+            @${esc(
+              profile.username ||
+              profile.nickname ||
+              "student"
+            )}
+          </option>
+        `
+      )
+      .join("");
+
+
+  document
+    .getElementById(
+      "sc2AdminMemberStudent"
+    )
+    .innerHTML =
+
+    `
+      <option value="">
+        Choose student
+      </option>
+    ` +
+    studentOptions;
+
+
+  document
+    .getElementById(
+      "sc2AdminNotificationTarget"
+    )
+    .innerHTML =
+
+    `
+      <option value="">
+        All students
+      </option>
+    ` +
+    studentOptions;
+
+
+  document
+    .querySelectorAll(
+      ".sc2TogglePractice"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            sc2AdminToggle(
+              "practice_questions",
+              Number(
+                button.dataset.id
+              ),
+              button.dataset.pub !==
+                "true"
+            )
+        );
+
+      }
+    );
+
+
+  document
+    .querySelectorAll(
+      ".sc2DeletePractice"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            sc2AdminDelete(
+              "practice_questions",
+              Number(
+                button.dataset.id
+              ),
+              "question"
+            )
+        );
+
+      }
+    );
+
+
+  document
+    .querySelectorAll(
+      ".sc2ToggleDeck"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            sc2AdminToggle(
+              "flashcard_decks",
+              Number(
+                button.dataset.id
+              ),
+              button.dataset.pub !==
+                "true"
+            )
+        );
+
+      }
+    );
+
+
+  document
+    .querySelectorAll(
+      ".sc2DeleteDeck"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            sc2AdminDelete(
+              "flashcard_decks",
+              Number(
+                button.dataset.id
+              ),
+              "deck"
+            )
+        );
+
+      }
+    );
+
+
+  document
+    .querySelectorAll(
+      ".sc2ToggleDaily"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            sc2AdminToggle(
+              "daily_challenges",
+              Number(
+                button.dataset.id
+              ),
+              button.dataset.pub !==
+                "true"
+            )
+        );
+
+      }
+    );
+
+
+  document
+    .querySelectorAll(
+      ".sc2DeleteDaily"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            sc2AdminDelete(
+              "daily_challenges",
+              Number(
+                button.dataset.id
+              ),
+              "challenge"
+            )
+        );
+
+      }
+    );
+
+
+  document
+    .querySelectorAll(
+      ".sc2DeleteNotification"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            sc2AdminDelete(
+              "notifications",
+              Number(
+                button.dataset.id
+              ),
+              "notification"
+            )
+        );
+
+      }
+    );
+}
+
+
+async function sc2AdminToggle(
+  table,
+  id,
+  publish
+) {
+
+  const {
+    error
+  } =
+    await db
+      .from(table)
+      .update({
+        is_published:
+          publish
+      })
+      .eq(
+        "id",
+        id
+      );
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "adminMsg",
+      "Could not update item.",
+      "err"
+    );
+
+    return;
+  }
+
+
+  await sc2LoadAdmin();
+}
+
+
+async function sc2AdminDelete(
+  table,
+  id,
+  label
+) {
+
+  if (
+    !confirm(
+      `Delete this ${label}?`
+    )
+  ) {
+    return;
+  }
+
+
+  const {
+    error
+  } =
+    await db
+      .from(table)
+      .delete()
+      .eq(
+        "id",
+        id
+      );
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "adminMsg",
+      `Could not delete ${label}.`,
+      "err"
+    );
+
+    return;
+  }
+
+
+  await sc2LoadAdmin();
+}
+
+
+/* =========================================================
+   ADMIN - PRACTICE QUESTION
+   ========================================================= */
+
+async function sc2AdminAddPractice(
+  event
+) {
+
+  event.preventDefault();
+
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "practice_questions"
+      )
+      .insert({
+
+        category:
+          document
+            .getElementById(
+              "sc2AdminPracticeCategory"
+            )
+            .value
+            .trim(),
+
+        difficulty:
+          document
+            .getElementById(
+              "sc2AdminPracticeDifficulty"
+            )
+            .value,
+
+        question_text:
+          document
+            .getElementById(
+              "sc2AdminPracticeText"
+            )
+            .value
+            .trim(),
+
+        option_a:
+          document
+            .getElementById(
+              "sc2AdminPracticeA"
+            )
+            .value
+            .trim(),
+
+        option_b:
+          document
+            .getElementById(
+              "sc2AdminPracticeB"
+            )
+            .value
+            .trim(),
+
+        option_c:
+          document
+            .getElementById(
+              "sc2AdminPracticeC"
+            )
+            .value
+            .trim(),
+
+        option_d:
+          document
+            .getElementById(
+              "sc2AdminPracticeD"
+            )
+            .value
+            .trim(),
+
+        correct_option:
+          document
+            .getElementById(
+              "sc2AdminPracticeCorrect"
+            )
+            .value,
+
+        explanation:
+          document
+            .getElementById(
+              "sc2AdminPracticeExplanation"
+            )
+            .value
+            .trim() ||
+          null,
+
+        is_published:
+          document
+            .getElementById(
+              "sc2AdminPracticePublished"
+            )
+            .checked,
+
+        created_by:
+          currentUser.id
+
+      });
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "adminMsg",
+      "Could not add practice question.",
+      "err"
+    );
+
+    return;
+  }
+
+
+  event.target.reset();
+
+
+  document
+    .getElementById(
+      "sc2AdminPracticeCategory"
+    )
+    .value =
+    "General Chemistry";
+
+
+  document
+    .getElementById(
+      "sc2AdminPracticeDifficulty"
+    )
+    .value =
+    "Medium";
+
+
+  await sc2LoadAdmin();
+
+
+  msg(
+    "adminMsg",
+    "Practice question added."
+  );
+}
+
+
+/* =========================================================
+   ADMIN - FLASHCARDS
+   ========================================================= */
+
+async function sc2AdminCreateDeck(
+  event
+) {
+
+  event.preventDefault();
+
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "flashcard_decks"
+      )
+      .insert({
+
+        title:
+          document
+            .getElementById(
+              "sc2AdminDeckTitle"
+            )
+            .value
+            .trim(),
+
+        description:
+          document
+            .getElementById(
+              "sc2AdminDeckDescription"
+            )
+            .value
+            .trim() ||
+          null,
+
+        category:
+          document
+            .getElementById(
+              "sc2AdminDeckCategory"
+            )
+            .value
+            .trim() ||
+          "CCC",
+
+        is_published:
+          document
+            .getElementById(
+              "sc2AdminDeckPublished"
+            )
+            .checked,
+
+        created_by:
+          currentUser.id
+
+      });
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "adminMsg",
+      "Could not create deck.",
+      "err"
+    );
+
+    return;
+  }
+
+
+  event.target.reset();
+
+
+  document
+    .getElementById(
+      "sc2AdminDeckCategory"
+    )
+    .value =
+    "CCC";
+
+
+  await sc2LoadAdmin();
+}
+
+
+async function sc2AdminAddCard(
+  event
+) {
+
+  event.preventDefault();
+
+
+  const deckId =
+    Number(
+      document
+        .getElementById(
+          "sc2AdminCardDeck"
+        )
+        .value
+    );
+
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "flashcards"
+      )
+      .insert({
+
+        deck_id:
+          deckId,
+
+        front_text:
+          document
+            .getElementById(
+              "sc2AdminCardFront"
+            )
+            .value
+            .trim(),
+
+        back_text:
+          document
+            .getElementById(
+              "sc2AdminCardBack"
+            )
+            .value
+            .trim()
+
+      });
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "adminMsg",
+      "Could not add flashcard.",
+      "err"
+    );
+
+    return;
+  }
+
+
+  event.target.reset();
+
+
+  await sc2LoadAdmin();
+
+
+  document
+    .getElementById(
+      "sc2AdminCardDeck"
+    )
+    .value =
+    String(deckId);
+}
+
+
+/* =========================================================
+   ADMIN - DAILY CHALLENGE
+   ========================================================= */
+
+async function sc2AdminSaveDaily(
+  event
+) {
+
+  event.preventDefault();
+
+
+  const payload = {
+
+    challenge_date:
+      document
+        .getElementById(
+          "sc2AdminDailyDate"
+        )
+        .value,
+
+    question_text:
+      document
+        .getElementById(
+          "sc2AdminDailyText"
+        )
+        .value
+        .trim(),
+
+    option_a:
+      document
+        .getElementById(
+          "sc2AdminDailyA"
+        )
+        .value
+        .trim(),
+
+    option_b:
+      document
+        .getElementById(
+          "sc2AdminDailyB"
+        )
+        .value
+        .trim(),
+
+    option_c:
+      document
+        .getElementById(
+          "sc2AdminDailyC"
+        )
+        .value
+        .trim(),
+
+    option_d:
+      document
+        .getElementById(
+          "sc2AdminDailyD"
+        )
+        .value
+        .trim(),
+
+    correct_option:
+      document
+        .getElementById(
+          "sc2AdminDailyCorrect"
+        )
+        .value,
+
+    explanation:
+      document
+        .getElementById(
+          "sc2AdminDailyExplanation"
+        )
+        .value
+        .trim() ||
+      null,
+
+    is_published:
+      document
+        .getElementById(
+          "sc2AdminDailyPublished"
+        )
+        .checked,
+
+    created_by:
+      currentUser.id
+
+  };
+
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "daily_challenges"
+      )
+      .upsert(
+        payload,
+        {
+          onConflict:
+            "challenge_date"
+        }
+      );
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "adminMsg",
+      "Could not save challenge.",
+      "err"
+    );
+
+    return;
+  }
+
+
+  event.target.reset();
+
+
+  document
+    .getElementById(
+      "sc2AdminDailyDate"
+    )
+    .value =
+    sc2DateString();
+
+
+  document
+    .getElementById(
+      "sc2AdminDailyPublished"
+    )
+    .checked =
+    true;
+
+
+  await sc2LoadAdmin();
+}
+
+
+/* =========================================================
+   ADMIN - TEAMS
+   ========================================================= */
+
+async function sc2AdminCreateTeam(
+  event
+) {
+
+  event.preventDefault();
+
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "project_teams"
+      )
+      .insert({
+
+        name:
+          document
+            .getElementById(
+              "sc2AdminTeamName"
+            )
+            .value
+            .trim(),
+
+        created_by:
+          currentUser.id
+
+      });
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "adminMsg",
+      "Could not create team.",
+      "err"
+    );
+
+    return;
+  }
+
+
+  event.target.reset();
+
+
+  await sc2LoadAdmin();
+}
+
+
+async function sc2AdminAddMember(
+  event
+) {
+
+  event.preventDefault();
+
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "project_team_members"
+      )
+      .insert({
+
+        team_id:
+          Number(
+            document
+              .getElementById(
+                "sc2AdminMemberTeam"
+              )
+              .value
+          ),
+
+        user_id:
+          document
+            .getElementById(
+              "sc2AdminMemberStudent"
+            )
+            .value
+
+      });
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "adminMsg",
+
+      error.code ===
+      "23505"
+
+        ? "That student is already on this team."
+
+        : "Could not add student.",
+
+      "err"
+    );
+
+    return;
+  }
+
+
+  await sc2LoadAdmin();
+}
+
+
+async function sc2AdminCreateTeamProject(
+  event
+) {
+
+  event.preventDefault();
+
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "wwsef_projects"
+      )
+      .insert({
+
+        team_id:
+          Number(
+            document
+              .getElementById(
+                "sc2AdminProjectTeam"
+              )
+              .value
+          ),
+
+        title:
+          document
+            .getElementById(
+              "sc2AdminTeamProjectTitle"
+            )
+            .value
+            .trim(),
+
+        project_field:
+          document
+            .getElementById(
+              "sc2AdminTeamProjectField"
+            )
+            .value
+            .trim() ||
+          "General Science",
+
+        description:
+          document
+            .getElementById(
+              "sc2AdminTeamProjectDescription"
+            )
+            .value
+            .trim() ||
+          null,
+
+        target_date:
+          document
+            .getElementById(
+              "sc2AdminTeamProjectTarget"
+            )
+            .value ||
+          null
+
+      });
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "adminMsg",
+      "Could not create team project.",
+      "err"
+    );
+
+    return;
+  }
+
+
+  event.target.reset();
+
+
+  document
+    .getElementById(
+      "sc2AdminTeamProjectField"
+    )
+    .value =
+    "General Science";
+
+
+  await sc2LoadAdmin();
+}
+
+
+/* =========================================================
+   ADMIN - PROJECT FEEDBACK
+   ========================================================= */
+
+async function sc2AdminSendFeedback(
+  event
+) {
+
+  event.preventDefault();
+
+
+  const projectId =
+    Number(
+      document
+        .getElementById(
+          "sc2AdminFeedbackProject"
+        )
+        .value
+    );
+
+
+  const messageText =
+    document
+      .getElementById(
+        "sc2AdminFeedbackMessage"
+      )
+      .value
+      .trim();
+
+
+  const project =
+    SC2.admin.projects
+      .find(
+        item =>
+          Number(
+            item.id
+          ) ===
+          projectId
+      );
+
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "project_feedback"
+      )
+      .insert({
+
+        project_id:
+          projectId,
+
+        admin_id:
+          currentUser.id,
+
+        message:
+          messageText
+
+      });
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "adminMsg",
+      "Could not send project feedback.",
+      "err"
+    );
+
+    return;
+  }
+
+
+  let targets = [];
+
+
+  if (
+    project
+      ?.owner_user_id
+  ) {
+
+    targets = [
+      project.owner_user_id
+    ];
+
+  } else if (
+    project
+      ?.team_id
+  ) {
+
+    targets =
+      SC2.admin.members
+        .filter(
+          member =>
+            Number(
+              member.team_id
+            ) ===
+            Number(
+              project.team_id
+            )
+        )
+        .map(
+          member =>
+            member.user_id
+        );
+  }
+
+
+  if (
+    targets.length
+  ) {
+
+    const rows =
+      targets.map(
+        userId => ({
+
+          title:
+            "New WWSEF Project Feedback",
+
+          message:
+            `Feedback was added to ${project.title}.`,
+
+          category:
+            "Feedback",
+
+          target_user_id:
+            userId,
+
+          link_page:
+            "sc2WWSEF",
+
+          created_by:
+            currentUser.id
+
+        })
+      );
+
+
+    const result =
+      await db
+        .from(
+          "notifications"
+        )
+        .insert(
+          rows
+        );
+
+
+    if (
+      result.error
+    ) {
+      console.error(
+        result.error
+      );
+    }
+  }
+
+
+  event.target.reset();
+
+
+  await sc2LoadAdmin();
+
+
+  msg(
+    "adminMsg",
+    "Project feedback sent."
+  );
+}
+
+
+/* =========================================================
+   ADMIN - NOTIFICATIONS
+   ========================================================= */
+
+async function sc2AdminSendNotification(
+  event
+) {
+
+  event.preventDefault();
+
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "notifications"
+      )
+      .insert({
+
+        title:
+          document
+            .getElementById(
+              "sc2AdminNotificationTitle"
+            )
+            .value
+            .trim(),
+
+        message:
+          document
+            .getElementById(
+              "sc2AdminNotificationMessage"
+            )
+            .value
+            .trim(),
+
+        category:
+          document
+            .getElementById(
+              "sc2AdminNotificationCategory"
+            )
+            .value,
+
+        target_user_id:
+          document
+            .getElementById(
+              "sc2AdminNotificationTarget"
+            )
+            .value ||
+          null,
+
+        link_page:
+          document
+            .getElementById(
+              "sc2AdminNotificationPage"
+            )
+            .value ||
+          null,
+
+        created_by:
+          currentUser.id
+
+      });
+
+
+  if (error) {
+
+    console.error(error);
+
+    msg(
+      "adminMsg",
+      "Could not send notification.",
+      "err"
+    );
+
+    return;
+  }
+
+
+  event.target.reset();
+
+
+  await sc2LoadAdmin();
+
+
+  msg(
+    "adminMsg",
+    "Notification sent."
+  );
+}
+
+
+/* =========================================================
+   PATCH EXISTING STUDENT + ADMIN LOGIN
+   ========================================================= */
+
+const sc2OriginalEnterStudent =
+  enterStudent;
+
+
+enterStudent =
+  async function () {
+
+    await sc2OriginalEnterStudent();
+
+    await sc2LoadStudentFeatures();
+  };
+
+
+const sc2OriginalOpenAdmin =
+  openAdmin;
+
+
+openAdmin =
+  async function () {
+
+    await sc2OriginalOpenAdmin();
+
+    await sc2LoadAdmin();
+  };
+
+
+async function sc2LoadStudentFeatures() {
+
+  if (
+    !currentUser ||
+    currentProfile?.role !==
+      "student"
+  ) {
+    return;
+  }
+
+
+  await Promise.all([
+
+    sc2LoadFlashcards(),
+
+    sc2LoadDailyChallenge(),
+
+    sc2LoadNotifications(),
+
+    sc2LoadProjects()
+
+  ]);
+
+
+  await sc2LoadProgress();
+}
+
+
+/* =========================================================
+   START THE ADD-ON
+   ========================================================= */
+
+sc2InstallUI();
+
+
+setTimeout(
+  async () => {
+
+    try {
+
+      if (
+        currentProfile?.role ===
+        "student"
+      ) {
+
+        await sc2LoadStudentFeatures();
+      }
+
+
+      if (
+        currentProfile?.role ===
+        "admin"
+      ) {
+
+        await sc2LoadAdmin();
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Science Club 2.0 add-on:",
+        error
+      );
+    }
+
+  },
+  500
+);
+</script>
 </html>
