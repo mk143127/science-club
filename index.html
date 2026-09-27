@@ -78,6 +78,16 @@ margin-top:10px
 
 .overlay{display:none;position:fixed;inset:0;background:rgba(17,19,29,.72);z-index:1000;align-items:center;justify-content:center;padding:20px}.overlay.show{display:flex}.tour{width:min(520px,100%);background:#fff;border-radius:7px;padding:25px}.tourIcon{font-size:12px;font-weight:800;letter-spacing:1px;color:var(--primary)}.tour h2{margin:8px 0}.tourActions{display:flex;justify-content:space-between;gap:8px;margin-top:18px}.tableWrap{overflow:auto}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px 9px;border-bottom:1px solid var(--line);font-size:10px}th{background:#f7f8f9;color:#566875;font-size:9px;text-transform:uppercase}.adminGrid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
 @media(max-width:950px){.grid2,.adminGrid{grid-template-columns:1fr}}@media(max-width:740px){.shell{display:block}.side{position:static;width:100%;height:auto;flex-direction:row;align-items:center;overflow:auto;padding:10px}.brand{min-width:165px;margin:0 10px 0 0;padding:0;border:0}.logo{width:34px;height:34px}.nav{flex-direction:row}.nav button{white-space:nowrap}.sideBottom{margin:0 0 0 8px;border:0;padding:0}.tiny{display:none}main{padding:22px 14px}.top h1{font-size:25px}.nickBanner{flex-direction:column;align-items:stretch}.brainstorm{grid-template-columns:1fr}}
+  
+/* Reflection review + teacher feedback */
+.reflectionTeacherFeedback{margin-top:12px;padding:12px 13px;border:1px solid #cfe1d9;border-left:4px solid var(--good);border-radius:5px;background:#f7fbf9;color:#315f52;font-size:11px;line-height:1.6}
+.reflectionTeacherFeedback b{display:block;margin-bottom:4px;color:#244c42}
+.adminReflectionItem{border:1px solid var(--line);border-radius:6px;padding:14px;margin-bottom:12px;background:#fff}
+.adminReflectionItem h3{font-size:12px;margin:0 0 5px;color:#263844}
+.adminReflectionMeta{font-size:9px;color:var(--muted);margin-bottom:10px}
+.adminReflectionResponse{padding:11px 12px;border-left:3px solid var(--primary);background:#f7fafb;border-radius:4px;font-size:11px;line-height:1.65;white-space:pre-wrap;margin-bottom:11px}
+.adminReflectionItem textarea{width:100%;min-height:90px;border:1px solid #cbd5dc;border-radius:4px;padding:10px 11px;resize:vertical;margin:7px 0}
+
   </style>
  </head>
  <body>
@@ -1898,6 +1908,26 @@ margin-top:10px
         </div>
        </section>
        <section class="card">
+        <div class="top" style="margin-bottom:10px">
+         <div>
+          <h2>
+           Student Reflections
+          </h2>
+          <p class="muted">
+           Read submitted short-answer reflections and leave individual feedback for each student.
+          </p>
+         </div>
+         <button class="secondary" id="refreshReflectionSubmissions" type="button">
+          Refresh
+         </button>
+        </div>
+        <div id="adminReflectionList">
+         <p class="muted">
+          Loading reflections…
+         </p>
+        </div>
+       </section>
+       <section class="card">
         <h2>
          CCC Module Manager
         </h2>
@@ -2683,7 +2713,7 @@ let db,currentUser=null,currentProfile=null,authMode="login",passwordRecoveryMod
 let announcements=[],resources=[],importantDates=[],faqs=[],quizzes=[],modules=[],studentActivity=[];
 let adminProfiles=[],adminActivity=[],adminQuizzes=[],adminModules=[],adminModuleActivities=[];
 let activeQuiz=null,activeQuizQuestions=[];
-let activeModule=null,activeModuleActivities=[],activeModuleProgress=[],activeModuleStep=0;
+let activeModule=null,activeModuleActivities=[],activeModuleProgress=[],activeModuleFeedback=[],activeModuleStep=0;
 let calYear=new Date().getFullYear(),calMonth=new Date().getMonth();
 let practiceSet=[];
 let flashDecks=[],flashcards=[],activeFlashDeck=null,activeFlashCards=[],activeFlashIndex=0,flashShowingBack=false;
@@ -2691,7 +2721,7 @@ let dailyChallenge=null,dailyAnswerRecord=null;
 let notifications=[],notificationReads=[];
 let studentProjects=[],activeProject=null,projectMilestones=[],labEntries=[],projectFeedback=[],studentTeams=[];
 let studentProgressData={modulePct:0,modulesDone:0,modulesTotal:0,quizAverage:null,projectPct:null,badges:[]};
-let adminPracticeQuestions=[],adminFlashDecks=[],adminFlashcards=[],adminDailyChallenges=[],adminProjects=[],adminTeams=[],adminTeamMembers=[],adminNotifications=[];
+let adminPracticeQuestions=[],adminFlashDecks=[],adminFlashcards=[],adminDailyChallenges=[],adminProjects=[],adminTeams=[],adminTeamMembers=[],adminNotifications=[],adminReflectionSubmissions=[];
 const pages={auth:$("authPage"),dashboard:$("dashboardPage"),calendar:$("calendarPage"),resources:$("resourcesPage"),projects:$("projectsPage"),wwsef:$("wwsefPage"),modules:$("modulesPage"),quizzes:$("quizzesPage"),questionbank:$("questionbankPage"),flashcards:$("flashcardsPage"),daily:$("dailyPage"),chemtools:$("chemtoolsPage"),periodic:$("periodicPage"),progress:$("progressPage"),notifications:$("notificationsPage"),tutorial:$("tutorialPage"),faq:$("faqPage"),adminLogin:$("adminLoginPage"),adminReset:$("adminResetPage"),admin:$("adminPage")};
 const esc=v=>String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
 function msg(id,text,type="ok"){const el=$(id);if(!el)return;el.textContent=text;el.className=`msg show ${type}`;setTimeout(()=>el.classList.remove("show"),4500)}
@@ -3043,9 +3073,10 @@ b.onclick=()=>beginModule(Number(b.dataset.id));
 async function beginModule(id){
 activeModule=modules.find(m=>Number(m.id)===Number(id));
 if(!activeModule)return;
-const [{data:activities,error:activityError},{data:progress,error:progressError}]=await Promise.all([
+const [{data:activities,error:activityError},{data:progress,error:progressError},{data:reflectionFeedback,error:reflectionFeedbackError}]=await Promise.all([
 db.rpc("get_module_activities",{p_module_id:id}),
-db.from("module_progress").select("activity_id,response,is_complete,score,max_score,updated_at").eq("user_id",currentUser.id).eq("module_id",id)
+db.from("module_progress").select("activity_id,response,is_complete,score,max_score,updated_at").eq("user_id",currentUser.id).eq("module_id",id),
+db.from("module_reflection_feedback").select("activity_id,feedback,updated_at").eq("user_id",currentUser.id)
 ]);
 if(activityError){
 console.error(activityError);
@@ -3053,8 +3084,10 @@ msg("moduleMsg","Could not load this module. Make sure the module SQL setup has 
 return;
 }
 if(progressError)console.error(progressError);
+if(reflectionFeedbackError)console.error(reflectionFeedbackError);
 activeModuleActivities=activities||[];
 activeModuleProgress=progress||[];
+activeModuleFeedback=reflectionFeedback||[];
 const firstIncomplete=activeModuleActivities.findIndex(a=>!progressForActivity(a.id)?.is_complete);
 activeModuleStep=firstIncomplete===-1?Math.max(activeModuleActivities.length-1,0):firstIncomplete;
 $("moduleListCard").style.display="none";
@@ -3066,6 +3099,9 @@ window.scrollTo(0,0);
 }
 function progressForActivity(id){
 return activeModuleProgress.find(p=>Number(p.activity_id)===Number(id));
+}
+function feedbackForActivity(id){
+return activeModuleFeedback.find(f=>Number(f.activity_id)===Number(id));
 }
 function moduleActivityTypeLabel(type){
 return {lesson:"LESSON",video:"VIDEO",interactive:"INTERACTIVE",mcq:"PRACTICE",short_answer:"SHORT ANSWER",checklist:"TASK",resource:"RESOURCE"}[type]||type.toUpperCase();
@@ -3237,618 +3273,3 @@ ${complete?"Interactive Activity Completed":"Mark Activity Complete"}
 if(a.activity_type==="mcq"){
 const oldAnswer=p?.response?.answer||"";
 body=`
-<div class="activityBody">${esc(a.instructions||"")}</div>
-<div class="activityOptions">
-${["A","B","C","D"].map(letter=>`
-<label class="activityOption">
-<input type="radio" name="module_q_${a.id}" value="${letter}" ${oldAnswer===letter?"checked":""}>
-<span><b>${letter}.</b> ${esc(a["option_"+letter.toLowerCase()]||"")}</span>
-</label>`).join("")}
-</div>
-<button class="primary moduleSubmitBtn" data-id="${a.id}" data-kind="mcq">${complete?"Try Again":"Check Answer"}</button>
-<div id="activityFeedback_${a.id}" class="activityFeedback"></div>`;
-}
-if(a.activity_type==="short_answer"){
-const oldText=p?.response?.text||"";
-body=`
-<div class="activityBody">${esc(a.instructions||"")}</div>
-<textarea id="short_${a.id}" style="width:100%;min-height:100px;margin:12px 0;border:1px solid var(--line);border-radius:4px;padding:10px" placeholder="Write your response here...">${esc(oldText)}</textarea>
-<button class="primary moduleSubmitBtn" data-id="${a.id}" data-kind="short_answer">${complete?"Update Response":"Submit Response"}</button>
-<div id="activityFeedback_${a.id}" class="activityFeedback"></div>`;
-}
-$("moduleActivities").innerHTML=`
-<div class="activityCard ${complete?"complete":""}">
-<div class="activityHead">
-<h3>${activeModuleStep+1}. ${esc(a.title)}</h3>
-<span class="activityType">${moduleActivityTypeLabel(a.activity_type)}</span>
-</div>
-${body}
-</div>`;
-document.querySelectorAll(".moduleResourceBtn").forEach(b=>{
-b.onclick=()=>window.open(b.dataset.url,"_blank","noopener,noreferrer");
-});
-document.querySelectorAll(".moduleCompleteBtn").forEach(b=>{
-b.onclick=()=>completeSimpleModuleActivity(Number(b.dataset.id),b.dataset.kind);
-});
-document.querySelectorAll(".moduleSubmitBtn").forEach(b=>{
-b.onclick=()=>submitModuleActivity(Number(b.dataset.id),b.dataset.kind);
-});
-initializeInteractiveFrames();
-$("modulePrevBtn").disabled=activeModuleStep===0;
-$("moduleNextBtn").disabled=!complete;
-$("moduleLockedNote").style.display=complete?"none":"inline-block";
-$("moduleNextBtn").textContent=activeModuleStep===activeModuleActivities.length-1?"Finish Module":"Continue →";
-}
-function showModuleCompletion(){
-updateModuleProgressBar();
-renderModuleStepNav();
-$("moduleStepCounter").textContent=`${activeModuleActivities.length} of ${activeModuleActivities.length} activities`;
-$("moduleStepStatus").textContent="Module completed";
-$("moduleActivities").innerHTML=`
-<div class="moduleCompleteScreen">
-<h3>Module complete</h3>
-<p>You completed every activity in <b>${esc(activeModule?.title||"this module")}</b>.</p>
-<button type="button" class="primary" id="moduleCompleteBackBtn">Back to Modules</button>
-</div>`;
-$("moduleSlideControls").style.display="none";
-$("moduleCompleteBackBtn").onclick=resetModuleView;
-}
-$("modulePrevBtn").onclick=()=>{
-if(activeModuleStep>0){
-activeModuleStep--;
-renderModuleActivities();
-window.scrollTo({top:0,behavior:"smooth"});
-}
-};
-$("moduleNextBtn").onclick=()=>{
-const current=activeModuleActivities[activeModuleStep];
-if(!current||!progressForActivity(current.id)?.is_complete){
-msg("moduleMsg","Complete this activity before continuing.","err");
-return;
-}
-if(activeModuleStep===activeModuleActivities.length-1){
-showModuleCompletion();
-return;
-}
-activeModuleStep++;
-renderModuleActivities();
-window.scrollTo({top:0,behavior:"smooth"});
-};
-function updateModuleProgressBar(){
-const total=activeModuleActivities.length;
-const complete=activeModuleActivities.filter(a=>progressForActivity(a.id)?.is_complete).length;
-const pct=total?Math.round(complete/total*100):0;
-$("moduleProgressBar").style.width=pct+"%";
-$("moduleProgressText").textContent=`${complete} of ${total} activities complete • ${pct}%`;
-}
-async function completeSimpleModuleActivity(activityId,kind){
-if(kind==="checklist"&&!$("check_"+activityId)?.checked){
-msg("moduleMsg","Check the box first, then save completion.","err");
-return;
-}
-await sendModuleActivity(activityId,{completed:true});
-}
-async function submitModuleActivity(activityId,kind){
-let response={};
-if(kind==="mcq"){
-const selected=document.querySelector(`input[name="module_q_${activityId}"]:checked`);
-if(!selected){msg("moduleMsg","Choose an answer first.","err");return;}
-response={answer:selected.value};
-}
-if(kind==="short_answer"){
-const text=$("short_"+activityId).value.trim();
-if(!text){msg("moduleMsg","Write a response first.","err");return;}
-response={text};
-}
-await sendModuleActivity(activityId,response);
-}
-async function sendModuleActivity(activityId,response){
-const {data,error}=await db.rpc("submit_module_activity",{p_activity_id:activityId,p_response:response});
-if(error){
-console.error(error);
-msg("moduleMsg","Could not save this activity.","err");
-return;
-}
-const result=data||{};
-const {data:progress,error:progressError}=await db.from("module_progress")
-.select("activity_id,response,is_complete,score,max_score,updated_at")
-.eq("user_id",currentUser.id)
-.eq("module_id",activeModule.id);
-if(progressError)console.error(progressError);
-activeModuleProgress=progress||[];
-renderModuleActivities();
-await loadStudentProgress();
-const feedback=$("activityFeedback_"+activityId);
-if(feedback&&(result.activity_type==="mcq"||result.activity_type==="short_answer")){
-let text="";
-let cls="neutral";
-if(result.activity_type==="mcq"){
-text=result.correct?"Correct":`Not quite. Correct answer: ${result.correct_option||""}`;
-cls=result.correct?"good":"bad";
-if(result.explanation)text+=`\n${result.explanation}`;
-}else{
-text="Response saved";
-if(result.model_answer)text+=`\nSuggested answer: ${result.model_answer}`;
-if(result.explanation)text+=`\n${result.explanation}`;
-}
-feedback.textContent=text;
-feedback.className=`activityFeedback show ${cls}`;
-}
-}
-function resetModuleView(){
-activeModule=null;
-activeModuleActivities=[];
-activeModuleProgress=[];
-activeModuleStep=0;
-$("modulePlayerCard").style.display="none";
-$("moduleListCard").style.display="block";
-}
-$("backModules").onclick=resetModuleView;
-/* ==========================================
-ADMIN MODULE BUILDER
-========================================== */
-function renderActivityDynamicFields(){
-const type=$("activityType").value;
-if(type==="interactive"){
-const starter=`<style>
-.sim {
-max-width: 680px;
-margin: 0 auto;
-padding: 24px;
-text-align: center;
-}
-.ball {
-width: 54px;
-height: 54px;
-margin: 28px auto;
-border-radius: 50%;
-background: #1f627d;
-transition: transform .35s ease;
-}
-.controls {
-display: flex;
-justify-content: center;
-gap: 10px;
-}
-</style>
-<div class="sim">
-<h2>Interactive Example</h2>
-<p>Use the buttons to move the particle.</p>
-<div id="ball" class="ball"></div>
-<div class="controls">
-<button id="left" type="button">Move Left</button>
-<button id="right" type="button">Move Right</button>
-<button id="finish" type="button">Finish Activity</button>
-</div>
-</div>
-<script>
-let x = 0;
-const ball = document.getElementById("ball");
-document.getElementById("left").addEventListener("click", () => {
-x -= 40;
-ball.style.transform = "translateX(" + x + "px)";
-});
-document.getElementById("right").addEventListener("click", () => {
-x += 40;
-ball.style.transform = "translateX(" + x + "px)";
-});
-document.getElementById("finish").addEventListener("click", () => {
-completeActivity();
-});
-<\/script>`;
-$("activityDynamicFields").innerHTML=`
-<label>Interactive HTML / CSS / JavaScript</label>
-<textarea id="moduleInteractiveCode" class="codeEditor" spellcheck="false"></textarea>
-<div class="codeHelp">
-Write a self-contained interactive activity using HTML, CSS, SVG, Canvas and vanilla JavaScript.
-External scripts, network requests, iframes and remote media are blocked for safety.
-Call <b>completeActivity()</b> anywhere in your code when the student finishes the activity.
-</div>
-<button id="previewInteractiveBtn" type="button" class="secondary">Preview Interactive Activity</button>
-<iframe id="interactivePreview" class="interactivePreview" sandbox="allow-scripts" title="Interactive activity preview"></iframe>`;
-$("moduleInteractiveCode").value=starter;
-$("previewInteractiveBtn").onclick=()=>{
-$("interactivePreview").srcdoc=buildInteractiveDocument($("moduleInteractiveCode").value);
-};
-$("interactivePreview").srcdoc=buildInteractiveDocument(starter);
-return;
-}
-if(type==="video"){
-$("activityDynamicFields").innerHTML=`
-<label>YouTube Video URL</label>
-<input id="moduleVideoUrl" type="url" placeholder="https://www.youtube.com/watch?v=..." required>
-<p class="fieldHint">Paste a normal YouTube, YouTube Shorts, or youtu.be link. Students will watch it directly inside the portal.</p>`;
-return;
-}
-if(type==="mcq"){
-$("activityDynamicFields").innerHTML=`
-<label>Option A</label><input id="moduleOptionA" required>
-<label>Option B</label><input id="moduleOptionB" required>
-<label>Option C</label><input id="moduleOptionC" required>
-<label>Option D</label><input id="moduleOptionD" required>
-<label>Correct answer</label>
-<select id="moduleCorrect"><option>A</option><option>B</option><option>C</option><option>D</option></select>
-<label>Explanation shown after answering</label>
-<textarea id="moduleExplanation" placeholder="Explain why the answer is correct..."></textarea>`;
-return;
-}
-if(type==="short_answer"){
-$("activityDynamicFields").innerHTML=`
-<label>Suggested / model answer</label>
-<textarea id="moduleModelAnswer" placeholder="Students see this only after submitting their response."></textarea>
-<label>Feedback / explanation</label>
-<textarea id="moduleExplanation" placeholder="Optional extra feedback..."></textarea>`;
-return;
-}
-if(type==="resource"){
-$("activityDynamicFields").innerHTML=`
-<label>Resource URL</label>
-<input id="moduleResourceUrl" type="url" placeholder="https://...">
-<p class="fieldHint">Students can open the link and then mark the activity complete.</p>`;
-return;
-}
-$("activityDynamicFields").innerHTML=type==="lesson"
-?'<p class="fieldHint">Use the Instructions/content box for lesson notes, worked examples, formula review or contest strategy.</p>'
-:'<p class="fieldHint">Use the Instructions/content box to describe the task students need to complete.</p>';
-}
-$("activityType").onchange=renderActivityDynamicFields;
-renderActivityDynamicFields();
-async function loadAdminModules(){
-const [{data:mods,error:modError},{data:acts,error:actError}]=await Promise.all([
-db.from("contest_modules").select("*").order("sort_order",{ascending:true}).order("created_at",{ascending:true}),
-db.from("module_activities").select("*").order("sort_order",{ascending:true}).order("created_at",{ascending:true})
-]);
-adminModules=modError?[]:(mods||[]);
-adminModuleActivities=actError?[]:(acts||[]);
-if(modError)console.error(modError);
-if(actError)console.error(actError);
-$("activityModule").innerHTML='<option value="">Choose module</option>'+adminModules.map(m=>`<option value="${m.id}">${esc(m.title)}</option>`).join("");
-renderAdminModules();
-updateAdminStats();
-}
-function renderAdminModules(){
-$("adminModuleList").innerHTML=adminModules.length?adminModules.map(m=>{
-const acts=adminModuleActivities.filter(a=>Number(a.module_id)===Number(m.id));
-return `
-<div class="moduleAdminItem">
-<h3>${esc(m.title)}</h3>
-<div class="moduleAdminMeta">${esc(m.category)} • ${m.is_published?"Published":"Draft"} • ${acts.length} activities</div>
-<div style="display:flex;gap:7px;flex-wrap:wrap">
-<button class="secondary toggleModule" data-id="${m.id}" data-pub="${m.is_published}">${m.is_published?"Unpublish":"Publish"}</button>
-<button class="danger deleteModule" data-id="${m.id}">Delete Module</button>
-</div>
-${acts.length?acts.map(a=>`
-<div class="moduleActivityAdmin">
-<div class="grow"><b>${esc(a.title)}</b><br><span>${moduleActivityTypeLabel(a.activity_type)} • order ${a.sort_order}</span></div>
-<button class="danger deleteModuleActivity" data-id="${a.id}">Delete</button>
-</div>`).join(""):'<p class="muted" style="margin-top:8px">No activities yet.</p>'}
-</div>`;
-}).join(""):'<p class="muted">No modules yet.</p>';
-document.querySelectorAll(".toggleModule").forEach(b=>{
-b.onclick=()=>toggleModule(Number(b.dataset.id),b.dataset.pub!=="true");
-});
-document.querySelectorAll(".deleteModule").forEach(b=>{
-b.onclick=()=>deleteModule(Number(b.dataset.id));
-});
-document.querySelectorAll(".deleteModuleActivity").forEach(b=>{
-b.onclick=()=>deleteModuleActivity(Number(b.dataset.id));
-});
-}
-$("createModuleForm").addEventListener("submit",async e=>{
-e.preventDefault();
-const {error}=await db.from("contest_modules").insert({
-title:$("newModuleTitle").value.trim(),
-description:$("newModuleDesc").value.trim()||null,
-category:$("newModuleCat").value,
-sort_order:Number($("newModuleOrder").value)||0,
-is_published:false,
-created_by:currentUser.id
-});
-if(error){
-console.error(error);
-msg("adminMsg","Could not create module.","err");
-return;
-}
-e.target.reset();
-$("newModuleOrder").value="1";
-await loadAdminModules();
-msg("adminMsg","Draft module created.");
-});
-$("addModuleActivityForm").addEventListener("submit",async e=>{
-e.preventDefault();
-const type=$("activityType").value;
-const payload={
-module_id:Number($("activityModule").value),
-activity_type:type,
-title:$("activityTitle").value.trim(),
-instructions:$("activityInstructions").value.trim()||null,
-points:Number($("activityPoints").value)||0,
-sort_order:Number($("activityOrder").value)||0
-};
-if(type==="mcq"){
-payload.option_a=$("moduleOptionA").value.trim();
-payload.option_b=$("moduleOptionB").value.trim();
-payload.option_c=$("moduleOptionC").value.trim();
-payload.option_d=$("moduleOptionD").value.trim();
-payload.correct_option=$("moduleCorrect").value;
-payload.explanation=$("moduleExplanation").value.trim()||null;
-}
-if(type==="short_answer"){
-payload.model_answer=$("moduleModelAnswer").value.trim()||null;
-payload.explanation=$("moduleExplanation").value.trim()||null;
-}
-if(type==="interactive"){
-payload.interactive_code=$("moduleInteractiveCode").value;
-}
-if(type==="video"){
-payload.resource_url=$("moduleVideoUrl").value.trim()||null;
-}
-if(type==="resource"){
-payload.resource_url=$("moduleResourceUrl").value.trim()||null;
-}
-const {error}=await db.from("module_activities").insert(payload);
-if(error){
-console.error(error);
-msg("adminMsg","Could not add module activity.","err");
-return;
-}
-const selectedModule=payload.module_id;
-e.target.reset();
-$("activityPoints").value="1";
-$("activityOrder").value="1";
-renderActivityDynamicFields();
-await loadAdminModules();
-$("activityModule").value=String(selectedModule);
-msg("adminMsg","Module activity added.");
-});
-async function toggleModule(id,publish){
-const {error}=await db.from("contest_modules").update({is_published:publish}).eq("id",id);
-if(error){console.error(error);msg("adminMsg","Could not update module.","err");return;}
-await loadAdminModules();
-msg("adminMsg",publish?"Module published.":"Module unpublished.");
-}
-async function deleteModule(id){
-if(!confirm("Delete this module, all its activities and student progress?"))return;
-const {error}=await db.from("contest_modules").delete().eq("id",id);
-if(error){console.error(error);msg("adminMsg","Could not delete module.","err");return;}
-await loadAdminModules();
-msg("adminMsg","Module deleted.");
-}
-async function deleteModuleActivity(id){
-if(!confirm("Delete this activity?"))return;
-const {error}=await db.from("module_activities").delete().eq("id",id);
-if(error){console.error(error);msg("adminMsg","Could not delete activity.","err");return;}
-await loadAdminModules();
-msg("adminMsg","Activity deleted.");
-}
-async function loadQuizzes(){const {data,error}=await db.from("quizzes").select("*").order("created_at",{ascending:false});quizzes=error?[]:(data||[]);if(error)console.error(error);const published=quizzes.filter(q=>q.is_published);$("quizCount").textContent=published.length;$("quizList").innerHTML=published.length?published.map(q=>`<div class="quizCard"><span class="badge">${esc(q.category)}</span><h3>${esc(q.title)}</h3><p>${esc(q.description||"Practice quiz")}</p><button class="primary takeQuiz" data-id="${q.id}">Take Quiz</button></div>`).join(""):'<p class="muted">No published quizzes yet.</p>';document.querySelectorAll(".takeQuiz").forEach(b=>b.onclick=()=>beginQuiz(Number(b.dataset.id)))}
-async function beginQuiz(id){activeQuiz=quizzes.find(q=>Number(q.id)===id);if(!activeQuiz)return;const {data,error}=await db.rpc("get_quiz_questions",{p_quiz_id:id});if(error){console.error(error);msg("quizMsg","Could not load quiz.","err");return}activeQuizQuestions=data||[];$("quizListCard").style.display="none";$("quizResultCard").style.display="none";$("quizTakeCard").style.display="block";$("activeQuizTitle").textContent=activeQuiz.title;$("activeQuizDesc").textContent=activeQuiz.description||"";$("quizQuestions").innerHTML=activeQuizQuestions.length?activeQuizQuestions.map((q,i)=>`<div class="question"><h3>${i+1}. ${esc(q.question_text)}</h3>${["A","B","C","D"].map(L=>`<label class="option"><input type="radio" name="q_${q.id}" value="${L}" required><span><b>${L}.</b> ${esc(q["option_"+L.toLowerCase()])}</span></label>`).join("")}</div>`).join(""):'<p class="muted">This quiz does not have questions yet.</p>';window.scrollTo(0,0)}
-$("quizForm").addEventListener("submit",async e=>{e.preventDefault();if(!activeQuizQuestions.length)return;const answers={};for(const q of activeQuizQuestions){const s=document.querySelector(`input[name="q_${q.id}"]:checked`);if(!s){msg("quizMsg","Answer every question first.","err");return}answers[String(q.id)]=s.value}const {data,error}=await db.rpc("grade_quiz",{p_quiz_id:activeQuiz.id,p_answers:answers});if(error){console.error(error);msg("quizMsg","Could not grade quiz.","err");return}$("quizTakeCard").style.display="none";$("quizResultCard").style.display="block";const pct=data.total?Math.round(data.score/data.total*100):0;$("quizResult").innerHTML=`<div class="card" style="background:var(--primary-soft)"><b style="font-size:20px">${data.score}/${data.total} (${pct}%)</b></div>`+(data.results||[]).map((r,i)=>`<div class="review ${r.correct?"good":"bad"}"><b>Question ${i+1}: ${r.correct?"Correct":"Incorrect"}</b><br>Your answer: ${esc(r.your_answer||"—")} • Correct: ${esc(r.correct_option)}${r.explanation?`<br><span class="muted">${esc(r.explanation)}</span>`:""}</div>`).join("");await loadQuizAttempts();await loadStudentProgress()});
-function resetQuiz(){activeQuiz=null;activeQuizQuestions=[];$("quizTakeCard").style.display="none";$("quizResultCard").style.display="none";$("quizListCard").style.display="block"}$("backQuizzes").onclick=resetQuiz;$("closeResult").onclick=resetQuiz;
-async function loadQuizAttempts(){if(!currentUser||currentProfile?.role!=="student")return;const {data,error}=await db.from("quiz_attempts").select("id,quiz_id,score,total_questions,created_at").eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(10);if(error){console.error(error);$("quizAttempts").innerHTML='<p class="muted">Could not load attempts.</p>';return}$("quizAttempts").innerHTML=(data||[]).length?(data||[]).map(a=>`<div class="attempt"><div class="grow"><h3>${esc(quizzes.find(q=>Number(q.id)===Number(a.quiz_id))?.title||"Quiz")}</h3><p>${new Date(a.created_at).toLocaleString()}</p></div><span class="badge">${a.score}/${a.total_questions}</span></div>`).join(""):'<p class="muted">No attempts yet.</p>'}
-const tourSteps=[{i:"01",t:"Welcome",x:"This portal keeps Science Club learning, projects, dates and updates together."},{i:"02",t:"Random username + password",x:"Use a random username instead of your real name. Your password protects your account."},{i:"03",t:"CCC Learning",x:"Use Modules, Quizzes, the Question Bank, Flashcards and the Daily Challenge for chemistry practice."},{i:"04",t:"Chemistry Tools",x:"Use the interactive periodic table and calculators for molar mass, moles, composition, dilution, units, significant figures and equation practice."},{i:"05",t:"WWSEF Workspace",x:"Create or join a project, track milestones, keep a digital lab notebook and read advisor feedback."},{i:"06",t:"Progress & Achievements",x:"Your portal automatically summarizes module progress, quiz averages, WWSEF milestones and unlocked badges."},{i:"07",t:"Notifications",x:"Check the Notifications page for new content, feedback and important Science Club updates."},{i:"08",t:"Ready",x:"You can reopen this tutorial anytime from How to Use."}];let tourIndex=0;
-function openTour(){tourIndex=0;$("tourOverlay").classList.add("show");renderTour()}function renderTour(){const s=tourSteps[tourIndex];$("tourIcon").textContent=s.i;$("tourTitle").textContent=s.t;$("tourText").textContent=s.x;$("tourProgress").textContent=`Step ${tourIndex+1} of ${tourSteps.length}`;$("tourBack").style.visibility=tourIndex?"visible":"hidden";$("tourNext").textContent=tourIndex===tourSteps.length-1?"Finish":"Next"}function closeTour(){$("tourOverlay").classList.remove("show");localStorage.setItem("scienceClubTutorialSeen","1")}
-$("startTour").onclick=openTour;$("tourSkip").onclick=closeTour;$("tourBack").onclick=()=>{if(tourIndex){tourIndex--;renderTour()}};$("tourNext").onclick=()=>{if(tourIndex<tourSteps.length-1){tourIndex++;renderTour()}else closeTour()};
-$("adminButton").onclick=()=>showPage("adminLogin");
-$("cancelAdmin").onclick=()=>showPage(currentProfile?"dashboard":"auth");
-$("forgotAdminPassword").onclick=async()=>{
-const email=$("adminEmail").value.trim();
-if(!email){
-msg("adminLoginMsg","Enter your admin email first, then click Reset Password.","err");
-$("adminEmail").focus();
-return;
-}
-const redirectTo="https://mk143127.github.io/science-club/";
-const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo});
-if(error){
-console.error(error);
-msg("adminLoginMsg","Could not send the reset email. Check the email address and try again.","err");
-return;
-}
-msg("adminLoginMsg","If that admin email exists, a password-reset link has been sent. Open the email and click the link.");
-};
-$("adminResetForm").addEventListener("submit",async e=>{
-e.preventDefault();
-const password=$("adminNewPassword").value;
-const confirmPassword=$("adminConfirmPassword").value;
-if(password.length<8){
-msg("adminResetMsg","Use a password with at least 8 characters.","err");
-return;
-}
-if(password!==confirmPassword){
-msg("adminResetMsg","The two passwords do not match.","err");
-return;
-}
-const {data:userData,error:userError}=await db.auth.getUser();
-if(userError||!userData.user){
-console.error(userError);
-msg("adminResetMsg","This reset link is invalid or expired. Request a new reset email.","err");
-return;
-}
-const {data:profile,error:profileError}=await db.from("profiles")
-.select("role")
-.eq("user_id",userData.user.id)
-.maybeSingle();
-if(profileError||profile?.role!=="admin"){
-console.error(profileError);
-await db.auth.signOut();
-passwordRecoveryMode=false;
-msg("adminResetMsg","This password-reset link is not for an administrator account.","err");
-return;
-}
-const {error}=await db.auth.updateUser({password});
-if(error){
-console.error(error);
-msg("adminResetMsg","Could not update the password. Request a new reset email and try again.","err");
-return;
-}
-$("adminNewPassword").value="";
-$("adminConfirmPassword").value="";
-passwordRecoveryMode=false;
-await db.auth.signOut();
-if(window.history&&window.history.replaceState){
-window.history.replaceState(null,"",window.location.pathname);
-}
-showPage("adminLogin");
-setStatus("● Ready");
-msg("adminLoginMsg","Password updated. Sign in with your new admin password.");
-});
-$("cancelAdminReset").onclick=async()=>{
-await db.auth.signOut();
-passwordRecoveryMode=false;
-if(window.history&&window.history.replaceState){
-window.history.replaceState(null,"",window.location.pathname);
-}
-showPage("adminLogin");
-setStatus("● Ready");
-};
-$("adminLoginForm").addEventListener("submit",async e=>{e.preventDefault();const existing=(await db.auth.getSession()).data.session;if(existing)await db.auth.signOut();const {data,error}=await db.auth.signInWithPassword({email:$("adminEmail").value.trim(),password:$("adminPassword").value});if(error){msg("adminLoginMsg","Incorrect admin email or password.","err");return}const {data:profile,error:pe}=await db.from("profiles").select("nickname,username,role").eq("user_id",data.user.id).maybeSingle();if(pe||profile?.role!=="admin"){await db.auth.signOut();msg("adminLoginMsg","This account is not an admin.","err");return}currentUser=data.user;currentProfile=profile;$("adminPassword").value="";await openAdmin()});
-async function openAdmin(){
-  showPage("admin");
-  if($("adminDailyDate"))$("adminDailyDate").value=localISODate();
-
-  // Load the original admin dashboard first so it remains usable even if
-  // one of the new 2.0 managers has a database/configuration problem.
-  await Promise.all([
-    loadAdminProfiles(),loadAdminActivity(),loadAnnouncements(),loadResources(),
-    loadDates(),loadFAQs(),loadAdminModules(),loadAdminQuizzes()
-  ]);
-
-  const optionalAdminLoads=await Promise.allSettled([
-    loadAdminPracticeQuestions(),loadAdminFlashcards(),loadAdminDailyChallenges(),
-    loadAdminProjectsAndTeams(),loadAdminNotifications()
-  ]);
-  optionalAdminLoads.forEach(r=>{if(r.status==="rejected")console.error("Optional admin feature failed:",r.reason)});
-
-  populateAdminStudentSelectors();
-  renderAdminActivity();
-  updateAdminStats();
-  setStatus("● Connected as administrator");
-}
-async function loadAdminProfiles(){const {data,error}=await db.from("profiles").select("user_id,nickname,username,role");adminProfiles=error?[]:(data||[]);if(error)console.error(error)}
-async function loadAdminActivity(){const {data,error}=await db.from("activity").select("id,user_id,action,resource_title,created_at").order("created_at",{ascending:false}).limit(200);adminActivity=error?[]:(data||[]);if(error)console.error(error)}
-function uname(id){const p=adminProfiles.find(x=>x.user_id===id);return p?.username||p?.nickname||"Unknown"}
-function renderAdminActivity(){$("activityTable").innerHTML=adminActivity.length?adminActivity.map(a=>`<tr><td>@${esc(uname(a.user_id))}</td><td>${esc(a.action)}</td><td>${esc(a.resource_title||"")}</td><td>${new Date(a.created_at).toLocaleString()}</td></tr>`).join(""):'<tr><td colspan="4">No activity yet.</td></tr>'}
-function updateAdminStats(){$("adminStudents").textContent=adminProfiles.filter(p=>p.role==="student").length;$("adminActivityCount").textContent=adminActivity.length;$("adminAnnouncements").textContent=announcements.length;$("adminDates").textContent=importantDates.length;$("adminModuleCount").textContent=adminModules.length;$("adminQuizCount").textContent=adminQuizzes.length;if($("adminPracticeCount"))$("adminPracticeCount").textContent=adminPracticeQuestions.length;if($("adminProjectCount"))$("adminProjectCount").textContent=adminProjects.length;if($("adminNotificationCount"))$("adminNotificationCount").textContent=adminNotifications.length}
-async function loadAdminQuizzes(){const {data,error}=await db.from("quizzes").select("*").order("created_at",{ascending:false});adminQuizzes=error?[]:(data||[]);if(error)console.error(error);$("adminQuizList").innerHTML=adminQuizzes.length?adminQuizzes.map(q=>`<div class="dateRow"><div class="grow"><h3>${esc(q.title)}</h3><p>${esc(q.category)} • ${q.is_published?"Published":"Draft"}</p></div><button class="secondary toggleQuiz" data-id="${q.id}" data-pub="${q.is_published}">${q.is_published?"Unpublish":"Publish"}</button><button class="danger deleteQuiz" data-id="${q.id}">Delete</button></div>`).join(""):'<p class="muted">No quizzes yet.</p>';$("questionQuiz").innerHTML='<option value="">Choose quiz</option>'+adminQuizzes.map(q=>`<option value="${q.id}">${esc(q.title)}</option>`).join("");document.querySelectorAll(".toggleQuiz").forEach(b=>b.onclick=()=>toggleQuiz(Number(b.dataset.id),b.dataset.pub!=="true"));document.querySelectorAll(".deleteQuiz").forEach(b=>b.onclick=()=>deleteQuiz(Number(b.dataset.id)));updateAdminStats()}
-
-/* ==========================================
-   SCIENCE CLUB 2.0 ADMIN TOOLS
-   ========================================== */
-async function loadAdminPracticeQuestions(){
-  const {data,error}=await db.from("practice_questions").select("*").order("created_at",{ascending:false});adminPracticeQuestions=error?[]:(data||[]);if(error)console.error(error);renderAdminPracticeQuestions();updateAdminStats();
-}
-function renderAdminPracticeQuestions(){$("adminPracticeList").innerHTML=adminPracticeQuestions.length?adminPracticeQuestions.map(q=>`<div class="adminMiniItem"><h4>${esc(q.question_text)}</h4><p>${esc(q.category)} • ${esc(q.difficulty)} • Answer ${q.correct_option} • ${q.is_published?"Published":"Draft"}</p><button class="secondary togglePractice" data-id="${q.id}" data-pub="${q.is_published}">${q.is_published?"Unpublish":"Publish"}</button> <button class="danger deletePractice" data-id="${q.id}">Delete</button></div>`).join(""):'<p class="muted">No practice questions yet.</p>';document.querySelectorAll(".togglePractice").forEach(b=>b.onclick=()=>togglePracticeQuestion(Number(b.dataset.id),b.dataset.pub!=="true"));document.querySelectorAll(".deletePractice").forEach(b=>b.onclick=()=>deletePracticeQuestion(Number(b.dataset.id)))}
-$("practiceQuestionForm").addEventListener("submit",async e=>{e.preventDefault();const {error}=await db.from("practice_questions").insert({category:$("adminPracticeCategory").value.trim(),difficulty:$("adminPracticeDifficulty").value,question_text:$("adminPracticeText").value.trim(),option_a:$("adminPracticeA").value.trim(),option_b:$("adminPracticeB").value.trim(),option_c:$("adminPracticeC").value.trim(),option_d:$("adminPracticeD").value.trim(),correct_option:$("adminPracticeCorrect").value,explanation:$("adminPracticeExplanation").value.trim()||null,is_published:$("adminPracticePublished").checked,created_by:currentUser.id});if(error){console.error(error);msg("adminMsg","Could not add practice question.","err");return}e.target.reset();$("adminPracticeCategory").value="General Chemistry";$("adminPracticeDifficulty").value="Medium";await loadAdminPracticeQuestions();msg("adminMsg","Practice question added.")});
-async function togglePracticeQuestion(id,publish){const {error}=await db.from("practice_questions").update({is_published:publish}).eq("id",id);if(error){console.error(error);msg("adminMsg","Could not update question.","err");return}await loadAdminPracticeQuestions()}
-async function deletePracticeQuestion(id){if(!confirm("Delete this practice question?"))return;const {error}=await db.from("practice_questions").delete().eq("id",id);if(error){console.error(error);msg("adminMsg","Could not delete question.","err");return}await loadAdminPracticeQuestions()}
-
-async function loadAdminFlashcards(){
-  const [{data:decks,error:de},{data:cards,error:ce}]=await Promise.all([db.from("flashcard_decks").select("*").order("sort_order",{ascending:true}).order("created_at",{ascending:true}),db.from("flashcards").select("*").order("sort_order",{ascending:true}).order("created_at",{ascending:true})]);adminFlashDecks=de?[]:(decks||[]);adminFlashcards=ce?[]:(cards||[]);if(de)console.error(de);if(ce)console.error(ce);renderAdminFlashcards();
-}
-function renderAdminFlashcards(){$("adminCardDeck").innerHTML='<option value="">Choose deck</option>'+adminFlashDecks.map(d=>`<option value="${d.id}">${esc(d.title)}</option>`).join("");$("adminFlashDeckList").innerHTML=adminFlashDecks.length?adminFlashDecks.map(d=>{const count=adminFlashcards.filter(c=>Number(c.deck_id)===Number(d.id)).length;return `<div class="adminMiniItem"><h4>${esc(d.title)}</h4><p>${count} cards • ${d.is_published?"Published":"Draft"}</p><button class="secondary toggleDeck" data-id="${d.id}" data-pub="${d.is_published}">${d.is_published?"Unpublish":"Publish"}</button> <button class="danger deleteDeck" data-id="${d.id}">Delete Deck</button>${adminFlashcards.filter(c=>Number(c.deck_id)===Number(d.id)).map(c=>`<div style="margin-top:6px;padding:6px;background:#f6f8f9;border-radius:3px"><span style="font-size:9px">${esc(c.front_text)}</span> <button class="danger deleteCard" data-id="${c.id}" style="float:right;padding:4px 6px">×</button></div>`).join("")}</div>`}).join(""):'<p class="muted">No flashcard decks yet.</p>';document.querySelectorAll(".toggleDeck").forEach(b=>b.onclick=()=>toggleFlashDeck(Number(b.dataset.id),b.dataset.pub!=="true"));document.querySelectorAll(".deleteDeck").forEach(b=>b.onclick=()=>deleteFlashDeck(Number(b.dataset.id)));document.querySelectorAll(".deleteCard").forEach(b=>b.onclick=()=>deleteFlashcard(Number(b.dataset.id)))}
-$("flashDeckForm").addEventListener("submit",async e=>{e.preventDefault();const {error}=await db.from("flashcard_decks").insert({title:$("adminDeckTitle").value.trim(),description:$("adminDeckDescription").value.trim()||null,category:$("adminDeckCategory").value.trim()||"CCC",sort_order:Number($("adminDeckOrder").value)||0,is_published:$("adminDeckPublished").checked,created_by:currentUser.id});if(error){console.error(error);msg("adminMsg","Could not create flashcard deck.","err");return}e.target.reset();$("adminDeckCategory").value="CCC";$("adminDeckOrder").value="1";await loadAdminFlashcards();msg("adminMsg","Flashcard deck created.")});
-$("flashcardForm").addEventListener("submit",async e=>{e.preventDefault();const {error}=await db.from("flashcards").insert({deck_id:Number($("adminCardDeck").value),front_text:$("adminCardFront").value.trim(),back_text:$("adminCardBack").value.trim(),sort_order:Number($("adminCardOrder").value)||0});if(error){console.error(error);msg("adminMsg","Could not add flashcard.","err");return}const deck=$("adminCardDeck").value;e.target.reset();$("adminCardOrder").value="1";await loadAdminFlashcards();$("adminCardDeck").value=deck;msg("adminMsg","Flashcard added.")});
-async function toggleFlashDeck(id,publish){const {error}=await db.from("flashcard_decks").update({is_published:publish}).eq("id",id);if(error){console.error(error);msg("adminMsg","Could not update deck.","err");return}await loadAdminFlashcards()}
-async function deleteFlashDeck(id){if(!confirm("Delete this deck and all its flashcards?"))return;const {error}=await db.from("flashcard_decks").delete().eq("id",id);if(error){console.error(error);msg("adminMsg","Could not delete deck.","err");return}await loadAdminFlashcards()}
-async function deleteFlashcard(id){if(!confirm("Delete this flashcard?"))return;const {error}=await db.from("flashcards").delete().eq("id",id);if(error){console.error(error);msg("adminMsg","Could not delete flashcard.","err");return}await loadAdminFlashcards()}
-
-async function loadAdminDailyChallenges(){const {data,error}=await db.from("daily_challenges").select("*").order("challenge_date",{ascending:false});adminDailyChallenges=error?[]:(data||[]);if(error)console.error(error);renderAdminDailyChallenges()}
-function renderAdminDailyChallenges(){$("adminDailyList").innerHTML=adminDailyChallenges.length?adminDailyChallenges.map(c=>`<div class="adminMiniItem"><h4>${esc(c.question_text)}</h4><p>${parseDate(c.challenge_date)?.toLocaleDateString()||c.challenge_date} • Answer ${c.correct_option} • ${c.is_published?"Published":"Draft"}</p><button class="secondary toggleDaily" data-id="${c.id}" data-pub="${c.is_published}">${c.is_published?"Unpublish":"Publish"}</button> <button class="danger deleteDaily" data-id="${c.id}">Delete</button></div>`).join(""):'<p class="muted">No daily challenges yet.</p>';document.querySelectorAll(".toggleDaily").forEach(b=>b.onclick=()=>toggleDailyChallenge(Number(b.dataset.id),b.dataset.pub!=="true"));document.querySelectorAll(".deleteDaily").forEach(b=>b.onclick=()=>deleteDailyChallenge(Number(b.dataset.id)))}
-$("dailyChallengeForm").addEventListener("submit",async e=>{e.preventDefault();const payload={challenge_date:$("adminDailyDate").value,question_text:$("adminDailyText").value.trim(),option_a:$("adminDailyA").value.trim(),option_b:$("adminDailyB").value.trim(),option_c:$("adminDailyC").value.trim(),option_d:$("adminDailyD").value.trim(),correct_option:$("adminDailyCorrect").value,explanation:$("adminDailyExplanation").value.trim()||null,is_published:$("adminDailyPublished").checked,created_by:currentUser.id};const {error}=await db.from("daily_challenges").upsert(payload,{onConflict:"challenge_date"});if(error){console.error(error);msg("adminMsg","Could not save daily challenge.","err");return}e.target.reset();$("adminDailyPublished").checked=true;$("adminDailyDate").value=localISODate();await loadAdminDailyChallenges();msg("adminMsg","Daily challenge saved.")});
-async function toggleDailyChallenge(id,publish){const {error}=await db.from("daily_challenges").update({is_published:publish}).eq("id",id);if(error){console.error(error);msg("adminMsg","Could not update challenge.","err");return}await loadAdminDailyChallenges()}
-async function deleteDailyChallenge(id){if(!confirm("Delete this daily challenge?"))return;const {error}=await db.from("daily_challenges").delete().eq("id",id);if(error){console.error(error);msg("adminMsg","Could not delete challenge.","err");return}await loadAdminDailyChallenges()}
-
-function populateAdminStudentSelectors(){const students=adminProfiles.filter(p=>p.role==="student");$("adminMemberStudent").innerHTML='<option value="">Choose student</option>'+students.map(p=>`<option value="${p.user_id}">@${esc(p.username||p.nickname||"student")}</option>`).join("");$("adminNotificationTarget").innerHTML='<option value="">All students</option>'+students.map(p=>`<option value="${p.user_id}">@${esc(p.username||p.nickname||"student")}</option>`).join("")}
-async function loadAdminProjectsAndTeams(){
-  const [{data:projects,error:pe},{data:teams,error:te},{data:members,error:me}]=await Promise.all([db.from("wwsef_projects").select("*").order("updated_at",{ascending:false}),db.from("project_teams").select("*").order("name",{ascending:true}),db.from("project_team_members").select("*").order("joined_at",{ascending:true})]);adminProjects=pe?[]:(projects||[]);adminTeams=te?[]:(teams||[]);adminTeamMembers=me?[]:(members||[]);if(pe)console.error(pe);if(te)console.error(te);if(me)console.error(me);renderAdminProjectsAndTeams();updateAdminStats();
-}
-function renderAdminProjectsAndTeams(){
-  const teamOptions='<option value="">Choose team</option>'+adminTeams.map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join("");$("adminMemberTeam").innerHTML=teamOptions;$("adminProjectTeam").innerHTML=teamOptions;$("adminFeedbackProject").innerHTML='<option value="">Choose project</option>'+adminProjects.map(p=>`<option value="${p.id}">${esc(p.title)}</option>`).join("");
-  $("adminProjectList").innerHTML=adminProjects.length?adminProjects.map(p=>{const team=adminTeams.find(t=>Number(t.id)===Number(p.team_id));return `<div class="adminMiniItem"><h4>${esc(p.title)}</h4><p>${team?"Team: "+esc(team.name):"Student: @"+esc(uname(p.owner_user_id))} • ${esc(p.status)} • ${esc(p.project_field)}</p></div>`}).join(""):'<p class="muted">No projects yet.</p>';
-  $("adminTeamList").innerHTML=adminTeams.length?adminTeams.map(t=>{const members=adminTeamMembers.filter(m=>Number(m.team_id)===Number(t.id));return `<div class="adminMiniItem"><h4>${esc(t.name)}</h4><p>${members.length?members.map(m=>"@"+esc(uname(m.user_id))).join(", "):"No students assigned"}</p>${members.map(m=>`<button class="danger removeTeamMember" data-id="${m.id}" style="padding:4px 6px;margin:2px">Remove @${esc(uname(m.user_id))}</button>`).join("")} <button class="danger deleteTeam" data-id="${t.id}" style="padding:4px 6px;margin:2px">Delete Team</button></div>`}).join(""):'<p class="muted">No teams yet.</p>';document.querySelectorAll(".removeTeamMember").forEach(b=>b.onclick=()=>removeTeamMember(Number(b.dataset.id)));document.querySelectorAll(".deleteTeam").forEach(b=>b.onclick=()=>deleteProjectTeam(Number(b.dataset.id)));
-}
-$("projectTeamForm").addEventListener("submit",async e=>{e.preventDefault();const {error}=await db.from("project_teams").insert({name:$("adminTeamName").value.trim(),created_by:currentUser.id});if(error){console.error(error);msg("adminMsg","Could not create team.","err");return}e.target.reset();await loadAdminProjectsAndTeams();msg("adminMsg","Project team created.")});
-$("teamMemberForm").addEventListener("submit",async e=>{e.preventDefault();const {error}=await db.from("project_team_members").insert({team_id:Number($("adminMemberTeam").value),user_id:$("adminMemberStudent").value});if(error){console.error(error);msg("adminMsg",error.code==="23505"?"That student is already on this team.":"Could not add student to team.","err");return}await loadAdminProjectsAndTeams();msg("adminMsg","Student added to team.")});
-async function removeTeamMember(id){if(!confirm("Remove this student from the team?"))return;const {error}=await db.from("project_team_members").delete().eq("id",id);if(error){console.error(error);msg("adminMsg","Could not remove team member.","err");return}await loadAdminProjectsAndTeams()}
-async function deleteProjectTeam(id){if(!confirm("Delete this team? Any team project connected to it will also be deleted."))return;const {error}=await db.from("project_teams").delete().eq("id",id);if(error){console.error(error);msg("adminMsg","Could not delete team.","err");return}await loadAdminProjectsAndTeams()}
-$("teamProjectForm").addEventListener("submit",async e=>{e.preventDefault();const {error}=await db.from("wwsef_projects").insert({team_id:Number($("adminProjectTeam").value),title:$("adminTeamProjectTitle").value.trim(),project_field:$("adminTeamProjectField").value.trim()||"General Science",description:$("adminTeamProjectDescription").value.trim()||null,target_date:$("adminTeamProjectTarget").value||null});if(error){console.error(error);msg("adminMsg","Could not create team project.","err");return}e.target.reset();$("adminTeamProjectField").value="General Science";await loadAdminProjectsAndTeams();msg("adminMsg","Team project created.")});
-$("projectFeedbackForm").addEventListener("submit",async e=>{e.preventDefault();const projectId=Number($("adminFeedbackProject").value),message=$("adminFeedbackMessage").value.trim(),project=adminProjects.find(p=>Number(p.id)===projectId);const {error}=await db.from("project_feedback").insert({project_id:projectId,admin_id:currentUser.id,message});if(error){console.error(error);msg("adminMsg","Could not send feedback.","err");return}const targets=project?.owner_user_id?[project.owner_user_id]:adminTeamMembers.filter(m=>Number(m.team_id)===Number(project?.team_id)).map(m=>m.user_id);if(targets.length){const rows=targets.map(uid=>({title:"New WWSEF Project Feedback",message:`Feedback was added to ${project.title}.`,category:"Feedback",target_user_id:uid,link_page:"wwsef",created_by:currentUser.id}));const {error:ne}=await db.from("notifications").insert(rows);if(ne)console.error(ne)}e.target.reset();await loadAdminNotifications();msg("adminMsg","Project feedback sent.")});
-
-async function loadAdminNotifications(){const {data,error}=await db.from("notifications").select("*").order("created_at",{ascending:false});adminNotifications=error?[]:(data||[]);if(error)console.error(error);renderAdminNotifications();updateAdminStats()}
-function renderAdminNotifications(){$("adminNotificationList").innerHTML=adminNotifications.length?adminNotifications.map(n=>`<div class="adminMiniItem"><h4>${esc(n.title)}</h4><p>${n.target_user_id?"@"+esc(uname(n.target_user_id)):"All students"} • ${esc(n.category)} • ${prettyDateTime(n.created_at)}</p><button class="danger deleteAdminNotification" data-id="${n.id}">Delete</button></div>`).join(""):'<p class="muted">No notifications yet.</p>';document.querySelectorAll(".deleteAdminNotification").forEach(b=>b.onclick=()=>deleteAdminNotification(Number(b.dataset.id)))}
-$("notificationForm").addEventListener("submit",async e=>{e.preventDefault();const expires=$("adminNotificationExpiry").value;const {error}=await db.from("notifications").insert({title:$("adminNotificationTitle").value.trim(),message:$("adminNotificationMessage").value.trim(),category:$("adminNotificationCategory").value,target_user_id:$("adminNotificationTarget").value||null,link_page:$("adminNotificationPage").value||null,expires_at:expires?new Date(expires).toISOString():null,created_by:currentUser.id});if(error){console.error(error);msg("adminMsg","Could not send notification.","err");return}e.target.reset();populateAdminStudentSelectors();await loadAdminNotifications();msg("adminMsg","Notification sent.")});
-async function deleteAdminNotification(id){if(!confirm("Delete this notification?"))return;const {error}=await db.from("notifications").delete().eq("id",id);if(error){console.error(error);msg("adminMsg","Could not delete notification.","err");return}await loadAdminNotifications()}
-
-$("createQuizForm").addEventListener("submit",async e=>{e.preventDefault();const {error}=await db.from("quizzes").insert({title:$("newQuizTitle").value.trim(),description:$("newQuizDesc").value.trim()||null,category:$("newQuizCat").value,is_published:false,created_by:currentUser.id});if(error){console.error(error);msg("adminMsg","Could not create quiz.","err");return}e.target.reset();await loadAdminQuizzes();msg("adminMsg","Draft quiz created.")});
-$("addQuestionForm").addEventListener("submit",async e=>{e.preventDefault();const {error}=await db.from("quiz_questions").insert({quiz_id:Number($("questionQuiz").value),question_text:$("qText").value.trim(),option_a:$("qA").value.trim(),option_b:$("qB").value.trim(),option_c:$("qC").value.trim(),option_d:$("qD").value.trim(),correct_option:$("qCorrect").value,explanation:$("qExplain").value.trim()||null});if(error){console.error(error);msg("adminMsg","Could not add question.","err");return}e.target.reset();msg("adminMsg","Question added.")});
-async function toggleQuiz(id,publish){const {error}=await db.from("quizzes").update({is_published:publish}).eq("id",id);if(error){msg("adminMsg","Could not update quiz.","err");return}await loadAdminQuizzes();msg("adminMsg",publish?"Quiz published.":"Quiz unpublished.")}
-async function deleteQuiz(id){if(!confirm("Delete this quiz and all its questions?"))return;const {error}=await db.from("quizzes").delete().eq("id",id);if(error){msg("adminMsg","Could not delete quiz.","err");return}await loadAdminQuizzes();msg("adminMsg","Quiz deleted.")}
-$("announcementForm").addEventListener("submit",async e=>{e.preventDefault();const {error}=await db.from("announcements").insert({title:$("annTitle").value.trim(),message:$("annMessage").value.trim(),created_by:currentUser.id});if(error){msg("adminMsg","Could not post announcement.","err");return}e.target.reset();await loadAnnouncements();updateAdminStats();msg("adminMsg","Announcement posted.")});
-$("dateForm").addEventListener("submit",async e=>{e.preventDefault();const {error}=await db.from("important_dates").insert({title:$("dateTitle").value.trim(),event_date:$("dateValue").value,category:$("dateCat").value,details:$("dateDetails").value.trim()||null,created_by:currentUser.id});if(error){msg("adminMsg","Could not add date.","err");return}e.target.reset();await loadDates();updateAdminStats();msg("adminMsg","Date added.")});
-$("resourceForm").addEventListener("submit",async e=>{e.preventDefault();const {error}=await db.from("resources").insert({title:$("resTitle").value.trim(),category:$("resCat").value,description:$("resDesc").value.trim(),url:$("resUrl").value.trim()||null,created_by:currentUser.id});if(error){msg("adminMsg","Could not add resource.","err");return}e.target.reset();await loadResources();msg("adminMsg","Resource added.")});
-$("faqForm").addEventListener("submit",async e=>{e.preventDefault();const {error}=await db.from("faqs").insert({question:$("faqQ").value.trim(),answer:$("faqA").value.trim(),category:$("faqCat").value,sort_order:faqs.length+1,created_by:currentUser.id});if(error){msg("adminMsg","Could not add FAQ.","err");return}e.target.reset();await loadFAQs();msg("adminMsg","FAQ added.")});
-$("clearActivity").onclick=async()=>{if(!confirm("Clear all student resource activity?"))return;const {error}=await db.from("activity").delete().gte("id",0);if(error){msg("adminMsg","Could not clear activity.","err");return}await loadAdminActivity();renderAdminActivity();updateAdminStats();msg("adminMsg","Activity cleared.")};
-$("adminLogout").onclick=async()=>{await db.auth.signOut();currentUser=currentProfile=null;showPage("auth");setStatus("● Signed out")};
-async function start(){
-try{
-if(!window.supabase)throw new Error("Supabase library failed to load");
-const hashParams=new URLSearchParams(window.location.hash.replace(/^#/,""));
-const queryParams=new URLSearchParams(window.location.search);
-passwordRecoveryMode=
-hashParams.get("type")==="recovery"||
-queryParams.get("type")==="recovery"||
-queryParams.has("code");
-db=window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_PUBLISHABLE_KEY,
-{auth:{detectSessionInUrl:true}}
-);
-db.auth.onAuthStateChange((event,session)=>{
-if(event==="PASSWORD_RECOVERY"){
-passwordRecoveryMode=true;
-currentUser=session?.user||null;
-currentProfile=null;
-showPage("adminReset");
-setStatus("● Reset admin password");
-}
-});
-renderCalendar();
-const {data}=await db.auth.getSession();
-if(passwordRecoveryMode){
-currentUser=data.session?.user||null;
-currentProfile=null;
-showPage("adminReset");
-setStatus("● Reset admin password");
-return;
-}
-if(data.session?.user){
-if(data.session.user.is_anonymous){
-await db.auth.signOut();
-}else{
-currentUser=data.session.user;
-await loadProfile();
-if(currentProfile?.role==="student"&&currentProfile.username){
-await enterStudent();
-return;
-}
-if(currentProfile?.role==="admin"){
-await openAdmin();
-return;
-}
-await db.auth.signOut();
-}
-}
-showPage("auth");
-setStatus("● Ready");
-}catch(err){
-console.error(err);
-setStatus("● Could not connect",true);
-showPage("auth");
-msg("authMsg","Could not connect to Supabase. Check the browser Console.","err");
-}
-}
-start();
-  </script>
- </body>
-</html>
